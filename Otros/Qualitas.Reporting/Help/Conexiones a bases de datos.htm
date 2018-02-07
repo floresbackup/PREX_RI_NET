@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Conexiones a bases de datos</title>
+<meta name="GENERATOR" content="WinCHM">
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
+
+</head>
+
+<BODY>
+<P><FONT face=Arial size=2><FONT face=Tahoma><FONT 
+style="BACKGROUND-COLOR: #ffffff"><IMG alt="" src="IMAGES/Conexiones.png"></FONT></FONT></FONT></P>
+<P><FONT face=Arial size=2><FONT face=Tahoma><FONT 
+style="BACKGROUND-COLOR: #ffffff">Las conexiones a bases de datos permiten a 
+<STRONG>Qualitas Reporting</STRONG> obtener los datos definidos en los diseños 
+de consulta y presentarlos al usuario. De esta manera, la herramienta ofrece 
+múltiples opciones para conectar con una base de datos, ya sea Microsoft SQL 
+Server, Oracle, un proveedor OLEDB o una conexión accesible mediante ODBC (Open 
+DataBase Connectivity).</FONT></FONT></FONT></P>
+<P><FONT face=Arial size=2><FONT face=Tahoma><FONT 
+style="BACKGROUND-COLOR: #ffffff">Para agregar una conexión, ingrese al menú 
+Conexiones y presione el botón Agregar:</FONT></FONT></FONT></P>
+<P><FONT face=Arial size=2><FONT face=Tahoma><FONT 
+style="BACKGROUND-COLOR: #ffffff"><IMG alt="" src="IMAGES/VentanaConexion.png"></FONT></FONT></FONT></P>
+<P><FONT face=Arial size=2><FONT face=Tahoma><FONT 
+style="BACKGROUND-COLOR: #ffffff">Una conexión consta de los siguientes 
+atributos:</FONT></FONT></FONT></P>
+<UL>
+  <LI><FONT face=Tahoma size=2><STRONG>Nombre</STRONG>: es el nombre que 
+  identificará una conexión de otra. Este atributo es requerido.</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Descripción</STRONG>: provee un espacio 
+  para describir la conexión, como por ejemplo, "Conexión al servidor de 
+  pruebas".</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Tipo de conexión</STRONG>: especifica a 
+  que tipo de motor de base de datos se conectará. Las opciones posibles 
+  son:</FONT> 
+  <UL>
+    <LI><FONT face=Tahoma size=2>MS SQL Server</FONT> 
+    <LI><FONT face=Tahoma size=2>Oracle</FONT> 
+    <LI><FONT face=Tahoma size=2>OLEDB</FONT> 
+    <LI><FONT face=Tahoma size=2>ODBC</FONT></LI></UL>
+  <LI><FONT face=Tahoma size=2><STRONG>Permitir ejecución asíncrona</STRONG>: 
+  esta opción indica que la ejecución de la consulta se hará en segundo plano, 
+  sin ocupar todos los recursos disponibles del sistema y con la posibilidad de 
+  cancelar la misma antes de su finalización. Se encuentra habilitada sólo 
+  cuando el tipo de conexión seleccionado es MS SQL Server. Nótese que esta 
+  opción sólo surtirá efecto si en la cadena de conexión se especifica un 
+  modificador que lo habilite, que por lo general es "Asynchronous 
+  Processing=True;".</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Utilizar opciones 
+  predeterminadas</STRONG>: de activarse esta opción, el procesador de consultas 
+  de <STRONG>Qualitas Reporting</STRONG> asumirá el símbolo decimal, el literal 
+  de cadenas, el literal de fechas y el formato de fechas de acuerdo a lo 
+  indicado en la <A href="Configuración general.htm">configuración general</A>.</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Cadena de conexión</STRONG>: representa 
+  el "camino" hacia la base de datos. Es aquí donde se indica el nombre del 
+  servidor (o su dirección IP), el nombre de la base de datos a utilizar, el 
+  tipo de seguridad que se utilizará y otras opciones específicas que dependerán 
+  del tipo de conexión utilizado.<BR>Para configurar correctamente la cadena de 
+  conexión, se sugiere seguir los pasos del asistente mediante el botón Generar 
+  conexión. Nótese que en este asistente, se debe seleccionar un origen de datos 
+  coincidente con el tipo de conexión seleccionado (ver siguiente figura), caso 
+  contrario se producirá un error al momento de ejecutar la 
+consulta.</FONT></LI></UL>
+<P><IMG alt="" src="IMAGES/AsistenteConexion.png"></P>
+<P>&nbsp;</P></BODY>
+</html>

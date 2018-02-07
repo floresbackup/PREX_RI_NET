@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Completar parámetros</title>
+<meta name="GENERATOR" content="WinCHM">
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
+
+</head>
+
+<BODY>
+<P><FONT size=2 face=Arial><IMG alt="" src="IMAGES/EjecucionParametros.png"></FONT></P>
+<P><FONT size=2 face=Tahoma>Una vez abierta una consulta en modo de ejecución, 
+aparece una ventana con cuatro fichas, de las cuales la primera es la de 
+completar los parámetros que ofrezca la consulta.<BR></FONT><FONT size=2 
+face=Tahoma>La consulta puede no tener parámetros, con lo cual la única opción 
+será ejecutarla. En caso contrario, el usuario deberá completar al menos los 
+parámetros que se hayan indicado como requeridos. Los mismos se distinguirán por 
+el sufijo "(*)".<BR>De acuerdo al tipo de datos de cada parámetros, el usuario 
+deberá seleccionar una fecha desde un calendario desplegable, ingresar una 
+cadena de texto o un valor numérico, ya sea de forma manual o bien seleccionando 
+de una lista de valores si es que así se dispuso en el diseño de la 
+consulta.</FONT></P>
+<P><FONT size=4 face=Tahoma><STRONG>Calendarios de selección de 
+fecha</STRONG></FONT></P>
+<P><IMG alt="" src="IMAGES/CalendarioFecha.png"></P>
+<P><FONT size=2 face=Tahoma>La selección de fechas se hará mediante un 
+calendario desplegable. El mismo se posiciona sobre la fecha por omisión o bien, 
+de no haberse especificado, en la fecha del sistema. Para cambiar de meses y 
+años, deberá hacer clic sobre el período en la parte superior del 
+calendario.<BR>Cabe destacar que los parámetros de fecha no son editables y 
+deberán ser seleccionados desde el calendario. Por otra parte, el formato de 
+fechas que se visualiza corresponde al definido en el atributo de la 
+conexión.</FONT></P>
+<P><FONT size=4 face=Tahoma><STRONG>Listas de valores 
+personalizadas</STRONG></FONT></P>
+<P><IMG alt="" src="IMAGES/BotonLista.png"></P>
+<P><FONT size=2 face=Tahoma>Si el tipo de control del parámetro se ha definido 
+como botón, se visualizará un botón con el texto "..." que al ser presionado 
+presentará una lista de valores personalizados en el diseño de la consulta, 
+producto de ejecutar la instrucción SQL de la ayuda contextual del parámetro. A 
+modo de ejemplo, se solicita al usuario filtrar una&nbsp;moneda de acuerdo a la 
+lista de monedas de un sistema determinado:</FONT></P>
+<P><IMG alt="" src="IMAGES/ListaPersonalizada.png"></P>
+<P><FONT size=2 face=Tahoma>Asimismo, si dicho parámetro fue definido como 
+multifiltro, esta lista de valores permitirá seleccionar más de un valor por 
+vez. Para ello, se deberá mantener presionada la tecla &lt;CTRL&gt; a medida que 
+se van seleccionando valores de esta lista.</FONT></P>
+<P><FONT size=4 face=Tahoma><STRONG>Búsquedas personalizadas</STRONG></FONT></P>
+<P><FONT size=2 face=Tahoma>En el caso que el diseñador de la consulta haya 
+indicado que un parámetro tenga una búsqueda personalizada (atributo que deberá 
+ser combinado con la opción de tipo de control = Botón), el usuario deberá 
+completar un valor de acuerdo a lo instruido en el mensaje. Un ejemplo podrá ser 
+la búsqueda del código de un cliente dentro de una tabla con gran cantidad de 
+registros, en la que se espera que el usuario indique parte del nombre del 
+cliente y los resultados se acoten según su criterio de búsqueda. Entonces, al 
+hacer clic sobre el botón del parámetro, se verá esta figura:</FONT></P>
+<P><FONT size=2 face=Tahoma><IMG alt="" 
+src="IMAGES/CustomSearchExec.png"></FONT></P>
+<P><FONT size=2 face=Tahoma>Si el usuario confirma, se validará que no haya 
+ingresado una cadena vacía, y a continuación se enviará el comando SQL definido 
+por el diseñador en la ayuda contextual. Los resultados de la consulta se verán 
+de la misma manera que cualquier lista de valores personalizada.</FONT></P>
+<P><FONT size=4 face=Tahoma><STRONG>Otros tipos de controles</STRONG></FONT></P>
+<P><IMG alt="" src="IMAGES/OtrosControles.png"></P>
+<P><FONT size=2 face=Tahoma>La selección de parámetros contempla además otros 
+tipos de controles para indicar valores:</FONT></P>
+<UL>
+  <LI><FONT size=2 face=Tahoma>Botón de incrementos: presione las flechas hacia 
+  arriba para incrementar el valor o la flecha hacia abajo para reducirlo. 
+  Aplica sólo a valores numéricos.</FONT></LI>
+  <LI><FONT size=2 face=Tahoma>Casilla de verificación: active para trasnformar 
+  el valor en 1 (uno) o desactive la casilla para transformarlo en 0 
+  (cero).</FONT></LI>
+  <LI><FONT size=2 face=Tahoma>Reloj: presione las flechas hacia arriba o abajo 
+  para indicar un valor horario. Posiciónese sobre el área de minutos o segundos 
+  para modificar sólo estos valores.</FONT></LI>
+  <LI><FONT size=2 face=Tahoma>Barra de desplazamiento y barra de desplazamiento 
+  tipo zoom: arrastre el deslizador para indicar un valor. En la barra tipo 
+  zoom, puede presionar los botones "+" o "-" para cambiar el valor del 
+  parámetro.</FONT></LI>
+  <LI><FONT size=2 face=Tahoma>Calculadora: presione el botón para activar una 
+  calculadora desplegable. Luego podrá interactuar con la calculadora. Cuando 
+  haya finalizado, haga clic fuera de ella para indicar el valor devuelto por el 
+  cálculo en el cuadro de texto del parámetro.</FONT></LI></UL>
+<P><FONT size=4 face=Tahoma><STRONG>Ejecución de la consulta</STRONG></FONT></P>
+<P><FONT size=2 face=Tahoma>Una vez que haya completado los parámetros 
+requeridos (y/o los no requeridos), se deberá presionar el botón "Ejecutar" en 
+el área superior de la ventana. La consulta validará toda la información 
+ingresada y le hará saber en que parámetro existe algún error. En caso contrario 
+se procederá con la ejecución de la consulta.</FONT></P>
+<P>&nbsp;</P>
+<P><FONT size=2 face=Tahoma></FONT>&nbsp;</P>
+<P><FONT size=2 face=Tahoma></FONT>&nbsp;</P>
+<P><FONT size=2 face=Tahoma></FONT>&nbsp;</P></BODY>
+</html>

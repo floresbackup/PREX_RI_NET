@@ -1,0 +1,573 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0502FDB7-408C-43C3-98B3-B1212197693C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Qualitas.My.MyApplication</StartupObject>
+    <RootNamespace>Qualitas</RootNamespace>
+    <AssemblyName>Qualitas</AssemblyName>
+    <MyType>WindowsForms</MyType>
+    <ApplicationIcon>AppIconV3.ico</ApplicationIcon>
+    <PublishUrl>http://localhost/Qualitas/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Qualitas.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42024,42030,42032,42036,42104,42108,42109</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Qualitas.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42024,42030,42032,42036,42104,42108,42109</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ActiproSoftware.Shared.Net20, Version=1.0.88.0, Culture=neutral, PublicKeyToken=8895c2bf6d673e9b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\ActiproSyntaxEditor\ActiproSoftware.Shared.Net20.dll</HintPath>
+    </Reference>
+    <Reference Include="ActiproSoftware.SyntaxEditor.Net20, Version=4.0.245.0, Culture=neutral, PublicKeyToken=8895c2bf6d673e9b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\ActiproSyntaxEditor\ActiproSoftware.SyntaxEditor.Net20.dll</HintPath>
+    </Reference>
+    <Reference Include="ActiproSoftware.WinUICore.Net20, Version=1.0.88.0, Culture=neutral, PublicKeyToken=8895c2bf6d673e9b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\ActiproSyntaxEditor\ActiproSoftware.WinUICore.Net20.dll</HintPath>
+    </Reference>
+    <Reference Include="ActiveDatabaseSoftware.ActiveQueryBuilder, Version=1.8.5.162, Culture=neutral, PublicKeyToken=3cbcbcc9bf57ecde, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="ActiveDatabaseSoftware.EventMetadataProvider, Version=1.8.5.162, Culture=neutral, PublicKeyToken=3cbcbcc9bf57ecde, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="ActiveDatabaseSoftware.MSSQLMetadataProvider, Version=1.8.5.162, Culture=neutral, PublicKeyToken=3cbcbcc9bf57ecde, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="ActiveDatabaseSoftware.ODBCMetadataProvider, Version=1.8.5.162, Culture=neutral, PublicKeyToken=3cbcbcc9bf57ecde, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="ActiveDatabaseSoftware.OLEDBMetadataProvider, Version=1.8.5.162, Culture=neutral, PublicKeyToken=3cbcbcc9bf57ecde, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="ActiveDatabaseSoftware.OracleMetadataProvider, Version=1.8.5.162, Culture=neutral, PublicKeyToken=3cbcbcc9bf57ecde, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="DevExpress.BonusSkins.v8.2, Version=8.2.2.0, Culture=neutral, PublicKeyToken=95fc6c5621878f0a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v8.2, Version=8.2.2.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.OfficeSkins.v8.2, Version=8.2.2.0, Culture=neutral, PublicKeyToken=95fc6c5621878f0a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v8.2, Version=8.2.2.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraBars.v8.2, Version=8.2.2.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Charts.v8.2.Core, Version=8.2.2.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v8.2, Version=8.2.2.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v8.2.UI, Version=8.2.2.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v8.2, Version=8.2.2.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v8.2, Version=8.2.2.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPivotGrid.v8.2, Version=8.2.2.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPivotGrid.v8.2.Core, Version=8.2.2.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v8.2, Version=8.2.2.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v8.2, Version=8.2.2.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraVerticalGrid.v8.2, Version=8.2.2.0, Culture=neutral, PublicKeyToken=49d90c14d24271b5" />
+    <Reference Include="Microsoft.Data.ConnectionUI.Dialog, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\Microsoft.Data.ConnectionUI.Dialog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Clases\AdmTablas.vb" />
+    <Compile Include="Clases\cAutenticacionLDAP.vb" />
+    <Compile Include="Clases\cEncrypt.vb" />
+    <Compile Include="Clases\cGridLocalizer.vb" />
+    <Compile Include="Clases\cChartLocalizer.vb" />
+    <Compile Include="Clases\cBarsLocalizer.vb" />
+    <Compile Include="Clases\cEditorsLocalizer.vb" />
+    <Compile Include="Clases\cReportsLocalizer.vb" />
+    <Compile Include="Clases\cPrintingLocalizer.vb" />
+    <Compile Include="Clases\cPivotGridLocalizer.vb" />
+    <Compile Include="XtraForms\frmCargarLayout.Designer.vb">
+      <DependentUpon>frmCargarLayout.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmCargarLayout.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmCustomSearch.Designer.vb">
+      <DependentUpon>frmCustomSearch.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmCustomSearch.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmDisenoCustomSearch.Designer.vb">
+      <DependentUpon>frmDisenoCustomSearch.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmDisenoCustomSearch.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmEditorExpresion.Designer.vb">
+      <DependentUpon>frmEditorExpresion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmEditorExpresion.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmFormatoCondicional.Designer.vb">
+      <DependentUpon>frmFormatoCondicional.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmFormatoCondicional.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmGuardarLayout.Designer.vb">
+      <DependentUpon>frmGuardarLayout.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmGuardarLayout.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmOpcionesGlobales.Designer.vb">
+      <DependentUpon>frmOpcionesGlobales.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmOpcionesGlobales.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmEliminarConsulta.Designer.vb">
+      <DependentUpon>frmEliminarConsulta.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmEliminarConsulta.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmImportar.Designer.vb">
+      <DependentUpon>frmImportar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmImportar.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmExportar.Designer.vb">
+      <DependentUpon>frmExportar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmExportar.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmBuscarReemplazar.Designer.vb">
+      <DependentUpon>frmBuscarReemplazar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmBuscarReemplazar.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmCategorias.Designer.vb">
+      <DependentUpon>frmCategorias.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmCategorias.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmAbout.Designer.vb">
+      <DependentUpon>frmAbout.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmAbout.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmColumnaCubo.Designer.vb">
+      <DependentUpon>frmColumnaCubo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmColumnaCubo.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmConexion.Designer.vb">
+      <DependentUpon>frmConexion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmConexion.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmConexiones.Designer.vb">
+      <DependentUpon>frmConexiones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmConexiones.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmExportarHTML.Designer.vb">
+      <DependentUpon>frmExportarHTML.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmExportarHTML.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmExportarImagen.Designer.vb">
+      <DependentUpon>frmExportarImagen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmExportarImagen.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmFormato.Designer.vb">
+      <DependentUpon>frmFormato.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmFormato.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmGuardarReporte.Designer.vb">
+      <DependentUpon>frmGuardarReporte.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmGuardarReporte.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmLogin.Designer.vb">
+      <DependentUpon>frmLogin.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmLogin.vb">
+    </Compile>
+    <Compile Include="Modulos\modGlobalDeclaraciones.vb" />
+    <Compile Include="Modulos\modGlobalFunciones.vb" />
+    <Compile Include="Modulos\modGlobalIdioma.vb" />
+    <Compile Include="Modulos\modGlobalINIFiles.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Modulos\Settings.vb" />
+    <Compile Include="XtraForms\frmMainX.designer.vb">
+      <DependentUpon>frmMainX.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmMainX.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmOpcionesSeguridad.Designer.vb">
+      <DependentUpon>frmOpcionesSeguridad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmOpcionesSeguridad.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmOpcionesUsuario.Designer.vb">
+      <DependentUpon>frmOpcionesUsuario.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmOpcionesUsuario.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmParametro.Designer.vb">
+      <DependentUpon>frmParametro.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmParametro.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmPassword.Designer.vb">
+      <DependentUpon>frmPassword.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmPassword.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmPersonalizarCubo.Designer.vb">
+      <DependentUpon>frmPersonalizarCubo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmPersonalizarCubo.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmResultado.Designer.vb">
+      <DependentUpon>frmResultado.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmResultado.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmSeguridad.Designer.vb">
+      <DependentUpon>frmSeguridad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmSeguridad.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmSplash.Designer.vb">
+      <DependentUpon>frmSplash.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmSplash.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="XtraForms\frmSQLError.Designer.vb">
+      <DependentUpon>frmSQLError.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmSQLError.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmSQLWizard.Designer.vb">
+      <DependentUpon>frmSQLWizard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmSQLWizard.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmTablaGeneral.Designer.vb">
+      <DependentUpon>frmTablaGeneral.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmTablaGeneral.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmConsulta.Designer.vb">
+      <DependentUpon>frmConsulta.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmConsulta.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmProcesando.Designer.vb">
+      <DependentUpon>frmProcesando.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmProcesando.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmExportarXLS.Designer.vb">
+      <DependentUpon>frmExportarXLS.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmExportarXLS.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmSeleccionConsulta.Designer.vb">
+      <DependentUpon>frmSeleccionConsulta.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmSeleccionConsulta.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmDrillDown.Designer.vb">
+      <DependentUpon>frmDrillDown.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmDrillDown.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmDisenoConsulta.Designer.vb">
+      <DependentUpon>frmDisenoConsulta.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmDisenoConsulta.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmUsuario.Designer.vb">
+      <DependentUpon>frmUsuario.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmUsuario.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmVariables.Designer.vb">
+      <DependentUpon>frmVariables.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmVariables.vb">
+    </Compile>
+    <Compile Include="XtraForms\frmWelcome.Designer.vb">
+      <DependentUpon>frmWelcome.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XtraForms\frmWelcome.vb">
+    </Compile>
+    <Compile Include="Modulos\modEncripcionArchivos.vb" />
+    <Compile Include="Modulos\modGlobalLicenciamiento.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XtraForms\frmCargarLayout.resx">
+      <DependentUpon>frmCargarLayout.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmCustomSearch.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmCustomSearch.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmDisenoCustomSearch.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmDisenoCustomSearch.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmEditorExpresion.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmEditorExpresion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmEliminarConsulta.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmEliminarConsulta.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmFormatoCondicional.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmFormatoCondicional.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmGuardarLayout.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmGuardarLayout.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmImportar.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmImportar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmExportar.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmExportar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmBuscarReemplazar.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmBuscarReemplazar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmCategorias.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmCategorias.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmAbout.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmAbout.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmColumnaCubo.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmColumnaCubo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmConexion.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmConexion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmConexiones.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmConexiones.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmExportarHTML.resx">
+      <DependentUpon>frmExportarHTML.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmExportarImagen.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmExportarImagen.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmFormato.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmFormato.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmGuardarReporte.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmGuardarReporte.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmLogin.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmLogin.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmMainX.resx">
+      <DependentUpon>frmMainX.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmOpcionesGlobales.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmOpcionesGlobales.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmOpcionesSeguridad.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmOpcionesSeguridad.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmOpcionesUsuario.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmOpcionesUsuario.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmParametro.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmParametro.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmPassword.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmPassword.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmPersonalizarCubo.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmPersonalizarCubo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmResultado.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmResultado.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmSeguridad.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmSeguridad.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmSplash.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmSplash.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmSQLError.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmSQLError.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmSQLWizard.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmSQLWizard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmTablaGeneral.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmTablaGeneral.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmConsulta.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmConsulta.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmProcesando.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmProcesando.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmExportarXLS.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmExportarXLS.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmSeleccionConsulta.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmSeleccionConsulta.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmDrillDown.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmDrillDown.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmDisenoConsulta.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmDisenoConsulta.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmUsuario.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmUsuario.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmVariables.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmVariables.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraForms\frmWelcome.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmWelcome.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OtrosRecursos\app.config" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AppIconV3.ico" />
+    <Content Include="OtrosRecursos\AppIconV2.ico" />
+    <Content Include="OtrosRecursos\AppIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="XtraReportModules\" />
+    <Folder Include="XtraUserControls\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

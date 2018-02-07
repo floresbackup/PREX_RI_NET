@@ -1,0 +1,87 @@
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Debug\ResolveAssemblyReference.cache
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Debug\VBP04395.frmError.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Debug\VBP04395.frmExportar.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Debug\VBP04395.frmInputGeneral.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Debug\VBP04395.frmProcesando.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Debug\VBP04395.frmTablaGeneral.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Debug\VBP04395.Resources.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Debug\VBP04395.frmMain.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Debug\VBP04395.PrintRibbonControllerResources.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Debug\VBP04395.vbproj.GenerateResource.Cache
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Debug\VBP04395.exe.licenses
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\bin\Debug\VBP04395.exe
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\bin\Debug\VBP04395.pdb
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\bin\Debug\VBP04395.xml
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\bin\Debug\System.Printing.dll
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\bin\Debug\PresentationCore.dll
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Debug\VBP04395.exe
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Debug\VBP04395.xml
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Debug\VBP04395.pdb
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Debug\VBP04395.frmErrores.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\bin\Release\VBP04395.exe
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\bin\Release\VBP04395.pdb
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\bin\Release\VBP04395.xml
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\bin\Release\System.Printing.dll
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\bin\Release\PresentationCore.dll
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Release\ResolveAssemblyReference.cache
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.frmError.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.frmExportar.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.frmInputGeneral.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.frmProcesando.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.frmTablaGeneral.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.frmErrores.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.Resources.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.frmMain.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.PrintRibbonControllerResources.resources
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.vbproj.GenerateResource.Cache
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.exe.licenses
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.exe
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.xml
+D:\Develop\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.pdb
+D:\Develop.net\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.exe
+D:\Develop.net\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.xml
+D:\Develop.net\Proyectos.NET\VBP04395\VBP04395\obj\Release\VBP04395.pdb
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Release\VBP04395.exe
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Release\VBP04395.xml
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Release\VBP04395.pdb
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Debug\ResolveAssemblyReference.cache
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Debug\VBP04395.frmError.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Debug\VBP04395.frmExportar.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Debug\VBP04395.frmInputGeneral.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Debug\VBP04395.frmProcesando.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Debug\VBP04395.frmTablaGeneral.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Debug\VBP04395.frmErrores.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Debug\VBP04395.Resources.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Debug\VBP04395.frmMain.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Debug\VBP04395.PrintRibbonControllerResources.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Debug\VBP04395.vbproj.GenerateResource.Cache
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Debug\VBP04395.exe.licenses
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Debug\VBP04395.exe
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Debug\VBP04395.xml
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Debug\VBP04395.pdb
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\bin\Debug\VBP04395.exe
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\bin\Debug\VBP04395.pdb
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\bin\Debug\VBP04395.xml
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\bin\Debug\System.Printing.dll
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\bin\Debug\PresentationCore.dll
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\bin\Debug\es\System.Printing.resources.dll
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\bin\Debug\es\PresentationCore.resources.dll
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\bin\Release\VBP04395.exe
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\bin\Release\VBP04395.pdb
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\bin\Release\VBP04395.xml
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\bin\Release\System.Printing.dll
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\bin\Release\PresentationCore.dll
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\bin\Release\es\System.Printing.resources.dll
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\bin\Release\es\PresentationCore.resources.dll
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Release\ResolveAssemblyReference.cache
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Release\VBP04395.frmError.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Release\VBP04395.frmExportar.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Release\VBP04395.frmInputGeneral.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Release\VBP04395.frmProcesando.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Release\VBP04395.frmTablaGeneral.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Release\VBP04395.frmErrores.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Release\VBP04395.Resources.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Release\VBP04395.frmMain.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Release\VBP04395.PrintRibbonControllerResources.resources
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Release\VBP04395.vbproj.GenerateResource.Cache
+\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\VBP04395\VBP04395\obj\Release\VBP04395.exe.licenses

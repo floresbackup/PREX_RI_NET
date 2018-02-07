@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly manifestVersion="1.0" xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <asmv1:assemblyIdentity name="VBP04730.exe" version="1.0.0.0" publicKeyToken="b28dd71a24d8fa42" language="neutral" processorArchitecture="msil" type="win32" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="VBP04730" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="VBP04730.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet class="System.Security.PermissionSet" version="1" Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="4" minorVersion="10" buildNumber="0" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="2.0.50727.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="ABCpdf" version="7.0.1.9" publicKeyToken="A7A0B3F5184F2169" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="DevExpress.Data.v7.2" version="7.2.4.0" publicKeyToken="9B171C9FD64DA1D1" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="DevExpress.Utils.v7.2" version="7.2.4.0" publicKeyToken="9B171C9FD64DA1D1" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="DevExpress.Xpo.v7.2" version="7.2.4.0" publicKeyToken="9B171C9FD64DA1D1" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="DevExpress.XtraBars.v7.2" version="7.2.4.0" publicKeyToken="9B171C9FD64DA1D1" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="DevExpress.XtraCharts.v7.2" version="7.2.4.0" publicKeyToken="9B171C9FD64DA1D1" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="DevExpress.XtraEditors.v7.2" version="7.2.4.0" publicKeyToken="9B171C9FD64DA1D1" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="DevExpress.XtraGrid.v7.2" version="7.2.4.0" publicKeyToken="9B171C9FD64DA1D1" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="DevExpress.XtraNavBar.v7.2" version="7.2.4.0" publicKeyToken="9B171C9FD64DA1D1" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="DevExpress.XtraPivotGrid.v7.2.Core" version="7.2.4.0" publicKeyToken="9B171C9FD64DA1D1" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="DevExpress.XtraPrinting.v7.2" version="7.2.4.0" publicKeyToken="9B171C9FD64DA1D1" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="DevExpress.XtraReports.v7.2" version="7.2.4.0" publicKeyToken="9B171C9FD64DA1D1" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="DevExpress.XtraRichTextEdit.v7.2" version="7.2.4.0" publicKeyToken="9B171C9FD64DA1D1" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="DevExpress.XtraTreeList.v7.2" version="7.2.4.0" publicKeyToken="9B171C9FD64DA1D1" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="PresentationCFFRasterizer" version="3.0.0.0" publicKeyToken="31BF3856AD364E35" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="PresentationFramework" version="3.0.0.0" publicKeyToken="31BF3856AD364E35" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="PresentationUI" version="3.0.0.0" publicKeyToken="31BF3856AD364E35" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="ReachFramework" version="3.0.0.0" publicKeyToken="31BF3856AD364E35" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="UIAutomationProvider" version="3.0.0.0" publicKeyToken="31BF3856AD364E35" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="UIAutomationTypes" version="3.0.0.0" publicKeyToken="31BF3856AD364E35" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="WindowsBase" version="3.0.0.0" publicKeyToken="31BF3856AD364E35" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PresentationCore.dll" size="4210688">
+      <assemblyIdentity name="PresentationCore" version="3.0.0.0" publicKeyToken="31BF3856AD364E35" language="neutral" processorArchitecture="x86" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>u9iB8/zeEjtOsgJ/+tX42+xd8ps=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Printing.dll" size="368640">
+      <assemblyIdentity name="System.Printing" version="3.0.0.0" publicKeyToken="31BF3856AD364E35" language="neutral" processorArchitecture="x86" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>qeF8ivl8sbjPPcjp1NcKXJJ2jB4=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="VBP04730.exe" size="536576">
+      <assemblyIdentity name="VBP04730" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>p9Hd8r13fOuV7SK2fV2OpYJZ9so=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+<publisherIdentity name="CN=PREX\bucetas" issuerKeyHash="b0058c19465b99256925156eb2dcfd05e30e03a8" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>rtEIOvR0UETbhbsRRdEViGrSWqw=</DigestValue></Reference></SignedInfo><SignatureValue>oq6Zxzl+EQ8nExDSV7Ohgwy2mtv52IFeOWLEl1Y78Ehk1k7WfZ/PTnn1At2cUq4KXAOcDhAfxDnP/57zzyYAg+5JBCzXOrupu1WEo5H4IWaAdwnREqyIzzAe3IsHCqwSr+pkyJALxxmyKUlrTEjHqfq7Rb5I/zYf6e852pIXC2s=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>pHSEjEVBPbR0KsjChQTp2xM4PujsMeWMKzTiKA73N8vGDyjwSS6DN8JmPH3jZlgpIJxwAhrl/dOKS8Zf2cQ9WylZxVF6/Pp+3VPhZY+RsRNDAOGJMX9L/xFdr8KvjZria8yNhe+eGNVg6f6J0LiIchgCcbWCxsNkJkmmgcijgoU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="ac5ad26a8815d14511bb85db445074f43a08d1ae" Description="" Url=""><as:assemblyIdentity name="VBP04730.exe" version="1.0.0.0" publicKeyToken="b28dd71a24d8fa42" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=PREX\bucetas</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>PFkmQ7CRuAjCc95DixEFjvJJYWo=</DigestValue></Reference></SignedInfo><SignatureValue>AOz0CejJD5JdSpIVXjuDsX6CWJNqSv8tPvFbLsAYAGYgknFbdCAUS/ug+CyVhOJQLRf6tNTajAbvAUoOD1fJQGPSaFq1hEYMwvIOqpKN3pZhnbGE9XUMZUD3zaXLH4NWgHSYp4qIrOOmz7ZEHQtnabfYhLzaHiqcnbys9ytis/I=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>pHSEjEVBPbR0KsjChQTp2xM4PujsMeWMKzTiKA73N8vGDyjwSS6DN8JmPH3jZlgpIJxwAhrl/dOKS8Zf2cQ9WylZxVF6/Pp+3VPhZY+RsRNDAOGJMX9L/xFdr8KvjZria8yNhe+eGNVg6f6J0LiIchgCcbWCxsNkJkmmgcijgoU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIBwTCCAS6gAwIBAgIQIN2FQGjpSK5PXpsVgUkRlzAJBgUrDgMCHQUAMCMxITAfBgNVBAMeGABQAFIARQBYAFwAYgB1AGMAZQB0AGEAczAeFw0xMDAxMDYxNjQ5MDdaFw0xMTAxMDYyMjQ5MDdaMCMxITAfBgNVBAMeGABQAFIARQBYAFwAYgB1AGMAZQB0AGEAczCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEApHSEjEVBPbR0KsjChQTp2xM4PujsMeWMKzTiKA73N8vGDyjwSS6DN8JmPH3jZlgpIJxwAhrl/dOKS8Zf2cQ9WylZxVF6/Pp+3VPhZY+RsRNDAOGJMX9L/xFdr8KvjZria8yNhe+eGNVg6f6J0LiIchgCcbWCxsNkJkmmgcijgoUCAwEAATAJBgUrDgMCHQUAA4GBABLKb7ZLs5+o5bF2FVsEhPh+XgZWuMz+M87keBnStTvsOofy0i/RQTQi6Rs68qCOClovBEy7qBxv7pp4+XsMJZQQdPCVtR+X8c4z8q6ISwc/VO93sIxvEwr/pjz3x7spoL9fHW+l6R7Y1xg2VYRVPs0cORVihjjEFicyE3gX7inr</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>

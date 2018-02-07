@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Fundamentos de diseño</title>
+<meta name="GENERATOR" content="WinCHM">
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
+
+</head>
+
+<BODY>
+<P><FONT face=Arial size=2><IMG alt="" src="IMAGES/ToolbarDiseno.png"></FONT></P>
+<P><FONT face=Tahoma size=2>A continuación se tratarán de enumerar y explicar 
+los distintos elementos que componen una consulta en <STRONG>Qualitas 
+Reporting</STRONG>.</FONT></P>
+<P><FONT face=Tahoma size=2>Una consulta, consta básicamente de cinco elementos 
+principales:</FONT></P>
+<UL>
+  <LI><FONT face=Tahoma size=2>Datos generales</FONT> 
+  <LI><FONT face=Tahoma size=2>Instrucciones SQL</FONT> 
+  <LI><FONT face=Tahoma size=2>Parámetros</FONT> 
+  <LI><FONT face=Tahoma size=2>Formatos</FONT> 
+  <LI><FONT face=Tahoma size=2>Resultados</FONT></LI></UL>
+<P><FONT face=Tahoma size=4><STRONG>Datos generales</STRONG></FONT></P>
+<P><FONT face=Tahoma size=2>Constituyen la información principal de la consulta, 
+como ser el nombre, la descripción, la conexión utilizada, etc.</FONT></P>
+<P><FONT face=Tahoma size=4><STRONG>Instrucciones SQL</STRONG></FONT></P>
+<P><FONT face=Tahoma size=2>Representa la columna vertebral de la consulta. 
+Ellas son las que le indican que datos devolver al usuario, con que filtros, en 
+que orden, etc.<BR>Las instrucciones SQL de una consulta deberán escribirse de 
+acuerdo a la interpretación del tipo de conexión utilizado. Tenga en cuenta que 
+no todos los motores de bases de datos responden lo mismo ante mismas 
+instrucciones, incluso determinadas instrucciones son compatibles en un motor y 
+no en otro.<BR>Dichas instrucciones se dividen a su vez en cuatro unidades 
+lógicas:</FONT></P>
+<UL>
+  <LI><FONT face=Tahoma size=2>Previa</FONT> 
+  <LI><FONT face=Tahoma size=2>Inicial</FONT> 
+  <LI><FONT face=Tahoma size=2>Final</FONT> 
+  <LI><FONT face=Tahoma size=2>Posterior</FONT></LI></UL>
+<P><FONT face=Tahoma size=2>En este mismo capítulo se profundizará sobre cada 
+concepto, junto con el uso de variables y el flujo de ejecución que utiliza el 
+procesador de consultas de <STRONG>Qualitas Reporting</STRONG>. </FONT></P>
+<P><FONT face=Tahoma size=4><STRONG>Parámetros</STRONG></FONT></P>
+<P><FONT face=Tahoma size=2>Los parámetros conforman los filtros que el usuario 
+final podrá aplicar a la consulta inmediatamente antes de ser ejecutada. Juegan 
+un papel fundamental a la hora de constituir la instrucción SQL final que será 
+enviada al motor de bases de datos. En ellos se pueden definir valores fijos, 
+variables y hasta la capacidad de ofrecer al usuario tanto la selección de uno o 
+más items de una lista de valores determinados, como&nbsp;una búsqueda 
+personalizada que, a modo de ejemplo, podría ser una lista de 
+clientes.</FONT></P>
+<P><FONT face=Tahoma size=4><STRONG>Formatos</STRONG></FONT></P>
+<P><FONT face=Tahoma size=2>Los formatos controlan la forma en la que se deben 
+enmascarar las columnas resultantes de la consulta, de acuerdo a su tipo de 
+datos. A modo de ejemplo, se podrá controlar con los formatos si un número 
+decimal será presentado con uno, dos o ningún decimal, si las fechas se 
+mostrarán como dd-mm-aaaa o aaaa/mm/dd.<BR>Con los formatos también se puede 
+indicar que columnas serán visibles o no. Más allá de que esto puede ser 
+controlado con la instrucción SQL, muchas veces puede ser necesario incluir 
+columnas que el usuario no vea en las grillas de resultados, pero sí pueda 
+incluir como parte de un informe.</FONT></P>
+<P><FONT face=Tahoma size=4><STRONG>Resultados</STRONG></FONT></P>
+<P><FONT face=Tahoma size=2>Los resultados deben ser utlizados para nominar los 
+conjuntos de datos que son retornados por la consulta, especialmente cuando son 
+dos o más. Un conjunto de datos es la representación de los mismos en forma de 
+tabla, y como Qualitas Reporting soporta el procesamiento de múltiples conjuntos 
+de datos para una ejecución de consulta, será prudente por parte del diseñador 
+asignarle un nombre a cada uno de ellos para orientar al usuario 
+final.</FONT></P>
+<P>&nbsp;</P></BODY>
+</html>

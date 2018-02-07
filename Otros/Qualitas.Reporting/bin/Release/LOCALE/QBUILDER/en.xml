@@ -1,0 +1,384 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<language id="2">
+  <form id="AddObjectForm" title="Add new object">
+    <control id="label1">Select an object and press the &quot;Add Object&quot; button to add new object to the query</control>
+    <control id="label2">Filter objects by schema name:</control>
+    <control id="buttonAdd">Add Object</control>
+    <control id="buttonCancel">Close</control>
+    <control id="checkAddFK">Create links from foreign keys</control>
+    <control id="pageTables">Tables</control>
+    <control id="pageViews">Views</control>
+    <control id="pageProcedures">Procedures</control>
+  </form>
+  <form id="GeneralPage">
+    <control id="cbWordWrap">Enable word wrap</control>
+    <control id="label12">Maximum characters in line</control>
+  </form>
+  <form id="MetadataTreePage">
+    <control id="cbShowUserTables">Show user tables</control>
+    <control id="cbShowUserViews">Show user views</control>
+    <control id="cbShowUserProcs">Show user procedures</control>
+    <control id="cbShowSystemTables">Show system tables</control>
+    <control id="cbShowSystemViews">Show system views</control>
+    <control id="cbShowSystemProcs">Show system procedures</control>
+    <control id="label11">Group objects by</control>
+  </form>
+  <form id="MiscellaneousPage">
+    <control id="label6">Add Object Form list style</control>
+    <control id="label7">Diagram Links Style</control>
+    <control id=""></control>
+  </form>
+  <form id="OfflineModePage">
+    <control id="cbOfflineMode">Enable Offline Mode</control>
+    <control id="bLoadMetadata">Load metadata to work in Offline mode...</control>
+    <control id="bLoadFromXML">Load from XML...</control>
+    <control id="bSaveToXML">Save to XML...</control>
+    <control id="bEditMetadata">Edit Metadata Container...</control>
+  </form>
+  <form id="PanesVisibilityPage">
+    <control id="cbShowStructurePane">Show Query Structure Pane</control>
+    <control id="cbShowMetadataPane">Show Metadata Pane</control>
+    <control id="cbShowCriteriaPane">Show Criteria Pane</control>
+  </form>
+  <form id="QueryStructureTreePage">
+    <control id="groupLabel3">Special Nodes Visibility</control>
+    <control id="cbShowFieldList">Show field list for each subquery</control>
+    <control id="cbShowDataSources">Show data source object list for each subquery</control>
+    <control id="groupLabel1">Special Nodes Titles</control>
+    <control id="label8">Expressions node title</control>
+    <control id="label9">Data sources node title</control>
+    <control id="label10">Union subqueries node title</control>
+    <control id="groupLabel2">Auto expand nodes</control>
+    <control id="cbExpandFields">Fields</control>
+    <control id="cbExpandDatasources">Data Source Objects</control>
+    <control id="cbExpandSubqueries">Subqueries</control>
+    <control id="cbExpandUnions">Union Subqueries</control>
+  </form>
+  <form id="SqlBuilderPage">
+    <control id="groupLabel3">Common</control>
+    <control id="cbPartsOnNewLines">Start parts on new lines</control>
+    <control id="cbNewLineAfterKeywords">Insert new line after part keyword</control>
+    <control id="label13">Global indent</control>
+    <control id="label14">Part indent</control>
+    <control id="cbNewLineAfterSelectItem">Insert new line after each select list item</control>
+    <control id="cbNewLineAfterDatasource">Insert new line after each datat source item</control>
+    <control id="cbNewLineAfterJoin">Insert new line after each JOIN keyword</control>
+    <control id="cbNewLineWhereTop">Insert new line after topmost logical operators</control>
+    <control id="cbNewLineWhereRest">Insert new line after the rest of logical operators</control>
+    <control id="label15">Nested conditions indent</control>
+    <control id="cbNewLineAfterGroupItem">Insert new line after each group list item</control>
+    <control id="cbNewLineHavingTop">Insert new line after topmost logical operators</control>
+    <control id="cbNewLineHavingRest">Insert new line after the rest of logical operators</control>
+    <control id="label16">Nested conditions indent</control>
+  </form>
+  <form id="SqlSyntaxPage">
+    <control id="label1">SQL Dialect:</control>
+    <control id="label2">Identifiers Case Sensitivity:</control>
+    <control id="label3">Identifier Quotation Symbols:</control>
+    <control id="label4">Start:</control>
+    <control id="label5">End:</control>
+    <control id="cbQuoteAllIdentifiers">Quote All Identifiers</control>
+  </form>
+  <form id="FilterWizardPage">
+    <control id="label1">Metadata Filtration</control>
+    <control id="label2">
+      This step allows you to specify additional filter conditions to exclude some of database objects.
+Press Plus button to add new filter condition.
+    </control>
+    <control id="bClearFilterItems">Clear</control>
+    <control id="label5">Action:</control>
+    <control id="rbFilterInclude">&amp;Include range</control>
+    <control id="rbFilterExclude">&amp;Exclude range</control>
+    <control id="label3">Filter by schema name:</control>
+    <control id="label4">Filter by object name:</control>
+    <control id="label6">Use &quot;_&quot; to represent any single character</control>
+    <control id="label7">Use &quot;%&quot; to represent any series of characters</control>
+    <control id="label8">Apply this filter item to:</control>
+    <control id="cbFilterTables">&amp;Tables</control>
+    <control id="cbFilterViews">&amp;Views</control>
+    <control id="cbFilterProcedures">&amp;Procedures</control>
+    <control id="cbFilterSynonyms">&amp;Synonyms</control>
+    <control id="cbDontLoadSystemObjects">&amp;Do not load system objects</control>
+    <control id="label9">Click Next to continue or Cancel to quit the wizard.</control>
+  </form>
+  <form id="LoadingWizardPage">
+    <control id="label1">Loading Metadata Progress</control>
+    <control id="label2">Please wait while Active Query builder loads the metadata information...</control>
+  </form>
+  <form id="LoadOptsWizardPage">
+    <control id="label1">Databases</control>
+    <control id="lWelcome">Select databases you want to load metadata from:</control>
+    <control id="label3">Click Next to continue or Cancel to quit the wizard.</control>
+  </form>
+  <form id="MetadataOptsWizardPage">
+    <control id="label1">Database Connection Options</control>
+    <control id="lWelcome">This step allows you to setup choosen database connection.</control>
+    <control id="label3">Click Next to continue or Cancel to quit the wizard.</control>
+    <control id="bConnectionTest">Test Connection</control>
+  </form>
+  <form id="MetadataWizardPage">
+    <control id="label1">Database Connection Type</control>
+    <control id="lWelcome">This step allows you to select the way you want to connect to your database server.</control>
+    <control id="label2">Select connection type:</control>
+    <control id="label4">
+      Note: If you can not find your connectivity package in this list, please set right metatdata and syntax providers for the QueryBuilder component, then setup and open database connecion using your database access component in design-time.
+After that you may run this wizard again.
+    </control>
+    <control id="label3">Click Next to continue or Cancel to quit the wizard.</control>
+  </form>
+  <form id="SyntaxWizardPage">
+    <control id="lSyntax">Syntax Provider</control>
+    <control id="lWelcome">This step allows you to specify database server from which you want to load metadata.</control>
+    <control id="label1">Select SQL Syntax Provider:</control>
+    <control id="label2">Click Next to continue or Cancel to quit the wizard.</control>
+  </form>
+  <form id="WelcomeWizardPage">
+    <control id="label1">Welcome to the Active Query Builder Load Metadata Wizard</control>
+    <control id="lWelcome">This wizard will guide you through the metadata loading process.</control>
+    <control id="label2">Please check the &quot;Clear Metadata Container before loading&quot; checkbox if you do not want to save previous content of Metadata Container.</control>
+    <control id="cbClearBeforeLoading">Clear Metadata Container before loading</control>
+    <control id="label3">Click Next to continue or Cancel to quit the wizard.</control>
+  </form>
+  <form id="DataSourcePropertiesForm" title="Datasource Properties">
+    <control id="lObject">Object:</control>
+    <control id="lAlias">Alias:</control>
+    <control id="bOk">OK</control>
+    <control id="bCancel">Cancel</control>
+  </form>
+  <form id="LinkPropertiesForm" title="Link Properties">
+    <control id="label1">Left Object</control>
+    <control id="label2">Right Object</control>
+    <control id="cbAllFromLeft">Select All From Left</control>
+    <control id="cbAllFromRight">Select All From Right</control>
+    <control id="label4">Left Column</control>
+    <control id="label3">Right Column</control>
+    <control id="label5">Join Expression</control>
+    <control id="bOk">OK</control>
+    <control id="bCancel">Cancel</control>
+  </form>
+  <form id="MetadataContainerEditorForm" title="Metadata Container Editor">
+    <control id="label1">Metadata Container:</control>
+    <control id="bLoad">Load...</control>
+    <control id="lMetadataProps">Metadata Item Properties:</control>
+    <control id="lObjectType">Object Type:</control>
+    <control id="gObjectName">Object Name</control>
+    <control id="lObjectDatabase">Database:</control>
+    <control id="lObjectSchema">Schema:</control>
+    <control id="lObjectName">Name:</control>
+    <control id="lDescription">Description:</control>
+    <control id="lLongDescription">Long Description:</control>
+    <control id="bLoadFromXML">Load Metadata from XML file...</control>
+    <control id="bSaveToXML">Save Metadata to XML file...</control>
+    <control id="lAltName">Alternative Name:</control>
+    <control id="checkSystem">System</control>
+    <control id="checkVisible">Visible</control>
+    <control id="lFieldName">Field Name:</control>
+    <control id="lFieldType">Field Type:</control>
+    <control id="lFieldAltName">Alternative Name:</control>
+    <control id="lFieldDescription">Description:</control>
+    <control id="lFieldLongDescription">Long Description:</control>
+    <control id="bOk">OK</control>
+    <control id="bCancel">Cancel</control>
+  </form>
+  <form id="MetadataContainerLoadForm" title="Load Metadata Wizard">
+    <control id="bBack">&lt; &amp;Back</control>
+    <control id="bNext">&amp;Next &gt;</control>
+    <control id="bCancel">&amp;Cancel</control>
+    <control id=""></control>
+  </form>
+  <form id="ProcParamsForm" title="Procedure Parameters">
+    <control id="label1">Edit parameters for selected procedure:</control>
+    <control id="bOk">OK</control>
+    <control id="bCancel">Cancel</control>
+  </form>
+  <form id="QueryBuilderPropertiesForm" title="Active Query Builder Properties">
+    <control id="label1">Active Query Builder Properties</control>
+    <control id="lNonVisual">Non-visual Options</control>
+    <control id="lSqlSyntax">SQL Syntax</control>
+    <control id="lOfflineMode">Offline Mode</control>
+    <control id="lVisual">Visual Options</control>
+    <control id="lPanesVisibility">Panes Visibility</control>
+    <control id="lQueryStructureTree">Query Structure Tree</control>
+    <control id="lMetadataTree">Metadata Tree</control>
+    <control id="lMiscellaneous">Miscellaneous</control>
+    <control id="lSqlBuilder">SQL Builder Options</control>
+    <control id="lGeneral">General</control>
+    <control id="lMainQuery">Main Query</control>
+    <control id="lDerivedQueries">Derived Queries</control>
+    <control id="lExpressionSubqueries">Expression Subqeries</control>
+    <control id="bOk">OK</control>
+    <control id="bCancel">Cancel</control>
+    <control id="bApply">Apply</control>
+  </form>
+  <form id="QueryPropertiesAccessForm" title="Query Properties">
+    <control id="rbNone">Default</control>
+    <control id="bOk">OK</control>
+    <control id="bCancel">Cancel</control>
+  </form>
+  <form id="QueryPropertiesMSSQLForm" title="Query Properties">
+    <control id="bOk">OK</control>
+    <control id="bCancel">Cancel</control>
+  </form>
+  <form id="QueryPropertiesMySQLForm" title="Query Properties">
+    <control id="pageOptions">General</control>
+    <control id="pageSelectInto">INTO Clause</control>
+    <control id="cbCacheOp">Cache Option:</control>
+    <control id="bOk">OK</control>
+    <control id="bCancel">Cancel</control>
+  </form>
+  <form id="QueryPropertiesVistaDBForm" title="Query Properties">
+    <control id="rbNone">Default</control>
+    <control id="bOk">OK</control>
+    <control id="bCancel">Cancel</control>
+  </form>
+  <form id="MSSQLConnectionEditForm">
+    <control id="label1">Server Name:</control>
+    <control id="label2">Authentication:</control>
+    <control id="label3">Login:</control>
+    <control id="label4">Password:</control>
+  </form>
+  <form id="MySQLConnectionEditForm">
+    <control id="label3">Server:</control>
+    <control id="label1">Database:</control>
+    <control id="label4">User:</control>
+    <control id="label2">Password:</control>
+  </form>
+  <form id="ODBCConnectionEditForm">
+    <control id="label1">Connection String:</control>
+  </form>
+  <form id="OLEDBConnectionEditForm">
+    <control id="label1">Connection String:</control>
+  </form>
+  <form id="OracleConnectionEditForm">
+    <control id="label1">Server Name:</control>
+    <control id="label2">Authentication:</control>
+    <control id="label3">Login:</control>
+    <control id="label4">Password:</control>
+  </form>
+  <form id="OracleNativeConnectionEditForm">
+    <control id="label1">Server Name:</control>
+    <control id="label3">Login:</control>
+    <control id="label4">Password:</control>
+  </form>
+  <form id="VistaDBConnectionEditForm">
+    <control id="label1">Database:</control>
+    <control id="label2">Password:</control>
+  </form>
+  <form id="DB2ConnectionEditForm">
+    <control id="label3">Server:</control>
+    <control id="label1">Database:</control>
+    <control id="label4">User:</control>
+    <control id="label2">Password:</control>
+  </form>
+  <form id="QueryPropertiesFBForm" title="Query Properties">
+    <control id="rbNone">Default</control>
+    <control id="bOk">OK</control>
+    <control id="bCancel">Cancel</control>
+  </form>
+  <form id="FirebirdConnectionEditForm">
+    <control id="label3">Server:</control>
+    <control id="label1">Database:</control>
+    <control id="label4">User:</control>
+    <control id="label2">Password:</control>
+  </form>
+  <form id="SybaseConnectionEditForm">
+    <control id="label3">Server Name:</control>
+    <control id="label5">Data Source Name:</control>
+    <control id="label1">Database File:</control>
+    <control id="label4">User:</control>
+    <control id="label2">Password:</control>
+  </form>
+  <form id="PostgreSQLConnectionEditForm">
+    <control id="label1">Server:</control>
+    <control id="label2">Port:</control>
+    <control id="label3">Login:</control>
+    <control id="label4">Password:</control>
+  </form>
+  <string id="strAllObjects">(All objects)</string>
+  <string id="strUnexpectedTokenAt">Unexpected token &quot;{0}&quot; at line {1}, pos {2}.</string>
+  <string id="strUnknownObjectName">Unknown object name: &quot;{0}&quot;.</string>
+  <string id="strBadSelectStatement">Invalid SELECT statement.</string>
+  <string id="strBadFromObjectExpression">Invalid FROM object expression</string>
+  <string id="strBadObjectName">Invalid object name</string>
+  <string id="strDialectDontSupportDatabases">The server does not support queries with objects from different databases.</string>
+  <string id="strDialectDontSupportSchemas">The server does not support schemas.</string>
+  <string id="strNoMetadataProvider">No metadata provider.</string>
+  <string id="strNoSyntaxProvider">No syntax provider.</string>
+  <string id="strErrorBadXMLTagNotFound">Bad XML file: tag {0} not found.</string>
+  <string id="strErrorBadXML">Error parsing XML: {0}</string>
+  <string id="strMetadataProviderCantExecSQL">Used metadata provider cannot execute SQL queries.</string>
+  <string id="strErrorExecQuery">{1}
+
+Query:
+{0}</string>
+  <string id="strMetaProviderCantLoadMetadataForDatabase">Used metadata provider cannot automatically load metadata for database: {0}</string>
+  <string id="strMetaProviderCantLoadMetadata">Used metadata provider cannot automatically load metadata</string>
+  <string id="strCriteriaOutput">Output</string>
+  <string id="strCriteriaExpression">Expression</string>
+  <string id="strCriteriaAggregate">Aggregate</string>
+  <string id="strCriteriaAlias">Alias</string>
+  <string id="strCriteriaSortType">Sort Type</string>
+  <string id="strCriteriaSortOrder">Sort Order</string>
+  <string id="strCriteriaGrouping">Grouping</string>
+  <string id="strCriteriaGroupBy">Group By</string>
+  <string id="strCriteriaCriteriaType">Criteria for</string>
+  <string id="strCriteriaCriteria">Criteria</string>
+  <string id="strCriteriaOr">Or...</string>
+  <string id="strSortTypeAscending">Ascending</string>
+  <string id="strSortTypeDescending">Descending</string>
+  <string id="strRemove">Remove</string>
+  <string id="strEdit">Edit...</string>
+  <string id="strMainQuery">Main</string>
+  <string id="strAbout">About Active QueryBuilder...</string>
+  <string id="strDialectDontSupportUnions">This server does not support unions.</string>
+  <string id="strDialectDontSupportUnionsInSubQueries">This server does not support unions in subqueries.</string>
+  <string id="strDialectDontSupportUnionsBrackets">This server does not support brackets in unions.</string>
+  <string id="strDialectDontSupportUnionsBracketsInSubQuery">This server does not support brackets in unions in subqueries.</string>
+  <string id="strMoveBackward">Move backward</string>
+  <string id="strMoveForward">Move forward</string>
+  <string id="strRemoveBrackets">Remove brackets</string>
+  <string id="strNewUnionSubQuery">New union sub-query</string>
+  <string id="strEncloseWithBrackets">Enclose with brackets</string>
+  <string id="strAddObject">Add object...</string>
+  <string id="strAddSubQuery">Add derived table</string>
+  <string id="strUnionSubMenu">Union</string>
+  <string id="strStrAftofitHeight">Autofit object height</string>
+  <string id="strMoveUp">Move up</string>
+  <string id="strMoveDown">Move down</string>
+  <string id="strRemoveItem">Remove item</string>
+  <string id="strInsertEmtyItem">Insert empty item</string>
+  <string id="strSwitchToDerivedTable">Switch to derived table</string>
+  <string id="strNoConnectionObject">No connection object (property {0} not assigned).</string>
+  <string id="strMetadataTreeCurrentDatabase">(current database)</string>
+  <string id="strFields">Fields</string>
+  <string id="strRelations">Relations</string>
+  <string id="strClearMetadataContainer">Clear Metadata Container?</string>
+  <string id="strConfirmation">Confirmation</string>
+  <string id="strObjectTypeTable">Table</string>
+  <string id="strObjectTypeView">View</string>
+  <string id="strObjectTypeProcedure">Procedure</string>
+  <string id="strObjectTypeUnknown">Unknown</string>
+  <string id="strNoProperties">No properties for this node</string>
+  <string id="strMetadataContainer">Metadata Container</string>
+  <string id="strNext">&amp;Next &gt;</string>
+  <string id="strLoad">Load</string>
+  <string id="strClose">Close</string>
+  <string id="strSelectSyntaxProvider">Please select Syntax Provider to proceed.</string>
+  <string id="strMetadataObjectCount">Loaded Metadata: {0} tables, {1} views, {2} procedures.</string>
+  <string id="strInsertSubQuery">Insert sub-query</string>  
+  <string id="strEditSubMenu">Edit</string>
+  <string id="strUndo">Undo</string>
+  <string id="strCut">Cut</string>
+  <string id="strCopy">Copy</string>
+  <string id="strPaste">Paste</string>
+  <string id="strDelete">Delete</string>
+  <string id="strSelectAll">Select All</string>
+  <string id="strTables">Tables</string>
+  <string id="strViews">Views</string>
+  <string id="strProcedures">Procedures</string>
+  <string id="strSynonyms">Synonyms</string>
+  <string id="strBadFieldName">Invalid field name: &quot;{0}&quot;</string>
+  <string id="strCaseInsesitive">All identifiers are case insensitive</string>
+  <string id="strCaseSensitiveUppercase">Quoted are sensitive, Unquoted are converted to uppercase</string>
+  <string id="strCaseSensitiveLowercase">Quoted are sensitive, Unquoted are converted to lowercase</string>
+</language>

@@ -1,0 +1,12 @@
+D:\Develop\Proyectos.NET\Combo en grilla\WindowsApplication1\WindowsApplication1\bin\Debug\WindowsApplication1.exe.config
+D:\Develop\Proyectos.NET\Combo en grilla\WindowsApplication1\WindowsApplication1\obj\Debug\WindowsApplication1.exe
+D:\Develop\Proyectos.NET\Combo en grilla\WindowsApplication1\WindowsApplication1\obj\Debug\WindowsApplication1.xml
+D:\Develop\Proyectos.NET\Combo en grilla\WindowsApplication1\WindowsApplication1\obj\Debug\WindowsApplication1.pdb
+D:\Develop\Proyectos.NET\Combo en grilla\WindowsApplication1\WindowsApplication1\bin\Debug\WindowsApplication1.exe
+D:\Develop\Proyectos.NET\Combo en grilla\WindowsApplication1\WindowsApplication1\bin\Debug\WindowsApplication1.pdb
+D:\Develop\Proyectos.NET\Combo en grilla\WindowsApplication1\WindowsApplication1\bin\Debug\WindowsApplication1.xml
+D:\Develop\Proyectos.NET\Combo en grilla\WindowsApplication1\WindowsApplication1\obj\Debug\ResolveAssemblyReference.cache
+D:\Develop\Proyectos.NET\Combo en grilla\WindowsApplication1\WindowsApplication1\obj\Debug\WindowsApplication1.Form1.resources
+D:\Develop\Proyectos.NET\Combo en grilla\WindowsApplication1\WindowsApplication1\obj\Debug\WindowsApplication1.Resources.resources
+D:\Develop\Proyectos.NET\Combo en grilla\WindowsApplication1\WindowsApplication1\obj\Debug\WindowsApplication1.vbproj.GenerateResource.Cache
+D:\Develop\Proyectos.NET\Combo en grilla\WindowsApplication1\WindowsApplication1\obj\Debug\WindowsApplication1.exe.licenses

@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BCD91492-EC7B-41CC-BD7C-35BA16D39FFE}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>VBP04296.My.MyApplication</StartupObject>
+    <RootNamespace>VBP04296</RootNamespace>
+    <AssemblyName>VBP04296</AssemblyName>
+    <MyType>WindowsForms</MyType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>VBP04296.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>VBP04296.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ActiproSoftware.Shared.Net20, Version=1.0.101.0, Culture=neutral, PublicKeyToken=36ff2196ab5654b9, processorArchitecture=MSIL" />
+    <Reference Include="ActiproSoftware.SyntaxEditor.Addons.DotNet.Net20, Version=4.0.281.0, Culture=neutral, PublicKeyToken=21a821480e210563, processorArchitecture=MSIL" />
+    <Reference Include="ActiproSoftware.SyntaxEditor.Addons.Web.Net20, Version=4.0.281.0, Culture=neutral, PublicKeyToken=21a821480e210563, processorArchitecture=MSIL" />
+    <Reference Include="ActiproSoftware.SyntaxEditor.Net20, Version=4.0.281.0, Culture=neutral, PublicKeyToken=21a821480e210563, processorArchitecture=MSIL" />
+    <Reference Include="ActiproSoftware.WinUICore.Net20, Version=1.0.101.0, Culture=neutral, PublicKeyToken=1eba893a2bc55de5, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraBars.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraEditors.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraLayout.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraNavBar.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraPrinting.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraReports.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraRichTextEdit.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraVerticalGrid.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="dsConfig.designer.vb">
+      <DependentUpon>dsConfig.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="dsConfig.vb">
+      <DependentUpon>dsConfig.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="frmError.Designer.vb">
+      <DependentUpon>frmError.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmError.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.Designer.vb">
+      <DependentUpon>frmMain.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="modDeclaraciones.vb" />
+    <Compile Include="modFunciones.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="frmError.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmError.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMain.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close_24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\apps.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\apps32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder-open_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder-open_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save as16x16 8-bit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save as32x32 8-bit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save16x16 8-bit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\save32x32 8-bit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Plus.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Minus.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Properties.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Outline-Move Up.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Outline-Move Down.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Outline-Collapse.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Outline-Expand.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Design.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Save.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Save As.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Save1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Save As1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Open.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\New.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Open1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\New1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Edit.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Edit1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fondo degrade prex.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dialog.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dialog1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dsConfig.xsc">
+      <DependentUpon>dsConfig.xsd</DependentUpon>
+    </None>
+    <None Include="dsConfig.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>dsConfig.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="dsConfig.xss">
+      <DependentUpon>dsConfig.xsd</DependentUpon>
+    </None>
+    <None Include="Resources\dialog2.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

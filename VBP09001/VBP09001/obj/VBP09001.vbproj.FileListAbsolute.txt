@@ -1,0 +1,108 @@
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\ResolveAssemblyReference.cache
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.frmError.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.frmExportar.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.frmInputGeneral.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.frmProcesando.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.frmTablaGeneral.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.frmErrores.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.Resources.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.frmMain.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.PrintRibbonControllerResources.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.vbproj.GenerateResource.Cache
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.exe.licenses
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\bin\Debug\VBP09001.exe
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\bin\Debug\VBP09001.pdb
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\bin\Debug\VBP09001.xml
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\bin\Debug\System.Printing.dll
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\bin\Debug\PresentationCore.dll
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.exe
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.xml
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.pdb
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.frmProceso.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\Interop.CodeMax.dll
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\AxInterop.CodeMax.dll
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Debug\VBP09001.vbproj.ResolveComReference.cache
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\bin\Debug\Interop.CodeMax.dll
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\bin\Debug\AxInterop.CodeMax.dll
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\bin\Release\VBP09001.exe
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\bin\Release\VBP09001.pdb
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\bin\Release\VBP09001.xml
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\bin\Release\System.Printing.dll
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\bin\Release\PresentationCore.dll
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\bin\Release\Interop.CodeMax.dll
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\bin\Release\AxInterop.CodeMax.dll
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\ResolveAssemblyReference.cache
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\Interop.CodeMax.dll
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\AxInterop.CodeMax.dll
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.vbproj.ResolveComReference.cache
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.frmError.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.frmExportar.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.frmInputGeneral.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.frmProcesando.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.frmTablaGeneral.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.frmMain.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.frmErrores.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.frmProceso.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.Resources.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.PrintRibbonControllerResources.resources
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.vbproj.GenerateResource.Cache
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.exe.licenses
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.exe
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.xml
+D:\Develop\Proyectos.NET\VBP09001\VBP09001\obj\Release\VBP09001.pdb
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.exe
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.xml
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.pdb
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\ResolveAssemblyReference.cache
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\Interop.CodeMax.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\AxInterop.CodeMax.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.vbproj.ResolveComReference.cache
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.frmError.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.frmExportar.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.frmInputGeneral.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.frmProcesando.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.frmTablaGeneral.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.frmMain.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.frmErrores.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.frmProceso.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.Resources.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.PrintRibbonControllerResources.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.vbproj.GenerateResource.Cache
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.exe.licenses
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.exe
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.xml
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Debug\VBP09001.pdb
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Debug\VBP09001.exe
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Debug\VBP09001.pdb
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Debug\VBP09001.xml
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Debug\System.Printing.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Debug\PresentationCore.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Debug\es\System.Printing.resources.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Debug\es\PresentationCore.resources.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Debug\Interop.CodeMax.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Debug\AxInterop.CodeMax.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Release\VBP09001.exe
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Release\VBP09001.pdb
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Release\VBP09001.xml
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Release\System.Printing.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Release\PresentationCore.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Release\es\System.Printing.resources.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Release\es\PresentationCore.resources.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Release\Interop.CodeMax.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\bin\Release\AxInterop.CodeMax.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\ResolveAssemblyReference.cache
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\Interop.CodeMax.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\AxInterop.CodeMax.dll
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.vbproj.ResolveComReference.cache
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.frmError.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.frmExportar.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.frmInputGeneral.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.frmProcesando.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.frmTablaGeneral.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.frmMain.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.frmErrores.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.frmProceso.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.Resources.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.PrintRibbonControllerResources.resources
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.vbproj.GenerateResource.Cache
+V:\Develop\PREX_RI (Versión NET)\VBP09001\VBP09001\obj\Release\VBP09001.exe.licenses

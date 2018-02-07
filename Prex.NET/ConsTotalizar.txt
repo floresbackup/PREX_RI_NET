@@ -1,0 +1,106 @@
+
+Public Function ConsTotalizar(ByVal sCuadro As String, ByVal dFecha As Date, _
+                              ByVal dFechaVig As Date, ByVal sConsolidacion As String, _
+                              ByVal nEmpresa As Long, ByVal nCol As Long, _
+                              ByVal nDesdeMes As Integer, ByVal sTabla As String, _
+                              ByVal sIndice As String) As Long
+
+   Dim sSQL        As String
+   Dim RS          As Recordset
+   
+   Dim nMax        As Long
+   Dim nCont       As Long
+   Dim nCont1      As Long
+   
+   sConsolidacion = Format(Val(sConsolidacion), "000")
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   sSQL = "SELECT      MAX(" & sIndice & "_NIVEL) AS MAXNIVEL " & _
+          "FROM        " & sTabla & " " & _
+          "WHERE       " & sIndice & "_FECVIG=" & FechaSQL(dFecha) & " " & _
+          "AND         " & sIndice & "_CODENT = " & nEmpresa & " " & _
+          "AND         " & sIndice & "_CUADRO = " & sCuadro
+          
+   Set RS = oAdmLocal.AbrirRecordset(sSQL, False)
+
+   If IsNull(RS!MAXNIVEL) Then
+       nMax = 0
+   Else
+       nMax = RS!MAXNIVEL
+   End If
+
+   Set RS = Nothing
+   
+   For nCont = 1 To nMax
+   
+       If oAdmLocal.ExisteTabla("SUMTEMP") Then
+           Call oAdmLocal.EjecutarComandoSQL("DROP TABLE SUMTEMP", True)
+       End If
+       
+       DoEvents
+       sSQL = "SELECT " & sTabla & "." & sIndice & "_NIVEL, " & sTabla & "." & sIndice & "_ESQUEMA, " & _
+              "       " & sTabla & "." & sIndice & "_CODENT, " & sTabla & "." & sIndice & "_FECVIG, "
+              
+       For nCont1 = 0 To nCol - 1
+       
+           sSQL = sSQL & "Sum(" & sTabla & "." & sIndice & "_MES" & nDesdeMes + nCont1 & ") AS Tot_MES" & nDesdeMes + nCont1 & ", "
+   
+       Next nCont1
+       
+       sSQL = Left(sSQL, Len(sSQL) - 2)
+              
+       sSQL = sSQL & " " & _
+              "INTO   SUMTEMP " & _
+              "FROM   " & sTabla & " " & _
+              "WHERE  " & sTabla & "." & sIndice & "_CODENT = " & nEmpresa & " " & _
+              "AND    " & sTabla & "." & sIndice & "_ACTIVA = 1 " & _
+              "AND    " & sTabla & "." & sIndice & "_FECVIG = " & FechaSQL(dFecha) & " " & _
+              "AND    " & sTabla & "." & sIndice & "_CUADRO = " & sCuadro & " " & _
+              "AND    " & sTabla & "." & sIndice & "_CODCON = '" & sConsolidacion & "' " & _
+
+              "GROUP BY " & sTabla & "." & sIndice & "_NIVEL, " & sTabla & "." & sIndice & "_ESQUEMA, " & _
+              "         " & sTabla & "." & sIndice & "_CODENT, " & sTabla & "." & sIndice & "_FECVIG " & _
+              "HAVING (((" & sTabla & "." & sIndice & "_NIVEL)=" & (nMax - (nCont - 1)) & "));"
+   
+       Call oAdmLocal.EjecutarComandoSQL(sSQL)
+           
+       sSQL = "UPDATE        " & sTabla & " " & _
+              "INNER JOIN    SUMTEMP " & _
+              "ON            (" & sTabla & "." & sIndice & "_INDEX = SUMTEMP." & sIndice & "_ESQUEMA) " & _
+              "AND           (" & sTabla & "." & sIndice & "_CODENT = SUMTEMP." & sIndice & "_CODENT) " & _
+              "AND           (" & sTabla & "." & sIndice & "_FECVIG = SUMTEMP." & sIndice & "_FECVIG) SET "
+   
+       For nCont1 = 0 To nCol - 1
+       
+           sSQL = sSQL & "" & sTabla & "." & sIndice & "_MES" & nDesdeMes + nCont1 & " = SUMTEMP.TOT_MES" & nDesdeMes + nCont1 & ", "
+   
+       Next nCont1
+       
+       sSQL = Left(sSQL, Len(sSQL) - 2)
+              
+       sSQL = sSQL & " " & _
+              "WHERE         " & sTabla & "." & sIndice & "_CODENT = " & nEmpresa & " " & _
+              "AND           " & sTabla & "." & sIndice & "_FECVIG = " & FechaSQL(dFecha) & " " & _
+              "AND           " & sTabla & "." & sIndice & "_CUADRO = " & sCuadro & " " & _
+              "AND           " & sTabla & "." & sIndice & "_INDEX > 1 " & _
+              "AND           " & sTabla & "." & sIndice & "_CODCON = '" & sConsolidacion & "' "
+       
+
+       ' Filtro por DC_index agregado para que no cometa el error de actualizar partidas de mas
+   
+       Call oAdmLocal.EjecutarComandoSQL(sSQL)
+   
+   Next nCont
+   
+   ConsTotalizar = nMax
+
+End Function

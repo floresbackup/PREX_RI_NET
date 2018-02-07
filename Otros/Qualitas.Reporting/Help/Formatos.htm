@@ -1,0 +1,809 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Formatos</title>
+<meta name="GENERATOR" content="WinCHM">
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
+
+</head>
+
+<BODY>
+<P><FONT face=Arial size=2><IMG alt="" src="IMAGES/DisenoFormatos.png"></FONT></P>
+<P><FONT face=Tahoma size=2>Los formatos constituyen características de las 
+columnas que son devueltas en una consulta. Dichas características son el 
+formato o máscara que recibirán los datos contenidos en una columna, el título 
+que se mostrará en las grillas y tablas dinámicas. Asimismo, se podrá 
+controlar&nbsp;la visibilidad (visible u oculta) de una columna en las vistas de 
+grilla.</FONT></P>
+<P><FONT face=Tahoma size=2>Para agregar un item de formato, seleccione la ficha 
+Formatos y haga clic en el botón Agregar&nbsp;habilitado en&nbsp;la barra de 
+herramientas del diseño.</FONT></P>
+<P><IMG alt="" src="IMAGES/Formato.png"></P>
+<P><FONT face=Tahoma size=2>Para ingresar un formato, deberá completar la 
+siguiente información:</FONT></P>
+<UL>
+  <LI><FONT face=Tahoma size=2><STRONG>Visible en grillas</STRONG>: opción que 
+  indicará si la columa debe ser mostrada o no en las grillas de resultados y 
+  tablas dinámicas. Aquellas columnas devueltas que no tengan un formato 
+  explicitado, serán visibles.</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Nombre de la columna</STRONG>: indica el 
+  nombre del campo retornado por la instrucción SQL ejecutada. Si la instrucción 
+  no devuelve ningún campo con el nombre que aquí se indique, el formato será 
+  ignorado.</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Título:</STRONG> especifica el título que 
+  recibirá la columna en tiempo de ejecución y que, por lo tanto, verá el 
+  usuario final. De no indicarse ningún título, la columna adptará como título 
+  el nombre que reciba del motor de base de datos.</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Formato:</STRONG> es la máscara con la 
+  cual se dará formato al contenido de la columna. Esta máscara debe ir de la 
+  mano con el tipo de datos seleccionado en la lista desplegable debajo. Los 
+  posibles formatos a utilizar son:</FONT></LI></UL>
+<P><FONT face=Tahoma size=4><STRONG>Para tipo de datos 
+Numérico</STRONG></FONT></P><FONT size=2>
+<P dir=ltr style="MARGIN-RIGHT: 0px">
+<TABLE style="WIDTH: 700px" cellSpacing=2 cellPadding=5 width=700 border=1>
+  <TBODY>
+  <TR>
+    <TH bgColor=#808080><FONT face=Tahoma size=2>Nombre de formato </FONT></TH>
+    <TH bgcolor="#808080"><FONT face=Tahoma size=2>Descripción </FONT></TH></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>General Number</B>, <B>G</B> o 
+      <B>g</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el número sin separadores de 
+      miles.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>Currency</B>, <B>C</B> o 
+      <B>c</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el número con separadores de miles, en 
+      su caso; también muestra dos dígitos a la derecha del separador de 
+      decimales. El formato de salida dependerá de la configuración 
+      regional.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>Fixed</B>, <B>F</B> o 
+      <B>f</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra al menos un dígito a la izquierda y 
+      dos a la derecha del separador de decimales.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>Standard</B>, <B>N</B> o 
+      <B>n</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el número con separador de miles, al 
+      menos un dígito a la izquierda y dos a la derecha del separador de 
+      decimales.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>Percent</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el número multiplicado por 100 con un 
+      signo de porcentaje (%) a la derecha; siempre muestra dos dígitos a la 
+      derecha del separador de decimales. </FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>P</B>o bien 
+    <B>p</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el número con separador de miles 
+      multiplicado por 100 con un signo de porcentaje (%) a la derecha y 
+      separado por un solo espacio; siempre muestra dos dígitos a la derecha del 
+      separador de decimales. </FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>Scientific</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Utiliza notación científica estándar y 
+      proporciona dos dígitos significativos.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>E</B>o bien 
+    <B>e</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Utiliza notación científica estándar y 
+      proporciona seis dígitos significativos.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>D</B>o bien 
+    <B>d</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el número como una cadena que contiene 
+      el valor del número en formato Decimal (base 10). Esta opción sólo se 
+      admite para tipos integrales (<B>Byte</B>, <B>Short</B>, <B>Integer</B>, 
+      <B>Long</B>).</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>X</B>o bien 
+    <B>x</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el número como una cadena que contiene 
+      el valor del número en formato Hexadecimal (base 16). Esta opción sólo se 
+      admite para tipos integrales (<B>Byte</B>, <B>Short</B>, <B>Integer</B>, 
+      <B>Long</B>).</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT size=2><FONT face=Tahoma><B>Yes/No</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra <CODE>No</CODE> si el número es 0; de 
+      lo contrario, muestra <CODE>Yes</CODE>.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT size=2><FONT face=Tahoma><B>True/False</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra <CODE>False</CODE> si el número es 0; 
+      de lo contrario, muestra <FONT 
+      face=Tahoma><CODE>True</CODE>.</FONT></FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT size=2><FONT face=Tahoma><B>On/Off</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra <CODE>Off</CODE> si el número es 0; de 
+      lo contrario, muestra <FONT 
+    face=Tahoma><CODE>On</CODE>.</FONT></FONT></P></TD></TR></TBODY></TABLE></P>
+<P style="MARGIN-RIGHT: 0px"><FONT face=Tahoma><FONT size=4><STRONG>Para tipo de 
+datos Fecha/Hora</STRONG></FONT><BR><BR></P></FONT>
+<P style="MARGIN-RIGHT: 0px">
+<TABLE style="WIDTH: 700px" cellSpacing=2 cellPadding=5 width=700 border=1>
+  <TBODY>
+  <TR>
+    <TH bgcolor="#808080"><FONT face=Tahoma size=2>Nombre de formato </FONT></TH>
+    <TH bgcolor="#808080"><FONT face=Tahoma size=2>Descripción </FONT></TH></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>General Date</B>o bien 
+      <B>G</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra una fecha o una hora. Por ejemplo, 
+      <CODE>4/3/93 05:34 PM</CODE>. El formato de fecha depende del valor 
+      <B>LocaleID</B> del sistema.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>Long Date</B>, <B>Medium Date</B> o 
+      <B>D</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra una fecha de acuerdo con el formato de 
+      fecha larga vigente en su sistema.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>Short Date</B>o bien 
+      <B>d</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra una fecha de acuerdo con el formato de 
+      fecha corta vigente en su sistema.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>Long Time</B>, <B>Medium Time</B> o 
+      <B>T</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra una hora de acuerdo con el formato de 
+      hora larga vigente en su sistema; e incluye normalmente horas, minutos y 
+      segundos.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>Short Time</B>o bien 
+      <B>t</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra una hora de acuerdo con el formato de 
+      hora corta vigente en su sistema.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>f</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra la fecha larga y la hora corta de 
+      acuerdo con el formato vigente en su sistema.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>F</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra la fecha larga y la hora larga de 
+      acuerdo con el formato vigente en su sistema.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>g</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra la fecha corta y la hora corta de 
+      acuerdo con el formato vigente en su sistema.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>M</B>, <B>m</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el mes y el día de una fecha 
+      dada.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>R</B>, <B>r</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Da formato a la fecha y la hora como Hora 
+      media de Greenwich (GMT).</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>s</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Da formato a la fecha y la hora como un índice 
+      ordenable.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>u</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Da formato a la fecha y la hora como un índice 
+      GMT ordenable.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>U</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Da formato como GMT a la fecha larga y la hora 
+      larga.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>Y</B>, <B>y</B></FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Da formato a la fecha especificando el año y 
+      el mes.</FONT></P></TD></TR></TBODY></TABLE></P>
+<P style="MARGIN-RIGHT: 0px"><FONT face=Tahoma><STRONG><FONT size=4>Formatos 
+numéricos definidos por el usuario</FONT></STRONG></P></FONT>
+<P style="MARGIN-RIGHT: 0px">
+<TABLE style="WIDTH: 700px" cellSpacing=2 cellPadding=5 width=700 border=1>
+  <TBODY>
+  <TR>
+    <TH bgcolor="#808080"><FONT face=Tahoma size=2>Carácter </FONT></TH>
+    <TH bgcolor="#808080"><FONT face=Tahoma size=2>Descripción </FONT></TH></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma size=2>Ninguna</FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el número sin formato 
+      alguno.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma size=2>(<B>0</B>)</FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Marcador de posición de dígito. Muestra un 
+      dígito o un cero. Si la expresión tiene un dígito en la posición donde 
+      aparece el cero en la cadena de formato, éste se mostrará así; de lo 
+      contrario, aparecerá un cero en esa posición.</FONT></P>
+      <P><FONT face=Tahoma size=2>Si el número tiene menos dígitos que ceros (a 
+      cualquier lado del separador decimal) en la expresión de formato, se 
+      mostrarán ceros iniciales o finales. Si el número tiene más dígitos a la 
+      derecha del separador decimal que ceros en la expresión de formato, se 
+      redondeará el número a tantos decimales como ceros haya. Si el número 
+      tiene más dígitos a la derecha del separador decimal que ceros en la 
+      expresión de formato, se redondeará el número a tantos decimales como 
+      ceros haya.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma size=2>(<B>#</B>)</FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Marcador de posición de dígito. Muestra un 
+      dígito o nada. Si la expresión tiene un dígito en la posición donde 
+      aparece el carácter <B>#</B> en la cadena de formato, se muestra; de lo 
+      contrario, no aparece nada en esa posición.</FONT></P>
+      <P><FONT face=Tahoma size=2>Este símbolo funciona como el marcador de 
+      posición de dígito <B>0</B>, salvo que los ceros iniciales y finales no se 
+      mostrarán si el número contiene menos dígitos que caracteres <B>#</B> a 
+      cualquiera de los lados del separador decimal en la expresión de formato. 
+      </FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma size=2>(<B>.</B>)</FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Marcador de posición decimal. El marcador de 
+      posición decimal determina cuántos dígitos se mostrarán a la izquierda y 
+      derecha del separador decimal. Si la expresión de formato sólo contiene 
+      caracteres <B>#</B> a la izquierda de este símbolo, los números inferiores 
+      a 1 empezarán con un separador decimal. Par mostrar un cero inicial con 
+      números fraccionarios, use el cero como el primer marcador de posición 
+      digital a la izquierda del separador decimal. El uso del punto o la coma 
+      como separador decimal depende de la configuración regional en cada caso. 
+      El mismo carácter utilizado como marcador decimal en virtud del formato de 
+      salida dependerá del formato de número reconocido por su sistema. Por 
+      tanto, deberá usar el punto como marcador decimal en sus formatos, incluso 
+      aunque su configuración regional utilice la coma como separador decimal. 
+      La cadena con formato se mostrará con el formato correcto para la 
+      configuración regional correspondiente.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma size=2>(<B>%</B>)</FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Marcador de posición de porcentaje. Multiplica 
+      la expresión por 100. El carácter de porcentaje (<B>%</B>) se inserta en 
+      la misma posición en la que aparece en la cadena de 
+  formato.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma size=2>(<B>,</B>)</FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Separador de miles. El separador de miles 
+      separa las unidades de millar de las centenas con un número que presente 
+      cuatro o más dígitos a la izquierda del separador decimal. Se especificará 
+      un uso estándar del separador de miles si el formato contiene un separador 
+      de miles rodeado de marcadores de posición de dígito (<B>0</B> o 
+      <B>#</B>). Un separador de miles situado inmediatamente a la izquierda del 
+      separador decimal (se especificará si se trata de un decimal o no) o como 
+      el carácter más a la derecha de la cadena significa "reducir el número 
+      dividiéndolo por 1000 y redondeándolo en caso necesario". </FONT></P>
+      <P><FONT face=Tahoma size=2>Por ejemplo, puede utilizar el formato de 
+      cadena <CODE>"##0,."</CODE> para representar 100 millones como 100,000. 
+      Los números menores que 1,000 pero mayores o iguales que 500 se muestran 
+      como <CODE>1</CODE>; los menores que 500 se muestran como <CODE>0</CODE>. 
+      Dos separadores de miles adyacentes en esta posición se reducen por un 
+      factor de 1 millón, más otro factor adicional de 1000 por cada separador 
+      adicional. </FONT></P>
+      <P><FONT face=Tahoma size=2>En el caso de los separadores múltiples en 
+      cualquier posición que no sea inmediatamente a la izquierda del separador 
+      decimal o la posición más a la derecha de la cadena, se interpretará que 
+      simplemente especifican el uso de un separador de miles. El uso del punto 
+      o la coma como separador de miles depende de la configuración regional en 
+      cada caso. El mismo carácter utilizado como separador de miles en virtud 
+      del formato de salida dependerá del formato de número reconocido por su 
+      sistema. Por tanto, deberá usar la coma como marcador de miles en sus 
+      formatos, incluso aunque su configuración regional utilice el punto como 
+      marcador de miles. La cadena con formato se mostrará con el formato 
+      correcto para la configuración regional correspondiente.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma size=2>(<B>:</B>)</FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Separador de hora. En ciertas configuraciones 
+      regionales, pueden usarse otros caracteres para representar el separador 
+      de hora. Este separador horario separa horas, minutos y segundos cuando se 
+      da formato a valores horarios. El carácter real utilizado es el 
+      especificado como separador de hora en la configuración de su 
+      sistema.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma size=2>(<B>/</B>)</FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Separador de fecha. En ciertas configuraciones 
+      regionales, pueden usarse otros caracteres para representar el separador 
+      de fecha. Este separador separa el día, mes y año cuando se da formato a 
+      los valores de fecha. El carácter real utilizado es el especificado como 
+      separador de fecha en la configuración de su sistema.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma size=2>(<B>E-</B> <B>E+</B> <B>e-</B> 
+      <B>e+</B>)</FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Formato científico. Si la expresión de formato 
+      contiene al menos un marcador de posición de dígito (<B>0</B> o <B>#</B>) 
+      a la izquierda de <B>E-</B>, <B>E+</B>, <B>e-</B> o <B>e+</B>, el número 
+      se muestra en formato científico, y se inserta <CODE>E</CODE> o 
+      <CODE>e</CODE> entre el número y su exponente. El número de marcadores de 
+      posición digitales a la izquierda determina el número de dígitos en el 
+      exponente. Use <B>E-</B> o <B>e-</B> para colocar un signo menos junto a 
+      los exponentes negativos. Utilice <B>E+</B> o <B>e+</B> para colocar un 
+      signo menos junto a los exponentes negativos y un signo más junto a los 
+      positivos. También deberá incluir marcadores de posición digitales a la 
+      derecha de este símbolo para obtener un formato correcto.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>-</B> <B>+</B> <B>$</B> ( 
+      )</FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Caracteres literales. Estos caracteres se 
+      mostrarán exactamente como se escriben en la cadena de formato. Para 
+      mostrar un carácter distinto de los listados, se hace preceder de una 
+      barra invertida (<B>\</B>) o se escribe entre comillas (" 
+  ").</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma size=2>(<B>\</B>)</FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el siguiente carácter de una cadena de 
+      formato. Para mostrar un carácter dotado de un significado especial como 
+      carácter literal, éste debe ir precedido de una barra invertida 
+      (<B>\</B>). La barra invertida en sí no aparecerá. El uso de una barra 
+      invertida equivale a incluir el siguiente carácter entre comillas. Para 
+      mostrar una barra invertida, se utilizan dos (<B>\\</B>).</FONT></P>
+      <P><FONT face=Tahoma size=2>Ejemplos de caracteres que no se pueden 
+      mostrar cuando los caracteres literales son caracteres de formato de fecha 
+      y de formato de hora (<B>a</B>, <B>c</B>, <B>d</B>, <B>h</B>, <B>m</B>, 
+      <B>n</B>, <B>p</B>, <B>q</B>, <B>s</B>, <B>t</B>, <B>w</B>, <B>y</B>, 
+      <B>/</B> y <B>:</B>), caracteres de formato numérico (<B>#</B>, <B>0</B>, 
+      <B>%</B>, <B>E</B>, <B>e</B>, coma y punto) y caracteres de formato de 
+      cadenas (<B>@</B>, <B>&amp;</B>, <B>&lt;</B>, <B>&gt;</B> y 
+      <B>!</B>).</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma size=2>(<B>"</B><SPAN 
+      class=parameter>ABC</SPAN><B>"</B>)</FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra la cadena entre comillas (" "). Si se 
+      desea insertar una cadena en el argumento de estilo desde el código, debe 
+      usar <B>Chr(34)</B> para incluir el texto (<B>34</B> es el código de 
+      caracteres correspondiente a las comillas dobles 
+  (")).</FONT></P></TD></TR></TBODY></TABLE></P>
+<P style="MARGIN-RIGHT: 0px"><FONT face=Tahoma size=4><STRONG>Formatos del tipo 
+fecha/hora definidos por el usuario</STRONG></FONT></P>
+<P style="MARGIN-RIGHT: 0px">
+<TABLE style="WIDTH: 700px" cellSpacing=2 cellPadding=5 width=700 border=1>
+  <TBODY>
+  <TR>
+    <TH bgcolor="#808080"><FONT face=Tahoma size=2>Carácter </FONT></TH>
+    <TH bgcolor="#808080"><FONT face=Tahoma size=2>Descripción </FONT></TH></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma size=2>(<B>:</B>)</FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Separador de hora. En ciertas configuraciones 
+      regionales, pueden usarse otros caracteres para representar el separador 
+      de hora. Este separador horario separa horas, minutos y segundos cuando se 
+      da formato a valores horarios. El carácter real utilizado como separador 
+      de hora en los resultados con formato viene determinado por el valor 
+      <B>LocaleID</B> del sistema.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma size=2>(<B>/</B>)</FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Separador de fecha. En ciertas configuraciones 
+      regionales, pueden usarse otros caracteres para representar el separador 
+      de fecha. Este separador separa el día, mes y año cuando se da formato a 
+      los valores de fecha. El carácter real utilizado es el especificado como 
+      separador de fecha en la configuración local de su 
+  sistema.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma size=2>(<B>%</B>)</FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Se utiliza para indicar que el carácter 
+      siguiente debe leerse como formato de una sola letra sin tener en cuenta 
+      las posibles letras finales. También se emplea para indicar que un formato 
+      de una sola letra se lea como formato definido por el usuario. Para 
+      obtener información más detallada, consulte la explicación 
+      siguiente.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>d</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el día como un número sin cero a la 
+      izquierda (por ejemplo, <CODE>1</CODE>). Utilice <B>%d</B> si es el único 
+      carácter en el formato numérico definido por el usuario.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>dd</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el día como un número con cero a la 
+      izquierda (por ejemplo, <CODE>01</CODE>).</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>ddd</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el día de forma abreviada (por 
+      ejemplo, <CODE>Sun</CODE>).</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>dddd</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el día de forma completa (por ejemplo, 
+      <CODE>Sunday</CODE>).</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>M</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el mes como un número sin cero a la 
+      izquierda (por ejemplo, enero se representa como <CODE>1</CODE>). Utilice 
+      <B>%M</B> si es el único carácter en el formato numérico definido por el 
+      usuario.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>MM</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el mes como un número con cero a la 
+      izquierda (por ejemplo, <CODE>01/12/01</CODE>), doce de enero de 2001. 
+      </FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>MMM</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el mes en forma abreviada (por 
+      ejemplo, <CODE>Jan</CODE>).</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>MMMM</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el mes en forma completa (por ejemplo, 
+      <CODE>January</CODE>).</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>gg</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Especifica la era histórica (por ejemplo, 
+      <CODE>A.D.</CODE>)</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>h</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra la hora como un número sin ceros a la 
+      izquierda y en formato de doce horas (por ejemplo, <CODE>1:15:15 
+      PM</CODE>). Utilice <B>%h</B> si es el único carácter en el formato 
+      numérico definido por el usuario.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>hh</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra la hora como un número con ceros a la 
+      izquierda y en formato de doce horas (por ejemplo, <CODE>01:15:15 
+      PM</CODE>).</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>H</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra la hora como un número sin ceros a la 
+      izquierda y en formato de doce horas (por ejemplo, <CODE>1:15:15</CODE>). 
+      Utilice <B>%H</B> si es el único carácter en el formato numérico definido 
+      por el usuario.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>HH</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra la hora como un número con ceros a la 
+      izquierda y en formato de doce horas (por ejemplo, 
+      <CODE>01:15:15</CODE>).</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>m</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra los minutos como un número sin ceros a 
+      la izquierda (por ejemplo, <CODE>12:1:15</CODE>). Utilice <B>%m</B> si es 
+      el único carácter en el formato numérico definido por el 
+      usuario.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>mm</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra los minutos como un número con ceros a 
+      la izquierda (por ejemplo, <CODE>12:01:15</CODE>).</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>s</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra los segundos como un número sin ceros 
+      a la izquierda (por ejemplo, <CODE>12:15:5</CODE>). Utilice <B>%s</B> si 
+      es el único carácter en el formato numérico definido por el 
+      usuario.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>ss</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra los segundos como un número con ceros 
+      a la izquierda (por ejemplo, <CODE>12:15:05</CODE>).</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>F</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra fracciones de segundos. Por ejemplo, 
+      <B>ff</B> muestra centésimas de segundo, mientras que <B>ffff</B> muestra 
+      diez milésimas de segundo. Puede utilizar hasta siete símbolos <B>f</B> en 
+      el formato definido por el usuario. Utilice <B>%f</B> si es el único 
+      carácter en el formato numérico definido por el usuario. </FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>T</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Usa el reloj de doce horas; muestra una 
+      <CODE>A</CODE> mayúscula para cualquier hora entre medianoche y mediodía, 
+      y una <CODE>P</CODE> mayúscula para cualquier hora entre mediodía y 
+      medianoche. Utilice <B>%t</B> si éste es el único carácter del formato 
+      numérico definido por el usuario.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>tt</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Para las configuraciones regionales que 
+      utilizan el reloj de doce horas, muestra la leyenda <CODE>AM</CODE> en 
+      mayúsculas para cualquier hora entre medianoche y mediodía; y 
+      <CODE>PM</CODE> en mayúsculas para cualquier hora entre mediodía y 
+      medianoche.</FONT></P>
+      <P><FONT face=Tahoma size=2>Para las configuraciones regionales que 
+      utilizan el reloj de 24 horas, no muestra nada.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>y</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el año sin cero inicial. Utilice 
+      <B>%y</B> si es el único carácter en el formato numérico definido por el 
+      usuario.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>yy</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el año en formato numérico de dos 
+      dígitos sin cero inicial, si procede. </FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>yyy</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el año en formato numérico de cuatro 
+      dígitos.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>yyyy</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el año en formato numérico de cuatro 
+      dígitos.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>z</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el desplazamiento de zona horaria sin 
+      cero a la izquierda (por ejemplo, <CODE>-8</CODE>). Utilice <B>%z</B> si 
+      es el único carácter en el formato numérico definido por el 
+      usuario.</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>zz</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el desplazamiento de zona horaria con 
+      un cero a la izquierda (por ejemplo, <CODE>-08</CODE>).</FONT></P></TD></TR>
+  <TR>
+    <TD>
+      <P><FONT face=Tahoma><FONT size=2><B>zzz</B> </FONT></FONT></P></TD>
+    <TD>
+      <P><FONT face=Tahoma size=2>Muestra el desplazamiento completo de zona 
+      horaria (por ejemplo, 
+<CODE>-08:00</CODE>).</FONT></P></TD></TR></TBODY></TABLE></P>
+<P style="MARGIN-RIGHT: 0px"><FONT face=Tahoma size=4><STRONG>Ejemplos para 
+formatos numéricos definidos por el usuario</STRONG></FONT></P><FONT 
+face=Tahoma>
+<P style="MARGIN-RIGHT: 0px">
+<TABLE style="WIDTH: 700px" cellSpacing=2 cellPadding=5 width=700 border=1>
+  <TBODY>
+  <TR>
+    <TH bgcolor="#808080"><FONT size=2>Formato</FONT></TH>
+    <TH bgcolor="#808080"><FONT size=2>"5" con formato como </FONT></TH>
+    <TH bgcolor="#808080"><FONT size=2>"-5" con formato como </FONT></TH>
+    <TH bgcolor="#808080"><FONT size=2>"0.5" con formato como</FONT> </TH></TR>
+  <TR>
+    <TD>
+      <P><CODE>Zero-length string ("")</CODE> </P></TD>
+    <TD>
+      <P><CODE>5</CODE> </P></TD>
+    <TD>
+      <P><CODE>-5</CODE> </P></TD>
+    <TD>
+      <P><CODE>0.5</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>0</CODE> </P></TD>
+    <TD>
+      <P><CODE>5</CODE> </P></TD>
+    <TD>
+      <P><CODE>-5</CODE> </P></TD>
+    <TD>
+      <P><CODE>1</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>0.00</CODE> </P></TD>
+    <TD>
+      <P><CODE>5.00</CODE> </P></TD>
+    <TD>
+      <P><CODE>-5.00</CODE> </P></TD>
+    <TD>
+      <P><CODE>0.50</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>#,##0</CODE> </P></TD>
+    <TD>
+      <P><CODE>5</CODE> </P></TD>
+    <TD>
+      <P><CODE>-5</CODE> </P></TD>
+    <TD>
+      <P><CODE>1</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>$#,##0;($#,##0)</CODE> </P></TD>
+    <TD>
+      <P><CODE>$5</CODE> </P></TD>
+    <TD>
+      <P><CODE>($5)</CODE> </P></TD>
+    <TD>
+      <P><CODE>$1</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>$#,##0.00;($#,##0.00)</CODE> </P></TD>
+    <TD>
+      <P><CODE>$5.00</CODE> </P></TD>
+    <TD>
+      <P><CODE>($5.00)</CODE> </P></TD>
+    <TD>
+      <P><CODE>$0.50</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>0%</CODE> </P></TD>
+    <TD>
+      <P><CODE>500%</CODE> </P></TD>
+    <TD>
+      <P><CODE>-500%</CODE> </P></TD>
+    <TD>
+      <P><CODE>50%</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>0.00%</CODE> </P></TD>
+    <TD>
+      <P><CODE>500.00%</CODE> </P></TD>
+    <TD>
+      <P><CODE>-500.00%</CODE> </P></TD>
+    <TD>
+      <P><CODE>50.00%</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>0.00E+00</CODE> </P></TD>
+    <TD>
+      <P><CODE>5.00E+00</CODE> </P></TD>
+    <TD>
+      <P><CODE>-5.00E+00</CODE> </P></TD>
+    <TD>
+      <P><CODE>5.00E-01</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>0.00E-00</CODE> </P></TD>
+    <TD>
+      <P><CODE>5.00E00</CODE> </P></TD>
+    <TD>
+      <P><CODE>-5.00E00</CODE> </P></TD>
+    <TD>
+      <P><CODE>5.00E-01</CODE> </P></TD></TR></TBODY></TABLE></P>
+<P style="MARGIN-RIGHT: 0px"><FONT face=Tahoma size=4><STRONG>Ejemplos para 
+formatos&nbsp;de fecha/hora&nbsp;definidos por el usuario</STRONG></FONT></P>
+<P style="MARGIN-RIGHT: 0px">
+<TABLE style="WIDTH: 700px" cellSpacing=2 cellPadding=5 width=700 border=1>
+  <TBODY>
+  <TR>
+    <TH bgcolor="#808080"><FONT size=2>Formato </FONT></TH>
+    <TH bgcolor="#808080"><FONT size=2>Muestra</FONT> </TH></TR>
+  <TR>
+    <TD>
+      <P><CODE>M/d/yy</CODE> </P></TD>
+    <TD>
+      <P><CODE>12/7/58</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>d-MMM</CODE> </P></TD>
+    <TD>
+      <P><CODE>7-Dec</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>d-MMMM-yy</CODE> </P></TD>
+    <TD>
+      <P><CODE>7-December-58</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>d MMMM</CODE> </P></TD>
+    <TD>
+      <P><CODE>7 December</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>MMMM yy</CODE> </P></TD>
+    <TD>
+      <P><CODE>December 58</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>hh:mm tt</CODE> </P></TD>
+    <TD>
+      <P><CODE>08:50 PM</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>h:mm:ss t</CODE> </P></TD>
+    <TD>
+      <P><CODE>8:50:35 P</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>H:mm</CODE> </P></TD>
+    <TD>
+      <P><CODE>20:50</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>H:mm:ss</CODE> </P></TD>
+    <TD>
+      <P><CODE>20:50:35</CODE> </P></TD></TR>
+  <TR>
+    <TD>
+      <P><CODE>M/d/yyyy H:mm</CODE> </P></TD>
+    <TD>
+      <P><CODE>12/7/1958 20:50</CODE> </P></TD></TR></TBODY></TABLE></P>
+<P></FONT></FONT>&nbsp;</P>
+<P>&nbsp;</P></BODY>
+</html>

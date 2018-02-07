@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Parámetros de una consulta</title>
+<meta name="GENERATOR" content="WinCHM">
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
+
+</head>
+
+<BODY>
+<P><FONT face=Arial size=2><IMG alt="" src="IMAGES/DisenoParametros.png"></FONT></P>
+<P><FONT face=Tahoma size=2>Los parámetros de la consulta, regulan la forma en 
+la que el usuario final pueda filtrar la información antes de ejecutarla, de 
+acuerdo a las posibilidades que le ofrezca el diseñador.</FONT></P>
+<P><FONT face=Tahoma size=2>Para agregar un parámetro, posiciónese en la ficha 
+Parámetros y haga clic en el botón Agregar, sobre la barra de herramientas del 
+diseño. Luego verá la siguiente figura:</FONT></P>
+<P><IMG alt="" src="IMAGES/Parametro.png"></P>
+<P><FONT face=Tahoma size=2>Un parámetro de consulta consta de la siguiente 
+información:</FONT></P>
+<UL>
+  <LI><FONT face=Tahoma size=2><STRONG>Orden</STRONG>: indica el orden entre 
+  otros parámetros en el que será presentado en pantalla al usuario que ejecute 
+  la consulta.</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Nombre</STRONG>: el nombre que identifica 
+  un parámetro de otro.</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Tipo de datos</STRONG>: el tipo de datos 
+  que se deberá validar para el caso que se ingrese un valor. Asimismo, este 
+  atributo indica al procesador de consultas como deberá convertir el texto SQL 
+  de acuerdo a la interpretación definida en la conexión utilizada. Por ejemplo, 
+  para el tipo de datos texto, se enviará al motor la cadena ingresada por el 
+  usuario encerrada entre el caracter definido como literal de cadenas.</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Tipo de control</STRONG>: establece el 
+  tipo de objeto para interactuar con el usuario en el momento de ejecutar la 
+  consulta. Se puede seleccionar una de las siguientes opciones:</FONT> 
+  <UL>
+    <LI><FONT face=Tahoma size=2><U>Cuadro de texto</U>: ofrece al usuario un 
+    cuadro de texto simple para escribir manualmente el valor del filtro.</FONT> 
+
+    <LI><FONT face=Tahoma size=2><U>Botón</U>: ofrece al usuario un botón (...), 
+    que al ser presionado, ofrecerá una lista de valores devuelta por la 
+    instrucción SQL definida en la solapa de Ayuda Contextual. Esta instrucción 
+    SQL es requerida para este tipo de control.</FONT> 
+    <LI><FONT face=Tahoma size=2><U>Calendario de fecha</U>: ofrece al usuario 
+    un control del tipo calendario para seleccionar de forma gráfica una fecha. 
+    Debe ser utilizado cuando el tipo de datos seleccionado es una fecha. Bajo 
+    este tipo de control, el usuario que ejecute la consulta no podrá 
+    escribirla, sino que deberá seleccionarla desde el calendario.</FONT> 
+    <LI><FONT face=Tahoma size=2><U>Botón de incrementos</U>: ofrece un botón 
+    para modificar un valor numérico en orden tanto creciente como decreciente. 
+    Deberá ser utilizado sólo cuando el tipo de datos seleccionado sea 
+    numérico.</FONT> 
+    <LI><FONT face=Tahoma size=2><U>Casilla de verificación</U>: ofrece al 
+    usuario una forma gráfica de seleccionar valores comprendidos entre 0 y 
+    1.</FONT> 
+    <LI><FONT face=Tahoma size=2><U>Cuadro de texto de múltiples líneas</U>: 
+    básicamente es lo mismo que el cuadro de texto simple, a&nbsp;diferencia que 
+    permitirá&nbsp;al usuario&nbsp;escribir en más de una línea el valor del 
+    filtro.</FONT> 
+    <LI><FONT face=Tahoma size=2><U>Reloj</U>: ofrece un reloj para seleccionar 
+    un valor hora. Deberá ser utilizado solo cuando el tipo de datos 
+    seleccionado sea una fecha.</FONT> 
+    <LI><FONT face=Tahoma size=2><U>Barra de desplazamiento</U>: ofrece una 
+    forma gráfica de seleccionar un valor numérico, mediante una barra 
+    de&nbsp;desplazamiento. Para utilizar este tipo de control, deberá activar 
+    la&nbsp;opción de&nbsp;Validación, y a su vez seleccionar el operador 
+    "ENTRE". De este modo, se podrán indicar los valores mínimos y máximos que 
+    tomará la barra de&nbsp;desplazamiento.</FONT> 
+    <LI><FONT face=Tahoma size=2><U>Barra de desplazamiento tipo zoom</U>: idem 
+    al tipo de control anterior, en el cual la diferencia radica en el aspecto 
+    visual del control</FONT></LI></UL>
+  <LI><FONT face=Tahoma size=2><STRONG>Variable</STRONG>: contiene una cadena de 
+  texto determinada que también deberá figurar exactamente de la misma manera 
+  como parte del atributo Instruccion SQL. De esta forma, el procesador de 
+  consultas hará el reemplazo de esta cadena de texto con lo que realmente 
+  ingrese el usuario en tiempo de ejecución.</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Instrucción SQL</STRONG>: es la porción 
+  de texto SQL a inyectar entre las instrucciones INICIAL y FINAL descritas 
+  anteriormente en <A href="Ficha SQL.htm">Ficha 
+  SQL</A>. Esta cadena deberá contener en alguna parte la cadena especificada en 
+  el atributo Variable, si es que se desea que se realice un reemplazo. La 
+  instrucción finalmente procesada será inyectada entre la INICIAL y FINAL. 
+  Puede utilizar el botón Construir Expresión, que le faciltará a la hora de 
+  elegir la columna a filtrar.</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Valor por omisión</STRONG>: establece el 
+  valor que será ingresado de forma automática al abrir la consulta en modo de 
+  ejecución. Es aquí donde se puede hacer uso tanto de valores fijos como de las 
+  variables globales, como por ejemplo, la variable global |AYER|, que hará que 
+  automáticamente se ingrese la fecha del día anterior a la del sistema.</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Permitir múltiples filtros</STRONG>: esta 
+  opción indica que&nbsp;el usuario final&nbsp;podrá especificar (combinar) más 
+  de un filtro para este parámetro. Los filtros deberán estar separados por 
+  coma, y debe asegurarse de contemplar esta situación dentro del atributo 
+  Instruccion SQL. Normalmente, al estar activa esta opción, se deberá utilizar 
+  el operador de inclusión IN.</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Parámetro requerido</STRONG>: opción que 
+  indica la entrada obligatoria o no de un valor por parte del usuario que 
+  ejecuta la consulta. Esto indica que no sólo se validará el tipo de datos que 
+  el usuario ingrese, sino que además se requerirá un valor para este 
+  parámetro.</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Validación</STRONG>: indica que además de 
+  validar el tipo de datos correspondiente, se deberá comparar contra el/los 
+  valor/es indicados en los cuadros de texto correspondientes. Aquí también se 
+  puede hacer uso de las variables globales.</FONT></LI></UL>
+<P><FONT face=Tahoma size=4><STRONG>Construir Expresión</STRONG></FONT></P>
+<P><FONT face=Tahoma size=2><IMG alt="" src="IMAGES/ConstruirExpresion.png"></FONT></P>
+<P><FONT face=Tahoma size=2>El cuadro de diálogo para construir expresiones le 
+facilitará conformar el atributo Instruccion SQL del parámetro. Para ello deberá 
+especificar el operador de inclusión (Y u O), el nombre de la columna tal como 
+lo deba interpretar el motor de base de datos, el operador de comparación y el 
+valor, que normalmente es lo indicado en el atributo Variable. Si bien, este 
+diálogo lo asiste en construir expresiones simples, para ir más allá podrá 
+emplear código SQL en el cuadro de diálogo anterior para mayor flexibilidad en 
+el filtro.</FONT></P>
+<P><FONT face=Tahoma size=4><STRONG>Ayuda Contextual</STRONG></FONT></P>
+<P><FONT face=Tahoma size=2><IMG alt="" src="IMAGES/ParametroConext.png"></FONT></P>
+<P><FONT face=Tahoma size=2>Al seleccionar un Botón como tipo de control del 
+parámetro, se deberá indicar una instrucción SQL que retorne una lista de 
+valores, y desde la cual el usuario podrá elegir para indicar los filtros. 
+Justamente, el procesador de consultas tomará la columna cuyo índice se indique 
+en el cuadro de texto correspondiente, para obtener el valor del filtro. La 
+primer columna en retornar será el índice 1 (uno) y así sucesivamente.<BR>En la 
+ayuda contextual también es posible programar una búsqueda personalizada. Esto 
+puede ser utilizado cuando la lista de valores retornados por la ayuda 
+contextual supone ser voluminosa, por lo tanto la búsqueda personalizada le 
+ofrecerá al usuario la posibilidad de filtrar previamente dicha lista de 
+valores:</FONT></P>
+<P><IMG alt="" src="IMAGES/CustomSearch.png"></P>
+<P><FONT face=Tahoma size=2>Si se asume que lo que se desea buscar es el código 
+numérico de un cliente, sobre una tabla con una cantidad importante de 
+registros, se sabe que no será conveniente ofrecer toda la tabla al usuario, que 
+por cierto puede mostrarse más interesado en realizar una búsqueda alfabética. 
+Entonces se deberá Habilitar la búsqueda personalizada, y luego completar lo 
+siguiente:</FONT></P>
+<UL>
+  <LI><FONT face=Tahoma size=2><STRONG>Mensaje instructivo</STRONG>: ayuda a 
+  ofrecer al usuario al momento de dispararse la búsqueda personalizada. Para 
+  este ejemplo, "Ingrese el nombre del cliente"</FONT> 
+  <LI><FONT face=Tahoma size=2><STRONG>Variable en SQL de ayuda 
+  contextual</STRONG>: cadena de texto obligatoria que será buscada y 
+  reemplazada en la instrucción SQL de la ayuda contextual, de forma tal de 
+  completar una instrucción válida con el valor indicado por el 
+  usuario.</FONT></LI></UL>
+<P>&nbsp;</P></BODY>
+</html>
