@@ -1,6 +1,7 @@
 Option Strict Off
 Option Explicit On
 
+Imports System.ComponentModel
 Imports System.Data
 Imports System.Runtime.InteropServices
 Imports System
@@ -913,11 +914,28 @@ End Class
 ''' <remarks></remarks>
 
 Public Class AutenticacionActiveDirectory
+
+    Private Enum ADSIMode
+        <Description("LDAP://")>
+        ldap
+        <Description("WinNT://")>
+        winnt
+    End Enum
+
     Private sUsuario As String = ""
     Private sPassword As String = ""
     Private sDominio As String = ""
     Private eTipoAutenticacion As AuthenticationTypes = AuthenticationTypes.SecureSocketsLayer
     Private bAutenticado As Boolean = False
+    Private _activeADSIMode = ADSIMode.ldap
+
+    Private ReadOnly Property PrefixADSI(modo As ADSIMode) As String
+        Get
+            Dim ten As Reflection.FieldInfo = modo.GetType.GetField(modo.ToString)
+            Dim attr As DescriptionAttribute = DirectCast(ten.GetCustomAttributes(GetType(DescriptionAttribute), False)(0), DescriptionAttribute)
+            Return attr.Description
+        End Get
+    End Property
 
     Friend Sub New()
         sUsuario = ""
@@ -929,11 +947,12 @@ Public Class AutenticacionActiveDirectory
 
     Public Property Dominio() As String
         Get
-            Dominio = sDominio.Replace("LDAP://", "")
+            Dominio = sDominio.Replace(PrefixADSI(ADSIMode.ldap), "").Replace(PrefixADSI(ADSIMode.winnt), "") '.Replace("LDAP://", "")
         End Get
 
         Set(ByVal valor As String)
-            sDominio = "LDAP://" & valor.Replace("LDAP://", "")
+            ' sDominio = "LDAP://" & valor.Replace("LDAP://", "")
+            sDominio = PrefixADSI(_activeADSIMode) & valor.Replace(PrefixADSI(ADSIMode.ldap), "").Replace(PrefixADSI(ADSIMode.winnt), "")
         End Set
     End Property
 
@@ -973,7 +992,13 @@ Public Class AutenticacionActiveDirectory
         End Get
     End Property
 
-    Public Function Autenticar(Optional ByRef sError As String = "") As Boolean
+    Public Function Autenticar() As Boolean
+        Return Autenticar(String.Empty)
+    End Function
+    Public Function Autenticar(ByRef sError As String) As Boolean
+        Return Autenticar(True, sError)
+    End Function
+    Public Function Autenticar(ByVal reintenta As Boolean, ByRef sError As String) As Boolean
 
         Dim oDirEntry As DirectoryEntry = New DirectoryEntry(sDominio, sUsuario, sPassword)
 
@@ -985,6 +1010,12 @@ Public Class AutenticacionActiveDirectory
             Return True
 
         Catch ex As Exception
+            If (reintenta) Then
+                _activeADSIMode = ADSIMode.winnt
+                Dominio = Dominio
+                Return Autenticar(False, sError)
+
+            End If
             sError = ex.Message
             bAutenticado = False
             Return False

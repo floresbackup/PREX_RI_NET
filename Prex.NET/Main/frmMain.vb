@@ -110,21 +110,27 @@ Public Class frmMain
     End Sub
 
     Private Sub EjecutarTransaccion(ByVal nCodTra As Long)
+        Dim codApp = Format(nCodTra, "00000")
+        Try
+            Dim oTrx As New System.Diagnostics.Process
 
-      Dim oTrx As New System.Diagnostics.Process
-
-      oTrx.StartInfo.FileName = "Y:\PrEx_RI\BIN\VBP" & Format(nCodTra, "00000") & ".EXE"
-      'oTrx.StartInfo.RedirectStandardError = True
-      oTrx.StartInfo.Arguments = "/u:1/t:" & nCodTra & "/e:20"
-      oTrx.StartInfo.UseShellExecute = True
-      oTrx.StartInfo.WorkingDirectory = "Y:\PrEx_RI\BIN"
-      oTrx.Start()
-      oTrx.WaitForExit()
-
-
+            oTrx.StartInfo.FileName = My.Settings.INSTALLATION_DIR & "\BIN\VBP" & codApp & ".EXE" ' "Y:\PrEx_RI\BIN\VBP" & Format(nCodTra, "00000") & ".EXE"
+            If Not IO.File.Exists(oTrx.StartInfo.FileName) Then
+                MessageBox.Show("No se encontró código de aplicacion [" & codApp & "]", "Ejecutar transacción", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Exit Sub
+            End If
+            'oTrx.StartInfo.RedirectStandardError = True
+            oTrx.StartInfo.Arguments = "/u:1/t:" & nCodTra & "/e:20"
+            oTrx.StartInfo.UseShellExecute = True
+            oTrx.StartInfo.WorkingDirectory = My.Settings.INSTALLATION_DIR & "\BIN"
+            oTrx.Start()
+            oTrx.WaitForExit()
+        Catch ex As Exception
+            Throw New Exception("Ocurrió un error al ejecutar transacción [" & codApp & "]", ex)
+        End Try
     End Sub
 
-   Private Sub btnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSalir.Click
+    Private Sub btnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSalir.Click
       Me.Close()
    End Sub
 
