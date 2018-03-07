@@ -25,6 +25,10 @@ Module modLocalMain
 
         PrevInstance()
 
+        'Configuración
+        LeerXML()
+        LeerXMLLocal()
+
         Dim oSplash As New SplashScreen
 
         oSplash.AcercaDe = False
@@ -36,10 +40,6 @@ Module modLocalMain
                 IO.File.Delete(CARPETA_LOCAL & "TEMP\conn.enc")
             End If
         End If
-
-        'Configuración
-        LeerXML()
-        LeerXMLLocal()
 
         If Right(Command, 3) = "IDE" Then
             RUTA_BIN = ConfigurationManager.AppSettings.Item("PATHDEBUG")
@@ -63,7 +63,7 @@ Module modLocalMain
         ElseIf AUTENTICACIONSQL Then 'LOGIN POR SQL
             oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionSQL
         End If
-
+        System.Threading.Thread.Sleep(5000)
         oSplash.Close()
         oSplash = Nothing
         Application.DoEvents()

@@ -35,9 +35,9 @@ Public NotInheritable Class SplashScreen
       ' Llamada necesaria para el Diseñador de Windows Forms.
       InitializeComponent()
 
-      ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
-      lblEmpresa.Text = NOMBRE_ENTIDAD
-      lblVersion.Text = "Versión " & Application.ProductVersion.Trim
+        ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+        lblEmpresa.Text = NOMBRE_EMPRESA
+        lblVersion.Text = "Versión " & Application.ProductVersion.Trim
 
    End Sub
 

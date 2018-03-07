@@ -24,8 +24,9 @@ Module modDeclaraciones
    Public RUTA_AYUDA As String = ""
    Public NOMBRE_INI_LOCAL As String = ""
    Public LAST_USER As String = ""
-   Public INPUT_GENERAL As String = ""
-   Public NOMBRE_ENTIDAD As String = ""
+    Public INPUT_GENERAL As String = ""
+    Public NOMBRE_EMPRESA As String = ""
+    Public NOMBRE_ENTIDAD As String = ""
    Public CODIGO_ENTIDAD As Long = 0
    Public CODIGO_TRANSACCION As Long = 0
    Public SIMBOLO_DECIMAL As Char

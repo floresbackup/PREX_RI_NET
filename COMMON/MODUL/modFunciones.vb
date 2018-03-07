@@ -27,46 +27,49 @@ Module modFunciones
 
                Select Case row("NOMBRE").ToString
 
-                  Case "CONN_LOCAL"
-                     CONN_LOCAL = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
+                        Case "CONN_LOCAL"
+                            CONN_LOCAL = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
 
-                  Case "FFECHA"
-                     FORMATO_FECHA = sTemp
+                        Case "FFECHA"
+                            FORMATO_FECHA = sTemp
 
-                  Case "CARPETA_LOCAL"
-                     CARPETA_LOCAL = NormalizarRuta(sTemp)
+                        Case "CARPETA_LOCAL"
+                            CARPETA_LOCAL = NormalizarRuta(sTemp)
 
-                  Case "NOMBRE_INI_LOCAL"
-                     NOMBRE_INI_LOCAL = sTemp
+                        Case "NOMBRE_INI_LOCAL"
+                            NOMBRE_INI_LOCAL = sTemp
 
-                  Case "AUTENTICACIONSQL"
-                     AUTENTICACIONSQL = CBool(sTemp)
+                        Case "AUTENTICACIONSQL"
+                            AUTENTICACIONSQL = CBool(sTemp)
 
-                  Case "SEGURIDAD_INTEGRADA"
-                     SEGURIDAD_INTEGRADA = CBool(sTemp)
+                        Case "SEGURIDAD_INTEGRADA"
+                            SEGURIDAD_INTEGRADA = CBool(sTemp)
 
-                  Case "NOMBRE_SQLSERVER"
-                     NOMBRE_SQLSERVER = sTemp
+                        Case "NOMBRE_SQLSERVER"
+                            NOMBRE_SQLSERVER = sTemp
 
-                  Case "IDENTIFICACION_PC"
-                     IDENTIFICACION_PC = sTemp
+                        Case "NOMBRE_EMPRESA"
+                            NOMBRE_EMPRESA = sTemp
 
-                  Case "LOG_AUDITORIA"
-                     LOG_AUDITORIA = sTemp
+                        Case "IDENTIFICACION_PC"
+                            IDENTIFICACION_PC = sTemp
 
-                  Case "NOMBRE_BD"
-                     NOMBRE_BD = sTemp
+                        Case "LOG_AUDITORIA"
+                            LOG_AUDITORIA = sTemp
 
-                  Case "ID_SISTEMA"
-                     ID_SISTEMA = Val(sTemp)
+                        Case "NOMBRE_BD"
+                            NOMBRE_BD = sTemp
 
-                  Case "SIMBOLO_DECIMAL"
-                     SIMBOLO_DECIMAL = sTemp.Substring(0, 1)
+                        Case "ID_SISTEMA"
+                            ID_SISTEMA = Val(sTemp)
 
-                  Case "RUTA_AYUDA"
-                     RUTA_AYUDA = sTemp
+                        Case "SIMBOLO_DECIMAL"
+                            SIMBOLO_DECIMAL = sTemp.Substring(0, 1)
 
-               End Select
+                        Case "RUTA_AYUDA"
+                            RUTA_AYUDA = sTemp
+
+                    End Select
 
             Next
 
