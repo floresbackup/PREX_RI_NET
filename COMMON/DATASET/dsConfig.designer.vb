@@ -281,7 +281,8 @@ Partial Public Class dsConfig
     <Global.System.Serializable(),  _
      Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")>  _
     Partial Public Class CONFIGDataTable
-        Inherits Global.System.Data.TypedTableBase(Of CONFIGRow)
+        Inherits Global.System.Data.DataTable
+        Implements Global.System.Collections.IEnumerable
         
         Private columnNOMBRE As Global.System.Data.DataColumn
         
@@ -387,6 +388,12 @@ Partial Public Class dsConfig
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
         Public Function FindByNOMBRE(ByVal NOMBRE As String) As CONFIGRow
             Return CType(Me.Rows.Find(New Object() {NOMBRE}),CONFIGRow)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Overridable Function GetEnumerator() As Global.System.Collections.IEnumerator Implements Global.System.Collections.IEnumerable.GetEnumerator
+            Return Me.Rows.GetEnumerator
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _

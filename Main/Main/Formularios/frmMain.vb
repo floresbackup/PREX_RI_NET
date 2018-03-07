@@ -1,98 +1,99 @@
+Imports System.Data.SqlClient
 Imports System.DirectoryServices
 
 Public Class frmMain
 
-   Private oAdmLocal As New AdmTablas
-   Private oIconos As New ExtraerIconos
+    Private oAdmLocal As New AdmTablas
+    Private oIconos As New ExtraerIconos
 
-   Public Sub New()
+    Public Sub New()
 
-      ' Llamada necesaria para el Diseñador de Windows Forms.
-      InitializeComponent()
+        ' Llamada necesaria para el Diseñador de Windows Forms.
+        InitializeComponent()
 
-      ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
-      oAdmlocal.ConnectionString = CONN_LOCAL
+        ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+        oAdmLocal.ConnectionString = CONN_LOCAL
 
-      lblUsuario.Text = UsuarioActual.Descripcion
-      lblEntidad.Text = NOMBRE_ENTIDAD ' UsuarioActual.Entidad
+        lblUsuario.Text = UsuarioActual.Descripcion
+        lblEntidad.Text = NOMBRE_ENTIDAD ' UsuarioActual.Entidad
 
-      If SIEMPRE_ICONOS_GRANDES Then
-         lvTrans.SmallImageList = il32x32
-      Else
-         lvTrans.SmallImageList = il16x16
-      End If
+        If SIEMPRE_ICONOS_GRANDES Then
+            lvTrans.SmallImageList = il32x32
+        Else
+            lvTrans.SmallImageList = il16x16
+        End If
 
-   End Sub
+    End Sub
 
-   Private Sub btnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSalir.Click, btnSalir.Click
-      Me.Close()
-   End Sub
+    Private Sub btnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSalir.Click, btnSalir.Click
+        Me.Close()
+    End Sub
 
-   Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-      CargarArbol()
-      CargarMenues(0)
-   End Sub
+    Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        CargarArbol()
+        CargarMenues(0)
+    End Sub
 
-   Private Sub CargarArbol()
+    Private Sub CargarArbol()
 
-      Dim sSQL As String
-      Dim ds As DataSet
-      Dim nodo As TreeNode
-      Dim nuevoNodo() As TreeNode
+        Dim sSQL As String
+        Dim ds As DataSet
+        Dim nodo As TreeNode
+        Dim nuevoNodo() As TreeNode
 
-      Try
+        Try
 
-         sSQL = "SELECT       * " & _
-                "FROM         MENUES " & _
-                "WHERE        MU_NIVEL <> 0 " & _
-                "ORDER BY     MU_NIVEL, MU_TRANSA"
-         ds = oAdmlocal.AbrirDataset(sSQL)
+            sSQL = "SELECT       * " &
+                   "FROM         MENUES " &
+                   "WHERE        MU_NIVEL <> 0 " &
+                   "ORDER BY     MU_NIVEL, MU_TRANSA"
+            ds = oAdmLocal.AbrirDataset(sSQL)
 
-         tvMenu.Nodes.Clear()
+            tvMenu.Nodes.Clear()
 
-         With ds.Tables(0)
+            With ds.Tables(0)
 
-            nodo = tvMenu.Nodes.Add("K0", "Menú", "Menu")
+                nodo = tvMenu.Nodes.Add("K0", "Menú", "Menu")
 
-            For Each dr As DataRow In .Rows
+                For Each dr As DataRow In .Rows
 
-               tvMenu.BeginUpdate()
-               nuevoNodo = tvMenu.Nodes.Find("K" & dr("MU_RELMEN").ToString, True)
-               nuevoNodo(0).Nodes.Add("K" & dr("MU_NROMEN").ToString, dr("MU_TRANSA").ToString, "Cerrada")
-               tvMenu.EndUpdate()
+                    tvMenu.BeginUpdate()
+                    nuevoNodo = tvMenu.Nodes.Find("K" & dr("MU_RELMEN").ToString, True)
+                    nuevoNodo(0).Nodes.Add("K" & dr("MU_NROMEN").ToString, dr("MU_TRANSA").ToString, "Cerrada")
+                    tvMenu.EndUpdate()
 
-            Next
+                Next
 
-         End With
+            End With
 
-         nodo.Expand()
+            nodo.Expand()
 
-      Catch ex As Exception
-         TratarError(ex, "CargarArbol")
-      End Try
+        Catch ex As Exception
+            TratarError(ex, "CargarArbol")
+        End Try
 
-   End Sub
+    End Sub
 
-   Private Sub CargarMenues(ByVal nMenu As Long)
+    Private Sub CargarMenues(ByVal nMenu As Long)
 
         Dim sSQL As String = ""
-      Dim ds As DataSet
-      Dim nodo As ListViewItem
+        Dim ds As DataSet
+        Dim nodo As ListViewItem
 
-      Try
+        Try
 
-         LimpiarIL()
+            LimpiarIL()
 
-         'Cargo las carpetas
-         sSQL = "SELECT    * " & _
-                "FROM      MENUES " & _
-                "WHERE     MU_RELMEN = " & nMenu.ToString & " " & _
-                "ORDER BY  MU_NIVEL DESC, MU_TRANSA ASC"
-         ds = oAdmLocal.AbrirDataset(sSQL)
+            'Cargo las carpetas
+            sSQL = "SELECT    * " &
+                   "FROM      MENUES " &
+                   "WHERE     MU_RELMEN = " & nMenu.ToString & " " &
+                   "ORDER BY  MU_NIVEL DESC, MU_TRANSA ASC"
+            ds = oAdmLocal.AbrirDataset(sSQL)
 
-         lvTrans.Items.Clear()
+            lvTrans.Items.Clear()
 
-         For Each dr As DataRow In ds.Tables(0).Rows
+            For Each dr As DataRow In ds.Tables(0).Rows
                 If dr("MU_CODTRA") = 0 Then
                     ' Adding the text value of a folder in the list view
                     nodo = lvTrans.Items.Add("C" & dr("MU_NROMEN").ToString, dr("MU_TRANSA").ToString, "Carpeta")
@@ -172,154 +173,154 @@ Public Class frmMain
             Dim oNodo() As TreeNode = tvMenu.Nodes.Find("K" & nMenu.ToString, True)
 
             tvMenu.SelectedNode = oNodo(0)
-         'tvMenu.SelectedNode.Expand()
+            'tvMenu.SelectedNode.Expand()
 
         Catch ex As Exception
             TratarError(ex, "CargarMenues(" & nMenu.ToString & ")")
         End Try
 
-   End Sub
+    End Sub
 
-   Private Sub txtCodTra_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodTra.KeyDown
+    Private Sub txtCodTra_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodTra.KeyDown
 
-      On Error Resume Next
+        On Error Resume Next
 
-      Dim sSQL As String
-      Dim ds As DataSet
+        Dim sSQL As String
+        Dim ds As DataSet
 
-      If e.KeyCode = Keys.Return Then
+        If e.KeyCode = Keys.Return Then
 
-         sSQL = "SELECT    TOP 1 * " & _
-                "FROM      MENUES " & _
-                "WHERE     MU_CODTRA = " & Val(txtCodTra.Text) & " "
+            sSQL = "SELECT    TOP 1 * " &
+                   "FROM      MENUES " &
+                   "WHERE     MU_CODTRA = " & Val(txtCodTra.Text) & " "
 
-         ds = oAdmLocal.AbrirDataset(sSQL)
+            ds = oAdmLocal.AbrirDataset(sSQL)
 
-         If ds.Tables(0).Rows.Count = 0 Then
-            MensajeError("Transacción inexistente")
-         Else
-            EjecutarTransaccion(Val(txtCodTra.Text), ds.Tables(0).Rows(0)("MU_COMAND").ToString)
-         End If
-
-      End If
-
-   End Sub
-
-   Private Sub EjecutarTransaccion(ByVal nTransaccion As Long, ByVal sPrograma As String, Optional ByVal nCodigoUsuario As Integer = -1)
-
-      Try
-
-         Dim oTrx As New System.Diagnostics.Process
-
-         If nCodigoUsuario = -1 Then
-
-            nCodigoUsuario = UsuarioActual.Codigo
-
-            If Not TransaccionHabilitada(nTransaccion) Then
-               GuardarLOG(AccionesLOG.AL_VIOLACION_SEGURIDAD, "", nTransaccion)
-               MensajeError("Violación de seguridad. No dispone de privilegios para ingresar a esta transacción")
-               Exit Try
+            If ds.Tables(0).Rows.Count = 0 Then
+                MensajeError("Transacción inexistente")
+            Else
+                EjecutarTransaccion(Val(txtCodTra.Text), ds.Tables(0).Rows(0)("MU_COMAND").ToString)
             End If
 
-         Else
+        End If
 
-            If Not TransaccionHabilitadaEnUsuario(nTransaccion, nCodigoUsuario) Then
-               GuardarLOG(AccionesLOG.AL_VIOLACION_SEGURIDAD, "", nTransaccion, nCodigoUsuario)
-               MensajeError("Violación de seguridad. No dispone de privilegios para ingresar a esta transacción")
-               Exit Try
+    End Sub
+
+    Private Sub EjecutarTransaccion(ByVal nTransaccion As Long, ByVal sPrograma As String, Optional ByVal nCodigoUsuario As Integer = -1)
+
+        Try
+
+            Dim oTrx As New System.Diagnostics.Process
+
+            If nCodigoUsuario = -1 Then
+
+                nCodigoUsuario = UsuarioActual.Codigo
+
+                If Not TransaccionHabilitada(nTransaccion) Then
+                    GuardarLOG(AccionesLOG.AL_VIOLACION_SEGURIDAD, "", nTransaccion)
+                    MensajeError("Violación de seguridad. No dispone de privilegios para ingresar a esta transacción")
+                    Exit Try
+                End If
+
+            Else
+
+                If Not TransaccionHabilitadaEnUsuario(nTransaccion, nCodigoUsuario) Then
+                    GuardarLOG(AccionesLOG.AL_VIOLACION_SEGURIDAD, "", nTransaccion, nCodigoUsuario)
+                    MensajeError("Violación de seguridad. No dispone de privilegios para ingresar a esta transacción")
+                    Exit Try
+                End If
+
             End If
 
-         End If
+            If IO.File.Exists(RUTA_BIN & sPrograma) Then
 
-         If IO.File.Exists(RUTA_BIN & sPrograma) Then
+                oTrx.StartInfo.FileName = RUTA_BIN & sPrograma
+                oTrx.StartInfo.Arguments = "/u:" & nCodigoUsuario.ToString & "/t:" & nTransaccion.ToString & "/e:" & CODIGO_ENTIDAD.ToString
+                oTrx.StartInfo.UseShellExecute = True
+                oTrx.StartInfo.WorkingDirectory = RUTA_BIN
+                oTrx.Start()
 
-            oTrx.StartInfo.FileName = RUTA_BIN & sPrograma
-            oTrx.StartInfo.Arguments = "/u:" & nCodigoUsuario.ToString & "/t:" & nTransaccion.ToString & "/e:" & CODIGO_ENTIDAD.ToString
-            oTrx.StartInfo.UseShellExecute = True
-            oTrx.StartInfo.WorkingDirectory = RUTA_BIN
-            oTrx.Start()
+                If MULTIEXEC = 0 Then
+                    oTrx.WaitForExit()
+                End If
 
-            If MULTIEXEC = 0 Then
-               oTrx.WaitForExit()
+            Else
+                MensajeError("No se encuentra el programa " & sPrograma)
             End If
 
-         Else
-            MensajeError("No se encuentra el programa " & sPrograma)
-         End If
+        Catch ex As Exception
+            TratarError(ex, "EjecutarTransaccion(" & nTransaccion.ToString & "," & sPrograma & "," & nCodigoUsuario & ")")
+        End Try
 
-      Catch ex As Exception
-         TratarError(ex, "EjecutarTransaccion(" & nTransaccion.ToString & "," & sPrograma & "," & nCodigoUsuario & ")")
-      End Try
+    End Sub
 
-   End Sub
+    Private Sub btnIr_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnIr.Click
 
-   Private Sub btnIr_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnIr.Click
+        Dim evArgs As New System.Windows.Forms.KeyEventArgs(Keys.Return)
 
-      Dim evArgs As New System.Windows.Forms.KeyEventArgs(Keys.Return)
+        txtCodTra_KeyDown(sender, evArgs)
 
-      txtCodTra_KeyDown(sender, evArgs)
+    End Sub
 
-   End Sub
+    Private Sub lvTrans_MouseDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lvTrans.MouseDoubleClick
 
-   Private Sub lvTrans_MouseDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lvTrans.MouseDoubleClick
+        Dim oItem As ListViewItem
 
-      Dim oItem As ListViewItem
+        oItem = lvTrans.HitTest(e.Location).Item
 
-      oItem = lvTrans.HitTest(e.Location).Item
+        If oItem.Name.Substring(0, 1) = "T" Then
+            EjecutarTransaccion(Val(oItem.Name.Substring(1)), oItem.Tag)
+        Else
+            CargarMenues(Val(oItem.Name.Substring(1)))
+        End If
 
-      If oItem.Name.Substring(0, 1) = "T" Then
-         EjecutarTransaccion(Val(oItem.Name.Substring(1)), oItem.Tag)
-      Else
-         CargarMenues(Val(oItem.Name.Substring(1)))
-      End If
+    End Sub
 
-   End Sub
+    Private Sub tvMenu_NodeMouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs) Handles tvMenu.NodeMouseClick
+        CargarMenues(Val(e.Node.Name.Substring(1)))
+    End Sub
 
-   Private Sub tvMenu_NodeMouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs) Handles tvMenu.NodeMouseClick
-      CargarMenues(Val(e.Node.Name.Substring(1)))
-   End Sub
+    Private Sub mnuPreferencias_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPreferencias.Click
 
-   Private Sub mnuPreferencias_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPreferencias.Click
+        Dim oOpciones As New frmOpciones
 
-      Dim oOpciones As New frmOpciones
+        oOpciones.ShowDialog(Me)
 
-      oOpciones.ShowDialog(Me)
+        oOpciones = Nothing
 
-      oOpciones = Nothing
+    End Sub
 
-   End Sub
+    Private Sub LimpiarIL()
 
-   Private Sub LimpiarIL()
+        'Dim nC As Integer
 
-      'Dim nC As Integer
+        ' For nC = (il16x16.Images.Count - 1) * -1 To -2
+        ' il16x16.Images.RemoveAt(nC * -1)
+        ' Next
 
-      ' For nC = (il16x16.Images.Count - 1) * -1 To -2
-      ' il16x16.Images.RemoveAt(nC * -1)
-      ' Next
+        'For nC = (il32x32.Images.Count - 1) * -1 To -2
+        ' il32x32.Images.RemoveAt(nC * -1)
+        ' Next
 
-      'For nC = (il32x32.Images.Count - 1) * -1 To -2
-      ' il32x32.Images.RemoveAt(nC * -1)
-      ' Next
+    End Sub
 
-   End Sub
+    Private Sub mnuIconos_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuIconos.Click
 
-   Private Sub mnuIconos_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuIconos.Click
+        lvTrans.View = View.Tile
 
-      lvTrans.View = View.Tile
+    End Sub
 
-   End Sub
+    Private Sub mnuLista_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuLista.Click
 
-   Private Sub mnuLista_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuLista.Click
+        lvTrans.View = View.List
 
-      lvTrans.View = View.List
+    End Sub
 
-   End Sub
+    Private Sub mnuDetalle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDetalle.Click
 
-   Private Sub mnuDetalle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDetalle.Click
+        lvTrans.View = View.Details
 
-      lvTrans.View = View.Details
-
-   End Sub
+    End Sub
 
     Public Sub ActualizarSeguridad(Optional ByVal sPerfil As String = "")
 
@@ -408,54 +409,43 @@ Public Class frmMain
         Dim sMatriz() As String
         Dim i As Integer
 
-        Dim oConn As ADODB.Connection
-        Dim oComm As ADODB.Command
-        Dim oRst As ADODB.Recordset
+        Dim oConn As SqlConnection
+        Dim oComm As SqlCommand
+        Dim oRst As IDataReader
 
         ' CONEXION
-        oConn = New ADODB.Connection
+        oConn = New SqlConnection
 
-        oConn.ConnectionString = "DRIVER=SQL Server;" & _
-                                 "SERVER=" & NOMBRE_SQLSERVER & ";" & _
-                                 "APP=PREXRI;" & _
-                                 "WSID=" & sNombreUsuario & ";" & _
-                                 "DATABASE=" & NOMBRE_BD & ";" & _
-                                 "NETWORK=DBMSLPCN;" & _
+        oConn.ConnectionString = "DRIVER=SQL Server;" &
+                                 "SERVER=" & NOMBRE_SQLSERVER & ";" &
+                                 "APP=PREXRI;" &
+                                 "WSID=" & sNombreUsuario & ";" &
+                                 "DATABASE=" & NOMBRE_BD & ";" &
+                                 "NETWORK=DBMSLPCN;" &
                                  "TRUSTED_CONNECTION=YES"
         oConn.Open()
 
         ' PERMISOS
 
-        oComm = New ADODB.Command
+        oComm = New SqlCommand
 
-        oComm.ActiveConnection = oConn
+        oComm.Connection = oConn
         oComm.CommandText = "EXEC sp_setapprole 'AppSeguridad' , {Encrypt N 'SegIntWin'} , 'odbc'"
-        oComm.Execute()
+        oComm.ExecuteNonQuery()
 
         oComm = Nothing
 
         ' RECORDSET CON MENUES
 
-        oComm = New ADODB.Command
-        oComm.ActiveConnection = oConn
+        oComm = New SqlCommand
+        oComm.Connection = oConn
         oComm.CommandText = "EXEC crearCursorTree '" & NUMERO_SISTEMA & "','" & UsuarioActual.Nombre & "', '" & LOG_AUDITORIA & "'"
-        oRst = oComm.Execute
+        oRst = oComm.ExecuteReader
 
-        With oRst
-
-            If Not (.BOF And .EOF) Then
-
-                Do Until .EOF
-
-                    sTemp = sTemp & .Fields("NodoCall").Value & ","
-
-                    .MoveNext()
-
-                Loop
-
-            End If
-
+        With oRst.Read()
+            sTemp = sTemp & oRst("NodoCall").ToString & ","
         End With
+        oRst.Close()
 
         MenuesSeguridadIntegrada = sTemp
 
@@ -584,15 +574,15 @@ Err_Trap:
         MyBase.Finalize()
     End Sub
 
-   Private Sub lvTrans_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvTrans.SelectedIndexChanged
+    Private Sub lvTrans_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvTrans.SelectedIndexChanged
 
-   End Sub
+    End Sub
 
-   Private Sub txtCodTra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCodTra.Click
+    Private Sub txtCodTra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCodTra.Click
 
-   End Sub
+    End Sub
 
-   Private Sub tvMenu_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvMenu.AfterSelect
+    Private Sub tvMenu_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvMenu.AfterSelect
 
-   End Sub
+    End Sub
 End Class

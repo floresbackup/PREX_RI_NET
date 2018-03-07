@@ -1,329 +1,331 @@
 
+Imports System.Configuration
+
 Module modLocalMain
 
-   'Propiedades lanzador
-   Public VISTA_ACTUAL As Integer
-   Public HABILITACIONES_ESPECIALES As String
-   Public INHABILITACIONES_ESPECIALES As String
-   Public MULTIEXEC As Integer
-   Public MINIMIZAR_AL_CERRAR As Integer
-   Public CONFIRMAR_AL_SALIR As Integer
-   Public INICIAR_EN_TRAY As Integer
-   Public SIEMPRE_ICONOS_GRANDES As Integer
+    'Propiedades lanzador
+    Public VISTA_ACTUAL As Integer
+    Public HABILITACIONES_ESPECIALES As String
+    Public INHABILITACIONES_ESPECIALES As String
+    Public MULTIEXEC As Integer
+    Public MINIMIZAR_AL_CERRAR As Integer
+    Public CONFIRMAR_AL_SALIR As Integer
+    Public INICIAR_EN_TRAY As Integer
+    Public SIEMPRE_ICONOS_GRANDES As Integer
     Public LOADING_APP As Boolean
 
-   'Ejecutar como...
-   Public CODIGO_ENTIDAD_AUTH As Double
-   Public NOMBRE_USU_AUTORIZADO As String
+    'Ejecutar como...
+    Public CODIGO_ENTIDAD_AUTH As Double
+    Public NOMBRE_USU_AUTORIZADO As String
     Public USUARIO_AUTORIZADO As Boolean
 
-   Sub Main()
+    Sub Main()
 
-      Dim bIniciar As Boolean = True
+        Dim bIniciar As Boolean = True
 
         PrevInstance()
 
-      Dim oSplash As New SplashScreen
+        Dim oSplash As New SplashScreen
 
-      oSplash.AcercaDe = False
-      oSplash.Show()
-      Application.DoEvents()
+        oSplash.AcercaDe = False
+        oSplash.Show()
+        Application.DoEvents()
 
-      If UsuarioActual.Codigo = 0 Then
-         If IO.File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
-            IO.File.Delete(CARPETA_LOCAL & "TEMP\conn.enc")
-         End If
-      End If
+        If UsuarioActual.Codigo = 0 Then
+            If IO.File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
+                IO.File.Delete(CARPETA_LOCAL & "TEMP\conn.enc")
+            End If
+        End If
 
-      'Configuración
-      LeerXML()
-      LeerXMLLocal()
+        'Configuración
+        LeerXML()
+        LeerXMLLocal()
 
-      If Right(Command, 3) = "IDE" Then
-         RUTA_BIN = "Y:\PrEx_RI\BIN\"
-      Else
-         RUTA_BIN = NormalizarRuta(Application.StartupPath)
-      End If
+        If Right(Command, 3) = "IDE" Then
+            RUTA_BIN = ConfigurationManager.AppSettings.Item("PATHDEBUG")
+        Else
+            RUTA_BIN = NormalizarRuta(Application.StartupPath)
+        End If
 
-      Dim oInicioSesion As New frmInicioSesion
+        Dim oInicioSesion As New frmInicioSesion
 
-      If Command.Length > 30 Then 'MORGAN SSOBA
-         oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionExterna
-         InicioSSOBA()
-      ElseIf ID_SISTEMA Then
+        If Command.Length > 30 Then 'MORGAN SSOBA
+            oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionExterna
+            InicioSSOBA()
+        ElseIf ID_SISTEMA Then
             oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionExterna
             bIniciar = InicioCITI()
-      ElseIf SEGURIDAD_INTEGRADA Then 'BANCOR
-         oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionExterna
-         oInicioSesion.txtUsuario.Enabled = False
-         oInicioSesion.txtPassword.Enabled = False
-         oInicioSesion.cboDominio.Enabled = False
-      ElseIf AUTENTICACIONSQL Then 'LOGIN POR SQL
-         oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionSQL
-      End If
+        ElseIf SEGURIDAD_INTEGRADA Then 'BANCOR
+            oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionExterna
+            oInicioSesion.txtUsuario.Enabled = False
+            oInicioSesion.txtPassword.Enabled = False
+            oInicioSesion.cboDominio.Enabled = False
+        ElseIf AUTENTICACIONSQL Then 'LOGIN POR SQL
+            oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionSQL
+        End If
 
-      oSplash.Close()
-      oSplash = Nothing
-      Application.DoEvents()
+        oSplash.Close()
+        oSplash = Nothing
+        Application.DoEvents()
 
-      If oInicioSesion.ModoAutenticacion <> frmInicioSesion.eModoAutenticacion.AutenticacionExterna Then
-         oInicioSesion.ShowDialog()
-         bIniciar = oInicioSesion.Autenticado
-      End If
+        If oInicioSesion.ModoAutenticacion <> frmInicioSesion.eModoAutenticacion.AutenticacionExterna Then
+            oInicioSesion.ShowDialog()
+            bIniciar = oInicioSesion.Autenticado
+        End If
 
-      oInicioSesion = Nothing
+        oInicioSesion = Nothing
 
-      If bIniciar Then
+        If bIniciar Then
 
-         CulturaActual = System.Threading.Thread.CurrentThread.CurrentCulture
-         CulturaCargarTextos(CulturaActual.ToString)
+            CulturaActual = System.Threading.Thread.CurrentThread.CurrentCulture
+            CulturaCargarTextos(CulturaActual.ToString)
 
-         frmMain.ShowDialog()
-         GuardarXMLLocal()
-      End If
-
-      End
-
-   End Sub
-
-   Private Sub PrevInstance()
-
-      Dim MisProcesos() As Process
-
-      MisProcesos = Process.GetProcessesByName(Application.ProductName.ToString)
-
-      If MisProcesos.Length > 1 Then
-         MessageBox.Show("Esta aplicación ya se encuentra activa")
-         End
-      End If
-
-   End Sub
-
-   Public Sub LeerXMLLocal()
-
-      Try
-
-         Dim sRuta As String
-         Dim oConfigLocal As New dsConfig
-
-         sRuta = CARPETA_LOCAL & NOMBRE_INI_LOCAL
-
-         If Not IO.File.Exists(sRuta) Then
+            frmMain.ShowDialog()
             GuardarXMLLocal()
-         End If
+        End If
 
-         If IO.File.Exists(sRuta) Then
-            oConfigLocal.ReadXml(sRuta)
+        End
 
-            For Each row As DataRow In oConfigLocal.Tables("CONFIG").Rows
+    End Sub
 
-               Select Case row("NOMBRE").ToString
+    Private Sub PrevInstance()
 
-                  Case "Vista"
-                     VISTA_ACTUAL = row("VALOR")
+        Dim MisProcesos() As Process
 
-                  Case "MultiExec"
-                     MULTIEXEC = row("VALOR")
+        MisProcesos = Process.GetProcessesByName(Application.ProductName.ToString)
 
-                  Case "MinimizarAlCerrar"
-                     MINIMIZAR_AL_CERRAR = row("VALOR")
+        If MisProcesos.Length > 1 Then
+            MessageBox.Show("Esta aplicación ya se encuentra activa")
+            End
+        End If
 
-                  Case "InicioTray"
-                     INICIAR_EN_TRAY = row("VALOR")
+    End Sub
 
-                  Case "ConfirmarAlSalir"
-                     CONFIRMAR_AL_SALIR = row("VALOR")
+    Public Sub LeerXMLLocal()
 
-                  Case "LastUser"
-                     If Not (row("VALOR") Is DBNull.Value) Then
-                        LAST_USER = row("VALOR")
-                     End If
+        Try
 
-                  Case "SiempreIG"
-                     SIEMPRE_ICONOS_GRANDES = row("VALOR")
+            Dim sRuta As String
+            Dim oConfigLocal As New dsConfig
 
-                  Case "InicioTray"
-                     INICIAR_EN_TRAY = row("VALOR")
+            sRuta = CARPETA_LOCAL & NOMBRE_INI_LOCAL
 
-               End Select
+            If Not IO.File.Exists(sRuta) Then
+                GuardarXMLLocal()
+            End If
 
-            Next
+            If IO.File.Exists(sRuta) Then
+                oConfigLocal.ReadXml(sRuta)
 
-         End If
+                For Each row As DataRow In oConfigLocal.Tables("CONFIG").Rows
 
-      Catch ex As Exception
-         TratarError(ex, "LeerXML")
-      End Try
+                    Select Case row("NOMBRE").ToString
 
-   End Sub
+                        Case "Vista"
+                            VISTA_ACTUAL = row("VALOR")
 
-   Public Sub GuardarXMLLocal()
+                        Case "MultiExec"
+                            MULTIEXEC = row("VALOR")
 
-      Dim ds As New dsConfig
-      Dim dr As DataRow
-      Dim dt As DataTable = ds.Tables("CONFIG")
+                        Case "MinimizarAlCerrar"
+                            MINIMIZAR_AL_CERRAR = row("VALOR")
 
-      Try
+                        Case "InicioTray"
+                            INICIAR_EN_TRAY = row("VALOR")
 
-         Dim sRuta As String
+                        Case "ConfirmarAlSalir"
+                            CONFIRMAR_AL_SALIR = row("VALOR")
 
-         sRuta = CARPETA_LOCAL & NOMBRE_INI_LOCAL
+                        Case "LastUser"
+                            If Not (row("VALOR") Is DBNull.Value) Then
+                                LAST_USER = row("VALOR")
+                            End If
 
-         'Conexión Base de datos
-         dr = dt.NewRow()
-         dr("NOMBRE") = "Vista"
-         dr("VALOR") = VISTA_ACTUAL
-         dt.Rows.Add(dr)
-         ds.AcceptChanges()
+                        Case "SiempreIG"
+                            SIEMPRE_ICONOS_GRANDES = row("VALOR")
 
-         'Formato de Fecha del Servidor SQL
-         dr = dt.NewRow()
-         dr("NOMBRE") = "MultiExec"
-         dr("VALOR") = MULTIEXEC
-         dt.Rows.Add(dr)
-         ds.AcceptChanges()
+                        Case "InicioTray"
+                            INICIAR_EN_TRAY = row("VALOR")
 
-         'Ruta a la carpeta local
-         dr = dt.NewRow()
-         dr("NOMBRE") = "MinimizarAlCerrar"
-         dr("VALOR") = MINIMIZAR_AL_CERRAR
-         dt.Rows.Add(dr)
-         ds.AcceptChanges()
+                    End Select
 
-         'Nombre de archivo de configuración local
-         dr = dt.NewRow()
-         dr("NOMBRE") = "InicioTray"
-         dr("VALOR") = INICIAR_EN_TRAY
-         dt.Rows.Add(dr)
-         ds.AcceptChanges()
+                Next
 
-         'Nombre de archivo de configuración local
-         dr = dt.NewRow()
-         dr("NOMBRE") = "ConfirmarAlSalir"
-         dr("VALOR") = CONFIRMAR_AL_SALIR
-         dt.Rows.Add(dr)
-         ds.AcceptChanges()
+            End If
 
-         'Nombre de archivo de configuración local
-         dr = dt.NewRow()
-         dr("NOMBRE") = "LastUser"
-         dr("VALOR") = UsuarioActual.Nombre
-         dt.Rows.Add(dr)
-         ds.AcceptChanges()
+        Catch ex As Exception
+            TratarError(ex, "LeerXML")
+        End Try
 
-         'Nombre de archivo de configuración local
-         dr = dt.NewRow()
-         dr("NOMBRE") = "SiempreIG"
-         dr("VALOR") = SIEMPRE_ICONOS_GRANDES
-         dt.Rows.Add(dr)
-         ds.AcceptChanges()
+    End Sub
 
-         ds.WriteXml(sRuta)
+    Public Sub GuardarXMLLocal()
 
-      Catch ex As Exception
-         TratarError(ex, "GuardarXMLLocal")
-      End Try
+        Dim ds As New dsConfig
+        Dim dr As DataRow
+        Dim dt As DataTable = ds.Tables("CONFIG")
 
-   End Sub
+        Try
 
-   Public Function GenerarConexionSSOBA() As Boolean
+            Dim sRuta As String
 
-      On Error GoTo Maneja_Error
+            sRuta = CARPETA_LOCAL & NOMBRE_INI_LOCAL
 
-      Dim rstSSOBA As ADODB.Recordset
-      Dim cSSOBA As Object
-      Dim strMsg As String
-      Dim sToken As String
+            'Conexión Base de datos
+            dr = dt.NewRow()
+            dr("NOMBRE") = "Vista"
+            dr("VALOR") = VISTA_ACTUAL
+            dt.Rows.Add(dr)
+            ds.AcceptChanges()
 
-      sToken = Command
+            'Formato de Fecha del Servidor SQL
+            dr = dt.NewRow()
+            dr("NOMBRE") = "MultiExec"
+            dr("VALOR") = MULTIEXEC
+            dt.Rows.Add(dr)
+            ds.AcceptChanges()
 
-      '    UsuarioActual.Nombre = "admin"
-      '    USUARIO_DB = "sa"
-      '    PASSWORD_DB = "sa"
-      '    GenerarConexionSSOBA = True
-      '    Exit Function
+            'Ruta a la carpeta local
+            dr = dt.NewRow()
+            dr("NOMBRE") = "MinimizarAlCerrar"
+            dr("VALOR") = MINIMIZAR_AL_CERRAR
+            dt.Rows.Add(dr)
+            ds.AcceptChanges()
 
-      GenerarConexionSSOBA = False
+            'Nombre de archivo de configuración local
+            dr = dt.NewRow()
+            dr("NOMBRE") = "InicioTray"
+            dr("VALOR") = INICIAR_EN_TRAY
+            dt.Rows.Add(dr)
+            ds.AcceptChanges()
 
-      cSSOBA = CreateObject("SSOBAapi.cLogin")
-      cSSOBA.ServiceName = WEBSERNAME
-      '--------------------------------
-      ' Verifico el Token
-      '--------------------------------
-      rstSSOBA = cSSOBA.VerifyToken(sToken)
-      If Not (rstSSOBA.BOF Or rstSSOBA.EOF) Then
-         '--------------------------------
-         UsuarioActual.Nombre = rstSSOBA.Fields("LOGIN").Value
-         UsuarioActual.Descripcion = rstSSOBA.Fields("NOMBRE").Value
-         '--------------------------------
-      Else
-         '--------------------------------
-         MensajeError("Falta Usuario en SSOBA!!!")
-         Return False
-         GoTo Maneja_Error
-         '--------------------------------
-      End If
-      '--------------------------------
-      ' Conecto con los Genericos
-      '--------------------------------
-      rstSSOBA = cSSOBA.GetUsuariosBaseDatos(sToken)
-      If Not (rstSSOBA.BOF Or rstSSOBA.EOF) Then
-         '--------------------------------
-         rstSSOBA.Find("ORIGEN = '" & SRVORIGEN & "'", 0, ADODB.SearchDirectionEnum.adSearchForward, 1)
+            'Nombre de archivo de configuración local
+            dr = dt.NewRow()
+            dr("NOMBRE") = "ConfirmarAlSalir"
+            dr("VALOR") = CONFIRMAR_AL_SALIR
+            dt.Rows.Add(dr)
+            ds.AcceptChanges()
 
-         If rstSSOBA.EOF Then
-            MensajeError("Falta Usuario Generico de origen en SSOBA!!!")
+            'Nombre de archivo de configuración local
+            dr = dt.NewRow()
+            dr("NOMBRE") = "LastUser"
+            dr("VALOR") = UsuarioActual.Nombre
+            dt.Rows.Add(dr)
+            ds.AcceptChanges()
+
+            'Nombre de archivo de configuración local
+            dr = dt.NewRow()
+            dr("NOMBRE") = "SiempreIG"
+            dr("VALOR") = SIEMPRE_ICONOS_GRANDES
+            dt.Rows.Add(dr)
+            ds.AcceptChanges()
+
+            ds.WriteXml(sRuta)
+
+        Catch ex As Exception
+            TratarError(ex, "GuardarXMLLocal")
+        End Try
+
+    End Sub
+
+    Public Function GenerarConexionSSOBA() As Boolean
+
+        On Error GoTo Maneja_Error
+
+        Dim rstSSOBA As ADODB.Recordset
+        Dim cSSOBA As Object
+        Dim strMsg As String
+        Dim sToken As String
+
+        sToken = Command
+
+        '    UsuarioActual.Nombre = "admin"
+        '    USUARIO_DB = "sa"
+        '    PASSWORD_DB = "sa"
+        '    GenerarConexionSSOBA = True
+        '    Exit Function
+
+        GenerarConexionSSOBA = False
+
+        cSSOBA = CreateObject("SSOBAapi.cLogin")
+        cSSOBA.ServiceName = WEBSERNAME
+        '--------------------------------
+        ' Verifico el Token
+        '--------------------------------
+        rstSSOBA = cSSOBA.VerifyToken(sToken)
+        If Not (rstSSOBA.BOF Or rstSSOBA.EOF) Then
+            '--------------------------------
+            UsuarioActual.Nombre = rstSSOBA.Fields("LOGIN").Value
+            UsuarioActual.Descripcion = rstSSOBA.Fields("NOMBRE").Value
+            '--------------------------------
+        Else
+            '--------------------------------
+            MensajeError("Falta Usuario en SSOBA!!!")
             Return False
             GoTo Maneja_Error
-         End If
+            '--------------------------------
+        End If
+        '--------------------------------
+        ' Conecto con los Genericos
+        '--------------------------------
+        rstSSOBA = cSSOBA.GetUsuariosBaseDatos(sToken)
+        If Not (rstSSOBA.BOF Or rstSSOBA.EOF) Then
+            '--------------------------------
+            rstSSOBA.Find("ORIGEN = '" & SRVORIGEN & "'", 0, ADODB.SearchDirectionEnum.adSearchForward, 1)
 
-         USUARIO_DB = rstSSOBA.Fields("LOGIN").Value
-         PASSWORD_DB = rstSSOBA.Fields("PASSWORD").Value
-         '--------------------------------
-      Else
-         '--------------------------------
-         MensajeError("Falta Usuario Generico en SSOBA!!!")
-         Return False
-         GoTo Maneja_Error
-         '--------------------------------
-      End If
-      '---------------------------
+            If rstSSOBA.EOF Then
+                MensajeError("Falta Usuario Generico de origen en SSOBA!!!")
+                Return False
+                GoTo Maneja_Error
+            End If
+
+            USUARIO_DB = rstSSOBA.Fields("LOGIN").Value
+            PASSWORD_DB = rstSSOBA.Fields("PASSWORD").Value
+            '--------------------------------
+        Else
+            '--------------------------------
+            MensajeError("Falta Usuario Generico en SSOBA!!!")
+            Return False
+            GoTo Maneja_Error
+            '--------------------------------
+        End If
+        '---------------------------
 
 Maneja_Error:
 
-      rstSSOBA = Nothing
-      cSSOBA = Nothing
+        rstSSOBA = Nothing
+        cSSOBA = Nothing
 
-      If Err.Number <> 0 Then
-         TratarErrorErr(Err, "GenerarConexionSSOBA")
-      Else
-         Return True
-      End If
+        If Err.Number <> 0 Then
+            TratarErrorErr(Err, "GenerarConexionSSOBA")
+        Else
+            Return True
+        End If
 
-   End Function
+    End Function
 
-   Private Sub InicioSSOBA()
+    Private Sub InicioSSOBA()
 
-      If GenerarConexionSSOBA() Then
-         CONN_LOCAL = CONN_LOCAL & ";User id=" & USUARIO_DB & ";password=" & PASSWORD_DB & ";"
-         GuardarArchivoEncriptado(CARPETA_LOCAL & "TEMP\conn.enc", USUARIO_DB, PASSWORD_DB)
-         bJPMORGAN = True
+        If GenerarConexionSSOBA() Then
+            CONN_LOCAL = CONN_LOCAL & ";User id=" & USUARIO_DB & ";password=" & PASSWORD_DB & ";"
+            GuardarArchivoEncriptado(CARPETA_LOCAL & "TEMP\conn.enc", USUARIO_DB, PASSWORD_DB)
+            bJPMORGAN = True
 
-         Dim oAdmTablas As New AdmTablas
+            Dim oAdmTablas As New AdmTablas
 
-         oAdmTablas.ConnectionString = CONN_LOCAL
+            oAdmTablas.ConnectionString = CONN_LOCAL
 
-         NOMBRE_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_DESCRI", "TG_CODTAB=1 AND TG_NUME01=1")
-         CODIGO_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_CODCON", "TG_CODTAB=1 AND TG_NUME01=1")
-         UsuarioActual.Codigo = oAdmTablas.DevolverValor("USUARI", "US_CODUSU", "WHERE US_NOMBRE = '" & UsuarioActual.Nombre & "'")
+            NOMBRE_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_DESCRI", "TG_CODTAB=1 AND TG_NUME01=1")
+            CODIGO_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_CODCON", "TG_CODTAB=1 AND TG_NUME01=1")
+            UsuarioActual.Codigo = oAdmTablas.DevolverValor("USUARI", "US_CODUSU", "WHERE US_NOMBRE = '" & UsuarioActual.Nombre & "'")
 
-         oAdmTablas = Nothing
+            oAdmTablas = Nothing
 
-         GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "")
+            GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "")
 
-      End If
+        End If
 
-   End Sub
+    End Sub
 
     Public Function InicioCITI() As Boolean
 

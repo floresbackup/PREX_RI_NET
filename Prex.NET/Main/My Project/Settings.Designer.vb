@@ -57,20 +57,11 @@ Namespace My
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Server=WKS-ADM-F002\SQLEXPRESS2012;Initial Catalog=GESTIONRI_PNP;User ID=sa;Passw"& _ 
-            "ord=Prex123;")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=SVR-DOM-F001\DEVELOP;Initial Catalog=INST_PREXRI;Integrated Security="& _ 
+            "True")>  _
         Public ReadOnly Property CONN_LOCAL() As String
             Get
                 Return CType(Me("CONN_LOCAL"),String)
-            End Get
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("C:\Externos\PREX_RI (Versión NET)\BIN")>  _
-        Public ReadOnly Property INSTALLATION_DIR() As String
-            Get
-                Return CType(Me("INSTALLATION_DIR"),String)
             End Get
         End Property
     End Class
