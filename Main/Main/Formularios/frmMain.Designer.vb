@@ -251,7 +251,7 @@ Partial Class frmMain
         '
         Me.SplitContainer1.Panel2.Controls.Add(Me.lvTrans)
         Me.SplitContainer1.Size = New System.Drawing.Size(626, 341)
-        Me.SplitContainer1.SplitterDistance = 208
+        Me.SplitContainer1.SplitterDistance = 127
         Me.SplitContainer1.TabIndex = 17
         '
         'tvMenu
@@ -266,7 +266,7 @@ Partial Class frmMain
         TreeNode1.Text = "Menú"
         Me.tvMenu.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode1})
         Me.tvMenu.SelectedImageIndex = 0
-        Me.tvMenu.Size = New System.Drawing.Size(208, 341)
+        Me.tvMenu.Size = New System.Drawing.Size(127, 341)
         Me.tvMenu.TabIndex = 1
         '
         'ilMain
@@ -288,7 +288,7 @@ Partial Class frmMain
         Me.lvTrans.LargeImageList = Me.il32x32
         Me.lvTrans.Location = New System.Drawing.Point(0, 0)
         Me.lvTrans.Name = "lvTrans"
-        Me.lvTrans.Size = New System.Drawing.Size(414, 341)
+        Me.lvTrans.Size = New System.Drawing.Size(495, 341)
         Me.lvTrans.SmallImageList = Me.il16x16
         Me.lvTrans.TabIndex = 1
         Me.lvTrans.UseCompatibleStateImageBehavior = False

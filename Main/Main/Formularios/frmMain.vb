@@ -174,11 +174,26 @@ Public Class frmMain
 
             tvMenu.SelectedNode = oNodo(0)
             'tvMenu.SelectedNode.Expand()
-
+            ResizeColumns()
         Catch ex As Exception
             TratarError(ex, "CargarMenues(" & nMenu.ToString & ")")
         End Try
 
+    End Sub
+    Private Sub ResizeColumns()
+        Dim colCodTran = 80
+        Dim colMenu = ((lvTrans.Width - colCodTran) / 3) - 10
+        Dim colDescripcion = lvTrans.Width - colCodTran - colMenu
+
+        lvTrans.Columns.Item(0).Width = If(colMenu > 200, colMenu, 200)
+        lvTrans.Columns.Item(1).Width = If(colDescripcion > 200, colDescripcion, 200)
+        lvTrans.Columns.Item(2).Width = colCodTran
+        Dim widthTotal = lvTrans.Columns.Item(0).Width + lvTrans.Columns.Item(1).Width + lvTrans.Columns.Item(2).Width
+        If lvTrans.ClientSize.Width < widthTotal And lvTrans.Columns.Item(0).Width > 200 Then
+            Dim offset = (widthTotal - lvTrans.ClientSize.Width) / 2
+            lvTrans.Columns.Item(0).Width -= offset
+            lvTrans.Columns.Item(1).Width -= offset
+        End If
     End Sub
 
     Private Sub txtCodTra_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodTra.KeyDown
@@ -585,4 +600,32 @@ Err_Trap:
     Private Sub tvMenu_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvMenu.AfterSelect
 
     End Sub
+
+    Private Sub frmMain_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
+        ResizeColumns()
+    End Sub
+
+    'resize de menu
+    'Private Function GetMaxNodeWidth(ByVal nodes As TreeNodeCollection, ByVal width As Integer) As Integer
+    '    For Each node As TreeNode In nodes
+    '        If node.IsExpanded Then
+    '            width = Math.Max(width, node.Bounds.Right)
+    '            width = GetMaxNodeWidth(node.Nodes, width)
+    '        End If
+    '    Next
+    '    Return width
+    'End Function
+
+    'Private Function ResizeTreeView(ByVal tree As TreeView) As Integer
+    '    Dim width = GetMaxNodeWidth(tree.Nodes, 0)
+    '    tree.ClientSize = New Size(width, tree.ClientSize.Height)
+    '    Return tree.Width
+    'End Function
+
+    'Private Sub tvMenu_AfterExpand(sender As Object, e As TreeViewEventArgs) Handles tvMenu.AfterExpand
+    '    Dim max = GetMaxNodeWidth(tvMenu.Nodes, 20)
+    '    If max > 600 Then
+    '        SplitContainer1.SplitterDistance = max
+    '    End If
+    'End Sub
 End Class
