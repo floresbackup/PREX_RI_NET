@@ -66,6 +66,7 @@ Partial Class frmMain
         Me.Label6 = New System.Windows.Forms.Label()
         Me.ToolStrip2 = New System.Windows.Forms.ToolStrip()
         Me.btnGuardar = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnImprimir = New System.Windows.Forms.ToolStripButton()
         Me.btnExportar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
@@ -104,7 +105,6 @@ Partial Class frmMain
         Me.optTexto = New System.Windows.Forms.RadioButton()
         Me.DsTabla = New VBP04801.dsTabla()
         Me.XpCollection1 = New DevExpress.Xpo.XPCollection()
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.sbMain.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.TabDiseno.SuspendLayout()
@@ -426,7 +426,7 @@ Partial Class frmMain
         '
         Me.TableLayoutPanel1.ColumnCount = 3
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 471.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.Label5, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.cboTabla1, 1, 0)
@@ -460,7 +460,7 @@ Partial Class frmMain
         Me.cboTabla1.FormattingEnabled = True
         Me.cboTabla1.Location = New System.Drawing.Point(53, 3)
         Me.cboTabla1.Name = "cboTabla1"
-        Me.cboTabla1.Size = New System.Drawing.Size(144, 21)
+        Me.cboTabla1.Size = New System.Drawing.Size(194, 21)
         Me.cboTabla1.TabIndex = 1
         '
         'cboPeriodo1
@@ -469,7 +469,7 @@ Partial Class frmMain
         Me.cboPeriodo1.FormattingEnabled = True
         Me.cboPeriodo1.Location = New System.Drawing.Point(53, 28)
         Me.cboPeriodo1.Name = "cboPeriodo1"
-        Me.cboPeriodo1.Size = New System.Drawing.Size(144, 21)
+        Me.cboPeriodo1.Size = New System.Drawing.Size(194, 21)
         Me.cboPeriodo1.TabIndex = 3
         '
         'Panel1
@@ -478,7 +478,7 @@ Partial Class frmMain
         Me.Panel1.Controls.Add(Me.btnOtra1)
         Me.Panel1.Controls.Add(Me.chkTodas)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel1.Location = New System.Drawing.Point(200, 0)
+        Me.Panel1.Location = New System.Drawing.Point(250, 0)
         Me.Panel1.Margin = New System.Windows.Forms.Padding(0)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(471, 25)
@@ -519,7 +519,7 @@ Partial Class frmMain
         Me.Panel2.Controls.Add(Me.rbArchivo)
         Me.Panel2.Controls.Add(Me.Label7)
         Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel2.Location = New System.Drawing.Point(200, 25)
+        Me.Panel2.Location = New System.Drawing.Point(250, 25)
         Me.Panel2.Margin = New System.Windows.Forms.Padding(0)
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(471, 27)
@@ -594,6 +594,11 @@ Partial Class frmMain
         Me.btnGuardar.Size = New System.Drawing.Size(69, 22)
         Me.btnGuardar.Text = "Guardar"
         Me.btnGuardar.ToolTipText = "Guardar el diseño actual"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
         '
         'btnImprimir
         '
@@ -959,11 +964,6 @@ Partial Class frmMain
         '
         Me.DsTabla.DataSetName = "dsTabla"
         Me.DsTabla.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
         '
         'frmMain
         '
