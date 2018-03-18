@@ -25,6 +25,7 @@ Partial Class frmMain
         Me.sbMain = New System.Windows.Forms.StatusStrip()
         Me.lblUsuario = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lblEntidad = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblCaps = New System.Windows.Forms.ToolStripStatusLabel()
         Me.mnuMain = New System.Windows.Forms.MenuStrip()
         Me.mnuSistema = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuActualizar = New System.Windows.Forms.ToolStripMenuItem()
@@ -54,6 +55,10 @@ Partial Class frmMain
         Me.CODTRA = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.il32x32 = New System.Windows.Forms.ImageList(Me.components)
         Me.il16x16 = New System.Windows.Forms.ImageList(Me.components)
+        Me.TimerFooter = New System.Windows.Forms.Timer(Me.components)
+        Me.lblNum = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblFecha = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblHora = New System.Windows.Forms.ToolStripStatusLabel()
         Me.sbMain.SuspendLayout()
         Me.mnuMain.SuspendLayout()
         Me.tbMain.SuspendLayout()
@@ -64,7 +69,7 @@ Partial Class frmMain
         '
         'sbMain
         '
-        Me.sbMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblUsuario, Me.lblEntidad})
+        Me.sbMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblUsuario, Me.lblEntidad, Me.lblNum, Me.lblCaps, Me.lblFecha, Me.lblHora})
         Me.sbMain.Location = New System.Drawing.Point(0, 390)
         Me.sbMain.Name = "sbMain"
         Me.sbMain.Size = New System.Drawing.Size(626, 25)
@@ -78,7 +83,7 @@ Partial Class frmMain
         Me.lblUsuario.Image = CType(resources.GetObject("lblUsuario.Image"), System.Drawing.Image)
         Me.lblUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.lblUsuario.Name = "lblUsuario"
-        Me.lblUsuario.Size = New System.Drawing.Size(472, 20)
+        Me.lblUsuario.Size = New System.Drawing.Size(234, 20)
         Me.lblUsuario.Spring = True
         Me.lblUsuario.Text = "Sebastián Buceta"
         Me.lblUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -92,6 +97,15 @@ Partial Class frmMain
         Me.lblEntidad.Name = "lblEntidad"
         Me.lblEntidad.Size = New System.Drawing.Size(139, 20)
         Me.lblEntidad.Text = "Banco de Prueba S.A."
+        '
+        'lblCaps
+        '
+        Me.lblCaps.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
+        Me.lblCaps.Name = "lblCaps"
+        Me.lblCaps.Size = New System.Drawing.Size(40, 20)
+        Me.lblCaps.Text = "CAPS"
         '
         'mnuMain
         '
@@ -358,6 +372,38 @@ Partial Class frmMain
         Me.il16x16.Images.SetKeyName(18, "Tabgen")
         Me.il16x16.Images.SetKeyName(19, "procesos.ico")
         '
+        'TimerFooter
+        '
+        Me.TimerFooter.Enabled = True
+        Me.TimerFooter.Interval = 60000
+        '
+        'lblNum
+        '
+        Me.lblNum.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
+        Me.lblNum.Name = "lblNum"
+        Me.lblNum.Size = New System.Drawing.Size(39, 20)
+        Me.lblNum.Text = "NUM"
+        '
+        'lblFecha
+        '
+        Me.lblFecha.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
+        Me.lblFecha.Name = "lblFecha"
+        Me.lblFecha.Size = New System.Drawing.Size(69, 20)
+        Me.lblFecha.Text = "01/01/2018"
+        '
+        'lblHora
+        '
+        Me.lblHora.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
+        Me.lblHora.Name = "lblHora"
+        Me.lblHora.Size = New System.Drawing.Size(59, 20)
+        Me.lblHora.Text = "00:00 pm"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -369,6 +415,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.mnuMain)
         Me.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.KeyPreview = True
         Me.MainMenuStrip = Me.mnuMain
         Me.Name = "frmMain"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
@@ -419,4 +466,9 @@ Partial Class frmMain
     Friend WithEvents MEN As System.Windows.Forms.ColumnHeader
     Friend WithEvents CODTRA As System.Windows.Forms.ColumnHeader
     Friend WithEvents DESCRIP As System.Windows.Forms.ColumnHeader
+    Friend WithEvents lblCaps As ToolStripStatusLabel
+    Friend WithEvents TimerFooter As Timer
+    Friend WithEvents lblNum As ToolStripStatusLabel
+    Friend WithEvents lblFecha As ToolStripStatusLabel
+    Friend WithEvents lblHora As ToolStripStatusLabel
 End Class
