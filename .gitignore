@@ -2,7 +2,13 @@
 # Este archivo .gitignore ha sido creado automáticamente por Microsoft(R) Visual Studio.
 ################################################################################
 
+/Main/Main/obj/*
 /Main/Main/bin/Debug/es
 Main/.vs/Main/v15/.suo
 Main/.vs/Main/v15/.suo
 *.ide
+*.dll
+*.exe
+*.pdb
+*.exe
+*.mdb

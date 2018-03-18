@@ -234,10 +234,10 @@ Module modFunciones
       Dim oItem As clsItem.Item
 
       For Each oItem In oCombo_List.Items
-         If oItem.Nombre.ToUpper = sCadena.ToUpper Then
-            oCombo_List.SelectedItem = oItem
-         End If
-      Next
+            If oItem.Valor.ToUpper = sCadena.ToUpper Then
+                oCombo_List.SelectedItem = oItem
+            End If
+        Next
 
    End Sub
 
