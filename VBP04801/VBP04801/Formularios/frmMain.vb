@@ -192,40 +192,23 @@ Public Class frmMain
       Me.Close()
    End Sub
 
-   Private Sub btnLinked_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLinked.Click
-      btnArchivo.Checked = False
-      btnLinked.Checked = True
-      btnRowSet.Checked = False
-   End Sub
 
-   Private Sub btnArchivo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnArchivo.Click
-      btnArchivo.Checked = True
-      btnLinked.Checked = False
-      btnRowSet.Checked = False
-   End Sub
+    Private Sub Cargar()
 
-   Private Sub btnRowSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRowSet.Click
-      btnArchivo.Checked = False
-      btnLinked.Checked = False
-      btnRowSet.Checked = True
-   End Sub
-
-   Private Sub Cargar()
-
-      cboTabla.Text = "<Seleccionar...>"
-      txtFecha.Format = DateTimePickerFormat.Custom
+        cboTabla1.Text = "<Seleccionar...>"
+        txtFecha.Format = DateTimePickerFormat.Custom
       txtFecha.CustomFormat = "dd/MM/yyyy"
       txtFecha.Value = Date.Today
 
       CargarTablas()
 
-      cboTabla.Enabled = True
-      cboTabla.Focus()
+        cboTabla1.Enabled = True
+        cboTabla1.Focus()
 
-      cboPeriodo.Text = ""
-      cboPeriodo.Enabled = False
+        cboPeriodo1.Text = ""
+        cboPeriodo1.Enabled = False
 
-      GridDiseno.DataSource = Nothing
+        GridDiseno.DataSource = Nothing
       GridDiseno.RefreshDataSource()
       GridDiseno.Refresh()
       GridDiseno.Enabled = False
@@ -254,55 +237,55 @@ Public Class frmMain
 
    End Sub
 
-   Private Sub CargarTablas(Optional ByVal sSeleccion As String = "")
+    Private Sub CargarTablas(Optional ByVal sSeleccion As String = "")
 
-      Try
+        Try
+            Dim sSQL As String
+            Dim ds As DataSet
 
-         Dim sSQL As String
-         Dim ds As DataSet
-
-         sSQL = "SELECT    DN_TABLA, MAX(DN_NOMBRE) AS DN_NOMBRE " & _
-                "FROM      DISNOM " & _
-                "WHERE     DN_TABLA IS NOT NULL " & _
-                "AND       DN_TABLA <> '' " & _
+            sSQL = "SELECT    DN_TABLA, MAX(DN_NOMBRE) AS DN_NOMBRE " &
+                "FROM      DISNOM " &
+                "WHERE     DN_TABLA IS NOT NULL " &
+                "AND       DN_TABLA <> '' " &
                 "AND       DN_INACTIVO = 0 "
 
-         If btnTodas.Checked Then
-            sSQL = sSQL & "AND       DN_CODENT IN (0, " & CODIGO_ENTIDAD & ") "
-         Else
-            sSQL = sSQL & "AND       DN_CODENT = " & CODIGO_ENTIDAD & " "
-         End If
+            If chkTodas.Checked Then
+                sSQL = sSQL & "AND       DN_CODENT IN (0, " & CODIGO_ENTIDAD & ") "
+            Else
+                sSQL = sSQL & "AND       DN_CODENT = " & CODIGO_ENTIDAD & " "
+            End If
 
-         sSQL = sSQL & _
-                "GROUP BY  DN_TABLA " & _
+            sSQL = sSQL &
+                "GROUP BY  DN_TABLA " &
                 "ORDER BY  MAX(DN_NOMBRE) ASC"
-         ds = oAdmlocal.AbrirDataset(sSQL)
+            ds = oAdmlocal.AbrirDataset(sSQL)
 
-         cboTabla.Items.Clear()
+            cboTabla1.Items.Clear()
+            cboTabla1.Items.Add(New clsItem.Item("SELECCIONAR", "<Seleccionar...>"))
+            With ds.Tables(0)
+                For Each row As DataRow In .Rows
+                    cboTabla1.Items.Add(New clsItem.Item("K" & row("DN_TABLA"), row("DN_NOMBRE")))
+                Next
+            End With
 
-         With ds.Tables(0)
-            For Each row As DataRow In .Rows
-               cboTabla.Items.Add(New clsItem.Item("K" & row("DN_TABLA"), row("DN_NOMBRE")))
-            Next
-         End With
+            ds = Nothing
 
-         ds = Nothing
+            cboTabla1.Items.Add(New clsItem.Item("NUEVA", "Nueva tabla..."))
 
-         cboTabla.Items.Add(New clsItem.Item("NUEVA", "Nueva tabla..."))
+            If sSeleccion <> "" Then
+                SelComboBox(cboTabla1, sSeleccion)
+            Else
+                SelComboBox(cboTabla1, "SELECCIONAR")
+            End If
 
-         If sSeleccion <> "" Then
-            SelComboBox(cboTabla, sSeleccion)
-         End If
+            ds = Nothing
 
-         ds = Nothing
+        Catch ex As Exception
+            TratarError(ex, "CargarTablas")
+        End Try
+    End Sub
 
-      Catch ex As Exception
-         TratarError(ex, "CargarTablas")
-      End Try
-
-   End Sub
-
-   Private Sub FiltrarTipo()
+    Private Sub FiltrarTipo()
 
       If optTexto.Checked Then
          If Val(Llave(cboTipo)) = 2 Then
@@ -324,58 +307,57 @@ Public Class frmMain
 
    End Sub
 
-   Private Sub btnTodas_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTodas.Click
+    Private Sub chkTodas_CheckedChanged(sender As Object, e As EventArgs) Handles chkTodas.CheckedChanged
+        If chkTodas.CheckState = CheckState.Checked Then
+            CargarTablas()
+        End If
+    End Sub
 
-      If btnTodas.Checked Then
-         CargarTablas()
-      End If
 
-   End Sub
+    Private Sub btnOtra1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOtra1.Click
+        Cargar()
+    End Sub
 
-   Private Sub btnOtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOtra.Click
-      Cargar()
-   End Sub
-
-   Private Sub EliminarTabla()
+    Private Sub EliminarTabla()
 
       Try
 
          Dim sSQL As String = ""
 
-         If cboTabla.SelectedItem Is Nothing Then
-            MensajeError("Debe seleccionar una tabla")
-            cboTabla.Focus()
+            If cboTabla1.SelectedItem Is Nothing Then
+                MensajeError("Debe seleccionar una tabla")
+                cboTabla1.Focus()
+                Exit Sub
+            End If
+
+            If cboPeriodo1.SelectedItem Is Nothing Then
+                MensajeError("Debe seleccionar un período")
+                cboPeriodo1.Focus()
+                Exit Sub
+            End If
+
+            If Pregunta("¿Eliminar Tabla?") = vbNo Then
             Exit Sub
          End If
 
-         If cboPeriodo.SelectedItem Is Nothing Then
-            MensajeError("Debe seleccionar un período")
-            cboPeriodo.Focus()
-            Exit Sub
-         End If
+            sSQL = "DELETE " &
+                "FROM      DISPOS " &
+                "WHERE     DP_NOMBRE = '" & Llave(cboTabla1) & "' " &
+                "AND       DP_CODENT IN (0, " & CODIGO_ENTIDAD.ToString & ") " &
+                "AND       DP_FECVIG = " & FechaSQL(CDate(cboPeriodo1.Text)) & " "
+            oAdmlocal.EjecutarComandoAsincrono(sSQL)
 
-         If Pregunta("¿Eliminar Tabla?") = vbNo Then
-            Exit Sub
-         End If
+            sSQL = "DELETE " &
+                "FROM      DISNOM " &
+                "WHERE     DN_TABLA = '" & Llave(cboTabla1) & "' " &
+                "AND       DN_CODENT IN (0, " & CODIGO_ENTIDAD.ToString & ") " &
+                "AND       DN_FECHAVIG = " & FechaSQL(CDate(cboPeriodo1.Text)) & " "
+            oAdmlocal.EjecutarComandoAsincrono(sSQL)
 
-         sSQL = "DELETE " & _
-                "FROM      DISPOS " & _
-                "WHERE     DP_NOMBRE = '" & Llave(cboTabla) & "' " & _
-                "AND       DP_CODENT IN (0, " & CODIGO_ENTIDAD.ToString & ") " & _
-                "AND       DP_FECVIG = " & FechaSQL(CDate(cboPeriodo.Text)) & " "
-         oAdmlocal.EjecutarComandoAsincrono(sSQL)
-
-         sSQL = "DELETE " & _
-                "FROM      DISNOM " & _
-                "WHERE     DN_TABLA = '" & Llave(cboTabla) & "' " & _
-                "AND       DN_CODENT IN (0, " & CODIGO_ENTIDAD.ToString & ") " & _
-                "AND       DN_FECHAVIG = " & FechaSQL(CDate(cboPeriodo.Text)) & " "
-         oAdmlocal.EjecutarComandoAsincrono(sSQL)
-
-         sSQL = "IF EXISTS(SELECT * FROM SYSOBJECTS WHERE TYPE='U' AND NAME='" & Llave(cboTabla) & "_" & Llave(cboPeriodo) & "') BEGIN " & _
-                "DROP TABLE " & Llave(cboTabla) & "_" & Llave(cboPeriodo) & " " & _
+            sSQL = "IF EXISTS(SELECT * FROM SYSOBJECTS WHERE TYPE='U' AND NAME='" & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & "') BEGIN " &
+                "DROP TABLE " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & " " &
                 "END"
-         oAdmlocal.EjecutarComandoAsincrono(sSQL)
+            oAdmlocal.EjecutarComandoAsincrono(sSQL)
 
          Cargar()
 
@@ -385,47 +367,47 @@ Public Class frmMain
 
    End Sub
 
-   Private Sub btnEliminarTabla_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEliminarTabla.Click
-      EliminarTabla()
-   End Sub
+    Private Sub btnEliminarTabla1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEliminarTabla1.Click
+        EliminarTabla()
+    End Sub
 
-   Private Sub CargarTabla()
+    Private Sub CargarTabla()
 
       Dim oItem As clsItem.Item
 
-      If Not cboTabla.SelectedItem Is Nothing Then
+        If Not cboTabla1.SelectedItem Is Nothing Then
 
-         oItem = cboTabla.SelectedItem
-         If oItem.Valor.ToString = "NUEVA" Then
+            oItem = cboTabla1.SelectedItem
+            If oItem.Valor.ToString = "NUEVA" Then
 
-            NOMBRE_NUEVA_TABLA = ""
-            DESCRIPCION_NUEVA_TABLA = ""
-            FECHA_VIG_NUEVA_TABLA = ""
+                NOMBRE_NUEVA_TABLA = ""
+                DESCRIPCION_NUEVA_TABLA = ""
+                ' FECHA_VIG_NUEVA_TABLA = ""
 
-            'Load(frmNuevaTabla)
-            'frmNuevaTabla.Show(vbModal)
+                'Load(frmNuevaTabla)
+                'frmNuevaTabla.Show(vbModal)
 
-            If NOMBRE_NUEVA_TABLA = "" Then
-               cboTabla.SelectedItem = Nothing
-               cboTabla.Text = "<Seleccionar...>"
+                If NOMBRE_NUEVA_TABLA = "" Then
+                    cboTabla1.SelectedItem = Nothing
+                    cboTabla1.Text = "<Seleccionar...>"
+                Else
+                    cboTabla1.Items.Add(New clsItem.Item("K" & NOMBRE_NUEVA_TABLA, DESCRIPCION_NUEVA_TABLA))
+                    SelCombo(cboTabla1, "K" & NOMBRE_NUEVA_TABLA)
+                    RefrescarEstructura()
+                    cboTabla1.Enabled = False
+                End If
+
             Else
-               cboTabla.Items.Add(New clsItem.Item("K" & NOMBRE_NUEVA_TABLA, DESCRIPCION_NUEVA_TABLA))
-               SelCombo(cboTabla, "K" & NOMBRE_NUEVA_TABLA)
-               RefrescarEstructura()
-               cboTabla.Enabled = False
+
+                RefrescarEstructura()
+                cboTabla1.Enabled = False
+                TabPanel2.Enabled = True
+
             End If
 
-         Else
+        End If
 
-            RefrescarEstructura()
-            cboTabla.Enabled = False
-            TabPanel2.Enabled = True
-
-         End If
-
-      End If
-
-   End Sub
+    End Sub
 
    Private Sub CargarPeriodos()
 
@@ -436,30 +418,30 @@ Public Class frmMain
 
          Cursor = Cursors.WaitCursor
 
-         cboPeriodo.Enabled = True
-         cboPeriodo.Items.Clear()
+            cboPeriodo1.Enabled = True
+            cboPeriodo1.Items.Clear()
 
-         sSQL = "SELECT    DISTINCT DN_FECHAVIG " & _
-                "FROM      DISNOM " & _
-                "WHERE     DN_TABLA = '" & Llave(cboTabla) & "' " & _
-                "AND       DN_CODENT IN (0, " & CODIGO_ENTIDAD.ToString & ") " & _
+            sSQL = "SELECT    DISTINCT DN_FECHAVIG " &
+                "FROM      DISNOM " &
+                "WHERE     DN_TABLA = '" & Llave(cboTabla1) & "' " &
+                "AND       DN_CODENT IN (0, " & CODIGO_ENTIDAD.ToString & ") " &
                 "ORDER BY  DN_FECHAVIG DESC "
-         ds = oAdmlocal.AbrirDataset(sSQL)
+            ds = oAdmlocal.AbrirDataset(sSQL)
 
          With ds.Tables(0)
             For Each row As DataRow In .Rows
-               cboPeriodo.Items.Add(New clsItem.Item("K" & Format(row("DN_FECHAVIG"), "yyyyMMdd"), row("DN_FECHAVIG")))
-            Next
+                    cboPeriodo1.Items.Add(New clsItem.Item("K" & Format(row("DN_FECHAVIG"), "yyyyMMdd"), row("DN_FECHAVIG")))
+                Next
          End With
 
          ds = Nothing
 
-         If cboPeriodo.Items.Count = 1 Then
-            cboPeriodo.SelectedIndex = 0
-            CargarTabla()
-         Else
-            cboPeriodo.Text = "<Seleccione un período...>"
-         End If
+            If cboPeriodo1.Items.Count = 1 Then
+                cboPeriodo1.SelectedIndex = 0
+                CargarTabla()
+            Else
+                cboPeriodo1.Text = "<Seleccione un período...>"
+            End If
 
          Cursor = Cursors.Default
 
@@ -481,13 +463,13 @@ Public Class frmMain
          oTabla = Nothing
          oTabla = New dsTabla
 
-         sSQL = "SELECT    * " & _
-                "FROM      DISPOS " & _
-                "WHERE     DP_NOMBRE = '" & Llave(cboTabla) & "' " & _
-                "AND       DP_FECVIG = " & FechaSQL(CDate(cboPeriodo.Text)) & " " & _
-                "AND       DP_CODENT IN (0, " & CODIGO_ENTIDAD.ToString & ") " & _
+            sSQL = "SELECT    * " &
+                "FROM      DISPOS " &
+                "WHERE     DP_NOMBRE = '" & Llave(cboTabla1) & "' " &
+                "AND       DP_FECVIG = " & FechaSQL(CDate(cboPeriodo1.Text)) & " " &
+                "AND       DP_CODENT IN (0, " & CODIGO_ENTIDAD.ToString & ") " &
                 "ORDER BY  DP_INICIO "
-         ds = oAdmlocal.AbrirDataset(sSQL)
+            ds = oAdmlocal.AbrirDataset(sSQL)
 
          With ds.Tables(0)
             For Each row As DataRow In .Rows
@@ -529,60 +511,60 @@ Public Class frmMain
 
    End Sub
 
-   Private Sub cboTabla_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboTabla.SelectedIndexChanged
+    Private Sub cboTabla1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboTabla1.SelectedIndexChanged
 
-      Dim cboX As clsItem.Item
-      Dim bExisteCbo As Boolean
+        Dim cboX As clsItem.Item
+        Dim bExisteCbo As Boolean
 
-      If Not cboTabla.SelectedItem Is Nothing Then
+        If Not cboTabla1.SelectedItem Is Nothing Then
 
-         cboX = cboTabla.SelectedItem
+            cboX = cboTabla1.SelectedItem
 
-         If cboX.Valor.ToString = "NUEVA" Then
+            If cboX.Valor.ToString = "NUEVA" Then
 
-            NOMBRE_NUEVA_TABLA = ""
-            DESCRIPCION_NUEVA_TABLA = ""
-            FECHA_VIG_NUEVA_TABLA = ""
+                NOMBRE_NUEVA_TABLA = ""
+                DESCRIPCION_NUEVA_TABLA = ""
+                ' FECHA_VIG_NUEVA_TABLA = ""
 
-            'Load(frmNuevaTabla)
-            'frmNuevaTabla.Show(vbModal)
+                'Load(frmNuevaTabla)
+                'frmNuevaTabla.Show(vbModal)
 
-            If NOMBRE_NUEVA_TABLA = "" Then
-               cboTabla.SelectedItem = Nothing
-               cboTabla.Text = "<Seleccionar...>"
+                If NOMBRE_NUEVA_TABLA = "" Then
+                    cboTabla1.SelectedItem = Nothing
+                    cboTabla1.Text = "<Seleccionar...>"
+                Else
+
+                    For Each cboX In cboTabla1.Items
+                        If cboX.Valor.ToString = "K" & NOMBRE_NUEVA_TABLA Then
+                            bExisteCbo = True
+                            Exit For
+                        End If
+                    Next
+
+                    If Not bExisteCbo Then
+                        cboTabla1.Items.Add(New clsItem.Item("K" & NOMBRE_NUEVA_TABLA, DESCRIPCION_NUEVA_TABLA))
+                    End If
+
+                    SelCombo(cboTabla1, "K" & NOMBRE_NUEVA_TABLA)
+                    CargarPeriodos()
+                    cboTabla1.Enabled = False
+                End If
+
             Else
 
-               For Each cboX In cboTabla.Items
-                  If cboX.Valor.ToString = "K" & NOMBRE_NUEVA_TABLA Then
-                     bExisteCbo = True
-                     Exit For
-                  End If
-               Next
+                CargarPeriodos()
 
-               If Not bExisteCbo Then
-                  cboTabla.Items.Add(New clsItem.Item("K" & NOMBRE_NUEVA_TABLA, DESCRIPCION_NUEVA_TABLA))
-               End If
-
-               SelCombo(cboTabla, "K" & NOMBRE_NUEVA_TABLA)
-               CargarPeriodos()
-               cboTabla.Enabled = False
             End If
 
-         Else
+        End If
 
-            CargarPeriodos()
+    End Sub
 
-         End If
+    Private Sub cboPeriodo1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPeriodo1.SelectedIndexChanged
+        CargarTabla()
+    End Sub
 
-      End If
-
-   End Sub
-
-   Private Sub cboPeriodo_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPeriodo.SelectedIndexChanged
-      CargarTabla()
-   End Sub
-
-   Private Sub btnExportar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExportar.Click
+    Private Sub btnExportar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExportar.Click
 
       frmExportar.PasarViewResultados(Me.Text, lblTransaccion.Text, gDiseno)
       frmExportar.ShowDialog()
@@ -596,10 +578,10 @@ Public Class frmMain
    End Sub
 
    Private Sub DropDowns()
+        Exit Sub
+        'DropDown Tipo
 
-      'DropDown Tipo
-
-      Dim oItem As DropDownGrid
+        Dim oItem As DropDownGrid
       Dim xpCollectionTipo As New XPCollection(GetType(DropDownGrid))
       xpCollectionTipo.DisplayableProperties = "This;Codigo;Descripcion"
 
@@ -719,19 +701,19 @@ Public Class frmMain
          Dim da As OleDb.OleDbDataAdapter
          Dim cb As OleDb.OleDbCommandBuilder
 
-         sSQL = "DELETE " & _
-                "FROM      DISPOS " & _
-                "WHERE     DP_NOMBRE = '" & Llave(cboTabla) & "' " & _
-                "AND       DP_FECVIG = " & FechaSQL(CDate(cboPeriodo.Text)) & " " & _
+            sSQL = "DELETE " &
+                "FROM      DISPOS " &
+                "WHERE     DP_NOMBRE = '" & Llave(cboTabla1) & "' " &
+                "AND       DP_FECVIG = " & FechaSQL(CDate(cboPeriodo1.Text)) & " " &
                 "AND       DP_CODENT IN (0, " & CODIGO_ENTIDAD.ToString & ")"
-         oAdmlocal.EjecutarComandoSQL(sSQL)
+            oAdmlocal.EjecutarComandoSQL(sSQL)
 
-         sSQL = "SELECT    * " & _
-                "FROM      DISPOS " & _
-                "WHERE     DP_NOMBRE = '" & Llave(cboTabla) & "' " & _
-                "AND       DP_FECVIG = " & FechaSQL(CDate(cboPeriodo.Text)) & " " & _
+            sSQL = "SELECT    * " &
+                "FROM      DISPOS " &
+                "WHERE     DP_NOMBRE = '" & Llave(cboTabla1) & "' " &
+                "AND       DP_FECVIG = " & FechaSQL(CDate(cboPeriodo1.Text)) & " " &
                 "AND       DP_CODENT IN (0, " & CODIGO_ENTIDAD.ToString & ")"
-         ds = oAdmlocal.AbrirDataset(sSQL, da)
+            ds = oAdmlocal.AbrirDataset(sSQL, da)
          cb = New OleDb.OleDbCommandBuilder(da)
 
          With ds.Tables(0)
@@ -740,8 +722,8 @@ Public Class frmMain
 
                row = .NewRow
 
-               row("DP_NOMBRE") = Llave(cboTabla)
-               row("DP_CAMPO") = oCampo("Campo")
+                    row("DP_NOMBRE") = Llave(cboTabla1)
+                    row("DP_CAMPO") = oCampo("Campo")
                row("DP_INICIO") = oCampo("Inicio")
                row("DP_LONGITUD") = oCampo("Longitud")
                row("DP_FIN") = oCampo("Fin")
@@ -765,8 +747,8 @@ Public Class frmMain
 
          ds = Nothing
 
-         sSQL = "SELECT * FROM SYSOBJECTS WHERE NAME='" & Llave(cboTabla) & "_" & Llave(cboPeriodo) & "' AND TYPE='U'"
-         ds = oAdmlocal.AbrirDataset(sSQL)
+            sSQL = "SELECT * FROM SYSOBJECTS WHERE NAME='" & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & "' AND TYPE='U'"
+            ds = oAdmlocal.AbrirDataset(sSQL)
 
          If ds.Tables(0).Rows.Count = 0 Then
             CrearTabla()
@@ -794,9 +776,9 @@ Public Class frmMain
          Dim nLong As Long
          Dim bClave As Boolean
 
-         sSQL = "CREATE TABLE " & Llave(cboTabla) & "_" & Llave(cboPeriodo) & " ("
+            sSQL = "CREATE TABLE " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & " ("
 
-         For Each oCampo As DataRow In oTabla.Diseno.Rows
+            For Each oCampo As DataRow In oTabla.Diseno.Rows
 
             sTipo = oCampo("Tipo")
 
@@ -893,9 +875,9 @@ Public Class frmMain
          Dim nLong As Long
          Dim bElimina As Boolean
 
-         'Primero verifico si tengo columnas para dropear
-         sSQL = "SELECT TOP 1 * FROM " & Llave(cboTabla) & "_" & Llave(cboPeriodo) & " "
-         ds = oAdmlocal.AbrirDataset(sSQL)
+            'Primero verifico si tengo columnas para dropear
+            sSQL = "SELECT TOP 1 * FROM " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & " "
+            ds = oAdmlocal.AbrirDataset(sSQL)
 
          For Each oField In ds.Tables(0).Columns
             bElimina = True
@@ -908,9 +890,9 @@ Public Class frmMain
             Next
 
             If bElimina Then
-               sSQL = sSQL & "ALTER TABLE " & Llave(cboTabla) & "_" & Llave(cboPeriodo) & " " & _
+                    sSQL = sSQL & "ALTER TABLE " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & " " &
                       "DROP COLUMN " & oField.ColumnName & vbCrLf
-            End If
+                End If
          Next
 
          ds = Nothing
@@ -930,13 +912,13 @@ Public Class frmMain
 
             sSQL = sSQL & oCampo("Campo destino") & " " & TipoDatosSQL(sTipo, nLong) & ", " & vbCrLf
 
-            If oAdmlocal.ExisteCampo(Llave(cboTabla) & "_" & Llave(cboPeriodo), oCampo("Campo destino")) Then
-               sSQL = "ALTER TABLE " & Llave(cboTabla) & "_" & Llave(cboPeriodo) & " " & _
+                If oAdmlocal.ExisteCampo(Llave(cboTabla1) & "_" & Llave(cboPeriodo1), oCampo("Campo destino")) Then
+                    sSQL = "ALTER TABLE " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & " " &
                       "ALTER COLUMN " & oCampo("Campo destino") & " " & TipoDatosSQL(sTipo, nLong) & " "
-            Else
-               sSQL = "ALTER TABLE " & Llave(cboTabla) & "_" & Llave(cboPeriodo) & " " & _
+                Else
+                    sSQL = "ALTER TABLE " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & " " &
                       "ADD " & oCampo("Campo destino") & " " & TipoDatosSQL(sTipo, nLong) & " "
-            End If
+                End If
 
             oAdmlocal.EjecutarComandoAsincrono(sSQL)
 
@@ -947,8 +929,8 @@ Public Class frmMain
          Next
 
          If bClave Then
-            sSQL = "SELECT TOP 1 * FROM " & Llave(cboTabla) & "_" & Llave(cboPeriodo)
-            ds = oAdmlocal.AbrirDataset(sSQL)
+                sSQL = "SELECT TOP 1 * FROM " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1)
+                ds = oAdmlocal.AbrirDataset(sSQL)
 
             bClave = False
 
@@ -962,9 +944,9 @@ Public Class frmMain
             ds = Nothing
 
             If Not bClave Then
-               sSQL = "ALTER TABLE " & Llave(cboTabla) & "_" & Llave(cboPeriodo) & " " & _
+                    sSQL = "ALTER TABLE " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & " " &
                       "ADD PrexClave VARCHAR(255) NULL"
-               oAdmlocal.EjecutarComandoAsincrono(sSQL)
+                    oAdmlocal.EjecutarComandoAsincrono(sSQL)
             End If
          End If
 
@@ -1260,11 +1242,11 @@ Public Class frmMain
 
          CrearTablaTemp()
 
-         If btnArchivo.Checked Then
-            bResult = IncorporarArchivos(txtOrigen.Text, Llave(cboTabla))
-         Else
+            If rbArchivo.Checked Then
+                bResult = IncorporarArchivos(txtOrigen.Text, Llave(cboTabla1))
+            Else
 
-            If optAccess.Checked Then
+                If optAccess.Checked Then
                sSQL = "INSERT " & _
                       "INTO " & TABLA_TEMPORAL & " " & vbCrLf & _
                       sSQL & vbCrLf & " " & _
@@ -1343,20 +1325,20 @@ Public Class frmMain
          Grid.RefreshDataSource()
          Grid.Refresh()
 
-         If btnLinked.Checked Or btnRowSet.Checked Then
-            If optDBase.Checked Then
-               File.Delete(TempOrig() & cboTipo.Text & ".DBF")
-            ElseIf optExcel.Checked Then
-               File.Delete(TempOrig() & "Origen.xls")
-            ElseIf Not OptSQL.Checked Then
-               File.Delete(TempOrig() & NombreArchivo(txtOrigen.Text))
-               If File.Exists(TempOrig() & "schema.ini") Then
-                  File.Delete(TempOrig() & "schema.ini")
-               End If
+            If rbLinked.Checked Or rbRowSet.Checked Then
+                If optDBase.Checked Then
+                    File.Delete(TempOrig() & cboTipo.Text & ".DBF")
+                ElseIf optExcel.Checked Then
+                    File.Delete(TempOrig() & "Origen.xls")
+                ElseIf Not OptSQL.Checked Then
+                    File.Delete(TempOrig() & NombreArchivo(txtOrigen.Text))
+                    If File.Exists(TempOrig() & "schema.ini") Then
+                        File.Delete(TempOrig() & "schema.ini")
+                    End If
+                End If
             End If
-         End If
 
-         cmdIncorporar.Text = "&Incorporar"
+            cmdIncorporar.Text = "&Incorporar"
 
       Catch ex As Exception
          OcultarProceso()
@@ -1376,26 +1358,26 @@ Public Class frmMain
 
       Dim sSQL As String = ""
 
-      If btnLinked.Checked Or btnRowSet.Checked Then
+        If rbLinked.Checked Or rbRowSet.Checked Then
 
-         MostrarProceso("Generando esquema y copiando archivos...")
+            MostrarProceso("Generando esquema y copiando archivos...")
 
-         GenerarEsquema()
+            GenerarEsquema()
 
-         OcultarProceso()
+            OcultarProceso()
 
-      End If
+        End If
 
-      sSQL = GenerarSQLOrigen
+        sSQL = GenerarSQLOrigen()
 
-      If btnLinked.Checked Then
-         sSQL = "INSERT " & _
-                "INTO " & TABLA_TEMPORAL & _
-                sSQL & " FROM " & _
+        If rbLinked.Checked Then
+            sSQL = "INSERT " &
+                "INTO " & TABLA_TEMPORAL &
+                sSQL & " FROM " &
                 "TXTSVR...[" & Replace(NombreArchivo(txtOrigen.Text), ".", "#") & "]"
-      End If
+        End If
 
-      Return sSQL
+        Return sSQL
 
    End Function
 
@@ -1839,9 +1821,9 @@ Public Class frmMain
 
       Try
 
-         sTabla = sTabla & "_" & Llave(cboPeriodo)
+            sTabla = sTabla & "_" & Llave(cboPeriodo1)
 
-         If Not oAdmlocal.ExisteTabla(sTabla) Then
+            If Not oAdmlocal.ExisteTabla(sTabla) Then
             CrearTabla()
          End If
 
@@ -2121,14 +2103,14 @@ GrabarCampo:
                sCampo2 = "ED_RELEQU"
             End If
 
-            sSQL = "UPDATE     " & TABLA_TEMPORAL & " " & _
-                   "SET        " & oCampo("Campo destino") & " = " & sCampo1 & " " & _
-                   "FROM       " & TABLA_TEMPORAL & " " & _
-                   "INNER JOIN EQUDET " & _
-                   "ON         " & oCampo("Campo destino") & " = " & sCampo2 & " " & _
-                   "AND        ED_TABLA = '" & Llave(cboTabla) & "_" & Llave(cboPeriodo) & "'"
+                sSQL = "UPDATE     " & TABLA_TEMPORAL & " " &
+                   "SET        " & oCampo("Campo destino") & " = " & sCampo1 & " " &
+                   "FROM       " & TABLA_TEMPORAL & " " &
+                   "INNER JOIN EQUDET " &
+                   "ON         " & oCampo("Campo destino") & " = " & sCampo2 & " " &
+                   "AND        ED_TABLA = '" & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & "'"
 
-            oAdmlocal.EjecutarComandoAsincrono(sSQL)
+                oAdmlocal.EjecutarComandoAsincrono(sSQL)
 
          Next
 
@@ -2161,14 +2143,14 @@ GrabarCampo:
 
             If chkEqui.Checked Then
 
-               'REEMPLAZA EQUIVALENCIAS DE CLAVE
-               sSQL = "UPDATE     " & TABLA_TEMPORAL & " " & _
-                      "SET        PrexClave = ED_CODIGO " & _
-                      "FROM       " & TABLA_TEMPORAL & " " & _
-                      "INNER JOIN EQUDET " & _
-                      "ON         PrexClave = ED_RELEQU " & _
-                      "AND        ED_TABLA = '" & Llave(cboTabla) & "_" & Llave(cboPeriodo) & "'"
-               oAdmlocal.EjecutarComandoAsincrono(sSQL)
+                    'REEMPLAZA EQUIVALENCIAS DE CLAVE
+                    sSQL = "UPDATE     " & TABLA_TEMPORAL & " " &
+                      "SET        PrexClave = ED_CODIGO " &
+                      "FROM       " & TABLA_TEMPORAL & " " &
+                      "INNER JOIN EQUDET " &
+                      "ON         PrexClave = ED_RELEQU " &
+                      "AND        ED_TABLA = '" & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & "'"
+                    oAdmlocal.EjecutarComandoAsincrono(sSQL)
 
             End If
 
@@ -2190,15 +2172,15 @@ GrabarCampo:
 
       Try
 
-         'CARGO LOS CAMPOS CLAVE EN EL ORDEN ESTABLECIDO
-         sSQL = "SELECT    * " & _
-                "FROM      DISPOS " & _
-                "WHERE     DP_NOMBRE = '" & Llave(cboTabla) & "' " & _
-                "AND       DP_FECVIG = " & FechaSQL(cboPeriodo.Text) & " " & _
-                "AND       DP_CODENT IN (0, " & CODIGO_ENTIDAD.ToString & ") " & _
-                "AND       DP_CLAVE > 0 " & _
+            'CARGO LOS CAMPOS CLAVE EN EL ORDEN ESTABLECIDO
+            sSQL = "SELECT    * " &
+                "FROM      DISPOS " &
+                "WHERE     DP_NOMBRE = '" & Llave(cboTabla1) & "' " &
+                "AND       DP_FECVIG = " & FechaSQL(cboPeriodo1.Text) & " " &
+                "AND       DP_CODENT IN (0, " & CODIGO_ENTIDAD.ToString & ") " &
+                "AND       DP_CLAVE > 0 " &
                 "ORDER BY  DP_CLAVE "
-         ds = oAdmlocal.AbrirDataset(sSQL)
+            ds = oAdmlocal.AbrirDataset(sSQL)
 
          With ds.Tables(0)
             For Each row As DataRow In .Rows
@@ -2277,24 +2259,24 @@ GrabarCampo:
 
       Try
 
-         If Not oAdmlocal.ExisteTabla(Llave(cboTabla) & "_" & Llave(cboPeriodo)) Then
-            CrearTabla()
-         Else
-            If Not ValidarIncorporacion(Llave(cboTabla) & "_" & Llave(cboPeriodo)) Then
-               Exit Sub
+            If Not oAdmlocal.ExisteTabla(Llave(cboTabla1) & "_" & Llave(cboPeriodo1)) Then
+                CrearTabla()
+            Else
+                If Not ValidarIncorporacion(Llave(cboTabla1) & "_" & Llave(cboPeriodo1)) Then
+                    Exit Sub
+                End If
             End If
-         End If
 
          For Each oCampo As DataRow In oTabla.Diseno.Rows
 
             If oCampo("Valida") = 3 Then
 
-               sSQL = "SELECT    TG_ALFA01 " & _
-                      "FROM      TABGEN " & _
-                      "WHERE     TG_CODTAB = 1500 " & _
-                      "AND       TG_DESCRI = '" & Llave(cboTabla) & "' " & _
+                    sSQL = "SELECT    TG_ALFA01 " &
+                      "FROM      TABGEN " &
+                      "WHERE     TG_CODTAB = 1500 " &
+                      "AND       TG_DESCRI = '" & Llave(cboTabla1) & "' " &
                       "ORDER BY  TG_CODCON "
-               ds = oAdmlocal.AbrirDataset(sSQL)
+                    ds = oAdmlocal.AbrirDataset(sSQL)
 
                For Each row As DataRow In ds.Tables(0).Rows
 
@@ -2335,10 +2317,10 @@ GrabarCampo:
          MostrarProceso("Incorporando datos...")
 
          If ClaveTabla() <> "" Then
-            If Not oAdmlocal.ExisteCampo(Llave(cboTabla) & "_" & Llave(cboPeriodo), "PrexClave") Then
-               oAdmlocal.EjecutarComandoAsincrono("ALTER TABLE " & Llave(cboTabla) & "_" & Llave(cboPeriodo) & " ADD PrexClave VARCHAR(255) NULL ")
+                If Not oAdmlocal.ExisteCampo(Llave(cboTabla1) & "_" & Llave(cboPeriodo1), "PrexClave") Then
+                    oAdmlocal.EjecutarComandoAsincrono("ALTER TABLE " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & " ADD PrexClave VARCHAR(255) NULL ")
+                End If
             End If
-         End If
 
          sSQL = ""
 
@@ -2348,10 +2330,10 @@ GrabarCampo:
 
          sSQL = Mid(sSQL, 1, Len(sSQL) - 2)
 
-         sSQL = "INSERT INTO [" & Llave(cboTabla) & "_" & Llave(cboPeriodo) & "] (" & _
-                sSQL & ") " & _
+            sSQL = "INSERT INTO [" & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & "] (" &
+                sSQL & ") " &
                 "SELECT " & sSQL & " FROM [" & TABLA_TEMPORAL & "]"
-         oAdmlocal.EjecutarComandoAsincrono(sSQL, sError)
+            oAdmlocal.EjecutarComandoAsincrono(sSQL, sError)
 
       Catch ex As Exception
          TratarError(ex, "Incorporar")

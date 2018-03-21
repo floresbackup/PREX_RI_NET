@@ -24,9 +24,13 @@ Public NotInheritable Class SplashScreen
 
    Private Sub SplashScreen_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-      If MODO_ABOUT Then
-         lblEquipo.Text = DatosEquipo()
-      End If
+        If MODO_ABOUT Then
+            lblEquipo.Text = DatosEquipo()
+            Label2.Visible = False
+            lblEquipo.Height = 191 + 55
+        Else
+            Label2.Visible = True
+        End If
 
    End Sub
 
@@ -51,33 +55,37 @@ Public NotInheritable Class SplashScreen
 
       Try
 
-         oAdmTablas.ConnectionString = CONN_LOCAL
+            oAdmTablas.ConnectionString = CONN_LOCAL
 
-         DatosEquipo = "Ruta aplicación: " & vbCrLf & IO.Path.GetDirectoryName(Application.ExecutablePath) & vbCrLf & vbCrLf
+            DatosEquipo = "Ruta aplicación: " & vbCrLf & IO.Path.GetDirectoryName(Application.ExecutablePath) & vbCrLf & vbCrLf
 
-         sSQL = "SELECT DB_NAME() AS BASEDATOS "
-         ds = oAdmTablas.AbrirDataset(sSQL)
+            sSQL = "SELECT DB_NAME() AS BASEDATOS "
+            ds = oAdmTablas.AbrirDataset(sSQL)
 
-         DatosEquipo = DatosEquipo & "Base de datos: " & vbCrLf & ds.Tables(0).Rows(0).Item("BASEDATOS") & vbCrLf & vbCrLf
+            DatosEquipo = DatosEquipo & "Base de datos: " & vbCrLf & ds.Tables(0).Rows(0).Item("BASEDATOS") & vbCrLf & vbCrLf
 
-         sSQL = "SELECT   CONVERT(char(20), SERVERPROPERTY('servername')) AS SERVIDOR "
-         ds = oAdmTablas.AbrirDataset(sSQL)
+            sSQL = "SELECT   CONVERT(char(20), SERVERPROPERTY('servername')) AS SERVIDOR "
+            ds = oAdmTablas.AbrirDataset(sSQL)
 
-         DatosEquipo = DatosEquipo & "Servidor SQL: " & vbCrLf & ds.Tables(0).Rows(0).Item("SERVIDOR") & vbCrLf & vbCrLf
+            DatosEquipo = DatosEquipo & "Servidor SQL: " & vbCrLf & ds.Tables(0).Rows(0).Item("SERVIDOR") & vbCrLf & vbCrLf
 
-         ds = Nothing
+            ds = Nothing
 
-         sSQL = "SELECT   CONVERT(char(20), SERVERPROPERTY('collation')) as COLL"
-         ds = oAdmTablas.AbrirDataset(sSQL)
+            sSQL = "SELECT   CONVERT(char(20), SERVERPROPERTY('collation')) as COLL"
+            ds = oAdmTablas.AbrirDataset(sSQL)
 
-         DatosEquipo = DatosEquipo & "Intercalación SQL: " & vbCrLf & ds.Tables(0).Rows(0).Item("COLL") & vbCrLf & vbCrLf
+            DatosEquipo = DatosEquipo & "Intercalación SQL: " & vbCrLf & ds.Tables(0).Rows(0).Item("COLL") & vbCrLf & vbCrLf
 
-         sSQL = "SELECT @@VERSION AS VERSIONSQL "
-         ds = oAdmTablas.AbrirDataset(sSQL)
+            sSQL = "SELECT @@VERSION AS VERSIONSQL "
+            ds = oAdmTablas.AbrirDataset(sSQL)
 
-         DatosEquipo = DatosEquipo & "Versión SQL: " & vbCrLf & Replace(Replace(ds.Tables(0).Rows(0).Item("VERSIONSQL"), vbLf, vbCrLf), vbTab, "") & vbCrLf
+            DatosEquipo = DatosEquipo & "Versión SQL: " & vbCrLf & Replace(Replace(ds.Tables(0).Rows(0).Item("VERSIONSQL"), vbLf, vbCrLf), vbTab, "") & vbCrLf
 
-         ds = Nothing
+            If DatosEquipo.Contains("Microsoft Corporation") Then
+                DatosEquipo = DatosEquipo.Substring(0, DatosEquipo.IndexOf("Microsoft Corporation") + 21)
+            End If
+
+            ds = Nothing
 
       Catch ex As Exception
          TratarError(ex, "DatosEquipo")
@@ -85,4 +93,9 @@ Public NotInheritable Class SplashScreen
 
    End Function
 
+    Private Sub SplashScreen_KeyPress(sender As Object, e As KeyPressEventArgs) Handles MyBase.KeyPress
+        If MODO_ABOUT AndAlso e.KeyChar = ChrW(Keys.Escape) Then
+            Me.Close()
+        End If
+    End Sub
 End Class

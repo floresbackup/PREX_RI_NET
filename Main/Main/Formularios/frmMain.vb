@@ -32,6 +32,7 @@ Public Class frmMain
     Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         CargarArbol()
         CargarMenues(0)
+        SetFooterFechaHora()
     End Sub
 
     Private Sub CargarArbol()
@@ -603,6 +604,29 @@ Err_Trap:
 
     Private Sub frmMain_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
         ResizeColumns()
+    End Sub
+
+    Private Sub TimerFooter_Tick(sender As Object, e As EventArgs) Handles TimerFooter.Tick
+        SetFooterFechaHora()
+    End Sub
+
+    Private Sub SetFooterFechaHora()
+
+        lblFecha.Text = DateTime.Now.ToShortDateString()
+        lblHora.Text = DateTime.Now.ToShortTimeString()
+    End Sub
+    Private Sub frmMain_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp
+        If e.KeyCode = Keys.CapsLock Then
+            lblCaps.Enabled = Control.IsKeyLocked(Keys.CapsLock)
+        ElseIf e.KeyCode = Keys.NumLock Then
+            lblNum.Enabled = Control.IsKeyLocked(Keys.NumLock)
+        End If
+    End Sub
+
+    Private Sub frmMain_Activated(sender As Object, e As EventArgs) Handles Me.Activated
+        lblCaps.Enabled = Control.IsKeyLocked(Keys.CapsLock)
+
+        lblNum.Enabled = Control.IsKeyLocked(Keys.NumLock)
     End Sub
 
     'resize de menu

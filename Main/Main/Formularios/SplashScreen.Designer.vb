@@ -95,7 +95,7 @@ Partial Class SplashScreen
         '
         Me.lblEquipo.BackColor = System.Drawing.Color.Transparent
         Me.lblEquipo.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblEquipo.ForeColor = System.Drawing.Color.Black
+        Me.lblEquipo.ForeColor = System.Drawing.Color.SteelBlue
         Me.lblEquipo.Location = New System.Drawing.Point(241, 80)
         Me.lblEquipo.Name = "lblEquipo"
         Me.lblEquipo.Size = New System.Drawing.Size(265, 191)

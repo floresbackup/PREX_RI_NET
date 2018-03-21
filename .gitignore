@@ -1,6 +1,23 @@
 ﻿################################################################################
 # Este archivo .gitignore ha sido creado automáticamente por Microsoft(R) Visual Studio.
 ################################################################################
+<<<<<<< HEAD
 
 /Main/Main/bin/Debug/es
 *.ide-shm
+=======
+*.exe
+*.pdb
+/Main/Main/obj/*
+/Main/Main/bin/*
+Main/.vs/Main/v15/.suo
+Main/.vs/Main/v15/.suo
+*.ide
+*.dll
+*.exe
+*.pdb
+*.exe
+*.mdb
+*.vs*.suo
+Main/.vs/Main/v15/.suo
+>>>>>>> 73efa467b512c349360a5e5d5ec3bd14bb0f767c

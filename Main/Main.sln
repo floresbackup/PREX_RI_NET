@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Main", "Main\Main.vbproj", "{75113748-2734-4C89-9736-51C22FDD85F7}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PrexInstaller", "PrexInstaller\PrexInstaller.vdproj", "{C893878D-CF78-4BD7-860F-D0F9C3F49D15}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VBP04801", "..\VBP04801\VBP04801\VBP04801.vbproj", "{1A8F849B-4502-4036-9D6A-0886E3A2FBCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +21,10 @@ Global
 		{75113748-2734-4C89-9736-51C22FDD85F7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C893878D-CF78-4BD7-860F-D0F9C3F49D15}.Debug|Any CPU.ActiveCfg = Debug
 		{C893878D-CF78-4BD7-860F-D0F9C3F49D15}.Release|Any CPU.ActiveCfg = Release
+		{1A8F849B-4502-4036-9D6A-0886E3A2FBCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A8F849B-4502-4036-9D6A-0886E3A2FBCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A8F849B-4502-4036-9D6A-0886E3A2FBCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A8F849B-4502-4036-9D6A-0886E3A2FBCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
