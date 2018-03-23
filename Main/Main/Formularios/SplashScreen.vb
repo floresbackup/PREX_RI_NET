@@ -23,16 +23,18 @@ Public NotInheritable Class SplashScreen
    End Sub
 
    Private Sub SplashScreen_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
+        lblFrameworkNet.Text = ".NET Framework " + System.Runtime.InteropServices.RuntimeEnvironment.GetSystemVersion
         If MODO_ABOUT Then
             lblEquipo.Text = DatosEquipo()
             Label2.Visible = False
             lblEquipo.Height = 191 + 55
+            lblFrameworkNet.Visible = True
         Else
+            lblFrameworkNet.Visible = False
             Label2.Visible = True
         End If
 
-   End Sub
+    End Sub
 
    Public Sub New()
 

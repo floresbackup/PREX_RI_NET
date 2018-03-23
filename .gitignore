@@ -21,3 +21,6 @@ Main/.vs/Main/v15/.suo
 *.vs*.suo
 Main/.vs/Main/v15/.suo
 >>>>>>> 73efa467b512c349360a5e5d5ec3bd14bb0f767c
+*.ide-shm
+*.ide-wal
+*.ide-shm

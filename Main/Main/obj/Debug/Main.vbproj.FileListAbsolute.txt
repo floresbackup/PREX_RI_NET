@@ -16,21 +16,12 @@ C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\DevExpress.X
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\DevExpress.XtraPrinting.v7.2.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\DevExpress.XtraReports.v7.2.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\SecurityGateway.dll
-C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\ReachFramework.dll
-C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\PresentationCore.dll
-C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\WindowsBase.dll
-C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\PresentationFramework.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\AssistedSolutions.WebControls.InputMask.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\EntLibCustomizations.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\DevExpress.XtraNavBar.v7.2.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\DevExpress.XtraRichTextEdit.v7.2.dll
-C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\System.Printing.dll
-C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\UIAutomationProvider.dll
-C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\UIAutomationTypes.dll
-C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\PresentationCFFRasterizer.dll
-C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\PresentationUI.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\Microsoft.Practices.ObjectBuilder.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\es\DevExpress.Data.v7.2.resources.dll
@@ -46,7 +37,6 @@ C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\es\DevExpres
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\es\DevExpress.XtraNavBar.v7.2.resources.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\es\DevExpress.XtraRichTextEdit.v7.2.resources.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\Andromeda.Framework.XmlSerializers.dll
-C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\Interop.ADODB.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\obj\Debug\Main.vbprojResolveAssemblyReference.cache
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\obj\Debug\Interop.ADODB.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\obj\Debug\Main.vbproj.ResolveComReference.cache
@@ -67,3 +57,4 @@ C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\obj\Debug\Main.vbproj.
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\obj\Debug\Main.exe
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\obj\Debug\Main.xml
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\obj\Debug\Main.pdb
+C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\ADODB.dll

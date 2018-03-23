@@ -28,6 +28,7 @@ Partial Class SplashScreen
         Me.lblVersion = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.lblEquipo = New System.Windows.Forms.Label()
+        Me.lblFrameworkNet = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label1
@@ -101,6 +102,18 @@ Partial Class SplashScreen
         Me.lblEquipo.Size = New System.Drawing.Size(265, 191)
         Me.lblEquipo.TabIndex = 5
         '
+        'lblFrameworkNet
+        '
+        Me.lblFrameworkNet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblFrameworkNet.BackColor = System.Drawing.Color.Transparent
+        Me.lblFrameworkNet.ForeColor = System.Drawing.Color.SteelBlue
+        Me.lblFrameworkNet.Location = New System.Drawing.Point(397, 313)
+        Me.lblFrameworkNet.Name = "lblFrameworkNet"
+        Me.lblFrameworkNet.Size = New System.Drawing.Size(114, 13)
+        Me.lblFrameworkNet.TabIndex = 6
+        Me.lblFrameworkNet.Text = ".Net Framework 4.5"
+        Me.lblFrameworkNet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
         'SplashScreen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -108,6 +121,7 @@ Partial Class SplashScreen
         Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
         Me.ClientSize = New System.Drawing.Size(538, 378)
         Me.ControlBox = False
+        Me.Controls.Add(Me.lblFrameworkNet)
         Me.Controls.Add(Me.lblEquipo)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.lblVersion)
@@ -130,5 +144,5 @@ Partial Class SplashScreen
    Friend WithEvents lblVersion As System.Windows.Forms.Label
    Friend WithEvents Label2 As System.Windows.Forms.Label
    Friend WithEvents lblEquipo As System.Windows.Forms.Label
-
+    Friend WithEvents lblFrameworkNet As Label
 End Class
