@@ -24,3 +24,6 @@ Main/.vs/Main/v15/.suo
 *.ide-shm
 *.ide-wal
 *.ide-shm
+/VBP04801/VBP04801/obj/Release/VBP04801.vbproj.FileListAbsolute.txt
+/VBP04801/VBP04801/obj/Release/VBP04801.vbprojResolveAssemblyReference.cache
+/VBP04801/VBP04801/bin/Debug/VBP04801.exe.config

@@ -1,5 +1,6 @@
 
 Imports System.Configuration
+Imports Prex.Utils
 
 Module modLocalMain
 
@@ -24,6 +25,7 @@ Module modLocalMain
         Dim bIniciar As Boolean = True
 
         PrevInstance()
+        Prex.Utils.Configuration.LeerXML()
 
         'Configuración
         LeerXML()

@@ -38,19 +38,19 @@ Module modLocalMain
       vcIncorporaFecha = 99
    End Enum
 
-   Sub Main()
+    Sub Main()
 
-      'Configuración
-      LeerXML()
+        'Configuración
+        LeerXML()
 
-      CulturaActual = System.Threading.Thread.CurrentThread.CurrentCulture
-      CulturaCargarTextos(CulturaActual.ToString)
+        CulturaActual = System.Threading.Thread.CurrentThread.CurrentCulture
+        CulturaCargarTextos(CulturaActual.ToString)
 
-      frmMain.ShowDialog()
+        frmMain.ShowDialog()
 
-   End Sub
+    End Sub
 
-   Public Function TempOrig() As String
+    Public Function TempOrig() As String
 
       TempOrig = ""
 

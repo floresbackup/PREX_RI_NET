@@ -58,3 +58,5 @@ C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\obj\Debug\Main.exe
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\obj\Debug\Main.xml
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\obj\Debug\Main.pdb
 C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\ADODB.dll
+C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\Prex.Utils.dll
+C:\Users\Administrador\source\repos\PREX_RI_NET\Main\Main\bin\Debug\Prex.Utils.pdb
