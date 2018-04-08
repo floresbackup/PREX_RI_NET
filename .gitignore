@@ -10,6 +10,8 @@
 *.pdb
 /Main/Main/obj/*
 /Main/Main/bin/*
+/VBP04801/VBP04801/bin/*
+/VBP04801/VBP04801/obj/*
 Main/.vs/Main/v15/.suo
 Main/.vs/Main/v15/.suo
 *.ide
@@ -29,3 +31,4 @@ Main/.vs/Main/v15/.suo
 /VBP04801/VBP04801/bin/Debug/VBP04801.exe.config
 Main/.vs/Main/v15/.suo
 *.ide
+*.exe

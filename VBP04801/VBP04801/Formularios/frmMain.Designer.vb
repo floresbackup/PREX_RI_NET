@@ -19,6 +19,7 @@ Partial Class frmMain
    'No lo modifique con el editor de código.
    <System.Diagnostics.DebuggerStepThrough()> _
    Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.sbMain = New System.Windows.Forms.StatusStrip()
         Me.lblUsuario = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lblEntidad = New System.Windows.Forms.ToolStripStatusLabel()
@@ -31,7 +32,7 @@ Partial Class frmMain
         Me.lblVersion = New System.Windows.Forms.ToolStripLabel()
         Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
         Me.TabDiseno = New System.Windows.Forms.TabControl()
-        Me.TabPanel1 = New System.Windows.Forms.TabPage()
+        Me.tabTablas = New System.Windows.Forms.TabPage()
         Me.PanGridDiseno = New System.Windows.Forms.Panel()
         Me.GridDiseno = New DevExpress.XtraGrid.GridControl()
         Me.gDiseno = New DevExpress.XtraGrid.Views.Grid.GridView()
@@ -58,11 +59,6 @@ Partial Class frmMain
         Me.btnEliminarTabla1 = New System.Windows.Forms.Button()
         Me.btnOtra1 = New System.Windows.Forms.Button()
         Me.chkTodas = New System.Windows.Forms.CheckBox()
-        Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.rbRowSet = New System.Windows.Forms.RadioButton()
-        Me.rbLinked = New System.Windows.Forms.RadioButton()
-        Me.rbArchivo = New System.Windows.Forms.RadioButton()
-        Me.Label7 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.ToolStrip2 = New System.Windows.Forms.ToolStrip()
         Me.btnGuardar = New System.Windows.Forms.ToolStripButton()
@@ -70,7 +66,7 @@ Partial Class frmMain
         Me.btnImprimir = New System.Windows.Forms.ToolStripButton()
         Me.btnExportar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
-        Me.TabPanel2 = New System.Windows.Forms.TabPage()
+        Me.tabDatos = New System.Windows.Forms.TabPage()
         Me.PanGridResult = New System.Windows.Forms.Panel()
         Me.Grid = New DevExpress.XtraGrid.GridControl()
         Me.gResult = New DevExpress.XtraGrid.Views.Grid.GridView()
@@ -104,20 +100,23 @@ Partial Class frmMain
         Me.optExcel = New System.Windows.Forms.RadioButton()
         Me.optTexto = New System.Windows.Forms.RadioButton()
         Me.DsTabla = New VBP04801.dsTabla()
-        Me.XpCollection1 = New DevExpress.Xpo.XPCollection()
+        Me.XpCollection1 = New DevExpress.Xpo.XPCollection(Me.components)
+        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.btnSolapaAnt = New DevExpress.XtraEditors.SimpleButton()
+        Me.btnSolapaSig = New DevExpress.XtraEditors.SimpleButton()
         Me.sbMain.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.TabDiseno.SuspendLayout()
-        Me.TabPanel1.SuspendLayout()
+        Me.tabTablas.SuspendLayout()
         Me.PanGridDiseno.SuspendLayout()
         CType(Me.GridDiseno, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gDiseno, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanTool.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.Panel1.SuspendLayout()
-        Me.Panel2.SuspendLayout()
         Me.ToolStrip2.SuspendLayout()
-        Me.TabPanel2.SuspendLayout()
+        Me.tabDatos.SuspendLayout()
         Me.PanGridResult.SuspendLayout()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gResult, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -126,6 +125,8 @@ Partial Class frmMain
         Me.grOrigen.SuspendLayout()
         CType(Me.DsTabla, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.XpCollection1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TableLayoutPanel2.SuspendLayout()
+        Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
         '
         'sbMain
@@ -222,26 +223,27 @@ Partial Class frmMain
         '
         'TabDiseno
         '
-        Me.TabDiseno.Controls.Add(Me.TabPanel1)
-        Me.TabDiseno.Controls.Add(Me.TabPanel2)
+        Me.TabDiseno.Controls.Add(Me.tabTablas)
+        Me.TabDiseno.Controls.Add(Me.tabDatos)
         Me.TabDiseno.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TabDiseno.Location = New System.Drawing.Point(0, 25)
+        Me.TabDiseno.Location = New System.Drawing.Point(0, 0)
+        Me.TabDiseno.Margin = New System.Windows.Forms.Padding(0)
         Me.TabDiseno.Name = "TabDiseno"
         Me.TabDiseno.SelectedIndex = 0
-        Me.TabDiseno.Size = New System.Drawing.Size(685, 400)
+        Me.TabDiseno.Size = New System.Drawing.Size(685, 370)
         Me.TabDiseno.TabIndex = 13
         '
-        'TabPanel1
+        'tabTablas
         '
-        Me.TabPanel1.Controls.Add(Me.PanGridDiseno)
-        Me.TabPanel1.Controls.Add(Me.PanTool)
-        Me.TabPanel1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPanel1.Name = "TabPanel1"
-        Me.TabPanel1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPanel1.Size = New System.Drawing.Size(677, 374)
-        Me.TabPanel1.TabIndex = 0
-        Me.TabPanel1.Text = "Diseño de tablas"
-        Me.TabPanel1.UseVisualStyleBackColor = True
+        Me.tabTablas.Controls.Add(Me.PanGridDiseno)
+        Me.tabTablas.Controls.Add(Me.PanTool)
+        Me.tabTablas.Location = New System.Drawing.Point(4, 22)
+        Me.tabTablas.Name = "tabTablas"
+        Me.tabTablas.Padding = New System.Windows.Forms.Padding(3)
+        Me.tabTablas.Size = New System.Drawing.Size(677, 344)
+        Me.tabTablas.TabIndex = 0
+        Me.tabTablas.Text = "Diseño de tablas"
+        Me.tabTablas.UseVisualStyleBackColor = True
         '
         'PanGridDiseno
         '
@@ -249,30 +251,25 @@ Partial Class frmMain
         Me.PanGridDiseno.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PanGridDiseno.Location = New System.Drawing.Point(3, 80)
         Me.PanGridDiseno.Name = "PanGridDiseno"
-        Me.PanGridDiseno.Size = New System.Drawing.Size(671, 291)
-        Me.PanGridDiseno.TabIndex = 10
+        Me.PanGridDiseno.Size = New System.Drawing.Size(671, 261)
+        Me.PanGridDiseno.TabIndex = 18
         '
         'GridDiseno
         '
         Me.GridDiseno.Cursor = System.Windows.Forms.Cursors.Default
         Me.GridDiseno.Dock = System.Windows.Forms.DockStyle.Fill
-        '
-        '
-        '
         Me.GridDiseno.EmbeddedNavigator.Buttons.Append.Visible = False
         Me.GridDiseno.EmbeddedNavigator.Buttons.CancelEdit.Visible = False
         Me.GridDiseno.EmbeddedNavigator.Buttons.Edit.Visible = False
         Me.GridDiseno.EmbeddedNavigator.Buttons.EndEdit.Visible = False
         Me.GridDiseno.EmbeddedNavigator.Buttons.Remove.Visible = False
-        Me.GridDiseno.EmbeddedNavigator.Name = ""
-        Me.GridDiseno.EmbeddedNavigator.TextStringFormat = "Registro {0} de {1}"
         Me.GridDiseno.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GridDiseno.Location = New System.Drawing.Point(0, 0)
         Me.GridDiseno.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat
         Me.GridDiseno.LookAndFeel.UseWindowsXPTheme = True
         Me.GridDiseno.MainView = Me.gDiseno
         Me.GridDiseno.Name = "GridDiseno"
-        Me.GridDiseno.Size = New System.Drawing.Size(671, 291)
+        Me.GridDiseno.Size = New System.Drawing.Size(671, 261)
         Me.GridDiseno.TabIndex = 15
         Me.GridDiseno.UseEmbeddedNavigator = True
         Me.GridDiseno.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gDiseno})
@@ -432,7 +429,6 @@ Partial Class frmMain
         Me.TableLayoutPanel1.Controls.Add(Me.cboTabla1, 1, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.cboPeriodo1, 1, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.Panel1, 2, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Panel2, 2, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.Label6, 0, 1)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 25)
@@ -512,60 +508,6 @@ Partial Class frmMain
         Me.chkTodas.Text = "&Ver todas"
         Me.chkTodas.UseVisualStyleBackColor = True
         '
-        'Panel2
-        '
-        Me.Panel2.Controls.Add(Me.rbRowSet)
-        Me.Panel2.Controls.Add(Me.rbLinked)
-        Me.Panel2.Controls.Add(Me.rbArchivo)
-        Me.Panel2.Controls.Add(Me.Label7)
-        Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel2.Location = New System.Drawing.Point(250, 25)
-        Me.Panel2.Margin = New System.Windows.Forms.Padding(0)
-        Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(471, 27)
-        Me.Panel2.TabIndex = 5
-        '
-        'rbRowSet
-        '
-        Me.rbRowSet.AutoSize = True
-        Me.rbRowSet.Location = New System.Drawing.Point(258, 4)
-        Me.rbRowSet.Name = "rbRowSet"
-        Me.rbRowSet.Size = New System.Drawing.Size(63, 17)
-        Me.rbRowSet.TabIndex = 3
-        Me.rbRowSet.Text = "RowSet"
-        Me.rbRowSet.UseVisualStyleBackColor = True
-        '
-        'rbLinked
-        '
-        Me.rbLinked.AutoSize = True
-        Me.rbLinked.Location = New System.Drawing.Point(161, 4)
-        Me.rbLinked.Name = "rbLinked"
-        Me.rbLinked.Size = New System.Drawing.Size(91, 17)
-        Me.rbLinked.TabIndex = 2
-        Me.rbLinked.Text = "Linked Server"
-        Me.rbLinked.UseVisualStyleBackColor = True
-        '
-        'rbArchivo
-        '
-        Me.rbArchivo.AutoSize = True
-        Me.rbArchivo.Checked = True
-        Me.rbArchivo.Location = New System.Drawing.Point(94, 4)
-        Me.rbArchivo.Name = "rbArchivo"
-        Me.rbArchivo.Size = New System.Drawing.Size(61, 17)
-        Me.rbArchivo.TabIndex = 1
-        Me.rbArchivo.TabStop = True
-        Me.rbArchivo.Text = "Archivo"
-        Me.rbArchivo.UseVisualStyleBackColor = True
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(3, 6)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(85, 13)
-        Me.Label7.TabIndex = 0
-        Me.Label7.Text = "Tipo de captura:"
-        '
         'Label6
         '
         Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -624,17 +566,17 @@ Partial Class frmMain
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
         Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 25)
         '
-        'TabPanel2
+        'tabDatos
         '
-        Me.TabPanel2.Controls.Add(Me.PanGridResult)
-        Me.TabPanel2.Controls.Add(Me.PanOrigen)
-        Me.TabPanel2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPanel2.Name = "TabPanel2"
-        Me.TabPanel2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPanel2.Size = New System.Drawing.Size(677, 374)
-        Me.TabPanel2.TabIndex = 1
-        Me.TabPanel2.Text = "Incorporar datos"
-        Me.TabPanel2.UseVisualStyleBackColor = True
+        Me.tabDatos.Controls.Add(Me.PanGridResult)
+        Me.tabDatos.Controls.Add(Me.PanOrigen)
+        Me.tabDatos.Location = New System.Drawing.Point(4, 22)
+        Me.tabDatos.Name = "tabDatos"
+        Me.tabDatos.Padding = New System.Windows.Forms.Padding(3)
+        Me.tabDatos.Size = New System.Drawing.Size(677, 344)
+        Me.tabDatos.TabIndex = 1
+        Me.tabDatos.Text = "Incorporar datos"
+        Me.tabDatos.UseVisualStyleBackColor = True
         '
         'PanGridResult
         '
@@ -642,30 +584,25 @@ Partial Class frmMain
         Me.PanGridResult.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PanGridResult.Location = New System.Drawing.Point(3, 184)
         Me.PanGridResult.Name = "PanGridResult"
-        Me.PanGridResult.Size = New System.Drawing.Size(671, 187)
+        Me.PanGridResult.Size = New System.Drawing.Size(671, 157)
         Me.PanGridResult.TabIndex = 1
         '
         'Grid
         '
         Me.Grid.Cursor = System.Windows.Forms.Cursors.Default
         Me.Grid.Dock = System.Windows.Forms.DockStyle.Fill
-        '
-        '
-        '
         Me.Grid.EmbeddedNavigator.Buttons.Append.Visible = False
         Me.Grid.EmbeddedNavigator.Buttons.CancelEdit.Visible = False
         Me.Grid.EmbeddedNavigator.Buttons.Edit.Visible = False
         Me.Grid.EmbeddedNavigator.Buttons.EndEdit.Visible = False
         Me.Grid.EmbeddedNavigator.Buttons.Remove.Visible = False
-        Me.Grid.EmbeddedNavigator.Name = ""
-        Me.Grid.EmbeddedNavigator.TextStringFormat = "Registro {0} de {1}"
         Me.Grid.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Grid.Location = New System.Drawing.Point(0, 0)
         Me.Grid.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat
         Me.Grid.LookAndFeel.UseWindowsXPTheme = True
         Me.Grid.MainView = Me.gResult
         Me.Grid.Name = "Grid"
-        Me.Grid.Size = New System.Drawing.Size(671, 187)
+        Me.Grid.Size = New System.Drawing.Size(671, 157)
         Me.Grid.TabIndex = 15
         Me.Grid.UseEmbeddedNavigator = True
         Me.Grid.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gResult})
@@ -965,12 +902,55 @@ Partial Class frmMain
         Me.DsTabla.DataSetName = "dsTabla"
         Me.DsTabla.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
+        'TableLayoutPanel2
+        '
+        Me.TableLayoutPanel2.ColumnCount = 1
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel2.Controls.Add(Me.TabDiseno, 0, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.Panel2, 0, 1)
+        Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel2.Location = New System.Drawing.Point(0, 25)
+        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+        Me.TableLayoutPanel2.RowCount = 2
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(685, 400)
+        Me.TableLayoutPanel2.TabIndex = 17
+        '
+        'Panel2
+        '
+        Me.Panel2.Controls.Add(Me.btnSolapaAnt)
+        Me.Panel2.Controls.Add(Me.btnSolapaSig)
+        Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Panel2.Location = New System.Drawing.Point(0, 370)
+        Me.Panel2.Margin = New System.Windows.Forms.Padding(0)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(685, 30)
+        Me.Panel2.TabIndex = 14
+        '
+        'btnSolapaAnt
+        '
+        Me.btnSolapaAnt.Location = New System.Drawing.Point(525, 4)
+        Me.btnSolapaAnt.Name = "btnSolapaAnt"
+        Me.btnSolapaAnt.Size = New System.Drawing.Size(75, 23)
+        Me.btnSolapaAnt.TabIndex = 16
+        Me.btnSolapaAnt.Text = "< &Anterior"
+        '
+        'btnSolapaSig
+        '
+        Me.btnSolapaSig.Enabled = False
+        Me.btnSolapaSig.Location = New System.Drawing.Point(606, 4)
+        Me.btnSolapaSig.Name = "btnSolapaSig"
+        Me.btnSolapaSig.Size = New System.Drawing.Size(75, 23)
+        Me.btnSolapaSig.TabIndex = 15
+        Me.btnSolapaSig.Text = "&Siguiente >"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(685, 450)
-        Me.Controls.Add(Me.TabDiseno)
+        Me.Controls.Add(Me.TableLayoutPanel2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.sbMain)
         Me.Name = "frmMain"
@@ -981,7 +961,7 @@ Partial Class frmMain
         Me.ToolStrip1.ResumeLayout(False)
         Me.ToolStrip1.PerformLayout()
         Me.TabDiseno.ResumeLayout(False)
-        Me.TabPanel1.ResumeLayout(False)
+        Me.tabTablas.ResumeLayout(False)
         Me.PanGridDiseno.ResumeLayout(False)
         CType(Me.GridDiseno, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.gDiseno, System.ComponentModel.ISupportInitialize).EndInit()
@@ -991,11 +971,9 @@ Partial Class frmMain
         Me.TableLayoutPanel1.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
-        Me.Panel2.ResumeLayout(False)
-        Me.Panel2.PerformLayout()
         Me.ToolStrip2.ResumeLayout(False)
         Me.ToolStrip2.PerformLayout()
-        Me.TabPanel2.ResumeLayout(False)
+        Me.tabDatos.ResumeLayout(False)
         Me.PanGridResult.ResumeLayout(False)
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.gResult, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1007,6 +985,8 @@ Partial Class frmMain
         Me.grOrigen.PerformLayout()
         CType(Me.DsTabla, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.XpCollection1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TableLayoutPanel2.ResumeLayout(False)
+        Me.Panel2.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1021,10 +1001,9 @@ Partial Class frmMain
     Friend WithEvents tsSep2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents btnSalir As System.Windows.Forms.ToolStripButton
     Friend WithEvents TabDiseno As System.Windows.Forms.TabControl
-    Friend WithEvents TabPanel1 As System.Windows.Forms.TabPage
-    Friend WithEvents PanGridDiseno As System.Windows.Forms.Panel
+    Friend WithEvents tabTablas As System.Windows.Forms.TabPage
     Friend WithEvents PanTool As System.Windows.Forms.Panel
-    Friend WithEvents TabPanel2 As System.Windows.Forms.TabPage
+    Friend WithEvents tabDatos As System.Windows.Forms.TabPage
     Friend WithEvents ToolStrip2 As System.Windows.Forms.ToolStrip
     Friend WithEvents btnGuardar As System.Windows.Forms.ToolStripButton
     Friend WithEvents btnImprimir As System.Windows.Forms.ToolStripButton
@@ -1065,6 +1044,18 @@ Partial Class frmMain
     Friend WithEvents txtCantidad As System.Windows.Forms.ToolStripTextBox
     Private WithEvents Grid As DevExpress.XtraGrid.GridControl
     Private WithEvents gResult As DevExpress.XtraGrid.Views.Grid.GridView
+    Private WithEvents XpCollection1 As DevExpress.Xpo.XPCollection
+    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+    Friend WithEvents Label5 As Label
+    Friend WithEvents cboTabla1 As ComboBox
+    Friend WithEvents Label6 As Label
+    Friend WithEvents cboPeriodo1 As ComboBox
+    Friend WithEvents Panel1 As Panel
+    Friend WithEvents chkTodas As CheckBox
+    Friend WithEvents btnEliminarTabla1 As Button
+    Friend WithEvents btnOtra1 As Button
+    Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
+    Friend WithEvents PanGridDiseno As Panel
     Private WithEvents GridDiseno As DevExpress.XtraGrid.GridControl
     Private WithEvents gDiseno As DevExpress.XtraGrid.Views.Grid.GridView
     Private WithEvents colCampodestino As DevExpress.XtraGrid.Columns.GridColumn
@@ -1081,20 +1072,8 @@ Partial Class frmMain
     Private WithEvents colCodEnt As DevExpress.XtraGrid.Columns.GridColumn
     Private WithEvents colFecha As DevExpress.XtraGrid.Columns.GridColumn
     Private WithEvents colClave As DevExpress.XtraGrid.Columns.GridColumn
-    Private WithEvents XpCollection1 As DevExpress.Xpo.XPCollection
-    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
-    Friend WithEvents Label5 As Label
-    Friend WithEvents cboTabla1 As ComboBox
-    Friend WithEvents Label6 As Label
-    Friend WithEvents cboPeriodo1 As ComboBox
-    Friend WithEvents Panel1 As Panel
-    Friend WithEvents chkTodas As CheckBox
-    Friend WithEvents btnEliminarTabla1 As Button
-    Friend WithEvents btnOtra1 As Button
+    Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
     Friend WithEvents Panel2 As Panel
-    Friend WithEvents rbRowSet As RadioButton
-    Friend WithEvents rbLinked As RadioButton
-    Friend WithEvents rbArchivo As RadioButton
-    Friend WithEvents Label7 As Label
-    Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
+    Friend WithEvents btnSolapaAnt As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents btnSolapaSig As DevExpress.XtraEditors.SimpleButton
 End Class
