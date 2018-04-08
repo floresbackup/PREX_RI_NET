@@ -930,6 +930,7 @@ Partial Class frmMain
         '
         'btnSolapaAnt
         '
+        Me.btnSolapaAnt.Enabled = False
         Me.btnSolapaAnt.Location = New System.Drawing.Point(525, 4)
         Me.btnSolapaAnt.Name = "btnSolapaAnt"
         Me.btnSolapaAnt.Size = New System.Drawing.Size(75, 23)
@@ -938,7 +939,6 @@ Partial Class frmMain
         '
         'btnSolapaSig
         '
-        Me.btnSolapaSig.Enabled = False
         Me.btnSolapaSig.Location = New System.Drawing.Point(606, 4)
         Me.btnSolapaSig.Name = "btnSolapaSig"
         Me.btnSolapaSig.Size = New System.Drawing.Size(75, 23)
