@@ -92,19 +92,13 @@ Partial Class frmMain
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.grOrigen = New System.Windows.Forms.GroupBox()
-        Me.chkEqui = New System.Windows.Forms.CheckBox()
-        Me.OptSQL = New System.Windows.Forms.RadioButton()
-        Me.optDBase = New System.Windows.Forms.RadioButton()
-        Me.optAccess = New System.Windows.Forms.RadioButton()
-        Me.optExcel = New System.Windows.Forms.RadioButton()
-        Me.optTexto = New System.Windows.Forms.RadioButton()
         Me.DsTabla = New VBP04801.dsTabla()
         Me.XpCollection1 = New DevExpress.Xpo.XPCollection(Me.components)
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.btnSolapaAnt = New DevExpress.XtraEditors.SimpleButton()
         Me.btnSolapaSig = New DevExpress.XtraEditors.SimpleButton()
+        Me.chkEqui = New System.Windows.Forms.CheckBox()
         Me.sbMain.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.TabDiseno.SuspendLayout()
@@ -122,7 +116,6 @@ Partial Class frmMain
         CType(Me.gResult, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanOrigen.SuspendLayout()
         Me.ToolStrip3.SuspendLayout()
-        Me.grOrigen.SuspendLayout()
         CType(Me.DsTabla, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.XpCollection1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TableLayoutPanel2.SuspendLayout()
@@ -582,9 +575,9 @@ Partial Class frmMain
         '
         Me.PanGridResult.Controls.Add(Me.Grid)
         Me.PanGridResult.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PanGridResult.Location = New System.Drawing.Point(3, 184)
+        Me.PanGridResult.Location = New System.Drawing.Point(3, 139)
         Me.PanGridResult.Name = "PanGridResult"
-        Me.PanGridResult.Size = New System.Drawing.Size(671, 157)
+        Me.PanGridResult.Size = New System.Drawing.Size(671, 202)
         Me.PanGridResult.TabIndex = 1
         '
         'Grid
@@ -602,7 +595,7 @@ Partial Class frmMain
         Me.Grid.LookAndFeel.UseWindowsXPTheme = True
         Me.Grid.MainView = Me.gResult
         Me.Grid.Name = "Grid"
-        Me.Grid.Size = New System.Drawing.Size(671, 157)
+        Me.Grid.Size = New System.Drawing.Size(671, 202)
         Me.Grid.TabIndex = 15
         Me.Grid.UseEmbeddedNavigator = True
         Me.Grid.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gResult})
@@ -620,6 +613,7 @@ Partial Class frmMain
         '
         'PanOrigen
         '
+        Me.PanOrigen.Controls.Add(Me.chkEqui)
         Me.PanOrigen.Controls.Add(Me.ToolStrip3)
         Me.PanOrigen.Controls.Add(Me.lblSep)
         Me.PanOrigen.Controls.Add(Me.Label4)
@@ -636,18 +630,17 @@ Partial Class frmMain
         Me.PanOrigen.Controls.Add(Me.Label3)
         Me.PanOrigen.Controls.Add(Me.Label2)
         Me.PanOrigen.Controls.Add(Me.Label1)
-        Me.PanOrigen.Controls.Add(Me.grOrigen)
         Me.PanOrigen.Dock = System.Windows.Forms.DockStyle.Top
         Me.PanOrigen.Location = New System.Drawing.Point(3, 3)
         Me.PanOrigen.Name = "PanOrigen"
-        Me.PanOrigen.Size = New System.Drawing.Size(671, 181)
+        Me.PanOrigen.Size = New System.Drawing.Size(671, 136)
         Me.PanOrigen.TabIndex = 0
         '
         'ToolStrip3
         '
         Me.ToolStrip3.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.ToolStrip3.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnExportarResult, Me.btnImprimirResult, Me.ToolStripSeparator7, Me.lblRegistros, Me.txtCantidad})
-        Me.ToolStrip3.Location = New System.Drawing.Point(0, 156)
+        Me.ToolStrip3.Location = New System.Drawing.Point(0, 111)
         Me.ToolStrip3.Name = "ToolStrip3"
         Me.ToolStrip3.Size = New System.Drawing.Size(671, 25)
         Me.ToolStrip3.TabIndex = 17
@@ -690,7 +683,7 @@ Partial Class frmMain
         'lblSep
         '
         Me.lblSep.AutoSize = True
-        Me.lblSep.Location = New System.Drawing.Point(373, 123)
+        Me.lblSep.Location = New System.Drawing.Point(359, 78)
         Me.lblSep.Name = "lblSep"
         Me.lblSep.Size = New System.Drawing.Size(96, 13)
         Me.lblSep.TabIndex = 16
@@ -699,7 +692,7 @@ Partial Class frmMain
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(373, 98)
+        Me.Label4.Location = New System.Drawing.Point(359, 53)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(88, 13)
         Me.Label4.TabIndex = 15
@@ -707,7 +700,7 @@ Partial Class frmMain
         '
         'txtSep
         '
-        Me.txtSep.Location = New System.Drawing.Point(469, 120)
+        Me.txtSep.Location = New System.Drawing.Point(455, 75)
         Me.txtSep.Name = "txtSep"
         Me.txtSep.Size = New System.Drawing.Size(32, 20)
         Me.txtSep.TabIndex = 10
@@ -715,7 +708,7 @@ Partial Class frmMain
         '
         'txtCualif
         '
-        Me.txtCualif.Location = New System.Drawing.Point(503, 120)
+        Me.txtCualif.Location = New System.Drawing.Point(489, 75)
         Me.txtCualif.Name = "txtCualif"
         Me.txtCualif.Size = New System.Drawing.Size(33, 20)
         Me.txtCualif.TabIndex = 11
@@ -723,7 +716,7 @@ Partial Class frmMain
         '
         'txtSymbol
         '
-        Me.txtSymbol.Location = New System.Drawing.Point(469, 95)
+        Me.txtSymbol.Location = New System.Drawing.Point(455, 50)
         Me.txtSymbol.Name = "txtSymbol"
         Me.txtSymbol.Size = New System.Drawing.Size(68, 20)
         Me.txtSymbol.TabIndex = 9
@@ -731,7 +724,7 @@ Partial Class frmMain
         '
         'cmdCancelarVP
         '
-        Me.cmdCancelarVP.Location = New System.Drawing.Point(543, 119)
+        Me.cmdCancelarVP.Location = New System.Drawing.Point(529, 74)
         Me.cmdCancelarVP.Name = "cmdCancelarVP"
         Me.cmdCancelarVP.Size = New System.Drawing.Size(75, 21)
         Me.cmdCancelarVP.TabIndex = 15
@@ -740,7 +733,7 @@ Partial Class frmMain
         '
         'cmdIncorporar
         '
-        Me.cmdIncorporar.Location = New System.Drawing.Point(543, 94)
+        Me.cmdIncorporar.Location = New System.Drawing.Point(529, 49)
         Me.cmdIncorporar.Name = "cmdIncorporar"
         Me.cmdIncorporar.Size = New System.Drawing.Size(75, 21)
         Me.cmdIncorporar.TabIndex = 14
@@ -749,7 +742,7 @@ Partial Class frmMain
         '
         'cmdExaminar
         '
-        Me.cmdExaminar.Location = New System.Drawing.Point(543, 69)
+        Me.cmdExaminar.Location = New System.Drawing.Point(529, 4)
         Me.cmdExaminar.Name = "cmdExaminar"
         Me.cmdExaminar.Size = New System.Drawing.Size(75, 21)
         Me.cmdExaminar.TabIndex = 13
@@ -759,7 +752,7 @@ Partial Class frmMain
         'txtFecha
         '
         Me.txtFecha.CustomFormat = "dd/MM/yyyy"
-        Me.txtFecha.Location = New System.Drawing.Point(132, 91)
+        Me.txtFecha.Location = New System.Drawing.Point(118, 46)
         Me.txtFecha.Name = "txtFecha"
         Me.txtFecha.Size = New System.Drawing.Size(235, 20)
         Me.txtFecha.TabIndex = 7
@@ -768,7 +761,7 @@ Partial Class frmMain
         'chkEncabezado
         '
         Me.chkEncabezado.AutoSize = True
-        Me.chkEncabezado.Location = New System.Drawing.Point(132, 137)
+        Me.chkEncabezado.Location = New System.Drawing.Point(118, 92)
         Me.chkEncabezado.Name = "chkEncabezado"
         Me.chkEncabezado.Size = New System.Drawing.Size(235, 17)
         Me.chkEncabezado.TabIndex = 12
@@ -779,14 +772,14 @@ Partial Class frmMain
         '
         Me.cboTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboTipo.FormattingEnabled = True
-        Me.cboTipo.Location = New System.Drawing.Point(132, 115)
+        Me.cboTipo.Location = New System.Drawing.Point(118, 70)
         Me.cboTipo.Name = "cboTipo"
         Me.cboTipo.Size = New System.Drawing.Size(235, 21)
         Me.cboTipo.TabIndex = 8
         '
         'txtOrigen
         '
-        Me.txtOrigen.Location = New System.Drawing.Point(132, 69)
+        Me.txtOrigen.Location = New System.Drawing.Point(118, 4)
         Me.txtOrigen.Name = "txtOrigen"
         Me.txtOrigen.Size = New System.Drawing.Size(405, 20)
         Me.txtOrigen.TabIndex = 6
@@ -794,7 +787,7 @@ Partial Class frmMain
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(0, 118)
+        Me.Label3.Location = New System.Drawing.Point(0, 73)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(84, 13)
         Me.Label3.TabIndex = 3
@@ -803,7 +796,7 @@ Partial Class frmMain
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(0, 95)
+        Me.Label2.Location = New System.Drawing.Point(0, 50)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(99, 13)
         Me.Label2.TabIndex = 2
@@ -812,90 +805,11 @@ Partial Class frmMain
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(0, 72)
+        Me.Label1.Location = New System.Drawing.Point(0, 7)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(87, 13)
         Me.Label1.TabIndex = 1
         Me.Label1.Text = "Orígen de datos:"
-        '
-        'grOrigen
-        '
-        Me.grOrigen.Controls.Add(Me.chkEqui)
-        Me.grOrigen.Controls.Add(Me.OptSQL)
-        Me.grOrigen.Controls.Add(Me.optDBase)
-        Me.grOrigen.Controls.Add(Me.optAccess)
-        Me.grOrigen.Controls.Add(Me.optExcel)
-        Me.grOrigen.Controls.Add(Me.optTexto)
-        Me.grOrigen.Dock = System.Windows.Forms.DockStyle.Top
-        Me.grOrigen.Location = New System.Drawing.Point(0, 0)
-        Me.grOrigen.Name = "grOrigen"
-        Me.grOrigen.Size = New System.Drawing.Size(671, 65)
-        Me.grOrigen.TabIndex = 0
-        Me.grOrigen.TabStop = False
-        Me.grOrigen.Text = "Orígen de datos"
-        '
-        'chkEqui
-        '
-        Me.chkEqui.AutoSize = True
-        Me.chkEqui.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkEqui.Location = New System.Drawing.Point(358, 42)
-        Me.chkEqui.Name = "chkEqui"
-        Me.chkEqui.Size = New System.Drawing.Size(243, 17)
-        Me.chkEqui.TabIndex = 5
-        Me.chkEqui.Text = "&Procesar Reemplazo de Equivalencias"
-        Me.chkEqui.UseVisualStyleBackColor = True
-        '
-        'OptSQL
-        '
-        Me.OptSQL.AutoSize = True
-        Me.OptSQL.Location = New System.Drawing.Point(358, 19)
-        Me.OptSQL.Name = "OptSQL"
-        Me.OptSQL.Size = New System.Drawing.Size(151, 17)
-        Me.OptSQL.TabIndex = 4
-        Me.OptSQL.Text = "Base de datos &SQL Server"
-        Me.OptSQL.UseVisualStyleBackColor = True
-        '
-        'optDBase
-        '
-        Me.optDBase.AutoSize = True
-        Me.optDBase.Location = New System.Drawing.Point(174, 42)
-        Me.optDBase.Name = "optDBase"
-        Me.optDBase.Size = New System.Drawing.Size(141, 17)
-        Me.optDBase.TabIndex = 3
-        Me.optDBase.Text = "Base de datos &DBase IV"
-        Me.optDBase.UseVisualStyleBackColor = True
-        '
-        'optAccess
-        '
-        Me.optAccess.AutoSize = True
-        Me.optAccess.Location = New System.Drawing.Point(174, 19)
-        Me.optAccess.Name = "optAccess"
-        Me.optAccess.Size = New System.Drawing.Size(131, 17)
-        Me.optAccess.TabIndex = 2
-        Me.optAccess.Text = "Base de datos &Access"
-        Me.optAccess.UseVisualStyleBackColor = True
-        '
-        'optExcel
-        '
-        Me.optExcel.AutoSize = True
-        Me.optExcel.Location = New System.Drawing.Point(6, 42)
-        Me.optExcel.Name = "optExcel"
-        Me.optExcel.Size = New System.Drawing.Size(128, 17)
-        Me.optExcel.TabIndex = 1
-        Me.optExcel.Text = "Hoja de cálculo &Excel"
-        Me.optExcel.UseVisualStyleBackColor = True
-        '
-        'optTexto
-        '
-        Me.optTexto.AutoSize = True
-        Me.optTexto.Checked = True
-        Me.optTexto.Location = New System.Drawing.Point(6, 19)
-        Me.optTexto.Name = "optTexto"
-        Me.optTexto.Size = New System.Drawing.Size(106, 17)
-        Me.optTexto.TabIndex = 0
-        Me.optTexto.TabStop = True
-        Me.optTexto.Text = "Archivo de &Texto"
-        Me.optTexto.UseVisualStyleBackColor = True
         '
         'DsTabla
         '
@@ -945,6 +859,17 @@ Partial Class frmMain
         Me.btnSolapaSig.TabIndex = 15
         Me.btnSolapaSig.Text = "&Siguiente >"
         '
+        'chkEqui
+        '
+        Me.chkEqui.AutoSize = True
+        Me.chkEqui.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkEqui.Location = New System.Drawing.Point(118, 26)
+        Me.chkEqui.Name = "chkEqui"
+        Me.chkEqui.Size = New System.Drawing.Size(243, 17)
+        Me.chkEqui.TabIndex = 18
+        Me.chkEqui.Text = "&Procesar reemplazos de equivalencias"
+        Me.chkEqui.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -981,8 +906,6 @@ Partial Class frmMain
         Me.PanOrigen.PerformLayout()
         Me.ToolStrip3.ResumeLayout(False)
         Me.ToolStrip3.PerformLayout()
-        Me.grOrigen.ResumeLayout(False)
-        Me.grOrigen.PerformLayout()
         CType(Me.DsTabla, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.XpCollection1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TableLayoutPanel2.ResumeLayout(False)
@@ -1011,15 +934,8 @@ Partial Class frmMain
     Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents PanGridResult As System.Windows.Forms.Panel
     Friend WithEvents PanOrigen As System.Windows.Forms.Panel
-    Friend WithEvents grOrigen As System.Windows.Forms.GroupBox
-    Friend WithEvents optTexto As System.Windows.Forms.RadioButton
     Friend WithEvents lblVersion As System.Windows.Forms.ToolStripLabel
     Friend WithEvents ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents OptSQL As System.Windows.Forms.RadioButton
-    Friend WithEvents optDBase As System.Windows.Forms.RadioButton
-    Friend WithEvents optAccess As System.Windows.Forms.RadioButton
-    Friend WithEvents optExcel As System.Windows.Forms.RadioButton
-    Friend WithEvents chkEqui As System.Windows.Forms.CheckBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
@@ -1076,4 +992,5 @@ Partial Class frmMain
     Friend WithEvents Panel2 As Panel
     Friend WithEvents btnSolapaAnt As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents btnSolapaSig As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents chkEqui As CheckBox
 End Class
