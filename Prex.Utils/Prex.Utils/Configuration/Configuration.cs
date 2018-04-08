@@ -14,7 +14,7 @@ namespace Prex.Utils
 
         public string Nombre      { get; set; }
         public string Descripcion { get; set; }
-        public string Codigo      { get; set; }
+        public long Codigo      { get; set; }
         public bool Admin         { get; set; }
         public bool SoloLectura   { get; set; }
         public string Password    { get; set; }
@@ -52,6 +52,7 @@ namespace Prex.Utils
     public class PrexConfig
     {
         public string CONN_LOCAL         { get; internal set; }
+        public string CONN_LOCAL_ADO => CONN_LOCAL.Substring(CONN_LOCAL.IndexOf(';')+1, CONN_LOCAL.Length-(CONN_LOCAL.IndexOf(';') + 1));
         public  string FFECHA     { get; internal set; }
         public string CARPETA_LOCAL      { get; internal set; }
         public string RUTA_BIN           { get; internal set; }
