@@ -221,21 +221,21 @@ Public Class frmMain
       txtOrigen.Text = ""
       cmdIncorporar.Text = "&Vista previa"
 
-      TabPanel2.Enabled = False
+        tabDatos.Enabled = False
 
-      cboTipo.Items.Clear()
-      cboTipo.Items.Add(New clsItem.Item("K1", "Ancho fijo"))
-      cboTipo.Items.Add(New clsItem.Item("K2", "Delimitado por caracter"))
-      cboTipo.SelectedIndex = 0
+        cboTipo.Items.Clear()
+        cboTipo.Items.Add(New clsItem.Item("K1", "Ancho fijo"))
+        cboTipo.Items.Add(New clsItem.Item("K2", "Delimitado por caracter"))
+        cboTipo.SelectedIndex = 0
 
-      'SelComboBox(cboTipo, "K1")
+        'SelComboBox(cboTipo, "K1")
 
-      FiltrarTipo()
-      optTexto.Checked = True
+        FiltrarTipo()
+        'optTexto.Checked = True
 
-      DropDowns()
+        DropDowns()
 
-   End Sub
+    End Sub
 
     Private Sub CargarTablas(Optional ByVal sSeleccion As String = "")
 
@@ -287,25 +287,25 @@ Public Class frmMain
 
     Private Sub FiltrarTipo()
 
-      If optTexto.Checked Then
-         If Val(Llave(cboTipo)) = 2 Then
-            lblSep.Visible = True
-            txtSep.Visible = True
-            txtCualif.Visible = True
-         Else
-            lblSep.Visible = False
-            txtSep.Visible = False
-            txtCualif.Visible = False
-         End If
-      End If
+        'If optTexto.Checked Then
+        If Val(Llave(cboTipo)) = 2 Then
+                lblSep.Visible = True
+                txtSep.Visible = True
+                txtCualif.Visible = True
+            Else
+                lblSep.Visible = False
+                txtSep.Visible = False
+                txtCualif.Visible = False
+            End If
+        'End If
 
-   End Sub
+    End Sub
 
-   Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-      Cargar()
+        Cargar()
 
-   End Sub
+    End Sub
 
     Private Sub chkTodas_CheckedChanged(sender As Object, e As EventArgs) Handles chkTodas.CheckedChanged
         If chkTodas.CheckState = CheckState.Checked Then
@@ -320,9 +320,9 @@ Public Class frmMain
 
     Private Sub EliminarTabla()
 
-      Try
+        Try
 
-         Dim sSQL As String = ""
+            Dim sSQL As String = ""
 
             If cboTabla1.SelectedItem Is Nothing Then
                 MensajeError("Debe seleccionar una tabla")
@@ -337,8 +337,8 @@ Public Class frmMain
             End If
 
             If Pregunta("¿Eliminar Tabla?") = vbNo Then
-            Exit Sub
-         End If
+                Exit Sub
+            End If
 
             sSQL = "DELETE " &
                 "FROM      DISPOS " &
@@ -359,13 +359,13 @@ Public Class frmMain
                 "END"
             oAdmlocal.EjecutarComandoAsincrono(sSQL)
 
-         Cargar()
+            Cargar()
 
-      Catch ex As Exception
-         TratarError(ex, "EliminarTabla")
-      End Try
+        Catch ex As Exception
+            TratarError(ex, "EliminarTabla")
+        End Try
 
-   End Sub
+    End Sub
 
     Private Sub btnEliminarTabla1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEliminarTabla1.Click
         EliminarTabla()
@@ -373,7 +373,7 @@ Public Class frmMain
 
     Private Sub CargarTabla()
 
-      Dim oItem As clsItem.Item
+        Dim oItem As clsItem.Item
 
         If Not cboTabla1.SelectedItem Is Nothing Then
 
@@ -401,7 +401,7 @@ Public Class frmMain
 
                 RefrescarEstructura()
                 cboTabla1.Enabled = False
-                TabPanel2.Enabled = True
+                tabDatos.Enabled = True
 
             End If
 
@@ -966,22 +966,22 @@ Public Class frmMain
 
       Dim sFile As String
       Dim sFiltro As String
+        sFiltro = "Documentos de texto|*.txt|Archivo CSV|*.csv"
+        'If optTexto.Checked Then
+        '   sFiltro = "Documentos de texto|*.txt|Archivo CSV|*.csv"
+        'ElseIf optExcel.Checked Then
+        '   sFiltro = "Documentos de Excel|*.xls"
+        'ElseIf optAccess.Checked Then
+        '   sFiltro = "Bases de Datos Access(*.mdb)|*.mdb"
+        'ElseIf optDBase.Checked Then
+        '   sFiltro = "Carpeta"
+        'ElseIf OptSQL.Checked Then
+        '   sFiltro = "SQL"
+        'Else
+        '   Exit Sub
+        'End If
 
-      If optTexto.Checked Then
-         sFiltro = "Documentos de texto|*.txt|Archivo CSV|*.csv"
-      ElseIf optExcel.Checked Then
-         sFiltro = "Documentos de Excel|*.xls"
-      ElseIf optAccess.Checked Then
-         sFiltro = "Bases de Datos Access(*.mdb)|*.mdb"
-      ElseIf optDBase.Checked Then
-         sFiltro = "Carpeta"
-      ElseIf OptSQL.Checked Then
-         sFiltro = "SQL"
-      Else
-         Exit Sub
-      End If
-
-      If sFiltro = "Carpeta" Then
+        If sFiltro = "Carpeta" Then
 
          Dim oAbrir As New FolderBrowserDialog
 
@@ -1014,24 +1014,24 @@ Public Class frmMain
          If File.Exists(sFile) Then
             txtOrigen.Text = sFile
 
-            'PARA EXCEL
-            If optExcel.Checked Then
-               MostrarProceso("Leyendo hojas del cuaderno...")
-               CargarHojas(sFile)
-               OcultarProceso()
+                'PARA EXCEL
+                'If optExcel.Checked Then
+                '   MostrarProceso("Leyendo hojas del cuaderno...")
+                '   CargarHojas(sFile)
+                '   OcultarProceso()
+                'End If
+
+                'PARA ACCESS
+                '    If optAccess.Checked Then
+                '   frmOrigenDB.Modo(1, sFile)
+
+                '   If frmOrigenDB.ShowDialog = Windows.Forms.DialogResult.OK Then
+                '      CargarTablasDB()
+                '   End If
+
+                'End If
+
             End If
-
-            'PARA ACCESS
-            If optAccess.Checked Then
-               frmOrigenDB.Modo(1, sFile)
-
-               If frmOrigenDB.ShowDialog = Windows.Forms.DialogResult.OK Then
-                  CargarTablasDB()
-               End If
-
-            End If
-
-         End If
 
          End If
 
@@ -1117,83 +1117,83 @@ Public Class frmMain
 
    End Sub
 
-   Private Sub optTexto_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles optTexto.CheckedChanged
+    Private Sub optTexto_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-      EvaluarOptions()
+        EvaluarOptions()
 
-      If optTexto.Checked Then
-         Label3.Text = "Tipo de archivo:"
-         cboTipo.Enabled = True
-         cboTipo.Items.Add(New clsItem.Item("K1", "Ancho fijo"))
-         cboTipo.Items.Add(New clsItem.Item("K2", "Delimitado por caracter"))
-         cboTipo.SelectedIndex = 0
-      End If
+        'If optTexto.Checked Then
+        Label3.Text = "Tipo de archivo:"
+            cboTipo.Enabled = True
+            cboTipo.Items.Add(New clsItem.Item("K1", "Ancho fijo"))
+            cboTipo.Items.Add(New clsItem.Item("K2", "Delimitado por caracter"))
+            cboTipo.SelectedIndex = 0
+        'End If
 
-   End Sub
+    End Sub
 
-   Private Sub optExcel_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles optExcel.CheckedChanged
+    'Private Sub optExcel_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-      EvaluarOptions()
+    '    EvaluarOptions()
 
-      If optExcel.Checked Then
-         Label3.Text = "Hoja de datos:"
-         cboTipo.Enabled = True
-         cboTipo.Text = "<Debe cargar la planilla...>"
-         cboTipo.Enabled = False
-      End If
+    '    If optExcel.Checked Then
+    '        Label3.Text = "Hoja de datos:"
+    '        cboTipo.Enabled = True
+    '        cboTipo.Text = "<Debe cargar la planilla...>"
+    '        cboTipo.Enabled = False
+    '    End If
 
-   End Sub
+    'End Sub
 
-   Private Sub optAccess_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles optAccess.CheckedChanged
+    'Private Sub optAccess_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-      EvaluarOptions()
+    '    EvaluarOptions()
 
-      If optAccess.Checked Then
-         Label3.Text = "Tabla orígen:"
-         cboTipo.Enabled = True
-         cboTipo.Text = "<Debe cargar la base...>"
-         cboTipo.Enabled = False
-         chkEncabezado.Enabled = False
-      End If
+    '    If optAccess.Checked Then
+    '        Label3.Text = "Tabla orígen:"
+    '        cboTipo.Enabled = True
+    '        cboTipo.Text = "<Debe cargar la base...>"
+    '        cboTipo.Enabled = False
+    '        chkEncabezado.Enabled = False
+    '    End If
 
-   End Sub
+    'End Sub
 
-   Private Sub OptSQL_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OptSQL.CheckedChanged
+    'Private Sub OptSQL_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-      EvaluarOptions()
+    '    EvaluarOptions()
 
-      If OptSQL.Checked Then
-         Label3.Text = "Tabla orígen:"
-         cboTipo.Enabled = True
-         cboTipo.Text = "<Debe cargar la base...>"
-         cboTipo.Enabled = False
-         chkEncabezado.Enabled = False
-      End If
+    '    If OptSQL.Checked Then
+    '        Label3.Text = "Tabla orígen:"
+    '        cboTipo.Enabled = True
+    '        cboTipo.Text = "<Debe cargar la base...>"
+    '        cboTipo.Enabled = False
+    '        chkEncabezado.Enabled = False
+    '    End If
 
-   End Sub
+    'End Sub
 
-   Private Sub optDBase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles optDBase.CheckedChanged
+    'Private Sub optDBase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-      EvaluarOptions()
+    '    EvaluarOptions()
 
-      If optDBase.Checked Then
-         Label3.Text = "Tabla orígen:"
-         cboTipo.Enabled = True
-         cboTipo.Text = "<Debe cargar la base...>"
-         cboTipo.Enabled = False
-         chkEncabezado.Enabled = False
-      End If
+    '    If optDBase.Checked Then
+    '        Label3.Text = "Tabla orígen:"
+    '        cboTipo.Enabled = True
+    '        cboTipo.Text = "<Debe cargar la base...>"
+    '        cboTipo.Enabled = False
+    '        chkEncabezado.Enabled = False
+    '    End If
 
-   End Sub
+    'End Sub
 
-   Private Sub EvaluarOptions()
+    Private Sub EvaluarOptions()
 
       cboTipo.Items.Clear()
 
-      Label4.Visible = optTexto.Checked
-      txtSymbol.Visible = optTexto.Checked
+        Label4.Visible = True 'optTexto.Checked
+        txtSymbol.Visible = True 'optTexto.Checked
 
-      lblSep.Visible = False
+        lblSep.Visible = False
       txtSep.Visible = False
       txtCualif.Visible = False
 
@@ -1224,16 +1224,16 @@ Public Class frmMain
       Dim sError As String = ""
 
       Try
-
-         If optTexto.Checked Then
             sSQL = ProcesarArchivoTexto()
-         ElseIf optExcel.Checked Then
-            sSQL = ProcesarArchivoExcel()
-         Else
-            sSQL = ProcesarBaseDatos()
-         End If
+            'If optTexto.Checked Then
+            '   sSQL = ProcesarArchivoTexto()
+            'ElseIf optExcel.Checked Then
+            '   sSQL = ProcesarArchivoExcel()
+            'Else
+            '   sSQL = ProcesarBaseDatos()
+            'End If
 
-         MostrarProceso("Capturando datos...")
+            MostrarProceso("Capturando datos...")
 
          If sSQL = "" Then
             MensajeError("Se produjo un error en los procesos previos a la incorporación.")
@@ -1241,32 +1241,33 @@ Public Class frmMain
          End If
 
          CrearTablaTemp()
+            bResult = IncorporarArchivos(txtOrigen.Text, Llave(cboTabla1))
+            'Solo se usa importacion de archivos
+            'If rbArchivo.Checked Then
+            '    bResult = IncorporarArchivos(txtOrigen.Text, Llave(cboTabla1))
+            'Else
 
-            If rbArchivo.Checked Then
-                bResult = IncorporarArchivos(txtOrigen.Text, Llave(cboTabla1))
-            Else
+            '    If optAccess.Checked Then
+            '        sSQL = "INSERT " &
+            '               "INTO " & TABLA_TEMPORAL & " " & vbCrLf &
+            '               sSQL & vbCrLf & " " &
+            '               "FROM OPENROWSET('Microsoft.Jet.OLEDB.4.0','Text;Database=" & TempOrig() & ";HDR=" & IIf(chkEncabezado.Checked, "YES", "NO") & "', " &
+            '               "'SELECT * FROM " & System.IO.Path.GetFileName(txtOrigen.Text) & "')"
+            '    Else
+            '        sSQL = Trim(sSQL)
+            '        If Len(sSQL) <= 4000 Then
+            '            sSQL = Replace(sSQL, "'", Chr(27))
+            '            sSQL = "P_IncorporarInterfase '" & sSQL & "'"
+            '        End If
+            '    End If
 
-                If optAccess.Checked Then
-               sSQL = "INSERT " & _
-                      "INTO " & TABLA_TEMPORAL & " " & vbCrLf & _
-                      sSQL & vbCrLf & " " & _
-                      "FROM OPENROWSET('Microsoft.Jet.OLEDB.4.0','Text;Database=" & TempOrig() & ";HDR=" & IIf(chkEncabezado.Checked, "YES", "NO") & "', " & _
-                      "'SELECT * FROM " & System.IO.Path.GetFileName(txtOrigen.Text) & "')"
-            Else
-               sSQL = Trim(sSQL)
-               If Len(sSQL) <= 4000 Then
-                  sSQL = Replace(sSQL, "'", Chr(27))
-                  sSQL = "P_IncorporarInterfase '" & sSQL & "'"
-               End If
-            End If
+            '    'tmrProcesando.Enabled = True
+            '    bResult = oAdmlocal.EjecutarComandoAsincrono(sSQL, sError)
+            '    'tmrProcesando.Enabled = False
 
-            'tmrProcesando.Enabled = True
-            bResult = oAdmlocal.EjecutarComandoAsincrono(sSQL, sError)
-            'tmrProcesando.Enabled = False
+            'End If
 
-         End If
-
-         OcultarProceso()
+            OcultarProceso()
 
          If Not bResult Then
             If sError <> "" Then
@@ -1325,18 +1326,18 @@ Public Class frmMain
          Grid.RefreshDataSource()
          Grid.Refresh()
 
-            If rbLinked.Checked Or rbRowSet.Checked Then
-                If optDBase.Checked Then
-                    File.Delete(TempOrig() & cboTipo.Text & ".DBF")
-                ElseIf optExcel.Checked Then
-                    File.Delete(TempOrig() & "Origen.xls")
-                ElseIf Not OptSQL.Checked Then
-                    File.Delete(TempOrig() & NombreArchivo(txtOrigen.Text))
-                    If File.Exists(TempOrig() & "schema.ini") Then
-                        File.Delete(TempOrig() & "schema.ini")
-                    End If
-                End If
-            End If
+            'If rbLinked.Checked Or rbRowSet.Checked Then
+            '    If optDBase.Checked Then
+            '        File.Delete(TempOrig() & cboTipo.Text & ".DBF")
+            '    ElseIf optExcel.Checked Then
+            '        File.Delete(TempOrig() & "Origen.xls")
+            '    ElseIf Not OptSQL.Checked Then
+            '        File.Delete(TempOrig() & NombreArchivo(txtOrigen.Text))
+            '        If File.Exists(TempOrig() & "schema.ini") Then
+            '            File.Delete(TempOrig() & "schema.ini")
+            '        End If
+            '    End If
+            'End If
 
             cmdIncorporar.Text = "&Incorporar"
 
@@ -1358,24 +1359,24 @@ Public Class frmMain
 
       Dim sSQL As String = ""
 
-        If rbLinked.Checked Or rbRowSet.Checked Then
+        'If rbLinked.Checked Or rbRowSet.Checked Then
 
-            MostrarProceso("Generando esquema y copiando archivos...")
+        '    MostrarProceso("Generando esquema y copiando archivos...")
 
-            GenerarEsquema()
+        '    GenerarEsquema()
 
-            OcultarProceso()
+        '    OcultarProceso()
 
-        End If
+        'End If
 
         sSQL = GenerarSQLOrigen()
 
-        If rbLinked.Checked Then
-            sSQL = "INSERT " &
-                "INTO " & TABLA_TEMPORAL &
-                sSQL & " FROM " &
-                "TXTSVR...[" & Replace(NombreArchivo(txtOrigen.Text), ".", "#") & "]"
-        End If
+        'If rbLinked.Checked Then
+        '    sSQL = "INSERT " &
+        '        "INTO " & TABLA_TEMPORAL &
+        '        sSQL & " FROM " &
+        '        "TXTSVR...[" & Replace(NombreArchivo(txtOrigen.Text), ".", "#") & "]"
+        'End If
 
         Return sSQL
 
@@ -1530,13 +1531,13 @@ Public Class frmMain
 
          For Each oCampo As DataRow In oTabla.Diseno.Rows
 
-            If optAccess.Checked Or optDBase.Checked Or OptSQL.Checked Then
-               sFldOrigen = "" & oCampo("Relacion")
-            Else
-               sFldOrigen = oCampo("Campo destino")
-            End If
+                'If optAccess.Checked Or optDBase.Checked Or OptSQL.Checked Then
+                '   sFldOrigen = "" & oCampo("Relacion")
+                'Else
+                sFldOrigen = oCampo("Campo destino")
+                'End If
 
-            sTipo = oCampo("Tipo")
+                sTipo = oCampo("Tipo")
 
             If sTipo.Substring(0, 1) = "N" Then
 
@@ -1629,12 +1630,12 @@ Public Class frmMain
       Dim sComando As String = ""
       Dim bPeriodo As Boolean
 
-      If Not optTexto.Checked Then
-         Return sCampo
+        'If Not optTexto.Checked Then
+        Return sCampo
          Exit Function
-      End If
+        'End If
 
-      Select Case LCase(Replace(sFormato, "/", "-"))
+        Select Case LCase(Replace(sFormato, "/", "-"))
          '''''''''''''''''''''
          'SIN SEPARADOR
          '''''''''''''''''''''
@@ -2236,13 +2237,13 @@ GrabarCampo:
 
       Dim sSQL As String = ""
 
-      If optAccess.Checked Then
-         CopiarArchivo(txtOrigen.Text, TempOrig() & NombreArchivo(txtOrigen.Text), True)
-      ElseIf optDBase.Checked Then
-         CopiarArchivo(NormalizarRuta(txtOrigen.Text) & cboTipo.Text & ".dbf", TempOrig() & cboTipo.Text & ".dbf", True)
-      End If
+        'If optAccess.Checked Then
+        '   CopiarArchivo(txtOrigen.Text, TempOrig() & NombreArchivo(txtOrigen.Text), True)
+        'ElseIf optDBase.Checked Then
+        '   CopiarArchivo(NormalizarRuta(txtOrigen.Text) & cboTipo.Text & ".dbf", TempOrig() & cboTipo.Text & ".dbf", True)
+        'End If
 
-      sSQL = "INSERT " & _
+        sSQL = "INSERT " & _
              "INTO " & TABLA_TEMPORAL & _
              GenerarSQLOrigen & " " & _
              "FROM " & OLEDBDin & "[" & cboTipo.Text & "]')"
@@ -2344,9 +2345,9 @@ GrabarCampo:
       If Trim(sError) = "" Then
          MensajeInformacion("Captura de datos completada")
          cmdIncorporar.Text = "&Vista previa"
-         TabDiseno.SelectedTab = TabPanel1
+            TabDiseno.SelectedTab = tabTablas
 
-         cmdCancelarVP_Click(Nothing, Nothing)
+            cmdCancelarVP_Click(Nothing, Nothing)
       Else
          MensajeError(sError)
       End If
@@ -2433,4 +2434,30 @@ GrabarCampo:
 
    End Sub
 
+    Private Sub btnSolapaAnt_Click(sender As Object, e As EventArgs) Handles btnSolapaAnt.Click
+        If TabDiseno.SelectedIndex <> tabTablas.TabIndex Then
+            tabTablas.Select()
+            TabDiseno.SelectedIndex = tabTablas.TabIndex
+            TabDiseno.SelectedTab = tabTablas
+        End If
+    End Sub
+
+    Private Sub btnSolapaSig_Click(sender As Object, e As EventArgs) Handles btnSolapaSig.Click
+        If TabDiseno.SelectedIndex <> tabDatos.TabIndex Then
+            tabDatos.Select()
+            TabDiseno.SelectedIndex = tabDatos.TabIndex
+            TabDiseno.SelectedTab = tabDatos
+        End If
+    End Sub
+
+    Private Sub TabDiseno_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TabDiseno.SelectedIndexChanged
+        If TabDiseno.SelectedIndex = tabDatos.TabIndex Then
+            btnSolapaAnt.Enabled = True
+            btnSolapaSig.Enabled = False
+        Else
+            btnSolapaAnt.Enabled = False
+            btnSolapaSig.Enabled = True
+
+        End If
+    End Sub
 End Class

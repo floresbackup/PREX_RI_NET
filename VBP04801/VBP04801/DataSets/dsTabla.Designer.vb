@@ -281,8 +281,7 @@ Partial Public Class dsTabla
     <Global.System.Serializable(),  _
      Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")>  _
     Partial Public Class DisenoDataTable
-        Inherits Global.System.Data.DataTable
-        Implements Global.System.Collections.IEnumerable
+        Inherits Global.System.Data.TypedTableBase(Of DisenoRow)
         
         Private columnNombre As Global.System.Data.DataColumn
         
@@ -502,12 +501,6 @@ Partial Public Class dsTabla
             rowDisenoRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowDisenoRow)
             Return rowDisenoRow
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
-        Public Overridable Function GetEnumerator() As Global.System.Collections.IEnumerator Implements Global.System.Collections.IEnumerable.GetEnumerator
-            Return Me.Rows.GetEnumerator
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _

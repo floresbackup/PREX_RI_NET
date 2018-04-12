@@ -72,35 +72,68 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\COMMON\Citi\Andromeda.SGWayProviders.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Data.v7.2">
-      <HintPath>..\..\BIN\DevExpress.Data.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.Pdf.v17.2.Core">
+      
     </Reference>
-    <Reference Include="DevExpress.Utils.v7.2">
-      <HintPath>..\..\BIN\DevExpress.Utils.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.Office.v17.2.Core">
+      
     </Reference>
-    <Reference Include="DevExpress.Xpo.v7.2">
-      <HintPath>..\..\BIN\DevExpress.Xpo.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.RichEdit.v17.2.Core">
+      
     </Reference>
-    <Reference Include="DevExpress.XtraBars.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1">
-      <HintPath>..\..\BIN\DevExpress.XtraBars.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.RichEdit.v17.2.Export">
+      
     </Reference>
-    <Reference Include="DevExpress.XtraCharts.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <HintPath>..\..\BIN\DevExpress.XtraCharts.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.Printing.v17.2.Core">
+      
     </Reference>
-    <Reference Include="DevExpress.XtraEditors.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1">
-      <HintPath>..\..\BIN\DevExpress.XtraEditors.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.Data.v17.2">
+      
     </Reference>
-    <Reference Include="DevExpress.XtraGrid.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1">
-      <HintPath>..\..\BIN\DevExpress.XtraGrid.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.Utils.v17.2">
+      
     </Reference>
-    <Reference Include="DevExpress.XtraPivotGrid.v7.2.Core, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <HintPath>..\..\BIN\DevExpress.XtraPivotGrid.v7.2.Core.dll</HintPath>
+    <Reference Include="DevExpress.Xpo.v17.2">
+      
     </Reference>
-    <Reference Include="DevExpress.XtraPrinting.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1">
-      <HintPath>..\..\BIN\DevExpress.XtraPrinting.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.XtraBars.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      
     </Reference>
-    <Reference Include="DevExpress.XtraReports.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <HintPath>..\..\BIN\DevExpress.XtraReports.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.Charts.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v17.2.Wizard, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      
+    </Reference>
+    <Reference Include="DevExpress.PivotGrid.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      
+    </Reference>
+    <Reference Include="DevExpress.CodeParser.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      
+    </Reference>
+    <Reference Include="DevExpress.Utils.v17.2.UI, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v17.2.Extensions, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      
     </Reference>
     <Reference Include="SecurityGateway, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -568,6 +601,12 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Prex.Utils\Prex.Utils\Prex.Utils.csproj">
+      <Project>{2eeedb12-2ee1-4d8c-a5c5-1e99954aa4ae}</Project>
+      <Name>Prex.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

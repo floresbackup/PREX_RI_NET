@@ -1,0 +1,625 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DevExpress.Dashboard.v17.2.Wpf</name>
+    </assembly>
+    <members>
+        <member name="T:DevExpress.DashboardWpf.DashboardControl">
+
+            <summary>
+                <para>A control used to embed dashboards created in the Dashboard Designer into a WPF application.
+</para>
+            </summary>
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.#ctor">
+            <summary>
+                <para>Initializes a new instance of the DashboardControl class.
+</para>
+            </summary>
+
+
+        </member>
+        <member name="E:DevExpress.DashboardWpf.DashboardControl.BeforeExportDocument">
+            <summary>
+                <para>Allows you to hide specific dashboard items when printing or exporting the entire dashboard.
+</para>
+            </summary>
+
+
+        </member>
+        <member name="E:DevExpress.DashboardWpf.DashboardControl.BeforeFill">
+            <summary>
+                <para> </para>
+            </summary>
+
+
+        </member>
+        <member name="E:DevExpress.DashboardWpf.DashboardControl.ConfigureDataConnection">
+            <summary>
+                <para>Allows you to customize connection settings before the DashboardControl connects to a data store (database, OLAP cube, etc.).
+</para>
+            </summary>
+
+
+        </member>
+        <member name="E:DevExpress.DashboardWpf.DashboardControl.ConfigureItemDataCalculation">
+            <summary>
+                <para>Allows you to configure how the dashboard item's client data is calculated. 
+</para>
+            </summary>
+
+
+        </member>
+        <member name="E:DevExpress.DashboardWpf.DashboardControl.ConnectionError">
+            <summary>
+                <para>Allows overriding the default behavior when current connection parameters do not allow connecting to a data store.
+</para>
+            </summary>
+
+
+        </member>
+        <member name="E:DevExpress.DashboardWpf.DashboardControl.CustomAssemblyLoading">
+            <summary>
+                <para>Occurs before a custom assembly is loaded for use as <see cref="T:DevExpress.DashboardCommon.DashboardEFDataSource"/>.
+</para>
+            </summary>
+
+
+        </member>
+        <member name="E:DevExpress.DashboardWpf.DashboardControl.CustomExport">
+            <summary>
+                <para>Allows you to customize the exported document.
+</para>
+            </summary>
+
+
+        </member>
+        <member name="E:DevExpress.DashboardWpf.DashboardControl.CustomFilterExpression">
+            <summary>
+                <para>Allows you to include WHERE clauses into <see cref="T:DevExpress.DashboardCommon.DashboardSqlDataSource"/> queries. 
+</para>
+            </summary>
+
+
+        </member>
+        <member name="E:DevExpress.DashboardWpf.DashboardControl.CustomizeExportDocument">
+            <summary>
+                <para>Allows you to customize the exported document.
+</para>
+            </summary>
+
+
+        </member>
+        <member name="E:DevExpress.DashboardWpf.DashboardControl.CustomPalette">
+            <summary>
+                <para>Provides the capability to substitute the default palette containing colors used to paint dashboard item elements.
+</para>
+            </summary>
+
+
+        </member>
+        <member name="P:DevExpress.DashboardWpf.DashboardControl.Dashboard">
+            <summary>
+                <para>Gets or sets the opened dashboard.
+</para>
+            </summary>
+            <value>A <see cref="T:DevExpress.DashboardCommon.Dashboard"/> object that is the opened dashboard.
+</value>
+
+
+        </member>
+        <member name="F:DevExpress.DashboardWpf.DashboardControl.DashboardProperty">
+            <summary>
+                <para>Identifies the  dependency property.
+</para>
+            </summary>
+            <returns> </returns>
+
+
+        </member>
+        <member name="P:DevExpress.DashboardWpf.DashboardControl.DashboardSource">
+            <summary>
+                <para>Gets or sets a dashboard supplier for the DashboardControl.
+</para>
+            </summary>
+            <value>A <see cref="T:System.Object"/> value specifying a dashboard supplier for the DashboardControl.
+</value>
+
+
+        </member>
+        <member name="F:DevExpress.DashboardWpf.DashboardControl.DashboardSourceProperty">
+            <summary>
+                <para>Identifies the  dependency property.
+</para>
+            </summary>
+            <returns> </returns>
+
+
+        </member>
+        <member name="P:DevExpress.DashboardWpf.DashboardControl.DashboardViewModel">
+            <summary>
+                <para> </para>
+            </summary>
+            <value> </value>
+
+
+        </member>
+        <member name="E:DevExpress.DashboardWpf.DashboardControl.DataLoading">
+            <summary>
+                <para>Allows you to provide data for the <see cref="T:DevExpress.DashboardCommon.DashboardObjectDataSource"/>.
+</para>
+            </summary>
+
+
+        </member>
+        <member name="E:DevExpress.DashboardWpf.DashboardControl.DataLoadingError">
+            <summary>
+                <para>Allows you to suppress the form containing errors that occur during data loading.
+</para>
+            </summary>
+
+
+        </member>
+        <member name="P:DevExpress.DashboardWpf.DashboardControl.ExcelExportOptions">
+            <summary>
+                <para>Provides access to options related to exporting a dashboard item to the Excel format.
+</para>
+            </summary>
+            <value>A <see cref="T:DevExpress.DashboardCommon.DashboardExcelExportOptions"/> object containing options related to exporting a dashboard item to the Excel format.
+</value>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportDashboardItemToExcel(System.String,System.String,DevExpress.DashboardCommon.DashboardExcelExportOptions)">
+            <summary>
+                <para>Exports the dashboard item to the specified file in Excel format using specified export options.
+</para>
+            </summary>
+            <param name="dashboardItemName">
+		A <see cref="T:System.String"/> that is the component name of the dashboard item to be exported. 
+
+            </param>
+            <param name="filePath">
+		A <see cref="T:System.String"/> that specifies the path to the Excel file.
+
+            </param>
+            <param name="options">
+		A <see cref="T:DevExpress.DashboardCommon.DashboardExcelExportOptions"/> object which specifies the Excel export options to be applied when the dashboard item is exported. 
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportDashboardItemToExcel(System.String,System.String)">
+            <summary>
+                <para>Exports the dashboard item to the specified file in Excel format.
+</para>
+            </summary>
+            <param name="dashboardItemName">
+		A <see cref="T:System.String"/> that is the component name of the dashboard item to be exported. 
+
+            </param>
+            <param name="filePath">
+		A <see cref="T:System.String"/> that specifies the path to the Excel file.
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportDashboardItemToExcel(System.String,System.IO.Stream)">
+            <summary>
+                <para>Exports the dashboard item to the specified stream in Excel format.
+</para>
+            </summary>
+            <param name="dashboardItemName">
+		A <see cref="T:System.String"/> that is the component name of the dashboard item to be exported. 
+
+            </param>
+            <param name="stream">
+		A <see cref="T:System.IO.Stream"/> object to which the created Excel file should be sent.
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportDashboardItemToExcel(System.String,System.IO.Stream,DevExpress.DashboardCommon.DashboardExcelExportOptions)">
+            <summary>
+                <para>Exports the dashboard item to the specified stream in Excel format using specified export options.
+</para>
+            </summary>
+            <param name="dashboardItemName">
+		A <see cref="T:System.String"/> that is the component name of the dashboard item to be exported.
+
+            </param>
+            <param name="stream">
+		A <see cref="T:System.IO.Stream"/> object to which the created Excel file should be sent.
+
+            </param>
+            <param name="options">
+		A <see cref="T:DevExpress.DashboardCommon.DashboardExcelExportOptions"/> object which specifies the Excel export options to be applied when the dashboard item is exported. 
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportDashboardItemToImage(System.String,System.String,DevExpress.DashboardCommon.DashboardImageExportOptions)">
+            <summary>
+                <para>Exports the dashboard item to the image file using the specified image options.
+</para>
+            </summary>
+            <param name="dashboardItemName">
+		A <see cref="T:System.String"/> that is the component name of the dashboard item to be exported.
+
+            </param>
+            <param name="filePath">
+		A <see cref="T:System.String"/> that specifies the path to the image file.
+
+            </param>
+            <param name="options">
+		A <see cref="T:DevExpress.DashboardCommon.DashboardImageExportOptions"/> object that specifies the image export options to be applied when the dashboard item is exported.
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportDashboardItemToImage(System.String,System.IO.Stream)">
+            <summary>
+                <para>Exports the dashboard item to the specified stream in Image format.
+</para>
+            </summary>
+            <param name="dashboardItemName">
+		A <see cref="T:System.String"/> that is the component name of the dashboard item to be exported.
+
+            </param>
+            <param name="stream">
+		A <see cref="T:System.IO.Stream"/> object to which the created image file should be sent. 
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportDashboardItemToImage(System.String,System.IO.Stream,DevExpress.DashboardCommon.DashboardImageExportOptions)">
+            <summary>
+                <para>Exports the dashboard item to the specified stream in Image format using the specified image options.
+</para>
+            </summary>
+            <param name="dashboardItemName">
+		A <see cref="T:System.String"/> that is the component name of the dashboard item to be exported.
+
+            </param>
+            <param name="stream">
+		A <see cref="T:System.IO.Stream"/> object to which the created image file should be sent. 
+
+            </param>
+            <param name="options">
+		A <see cref="T:DevExpress.DashboardCommon.DashboardImageExportOptions"/> object that specifies the image export options to be applied when the dashboard item is exported.
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportDashboardItemToImage(System.String,System.String)">
+            <summary>
+                <para>Exports the dashboard item to the specified file in Image format.
+</para>
+            </summary>
+            <param name="dashboardItemName">
+		A <see cref="T:System.String"/> that is the component name of the dashboard item to be exported.
+
+            </param>
+            <param name="filePath">
+		A <see cref="T:System.String"/> that specifies the path to the Image file. 
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportDashboardItemToPdf(System.String,System.String)">
+            <summary>
+                <para>Exports the dashboard item to the specified file in PDF format.
+</para>
+            </summary>
+            <param name="dashboardItemName">
+		A <see cref="T:System.String"/> that is the component name of the dashboard item to be exported.
+
+            </param>
+            <param name="filePath">
+		A <see cref="T:System.String"/> that specifies the path to the PDF file. 
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportDashboardItemToPdf(System.String,System.String,DevExpress.DashboardCommon.DashboardPdfExportOptions)">
+            <summary>
+                <para>Exports the dashboard item to the specified file in PDF format using the specified PDF-specific options.
+</para>
+            </summary>
+            <param name="dashboardItemName">
+		A <see cref="T:System.String"/> that is the component name of the dashboard item to be exported.
+
+            </param>
+            <param name="filePath">
+		A <see cref="T:System.String"/> that specifies the path to the PDF file. 
+
+            </param>
+            <param name="options">
+		A <see cref="T:DevExpress.DashboardCommon.DashboardPdfExportOptions"/> object which specifies the PDF export options to be applied when the dashboard item is exported. 
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportDashboardItemToPdf(System.String,System.IO.Stream,DevExpress.DashboardCommon.DashboardPdfExportOptions)">
+            <summary>
+                <para>Exports the dashboard item to the specified stream in PDF format using the specified PDF-specific options.
+</para>
+            </summary>
+            <param name="dashboardItemName">
+		A <see cref="T:System.String"/> that is the component name of the dashboard item to be exported.
+
+            </param>
+            <param name="stream">
+		A <see cref="T:System.IO.Stream"/> object to which the created PDF file should be sent.
+
+            </param>
+            <param name="options">
+		A <see cref="T:DevExpress.DashboardCommon.DashboardPdfExportOptions"/> object which specifies the PDF export options to be applied when the dashboard item is exported. 
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportDashboardItemToPdf(System.String,System.IO.Stream)">
+            <summary>
+                <para>Exports the dashboard item to the specified stream in PDF format.
+</para>
+            </summary>
+            <param name="dashboardItemName">
+		A <see cref="T:System.String"/> that is the component name of the dashboard item to be exported.
+
+            </param>
+            <param name="stream">
+		A <see cref="T:System.IO.Stream"/> object to which the created PDF file should be sent. 
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportToExcel(System.String,DevExpress.DashboardCommon.DashboardExcelExportOptions)">
+            <summary>
+                <para>Exports dashboard data to the specified file in Excel format.
+</para>
+            </summary>
+            <param name="filePath">
+		A <see cref="T:System.String"/> that specifies the path to the Excel file. 
+
+            </param>
+            <param name="options">
+		A <see cref="T:DevExpress.DashboardCommon.DashboardExcelExportOptions"/> object containing Excel-specific options.
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportToExcel(System.String)">
+            <summary>
+                <para>Exports dashboard data to the specified file in Excel format.
+</para>
+            </summary>
+            <param name="filePath">
+		A <see cref="T:System.String"/> that specifies the path to the Excel file. 
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportToExcel(System.IO.Stream)">
+            <summary>
+                <para>Exports dashboard data to the specified stream in Excel format.
+</para>
+            </summary>
+            <param name="stream">
+		A <see cref="T:System.IO.Stream"/> object to which the created Excel file should be sent.
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportToExcel(System.IO.Stream,DevExpress.DashboardCommon.DashboardExcelExportOptions)">
+            <summary>
+                <para>Exports dashboard data to the specified stream in Excel format.
+</para>
+            </summary>
+            <param name="stream">
+		A <see cref="T:System.IO.Stream"/> object to which the created Excel file should be sent.
+
+            </param>
+            <param name="options">
+		A <see cref="T:DevExpress.DashboardCommon.DashboardExcelExportOptions"/> object containing Excel-specific options.
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportToImage(System.String)">
+            <summary>
+                <para>Exports a dashboard to the specified file in Image format.
+</para>
+            </summary>
+            <param name="filePath">
+		A <see cref="T:System.String"/> that specifies the path to the Image file.
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportToImage(System.IO.Stream,DevExpress.DashboardCommon.DashboardImageExportOptions)">
+            <summary>
+                <para>Exports a dashboard to the specified stream in Image format using the specified image-specific options.
+</para>
+            </summary>
+            <param name="stream">
+		A <see cref="T:System.IO.Stream"/> object to which the created image file should be sent.
+
+            </param>
+            <param name="options">
+		A <see cref="T:DevExpress.DashboardCommon.DashboardImageExportOptions"/> object that specifies the image export options to be applied when a dashboard is exported.
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportToImage(System.String,DevExpress.DashboardCommon.DashboardImageExportOptions)">
+            <summary>
+                <para>Exports a dashboard to the specified image file using the specified image-specific options.
+</para>
+            </summary>
+            <param name="filePath">
+		A <see cref="T:System.String"/> that specifies the path to the image file.
+
+            </param>
+            <param name="options">
+		A <see cref="T:DevExpress.DashboardCommon.DashboardImageExportOptions"/> object that specifies the image export options to be applied when a dashboard is exported.
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportToImage(System.IO.Stream)">
+            <summary>
+                <para>Exports a dashboard to the specified stream in Image format.
+</para>
+            </summary>
+            <param name="stream">
+		A <see cref="T:System.IO.Stream"/> object to which the created image file should be sent.
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportToPdf(System.IO.Stream)">
+            <summary>
+                <para>Exports a dashboard to the specified stream in PDF format.
+</para>
+            </summary>
+            <param name="stream">
+		A <see cref="T:System.IO.Stream"/> object to which the created PDF file should be sent.
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportToPdf(System.String,DevExpress.DashboardCommon.DashboardPdfExportOptions)">
+            <summary>
+                <para>Exports a dashboard to the specified file in PDF format using the specified PDF-specific options.
+</para>
+            </summary>
+            <param name="filePath">
+		A <see cref="T:System.String"/> that specifies the path to the PDF file.
+
+            </param>
+            <param name="options">
+		A <see cref="T:DevExpress.DashboardCommon.DashboardPdfExportOptions"/> object which specifies the PDF export options to be applied when a dashboard is exported. 
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportToPdf(System.String)">
+            <summary>
+                <para>Exports a dashboard to the specified file in PDF format.
+</para>
+            </summary>
+            <param name="filePath">
+		A <see cref="T:System.String"/> that specifies the path to the PDF file.
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.ExportToPdf(System.IO.Stream,DevExpress.DashboardCommon.DashboardPdfExportOptions)">
+            <summary>
+                <para>Exports a dashboard to the specified stream in PDF format using the specified PDF-specific options.
+</para>
+            </summary>
+            <param name="stream">
+		A <see cref="T:System.IO.Stream"/> object to which the created PDF file should be sent.
+
+            </param>
+            <param name="options">
+		A <see cref="T:DevExpress.DashboardCommon.DashboardPdfExportOptions"/> object which specifies the PDF export options to be applied when a dashboard is exported. 
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.GetPrintableComponent(System.String)">
+            <summary>
+                <para>Gets a printable component corresponding to the specified dashboard item.
+</para>
+            </summary>
+            <param name="dashboardItemName">
+		A <see cref="T:System.String"/> that specifies the component name of the dashboard item.
+
+            </param>
+            <returns>An object that implements the <see cref="T:DevExpress.XtraPrinting.IPrintable"/> interface, specifying a component to be printed/exported.
+</returns>
+
+
+        </member>
+        <member name="P:DevExpress.DashboardWpf.DashboardControl.ImageExportOptions">
+            <summary>
+                <para>Provides access to options related to exporting a dashboard/dashboard item to an image.
+</para>
+            </summary>
+            <value>A <see cref="T:DevExpress.DashboardCommon.DashboardImageExportOptions"/> object containing options related to exporting a dashboard/dashboard item to an image.
+</value>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.LoadDashboard(System.IO.Stream)">
+            <summary>
+                <para>Loads a dashboard from a stream.
+</para>
+            </summary>
+            <param name="stream">
+		A <see cref="T:System.IO.Stream"/> object that contains the dashboard.
+
+            </param>
+
+
+        </member>
+        <member name="M:DevExpress.DashboardWpf.DashboardControl.LoadDashboard(System.String)">
+            <summary>
+                <para>Loads a dashboard from an XML file.
+</para>
+            </summary>
+            <param name="path">
+		A <see cref="T:System.String"/> that specifies the path to an XML file that contains the dashboard.
+
+            </param>
+
+
+        </member>
+        <member name="P:DevExpress.DashboardWpf.DashboardControl.PdfExportOptions">
+            <summary>
+                <para>Provides access to options related to exporting a dashboard/dashboard item to the PDF format.
+</para>
+            </summary>
+            <value>A <see cref="T:DevExpress.DashboardCommon.DashboardPdfExportOptions"/> object containing options related to exporting a dashboard/dashboard item to the PDF format.
+</value>
+
+
+        </member>
+        <member name="E:DevExpress.DashboardWpf.DashboardControl.ValidateCustomSqlQuery">
+            <summary>
+                <para>Provides the capability to check the validity of the custom SQL query used to supply the dashboard with data.
+</para>
+            </summary>
+
+
+        </member>
+    </members>
+</doc>

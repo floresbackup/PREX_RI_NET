@@ -32,9 +32,9 @@ Public Class frmExportar
                Dim oOptions As New XlsExportOptions
 
                oOptions.ShowGridLines = True
-               oOptions.UseNativeFormat = True
+                    'oOptions.UseNativeFormat = True
 
-               oGvwResults.ExportToXls(txtFileName.Text.Trim, oOptions)
+                    oGvwResults.ExportToXls(txtFileName.Text.Trim, oOptions)
 
             Case 1 'Archivo PDF
 
