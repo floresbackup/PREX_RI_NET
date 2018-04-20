@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{75113748-2734-4C89-9736-51C22FDD85F7}</ProjectGuid>
+    <ProjectGuid>{7AA26BB6-E9CF-453D-B123-C34853CA8BCE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <StartupObject>Sub Main</StartupObject>
     <RootNamespace>VBP04720</RootNamespace>
@@ -52,7 +52,7 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\..\..\Desktop\PREX_RI_CITI\</OutputPath>
     <DocumentationFile>VBP04720.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
@@ -61,35 +61,47 @@
     <Reference Include="ABCpdf">
       <HintPath>..\..\..\..\..\..\..\Externos\PREX_RI (Versión NET)\BIN\ABCpdf.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Data.v7.2">
-      <HintPath>..\..\..\..\..\..\..\Externos\PREX_RI (Versión NET)\BIN\DevExpress.Data.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.Pdf.v17.2.Core">
     </Reference>
-    <Reference Include="DevExpress.Utils.v7.2">
-      <HintPath>..\..\..\..\..\..\..\Externos\PREX_RI (Versión NET)\BIN\DevExpress.Utils.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.Office.v17.2.Core">
     </Reference>
-    <Reference Include="DevExpress.Xpo.v7.2">
-      <HintPath>..\..\..\..\..\..\..\Externos\PREX_RI (Versión NET)\BIN\DevExpress.Xpo.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.RichEdit.v17.2.Core">
     </Reference>
-    <Reference Include="DevExpress.XtraBars.v7.2">
-      <HintPath>..\..\..\..\..\..\..\Externos\PREX_RI (Versión NET)\BIN\DevExpress.XtraBars.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.RichEdit.v17.2.Export">
     </Reference>
-    <Reference Include="DevExpress.XtraCharts.v7.2">
-      <HintPath>..\..\..\..\..\..\..\Externos\PREX_RI (Versión NET)\BIN\DevExpress.XtraCharts.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.Printing.v17.2.Core">
     </Reference>
-    <Reference Include="DevExpress.XtraEditors.v7.2">
-      <HintPath>..\..\..\..\..\..\..\Externos\PREX_RI (Versión NET)\BIN\DevExpress.XtraEditors.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.Data.v17.2">
     </Reference>
-    <Reference Include="DevExpress.XtraGrid.v7.2">
-      <HintPath>..\..\..\..\..\..\..\Externos\PREX_RI (Versión NET)\BIN\DevExpress.XtraGrid.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.Utils.v17.2">
     </Reference>
-    <Reference Include="DevExpress.XtraPivotGrid.v7.2.Core">
-      <HintPath>..\..\..\..\..\..\..\Externos\PREX_RI (Versión NET)\BIN\DevExpress.XtraPivotGrid.v7.2.Core.dll</HintPath>
+    <Reference Include="DevExpress.Xpo.v17.2">
     </Reference>
-    <Reference Include="DevExpress.XtraPrinting.v7.2">
-      <HintPath>..\..\..\..\..\..\..\Externos\PREX_RI (Versión NET)\BIN\DevExpress.XtraPrinting.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.XtraBars.v17.2">
     </Reference>
-    <Reference Include="DevExpress.XtraReports.v7.2">
-      <HintPath>..\..\..\..\..\..\..\Externos\PREX_RI (Versión NET)\BIN\DevExpress.XtraReports.v7.2.dll</HintPath>
+    <Reference Include="DevExpress.Charts.v17.2.Core">
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v17.2.Wizard">
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v17.2">
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v17.2">
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v17.2">
+    </Reference>
+    <Reference Include="DevExpress.PivotGrid.v17.2.Core">
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v17.2">
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v17.2.Core">
+    </Reference>
+    <Reference Include="DevExpress.CodeParser.v17.2">
+    </Reference>
+    <Reference Include="DevExpress.Utils.v17.2.UI">
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v17.2.Extensions">
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v17.2">
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

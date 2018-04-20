@@ -19,7 +19,6 @@ Partial Class frmMain
    'No lo modifique con el editor de código.
    <System.Diagnostics.DebuggerStepThrough()> _
    Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Me.sbMain = New System.Windows.Forms.StatusStrip()
         Me.lblUsuario = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lblEntidad = New System.Windows.Forms.ToolStripStatusLabel()
@@ -71,6 +70,7 @@ Partial Class frmMain
         Me.Grid = New DevExpress.XtraGrid.GridControl()
         Me.gResult = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.PanOrigen = New System.Windows.Forms.Panel()
+        Me.chkEqui = New System.Windows.Forms.CheckBox()
         Me.ToolStrip3 = New System.Windows.Forms.ToolStrip()
         Me.btnExportarResult = New System.Windows.Forms.ToolStripButton()
         Me.btnImprimirResult = New System.Windows.Forms.ToolStripButton()
@@ -93,12 +93,11 @@ Partial Class frmMain
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.DsTabla = New VBP04801.dsTabla()
-        Me.XpCollection1 = New DevExpress.Xpo.XPCollection(Me.components)
+        Me.XpCollection1 = New DevExpress.Xpo.XPCollection()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.btnSolapaAnt = New DevExpress.XtraEditors.SimpleButton()
         Me.btnSolapaSig = New DevExpress.XtraEditors.SimpleButton()
-        Me.chkEqui = New System.Windows.Forms.CheckBox()
         Me.sbMain.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.TabDiseno.SuspendLayout()
@@ -636,6 +635,17 @@ Partial Class frmMain
         Me.PanOrigen.Size = New System.Drawing.Size(671, 136)
         Me.PanOrigen.TabIndex = 0
         '
+        'chkEqui
+        '
+        Me.chkEqui.AutoSize = True
+        Me.chkEqui.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkEqui.Location = New System.Drawing.Point(118, 26)
+        Me.chkEqui.Name = "chkEqui"
+        Me.chkEqui.Size = New System.Drawing.Size(243, 17)
+        Me.chkEqui.TabIndex = 18
+        Me.chkEqui.Text = "&Procesar reemplazos de equivalencias"
+        Me.chkEqui.UseVisualStyleBackColor = True
+        '
         'ToolStrip3
         '
         Me.ToolStrip3.Dock = System.Windows.Forms.DockStyle.Bottom
@@ -858,17 +868,6 @@ Partial Class frmMain
         Me.btnSolapaSig.Size = New System.Drawing.Size(75, 23)
         Me.btnSolapaSig.TabIndex = 15
         Me.btnSolapaSig.Text = "&Siguiente >"
-        '
-        'chkEqui
-        '
-        Me.chkEqui.AutoSize = True
-        Me.chkEqui.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkEqui.Location = New System.Drawing.Point(118, 26)
-        Me.chkEqui.Name = "chkEqui"
-        Me.chkEqui.Size = New System.Drawing.Size(243, 17)
-        Me.chkEqui.TabIndex = 18
-        Me.chkEqui.Text = "&Procesar reemplazos de equivalencias"
-        Me.chkEqui.UseVisualStyleBackColor = True
         '
         'frmMain
         '

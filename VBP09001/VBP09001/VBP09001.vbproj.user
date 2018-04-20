@@ -1,4 +1,4 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0">
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <StartArguments>/u:1/t:9001/e:94</StartArguments>
   </PropertyGroup>
@@ -15,8 +15,11 @@
     </UpdateUrlHistory>
     <BootstrapperUrlHistory>
     </BootstrapperUrlHistory>
-    <ApplicationRevision>0</ApplicationRevision>
     <FallbackCulture>es-ES</FallbackCulture>
     <VerifyUploadedFiles>true</VerifyUploadedFiles>
+    <ErrorReportUrlHistory />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <StartArguments>/u:1/t:9001/e:94</StartArguments>
   </PropertyGroup>
 </Project>

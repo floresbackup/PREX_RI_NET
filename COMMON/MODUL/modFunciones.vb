@@ -14,11 +14,12 @@ Module modFunciones
 
          Dim sTemp As String
 
-         If Not File.Exists(ARCHIVO_CONFIG) Then
-            ARCHIVO_CONFIG = ARCHIVO_CONFIG_DEV
-         End If
+            If Not File.Exists(ARCHIVO_CONFIG) Then
+                'ARCHIVO_CONFIG = ARCHIVO_CONFIG_DEV
+                MensajeError("No se encuentra el archivo encriptado con la conexion SQL")
+            End If
 
-         If File.Exists(ARCHIVO_CONFIG) Then
+            If File.Exists(ARCHIVO_CONFIG) Then
             oConfig.ReadXml(ARCHIVO_CONFIG)
 
             For Each row As DataRow In oConfig.Tables("CONFIG").Rows

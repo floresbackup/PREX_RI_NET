@@ -1,0 +1,465 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{75113748-2734-4C89-9736-51C22FDD85F7}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Sub Main</StartupObject>
+    <RootNamespace>VBP04721</RootNamespace>
+    <AssemblyName>VBP04721</AssemblyName>
+    <MyType>WindowsFormsWithCustomSubMain</MyType>
+    <ApplicationIcon>window-cascade.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>VBP04721.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>VBP04721.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ABCpdf, Version=7.0.1.9, Culture=neutral, PublicKeyToken=a7a0b3f5184f2169, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.Utils.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.Xpo.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraBars.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraCharts.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraGrid.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraPivotGrid.v7.2.Core, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraReports.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v7.2, Version=7.2.4.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\COMMON\CLASS\clsAdmTablas.vb">
+      <Link>Clases\clsAdmTablas.vb</Link>
+    </Compile>
+    <Compile Include="..\..\COMMON\CLASS\CULTURE\cBarsLocalizer.vb">
+      <Link>Cultura\cBarsLocalizer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\COMMON\CLASS\CULTURE\cChartLocalizer.vb">
+      <Link>Cultura\cChartLocalizer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\COMMON\CLASS\CULTURE\cEditorsLocalizer.vb">
+      <Link>Cultura\cEditorsLocalizer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\COMMON\CLASS\CULTURE\cGridLocalizer.vb">
+      <Link>Cultura\cGridLocalizer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\COMMON\CLASS\CULTURE\cPivotGridLocalizer.vb">
+      <Link>Cultura\cPivotGridLocalizer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\COMMON\CLASS\CULTURE\cPrintingLocalizer.vb">
+      <Link>Cultura\cPrintingLocalizer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\COMMON\CLASS\CULTURE\cReportsLocalizer.vb">
+      <Link>Cultura\cReportsLocalizer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\COMMON\DATASET\dsConfig.designer.vb">
+      <Link>DataSets\dsConfig.designer.vb</Link>
+      <DependentUpon>dsConfig.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="..\..\COMMON\DATASET\dsConfig.vb">
+      <Link>DataSets\dsConfig.vb</Link>
+      <DependentUpon>dsConfig.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\COMMON\FORM\frmError.designer.vb">
+      <Link>Formularios\frmError.designer.vb</Link>
+      <DependentUpon>frmError.vb</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\COMMON\FORM\frmError.vb">
+      <Link>Formularios\frmError.vb</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\COMMON\FORM\frmExportar.designer.vb">
+      <Link>Formularios\frmExportar.designer.vb</Link>
+      <DependentUpon>frmExportar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\COMMON\FORM\frmExportar.vb">
+      <Link>Formularios\frmExportar.vb</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\COMMON\FORM\frmInputGeneral.designer.vb">
+      <Link>Formularios\frmInputGeneral.designer.vb</Link>
+      <DependentUpon>frmInputGeneral.vb</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\COMMON\FORM\frmInputGeneral.vb">
+      <Link>Formularios\frmInputGeneral.vb</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\COMMON\FORM\frmProcesando.designer.vb">
+      <Link>Formularios\frmProcesando.designer.vb</Link>
+      <DependentUpon>frmProcesando.vb</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\COMMON\FORM\frmProcesando.vb">
+      <Link>Formularios\frmProcesando.vb</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\COMMON\FORM\frmTablaGeneral.designer.vb">
+      <Link>Formularios\frmTablaGeneral.designer.vb</Link>
+      <DependentUpon>frmTablaGeneral.vb</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\COMMON\FORM\frmTablaGeneral.vb">
+      <Link>Formularios\frmTablaGeneral.vb</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\COMMON\MODUL\modArchivos.vb">
+      <Link>Modulos\modArchivos.vb</Link>
+    </Compile>
+    <Compile Include="..\..\COMMON\MODUL\modCultura.vb">
+      <Link>Cultura\modCultura.vb</Link>
+    </Compile>
+    <Compile Include="..\..\COMMON\MODUL\modDeclaraciones.vb">
+      <Link>Modulos\modDeclaraciones.vb</Link>
+    </Compile>
+    <Compile Include="..\..\COMMON\MODUL\modFunciones.vb">
+      <Link>Modulos\modFunciones.vb</Link>
+    </Compile>
+    <Compile Include="..\..\COMMON\MODUL\modGlobalBase64.vb">
+      <Link>Modulos\modGlobalBase64.vb</Link>
+    </Compile>
+    <Compile Include="Clases\clsItem.vb" />
+    <Compile Include="Formularios\frmCarpeta.Designer.vb">
+      <DependentUpon>frmCarpeta.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\frmCarpeta.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\frmArbolMenu.Designer.vb">
+      <DependentUpon>frmArbolMenu.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\frmArbolMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\frmTransaccion.Designer.vb">
+      <DependentUpon>frmTransaccion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\frmTransaccion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modulos\modLocalMain.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Formularios\frmMain.Designer.vb">
+      <DependentUpon>frmMain.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\frmMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Resources\PrintRibbonControllerResources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PrintRibbonControllerResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\COMMON\FORM\frmError.resx">
+      <Link>Formularios\frmError.resx</Link>
+      <DependentUpon>frmError.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\COMMON\FORM\frmExportar.resx">
+      <Link>Formularios\frmExportar.resx</Link>
+      <DependentUpon>frmExportar.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\COMMON\FORM\frmInputGeneral.resx">
+      <Link>Formularios\frmInputGeneral.resx</Link>
+      <DependentUpon>frmInputGeneral.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\COMMON\FORM\frmProcesando.resx">
+      <Link>Formularios\frmProcesando.resx</Link>
+      <DependentUpon>frmProcesando.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\COMMON\FORM\frmTablaGeneral.resx">
+      <Link>Formularios\frmTablaGeneral.resx</Link>
+      <DependentUpon>frmTablaGeneral.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\frmCarpeta.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmCarpeta.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\frmArbolMenu.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmArbolMenu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\frmTransaccion.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmTransaccion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\frmMain.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\PrintRibbonControllerResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PrintRibbonControllerResources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\COMMON\DATASET\dsConfig.xsc">
+      <Link>DataSets\dsConfig.xsc</Link>
+      <DependentUpon>dsConfig.xsd</DependentUpon>
+    </None>
+    <None Include="..\..\COMMON\DATASET\dsConfig.xsd">
+      <Link>DataSets\dsConfig.xsd</Link>
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsConfig.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="..\..\COMMON\DATASET\dsConfig.xss">
+      <Link>DataSets\dsConfig.xss</Link>
+      <DependentUpon>dsConfig.xsd</DependentUpon>
+    </None>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo prex.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Work Sheet-New.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Note-New.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Note-Edit.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Note-Delete.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Note-Add.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Note.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Report-2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Export-Excel.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Export-HTML.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Note1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Bold-2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Italic-2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Underline-2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Align-Left-3.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Align-Right-3.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Align-Centre-3.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Undo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Redo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cut.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Copy.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Paste.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Chart.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Chart1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Grid-2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Calendar.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Borders-All.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Borders-All1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Borders-Inside.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\User.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Window-Object.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Messenger-Information.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Briefcase.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Home.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cross.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Help-2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\About.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Select All-2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Save.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Print.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Export-Excel1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Database.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Execute.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\New.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Edit.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Delete-Blue.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mm-First.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mm-Rewind.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mm-Fast Forward.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mm-Last.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Search.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Folder-New.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Folder-Delete.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Window-New.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Window-Properties.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Window-Delete.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="window-cascade.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

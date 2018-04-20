@@ -38,23 +38,24 @@ Public Class frmProceso
       ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
       conn = New OleDbConnection(CONN_LOCAL)
 
-      ' Especificaciones al control ActiveX de edición de código SQL
-      With cmSQL
+        ' Especificaciones al control ActiveX de edición de código SQL
+        'Todo:   comente esto
+        With cmSQL
 
-         .Language = "SQL"
-         .SetColor(CodeMax.cmColorItem.cmClrLineNumber, RGB(180, 180, 180))
-         .SetColor(CodeMax.cmColorItem.cmClrLineNumberBk, RGB(90, 90, 90))
-         .SetFontStyle(CodeMax.cmFontStyleItem.cmStyLineNumber, CodeMax.cmFontStyle.cmFontBold)
-         .LineNumbering = True
-         .LineNumberStart = 1
-         .LineNumberStyle = CodeMax.cmLineNumStyle.cmDecimal
-         .ColorSyntax = True
-         .NormalizeCase = True
+            .Language = "SQL"
+            .SetColor(CodeMax.cmColorItem.cmClrLineNumber, RGB(180, 180, 180))
+            .SetColor(CodeMax.cmColorItem.cmClrLineNumberBk, RGB(90, 90, 90))
+            .SetFontStyle(CodeMax.cmFontStyleItem.cmStyLineNumber, CodeMax.cmFontStyle.cmFontBold)
+            .LineNumbering = True
+            .LineNumberStart = 1
+            .LineNumberStyle = CodeMax.cmLineNumStyle.cmDecimal
+            .ColorSyntax = True
+            .NormalizeCase = True
 
-      End With
+        End With
 
-      ' Drop Down Tipo de grilla de diseño
-      Dim oItem As cboTipo
+        ' Drop Down Tipo de grilla de diseño
+        Dim oItem As cboTipo
       Dim xpCollectionTipo As New XPCollection(GetType(cboTipo))
       xpCollectionTipo.DisplayableProperties = "This;Codigo;Descripcion"
 

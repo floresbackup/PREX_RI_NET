@@ -25,7 +25,8 @@ Module modLocalMain
         Dim bIniciar As Boolean = True
 
         PrevInstance()
-        Prex.Utils.Configuration.LeerXML()
+        'NUEVA FUNCIONA DE LEER XML
+        'Prex.Utils.Configuration.LeerXML()
 
         'Configuración
         LeerXML()
@@ -333,37 +334,50 @@ Maneja_Error:
 
         Dim sNombre As String
         Dim sPerfil As String
+        '        Dim sPerfil2 = String.Empty
 
         sPerfil = Nothing
 
-        If Andromeda.Framework.Windows.Security.Login.PerformLogin(False) Then
+        Dim SGInterface As SGInterface = FactorySGInstance.getInstanceInterface()
+        Dim returnValue = SGInterface.RsmsLogin(ID_SISTEMA, "Gestión RI", "C:\Program Files (x86)\Citi\SGLibraryNET_5.8.004_net2.0\resources\config.xml", sPerfil)
+        If (returnValue = 1) Then
 
-            sNombre = Andromeda.Framework.Security.AndromedaPrincipal.User.Identity.Name
-            sPerfil = Andromeda.Framework.Security.AndromedaPrincipal.User.Functions(0)
-
-            Dim oAdmTablas As New AdmTablas
-
-            oAdmTablas.ConnectionString = CONN_LOCAL
-
-            NOMBRE_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_DESCRI", " TG_CODTAB=1 AND TG_NUME01=1")
-            CODIGO_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_CODCON", " TG_CODTAB=1 AND TG_NUME01=1")
-            UsuarioActual.Nombre = sNombre
-            UsuarioActual.Codigo = oAdmTablas.DevolverValor("USUARI", "US_CODUSU", " US_NOMBRE = '" & sNombre & "'", "0")
-            UsuarioActual.Descripcion = oAdmTablas.DevolverValor("USUARI", "US_DESCRI", " US_NOMBRE = '" & sNombre & "'", sNombre)
-
-            oAdmTablas = Nothing
-
-            GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "")
-
-            frmMain.ActualizarSeguridad(sPerfil)
+            MessageBox.Show(frmMain, "Perfil devuelto: " & sPerfil, "Login SGLibrary", MessageBoxButtons.OK)
 
             InicioCITI = True
-
         Else
-
             InicioCITI = False
-
         End If
+        '        Dim r2 = SGInterface.noGuiLogin(1, "Gestion RI", "C:\Program Files (x86)\Citi\SGLibraryNET_5.8.004_net2.0\resources\config.xml", "pepe", "lala", sPerfil2)
+
+        'If Andromeda.Framework.Windows.Security.Login.PerformLogin(False) Then
+
+        '    sNombre = Andromeda.Framework.Security.AndromedaPrincipal.User.Identity.Name
+        '    sPerfil = Andromeda.Framework.Security.AndromedaPrincipal.User.Functions(0)
+
+        '    Dim oAdmTablas As New AdmTablas
+
+        '    oAdmTablas.ConnectionString = CONN_LOCAL
+
+        '    NOMBRE_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_DESCRI", " TG_CODTAB=1 AND TG_NUME01=1")
+        '    CODIGO_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_CODCON", " TG_CODTAB=1 AND TG_NUME01=1")
+        '    UsuarioActual.Nombre = sNombre
+        '    UsuarioActual.Codigo = oAdmTablas.DevolverValor("USUARI", "US_CODUSU", " US_NOMBRE = '" & sNombre & "'", "0")
+        '    UsuarioActual.Descripcion = oAdmTablas.DevolverValor("USUARI", "US_DESCRI", " US_NOMBRE = '" & sNombre & "'", sNombre)
+
+        '    oAdmTablas = Nothing
+
+        '    GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "")
+
+        '    frmMain.ActualizarSeguridad(sPerfil)
+
+        '    InicioCITI = True
+
+        'Else
+
+        '    InicioCITI = False
+
+        'End If
 
 
 

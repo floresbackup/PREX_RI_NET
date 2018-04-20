@@ -248,22 +248,26 @@ Public Class frmMain
 
             End If
 
-            If IO.File.Exists(RUTA_BIN & sPrograma) Then
+            If IO.Path.GetExtension(sPrograma).ToLower().Contains("exe") Then
+                If IO.File.Exists(RUTA_BIN & sPrograma) Then
 
-                oTrx.StartInfo.FileName = RUTA_BIN & sPrograma
-                oTrx.StartInfo.Arguments = "/u:" & nCodigoUsuario.ToString & "/t:" & nTransaccion.ToString & "/e:" & CODIGO_ENTIDAD.ToString
-                oTrx.StartInfo.UseShellExecute = True
-                oTrx.StartInfo.WorkingDirectory = RUTA_BIN
-                oTrx.Start()
+                    oTrx.StartInfo.FileName = RUTA_BIN & sPrograma
+                    oTrx.StartInfo.Arguments = "/u:" & nCodigoUsuario.ToString & "/t:" & nTransaccion.ToString & "/e:" & CODIGO_ENTIDAD.ToString
+                    oTrx.StartInfo.UseShellExecute = True
+                    oTrx.StartInfo.WorkingDirectory = RUTA_BIN
+                    oTrx.Start()
 
-                If MULTIEXEC = 0 Then
-                    oTrx.WaitForExit()
+                    If MULTIEXEC = 0 Then
+                        oTrx.WaitForExit()
+                    End If
+                Else
+                    MensajeError("No se encuentra el programa " & sPrograma)
                 End If
-
+            ElseIf IO.File.Exists(NormalizarRuta(RUTA_BIN) & "Informes\" & sPrograma) Then
+                System.Diagnostics.Process.Start(NormalizarRuta(RUTA_BIN) & "Informes/" & sPrograma)
             Else
-                MensajeError("No se encuentra el programa " & sPrograma)
+                MensajeError("No se encuentra el archivo " & sPrograma)
             End If
-
         Catch ex As Exception
             TratarError(ex, "EjecutarTransaccion(" & nTransaccion.ToString & "," & sPrograma & "," & nCodigoUsuario & ")")
         End Try

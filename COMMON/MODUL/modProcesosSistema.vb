@@ -15,11 +15,11 @@ Module modConsultasSistema
       Dim dt As DataTable
       Dim sSQL As String
 
-      sSQL = "SELECT    * " & _
-             "FROM      PROCAB " & _
+        sSQL = "SELECT    * " &
+             "FROM      PROCAB " &
              "WHERE     PC_CODPRO = " & nCodPro
 
-      ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
+        ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
       dt = New DataTable
 
       ad.Fill(dt)

@@ -71,8 +71,9 @@ Module modCultura
 
       oAdmTablas.ConnectionString = CONN_LOCAL
       ds = oAdmTablas.AbrirDataset(sSQL)
+        If ds Is Nothing Then Exit Sub
 
-      CulturaTextos.Clear()
+        CulturaTextos.Clear()
 
         For Each oRow In ds.Tables(0).Rows
             oCultura = New Cultura

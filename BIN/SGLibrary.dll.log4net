@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<log4net>
+    <root>
+        <level value="DEBUG" />
+        <!--
+            Default configuration: 
+            ======================
+            For PROD the level value is "OFF" (without logging).
+            For SIT and UAT sets the level value = "DEBUG" (see the Level priority values).
+            
+            Warings for enable the logging: 
+            ===============================
+            
+            Set the level value to "DEBUG" or another value (not "OFF") only for debug and 
+            support proposes with the following considerations:
+            
+            The default logging configuration create a log file called "SGLibrary.log" (the main log file).
+            This log file can grow to 10 Mb of max size. 
+
+            When the log size is greater 10 Mb, the system create another log file with the name 
+            "SGLibrary.log" and rename the main log file to "SGLibrary.log.1" (the backup log file).
+            
+            The default logging configuration only consider 1 backup log file of 10 Mb.
+            
+            Then you could need extra 20 Mb for log space when the logging is active.
+            
+            Level priority values:
+            ======================
+            
+            If level value = "ALL"   : log all messages.
+            If level value = "DEBUG" : then you are logging with the levels DEBUG, INFO , WARN , ERROR and FATAL
+            If level value = "INFO"  : then you are logging with the levels INFO , WARN , ERROR and FATAL
+            If level value = "WARN"  : then you are logging with the levels WARN , ERROR and FATAL
+            If level value = "ERROR" : then you are logging with the levels ERROR and FATAL
+            If level value = "FATAL" : then you are logging with the levels FATAL
+            If level value = "OFF"   : then the logging is not active.
+            
+            Levels used in SGLibrary:
+            =========================
+            
+            With DEBUG level, SGLibrary is logging: 
+              - the database connection string (with server, database and user information).
+              - the SGWAY.DLL methods processing.
+              - any external debug message using the [void SGInterface.LogDebug(string dataText)] method.
+            
+            With INFO  level, SGLibrary is logging:
+              - the Security Gateway responses to SGLibrary request.
+              - any external info message using the [void SGInterface.LogInfo(string dataText)
+                          
+            With WARN  level, SGLibrary is logging:
+              - config.xml file is not defined for applications host or SGWAY.DLL(C++). In this case the default location is used (C:\WINNT\system32\config.xml)
+              - any external waring message using the [void SGInterface.LogWarn(string dataText)
+                          
+            With ERROR level, SGLibrary is logging:
+              - the errors messages.
+              - the errors in SGWAY.DLL methods processing.
+              - any external error message using the [void SGInterface.LogError(string dataText)
+            
+        -->
+        <appender-ref ref="RollingFileAppender" />
+    </root>
+    <appender name="RollingFileAppender" type="log4net.Appender.RollingFileAppender">
+        <file value="./SGLibrary.log" /> <!-- main log file name                             -->
+        <appendToFile value="true" />    <!-- reuse the backup file                          -->
+        <rollingStyle value="Size" />    <!-- rolling with the size file is maximumFileSize  --> 
+        <maxSizeRollBackups value="1" /> <!-- the system only will create 1 backup log file  --> 
+        <maximumFileSize value="10MB" /> <!-- max size or each log file (main and backup)    --> 
+        <layout type="log4net.Layout.PatternLayout">
+            <conversionPattern value="%date [%thread] %-5level %logger.%message%newline" />
+        </layout>
+    </appender>
+</log4net>

@@ -1,0 +1,8 @@
+C:\Users\Administrador\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Release\Prex.Utils.dll
+C:\Users\Administrador\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Release\Prex.Utils.pdb
+C:\Users\Administrador\Desktop\PREX_RI_CITI\Prex.Utils.dll
+C:\Users\Administrador\Desktop\PREX_RI_CITI\Prex.Utils.pdb
+C:\Users\Administrador\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.csprojResolveAssemblyReference.cache
+C:\Users\Administrador\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.csproj.CoreCompileInputs.cache
+C:\Users\Administrador\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.dll
+C:\Users\Administrador\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.pdb

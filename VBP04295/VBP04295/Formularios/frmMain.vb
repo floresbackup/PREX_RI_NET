@@ -543,9 +543,15 @@ Public ps1 = New DevExpress.XtraPrinting.PrintingSystem
                EstablecerFmt(fmt, oFmt)
             End If
          Else
-            fmt.Condition = FormatConditionEnum.Equal
-            fmt.Value1 = Convert.ToInt32(oFmt.Condicion)
-            EstablecerFmt(fmt, oFmt)
+                fmt.Condition = FormatConditionEnum.Equal
+                Dim result As Integer
+                'Todo: revisar formato condicional xej: BALANA
+                If Integer.TryParse(oFmt.Condicion, result) Then
+                    fmt.Value1 = result
+                Else
+                    fmt.Value1 = oFmt.Condicion
+                End If
+                EstablecerFmt(fmt, oFmt)
          End If
 
          Return True

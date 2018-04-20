@@ -428,7 +428,7 @@ Public Class frmMain
                oItem = CType(Controles("_" & oVar.Nombre), ComboBox).SelectedItem
                vReemplazo = oItem.Valor
             Else
-               vReemplazo = Controles("_" & oVar.Nombre)
+               vReemplazo = Controles("_" & oVar.Nombre).Text
             End If
 
          Case 2

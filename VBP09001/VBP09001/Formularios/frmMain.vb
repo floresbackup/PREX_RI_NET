@@ -182,20 +182,16 @@ Public Class frmMain
       Dim sRutaDefault As String
       Dim nOpcionRuta As Integer
 
-      nOpcionRuta = Val(NoNulo(oAdmLocal.DevolverValor("TABGEN", "TG_NUME01", "TG_CODTAB=10 AND TG_CODCON=1000", ""), False))
-      sRutaDefault = NoNulo(oAdmLocal.DevolverValor("TABGEN", "TG_ALFA01", "TG_CODTAB=10 AND TG_CODCON=1000", "Ruta"))
+        'nOpcionRuta = Val(NoNulo(oAdmLocal.DevolverValor("TABGEN", "TG_NUME01", "TG_CODTAB=10 AND TG_CODCON=1000", ""), False))
+        'sRutaDefault = NoNulo(oAdmLocal.DevolverValor("TXTNOM", "TN_RUTA", "TG_CODTAB=10 AND TG_CODCON=1000", "Ruta"))
 
-      If nOpcionRuta > 0 Then
 
-         If sRutaDefault <> "Ruta inexistente" Then
-            txtCarpeta.Text = sRutaDefault
-         End If
 
-         txtCarpeta.Enabled = nOpcionRuta = 1
+        txtCarpeta.Text = CARPETA_LOCAL
+        txtCarpeta.Enabled = True
 
-      End If
 
-   End Sub
+    End Sub
 
    Private Function PreparaTXT_5603(ByVal sTabla As String, ByVal dFecha As Date) As Boolean
 
@@ -862,8 +858,9 @@ Public Class frmMain
                 "ORDER BY TN_NOMBRETXT"
 
          ds = oAdmLocal.AbrirDataset(sSQL)
-
-         With ds.Tables(0)
+            cboArchivos.Items.Clear()
+            cboArchivos.Items.Add(New clsItem.Item("", "<Seleccionar ...>"))
+            With ds.Tables(0)
 
             For Each row As DataRow In .Rows
 
@@ -885,30 +882,34 @@ Public Class frmMain
 
    End Sub
 
-   Private Sub IniciarControles()
+    Private Sub IniciarControles()
 
-      Dim i As Integer
-      Dim oFecha As Date = Date.Today
+        Dim i As Integer
+        Dim oFecha As Date = Date.Today
 
-      For i = 1 To 12
-         cboMes.Items.Add(New clsItem.Item(i, MonthName(i).ToUpper))
-      Next
+        For i = 1 To 12
+            cboMes.Items.Add(New clsItem.Item(i, MonthName(i).ToUpper))
+        Next
 
-      For i = oFecha.Year - 10 To oFecha.Year + 10
-         cboAno.Items.Add(New clsItem.Item(i, i.ToString))
-      Next
+        For i = oFecha.Year - 10 To oFecha.Year + 10
+            cboAno.Items.Add(New clsItem.Item(i, i.ToString))
+        Next
 
-      If oFecha.Month <= 3 Then
-         cboAno.Text = oFecha.Year - 1
-         cboMes.SelectedIndex = 11
-      Else
-         cboAno.Text = oFecha.Year
-         cboMes.SelectedIndex = oFecha.Month - 2
-      End If
+        ResetFecha(oFecha)
+    End Sub
 
-   End Sub
+    Private Sub ResetFecha(ByVal oFecha As Date)
+        If oFecha.Month <= 3 Then
+            cboAno.Text = oFecha.Year - 1
+            cboMes.SelectedIndex = 11
+        Else
+            cboAno.Text = oFecha.Year
+            cboMes.SelectedIndex = oFecha.Month - 2
+        End If
 
-   Private Sub btnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSalir.Click
+    End Sub
+
+    Private Sub btnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSalir.Click
       Me.Close()
    End Sub
 
@@ -932,16 +933,16 @@ Public Class frmMain
          Me.lblStatus.Visible = True
 
          oItem = cboArchivos.SelectedItem
-
-         If oItem.Valor = 2813 Or oItem.Valor = 2816 Then
+            'Todo: si es diario no hacer fecha correcta y cambiar los controles a dia mes anio
+            If oItem.Valor = 2813 Or oItem.Valor = 2816 Then
             GenerarPDF(oItem.Valor, FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text)))
          Else
             GenerarTXT(oItem.Valor, FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text)))
          End If
 
-         Me.lblStatus.Visible = False
 
-      End If
+
+        End If
 
    End Sub
 
@@ -996,13 +997,12 @@ Public Class frmMain
       Dim dFechaReal As Date
       Dim oForm As clsFormato
 
-      '      Try
+        '      Try
 
-      Me.Cursor = Cursors.WaitCursor
+        Me.Cursor = Cursors.WaitCursor
+        cmdGenerar.Enabled = False
 
-      cmdGenerar.Enabled = False
-
-      dFechaReal = dFecha
+        dFechaReal = dFecha
 
       sFile = txtCarpeta.Text & cboArchivos.Text
       If File.Exists(sFile) Then
@@ -1251,16 +1251,16 @@ Salir:
          Process.Start(sFile)
       End If
 
-      'Exit Sub
+        'Exit Sub
 
-      '   Catch ex As Exception
-      ' Me.Cursor = Cursors.Default
-      ' TratarError(ex, "GenerarTXT", "Campo: " & sCampo & vbCrLf & Err.Description)
-      ' End Try
+        '   Catch ex As Exception
+        ' Me.Cursor = Cursors.Default
+        ' TratarError(ex, "GenerarTXT", "Campo: " & sCampo & vbCrLf & Err.Description)
+        ' End Try
 
-      lblStatus.Text = ""
 
-   End Sub
+
+    End Sub
 
    Private Function PreparaTxt(ByVal dFecha As Date, _
                             Optional ByVal sTabla As String = "", _
@@ -1382,11 +1382,13 @@ Salir:
 
          If oGral.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
 
-            If INPUT_GENERAL = "Prex123" Then
-               frmProceso.ShowDialog(Me)
-               frmProceso = Nothing
-            Else
-               MensajeError("Login Incorrecto")
+                If INPUT_GENERAL = "Prex123" Then
+                    Dim _frmProceso As New frmProceso()
+
+                    _frmProceso.ShowDialog(Me)
+                    _frmProceso = Nothing
+                Else
+                    MensajeError("Login Incorrecto")
             End If
 
          End If
@@ -1394,4 +1396,22 @@ Salir:
       End If
 
    End Sub
+
+    Private Sub cboArchivos_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboArchivos.SelectedIndexChanged
+        Dim sRutaDefault As String = CType(NoNulo(oAdmLocal.DevolverValor("TXTNOM", "TN_RUTA", $"TN_NOMBRETXT='{CType(cboArchivos.SelectedItem, clsItem.Item).Nombre}'", String.Empty), True), String)
+
+        If (sRutaDefault.Length() > 0) Then
+            txtCarpeta.Text = NormalizarRuta(sRutaDefault)
+            txtCarpeta.Enabled = False
+        Else
+            txtCarpeta.Enabled = True
+            txtCarpeta.Text = CARPETA_LOCAL
+        End If
+
+        cmdBrowse.Visible = txtCarpeta.Enabled
+        chkOpen.Visible = txtCarpeta.Enabled
+        lblStatus.Text = ""
+        Me.lblStatus.Visible = False
+        ResetFecha(Date.Today)
+    End Sub
 End Class
