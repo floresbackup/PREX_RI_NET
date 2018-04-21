@@ -200,3 +200,27 @@ C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP0
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.exe
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.xml
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.pdb
+<<<<<<< HEAD
+C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.exe.licenses
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.vbprojResolveAssemblyReference.cache
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.frmError.resources
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.frmExportar.resources
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.frmInputGeneral.resources
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.frmProcesando.resources
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.frmTablaGeneral.resources
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.frmABMDiseno.resources
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.frmErrores.resources
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.frmGrilla.resources
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.frmNuevaTabla.resources
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.frmOrigenDB.resources
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.Resources.resources
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.frmMain.resources
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.PrintRibbonControllerResources.resources
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.vbproj.GenerateResource.cache
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.exe.licenses
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.vbproj.CoreCompileInputs.cache
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.exe
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.xml
+D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.pdb
+=======
+>>>>>>> fb82621cc664ed20c8147e7f07c5765377e4a5ab
