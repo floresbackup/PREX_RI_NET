@@ -427,9 +427,9 @@ Public Class AdmTablas
          Dim ds As DataSet
 
          ds = AbrirDataset("SELECT TOP 1 " & sCampo & " FROM " & sTabla)
-         ds = Nothing
+            If ds Is Nothing Then Return False
 
-         Return True
+            Return True
 
       Catch ex As Exception
          Return False

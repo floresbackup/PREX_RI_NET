@@ -21,8 +21,8 @@ Main/.vs/Main/v15/.suo
 *.ide-shm
 *.ide-wal
 *.ide-shm
-VBP04801/VBP04801/bin
-VBP04801/VBP04801/obj
+VBP04801/VBP04801/bin/**
+VBP04801/VBP04801/obj/**
 VBP04801/VBP04801/obj/Release
 VBP04801/VBP04801/obj/Debug
 VBP09001/VBP09001/bin
@@ -41,5 +41,5 @@ VBP04723/VBP04723/bin
 VBP04723/VBP04723/obj
 VBP04730/VBP04730/bin
 VBP04730/VBP04730/obj
-**/obj
-**/bin
+**/obj/**
+**/bin/**

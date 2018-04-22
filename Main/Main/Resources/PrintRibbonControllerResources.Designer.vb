@@ -42,7 +42,7 @@ Friend Class PrintRibbonControllerResources
     Friend Shared ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
         Get
             If Object.ReferenceEquals(resourceMan, Nothing) Then
-                Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("Main.PrintRibbonControllerResources", GetType(PrintRibbonControllerResources).Assembly)
+                Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("Prex_RI.PrintRibbonControllerResources", GetType(PrintRibbonControllerResources).Assembly)
                 resourceMan = temp
             End If
             Return resourceMan

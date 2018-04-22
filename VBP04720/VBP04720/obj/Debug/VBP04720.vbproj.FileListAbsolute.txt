@@ -1,3 +1,7 @@
+C:\Externos\PREX_RI (Versión NET)\BIN\VBP04720.exe.config
+C:\Externos\PREX_RI (Versión NET)\BIN\VBP04720.exe
+C:\Externos\PREX_RI (Versión NET)\BIN\VBP04720.pdb
+C:\Externos\PREX_RI (Versión NET)\BIN\VBP04720.xml
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.vbprojResolveAssemblyReference.cache
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.frmError.resources
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.frmExportar.resources
@@ -6,18 +10,14 @@ C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP0
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.frmTablaGeneral.resources
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.frmAbmDirSeg.resources
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.frmCambiarPass.resources
+C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.frmComentarios.resources
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.frmUsuario.resources
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.Resources.resources
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.frmMain.resources
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.PrintRibbonControllerResources.resources
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.vbproj.GenerateResource.Cache
+C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.exe.licenses
+C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.vbproj.CoreCompileInputs.cache
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.exe
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.xml
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.pdb
-C:\Externos\PREX_RI (Versión NET)\BIN\VBP04720.exe.config
-C:\Externos\PREX_RI (Versión NET)\BIN\VBP04720.exe
-C:\Externos\PREX_RI (Versión NET)\BIN\VBP04720.pdb
-C:\Externos\PREX_RI (Versión NET)\BIN\VBP04720.xml
-C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.vbproj.CoreCompileInputs.cache
-C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.frmComentarios.resources
-C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04720\VBP04720\obj\Debug\VBP04720.exe.licenses

@@ -19,6 +19,7 @@ Partial Class frmMain
    'No lo modifique con el editor de código.
    <System.Diagnostics.DebuggerStepThrough()> _
    Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.sbMain = New System.Windows.Forms.StatusStrip()
         Me.lblUsuario = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lblEntidad = New System.Windows.Forms.ToolStripStatusLabel()
@@ -39,7 +40,9 @@ Partial Class frmMain
         Me.colNombre = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.colCampo = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.colInicio = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.RepositoryItemSpinEdit2 = New DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit()
         Me.colLongitud = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.RepositoryItemSpinEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit()
         Me.colFin = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.colRelacion = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.colTipo = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -49,6 +52,7 @@ Partial Class frmMain
         Me.colCodEnt = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.colFecha = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.colClave = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.RepositoryItemSpinEdit3 = New DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit()
         Me.PanTool = New System.Windows.Forms.Panel()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.Label5 = New System.Windows.Forms.Label()
@@ -93,7 +97,7 @@ Partial Class frmMain
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.DsTabla = New VBP04801.dsTabla()
-        Me.XpCollection1 = New DevExpress.Xpo.XPCollection()
+        Me.XpCollection1 = New DevExpress.Xpo.XPCollection(Me.components)
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.btnSolapaAnt = New DevExpress.XtraEditors.SimpleButton()
@@ -105,6 +109,9 @@ Partial Class frmMain
         Me.PanGridDiseno.SuspendLayout()
         CType(Me.GridDiseno, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gDiseno, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.RepositoryItemSpinEdit2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.RepositoryItemSpinEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.RepositoryItemSpinEdit3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanTool.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -261,6 +268,7 @@ Partial Class frmMain
         Me.GridDiseno.LookAndFeel.UseWindowsXPTheme = True
         Me.GridDiseno.MainView = Me.gDiseno
         Me.GridDiseno.Name = "GridDiseno"
+        Me.GridDiseno.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.RepositoryItemSpinEdit1, Me.RepositoryItemSpinEdit2, Me.RepositoryItemSpinEdit3})
         Me.GridDiseno.Size = New System.Drawing.Size(671, 261)
         Me.GridDiseno.TabIndex = 15
         Me.GridDiseno.UseEmbeddedNavigator = True
@@ -313,28 +321,56 @@ Partial Class frmMain
         Me.colInicio.AppearanceCell.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.colInicio.AppearanceCell.Options.UseBackColor = True
         Me.colInicio.Caption = "Inicio"
+        Me.colInicio.ColumnEdit = Me.RepositoryItemSpinEdit2
+        Me.colInicio.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
         Me.colInicio.FieldName = "Inicio"
         Me.colInicio.Name = "colInicio"
         Me.colInicio.Visible = True
         Me.colInicio.VisibleIndex = 2
         Me.colInicio.Width = 50
         '
+        'RepositoryItemSpinEdit2
+        '
+        Me.RepositoryItemSpinEdit2.AutoHeight = False
+        Me.RepositoryItemSpinEdit2.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.RepositoryItemSpinEdit2.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+        Me.RepositoryItemSpinEdit2.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+        Me.RepositoryItemSpinEdit2.IsFloatValue = False
+        Me.RepositoryItemSpinEdit2.Mask.EditMask = "N00"
+        Me.RepositoryItemSpinEdit2.Name = "RepositoryItemSpinEdit2"
+        '
         'colLongitud
         '
         Me.colLongitud.Caption = "Longitud"
+        Me.colLongitud.ColumnEdit = Me.RepositoryItemSpinEdit1
+        Me.colLongitud.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
         Me.colLongitud.FieldName = "Longitud"
         Me.colLongitud.Name = "colLongitud"
         Me.colLongitud.Visible = True
         Me.colLongitud.VisibleIndex = 3
         Me.colLongitud.Width = 50
         '
+        'RepositoryItemSpinEdit1
+        '
+        Me.RepositoryItemSpinEdit1.AutoHeight = False
+        Me.RepositoryItemSpinEdit1.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.RepositoryItemSpinEdit1.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+        Me.RepositoryItemSpinEdit1.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+        Me.RepositoryItemSpinEdit1.IsFloatValue = False
+        Me.RepositoryItemSpinEdit1.Mask.EditMask = "N00"
+        Me.RepositoryItemSpinEdit1.MaxValue = New Decimal(New Integer() {999, 0, 0, 0})
+        Me.RepositoryItemSpinEdit1.MinValue = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.RepositoryItemSpinEdit1.Name = "RepositoryItemSpinEdit1"
+        '
         'colFin
         '
         Me.colFin.AppearanceCell.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.colFin.AppearanceCell.Options.UseBackColor = True
         Me.colFin.Caption = "Fin"
+        Me.colFin.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
         Me.colFin.FieldName = "Fin"
         Me.colFin.Name = "colFin"
+        Me.colFin.OptionsColumn.AllowEdit = False
         Me.colFin.Visible = True
         Me.colFin.VisibleIndex = 4
         Me.colFin.Width = 50
@@ -351,8 +387,10 @@ Partial Class frmMain
         'colTipo
         '
         Me.colTipo.Caption = "Tipo dato"
+        Me.colTipo.ColumnEdit = Me.RepositoryItemSpinEdit1
         Me.colTipo.FieldName = "Tipo"
         Me.colTipo.Name = "colTipo"
+        Me.colTipo.Summary.AddRange(New DevExpress.XtraGrid.GridSummaryItem() {New DevExpress.XtraGrid.GridColumnSummaryItem(), New DevExpress.XtraGrid.GridColumnSummaryItem()})
         Me.colTipo.Visible = True
         Me.colTipo.VisibleIndex = 5
         Me.colTipo.Width = 100
@@ -400,6 +438,18 @@ Partial Class frmMain
         Me.colClave.Visible = True
         Me.colClave.VisibleIndex = 9
         Me.colClave.Width = 100
+        '
+        'RepositoryItemSpinEdit3
+        '
+        Me.RepositoryItemSpinEdit3.AutoHeight = False
+        Me.RepositoryItemSpinEdit3.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.RepositoryItemSpinEdit3.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+        Me.RepositoryItemSpinEdit3.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+        Me.RepositoryItemSpinEdit3.IsFloatValue = False
+        Me.RepositoryItemSpinEdit3.Mask.EditMask = "N00"
+        Me.RepositoryItemSpinEdit3.MaxValue = New Decimal(New Integer() {9999, 0, 0, 0})
+        Me.RepositoryItemSpinEdit3.MinValue = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.RepositoryItemSpinEdit3.Name = "RepositoryItemSpinEdit3"
         '
         'PanTool
         '
@@ -474,6 +524,7 @@ Partial Class frmMain
         '
         'btnEliminarTabla1
         '
+        Me.btnEliminarTabla1.Enabled = False
         Me.btnEliminarTabla1.Location = New System.Drawing.Point(186, 2)
         Me.btnEliminarTabla1.Name = "btnEliminarTabla1"
         Me.btnEliminarTabla1.Size = New System.Drawing.Size(100, 20)
@@ -889,6 +940,9 @@ Partial Class frmMain
         Me.PanGridDiseno.ResumeLayout(False)
         CType(Me.GridDiseno, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.gDiseno, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.RepositoryItemSpinEdit2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.RepositoryItemSpinEdit1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.RepositoryItemSpinEdit3, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PanTool.ResumeLayout(False)
         Me.PanTool.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)
@@ -992,4 +1046,7 @@ Partial Class frmMain
     Friend WithEvents btnSolapaAnt As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents btnSolapaSig As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents chkEqui As CheckBox
+    Friend WithEvents RepositoryItemSpinEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit
+    Friend WithEvents RepositoryItemSpinEdit2 As DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit
+    Friend WithEvents RepositoryItemSpinEdit3 As DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit
 End Class

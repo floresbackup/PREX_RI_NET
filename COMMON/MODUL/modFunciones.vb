@@ -357,8 +357,8 @@ Module modFunciones
 
       If Not (oLlave.SelectedItem Is Nothing) Then
          oItem = oLlave.SelectedItem
-         Return oItem.Valor.ToString.Substring(1)
-      Else
+            Return oItem.Valor.ToString.TrimEnd.Substring(1)
+        Else
          Return "0"
       End If
 

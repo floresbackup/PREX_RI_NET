@@ -201,7 +201,6 @@ C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP0
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.xml
 C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.pdb
 <<<<<<< HEAD
-C:\Users\Administrador\source\repos\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.exe.licenses
 D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.vbprojResolveAssemblyReference.cache
 D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.frmError.resources
 D:\PREX_RI_NET\VBP04801\VBP04801\obj\Debug\VBP04801.frmExportar.resources

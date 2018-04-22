@@ -317,6 +317,24 @@ Public Class frmMain
     Private Sub btnOtra1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOtra1.Click
         Cargar()
     End Sub
+    Private Function ValidarTabla() As Boolean
+        If cboTabla1.SelectedItem Is Nothing Then
+            MensajeError("Debe seleccionar una tabla")
+            cboTabla1.Focus()
+            Return False
+        End If
+        Return True
+    End Function
+
+    Private Function ValidarPeriodo() As Boolean
+
+        If cboPeriodo1.SelectedItem Is Nothing Then
+            MensajeError("Debe seleccionar un período")
+            cboPeriodo1.Focus()
+            Return False
+        End If
+        Return True
+    End Function
 
     Private Sub EliminarTabla()
 
@@ -324,17 +342,10 @@ Public Class frmMain
 
             Dim sSQL As String = ""
 
-            If cboTabla1.SelectedItem Is Nothing Then
-                MensajeError("Debe seleccionar una tabla")
-                cboTabla1.Focus()
+            If Not ValidarTabla() OrElse Not ValidarPeriodo() Then
                 Exit Sub
             End If
 
-            If cboPeriodo1.SelectedItem Is Nothing Then
-                MensajeError("Debe seleccionar un período")
-                cboPeriodo1.Focus()
-                Exit Sub
-            End If
 
             If Pregunta("¿Eliminar Tabla?") = vbNo Then
                 Exit Sub
@@ -406,7 +417,7 @@ Public Class frmMain
             End If
 
         End If
-
+        cboPeriodo1.Enabled = ValidarPeriodo()
     End Sub
 
    Private Sub CargarPeriodos()
@@ -439,11 +450,13 @@ Public Class frmMain
             If cboPeriodo1.Items.Count = 1 Then
                 cboPeriodo1.SelectedIndex = 0
                 CargarTabla()
+                cboPeriodo1.Enabled = True
             Else
                 cboPeriodo1.Text = "<Seleccione un período...>"
+                cboPeriodo1.Enabled = False
             End If
 
-         Cursor = Cursors.Default
+            Cursor = Cursors.Default
 
       Catch ex As Exception
          Cursor = Cursors.Default
@@ -526,17 +539,22 @@ Public Class frmMain
                 DESCRIPCION_NUEVA_TABLA = ""
                 ' FECHA_VIG_NUEVA_TABLA = ""
 
-                'Load(frmNuevaTabla)
-                'frmNuevaTabla.Show(vbModal)
+                Dim frmNueva As New frmNuevaTabla()
+                frmNueva.ShowDialog(Me)
+
 
                 If NOMBRE_NUEVA_TABLA = "" Then
                     cboTabla1.SelectedItem = Nothing
                     cboTabla1.Text = "<Seleccionar...>"
                 Else
+                    RemoveHandler cboTabla1.SelectedIndexChanged, AddressOf cboTabla1_SelectedIndexChanged
+                    CargarTablas()
+                    AddHandler cboTabla1.SelectedIndexChanged, AddressOf cboTabla1_SelectedIndexChanged
 
                     For Each cboX In cboTabla1.Items
-                        If cboX.Valor.ToString = "K" & NOMBRE_NUEVA_TABLA Then
+                        If cboX.Valor.ToString.Trim = "K" & NOMBRE_NUEVA_TABLA Then
                             bExisteCbo = True
+                            cboTabla1.SelectedItem = cboX
                             Exit For
                         End If
                     Next
@@ -545,11 +563,11 @@ Public Class frmMain
                         cboTabla1.Items.Add(New clsItem.Item("K" & NOMBRE_NUEVA_TABLA, DESCRIPCION_NUEVA_TABLA))
                     End If
 
-                    SelCombo(cboTabla1, "K" & NOMBRE_NUEVA_TABLA)
-                    CargarPeriodos()
+                    'SelCombo(cboTabla1, "K" & NOMBRE_NUEVA_TABLA)
+                    'CargarPeriodos()
                     cboTabla1.Enabled = False
                 End If
-
+                frmNueva.Dispose()
             Else
 
                 CargarPeriodos()
@@ -578,7 +596,7 @@ Public Class frmMain
    End Sub
 
    Private Sub DropDowns()
-        Exit Sub
+        'Exit Sub
         'DropDown Tipo
 
         Dim oItem As DropDownGrid
@@ -683,9 +701,8 @@ Public Class frmMain
       oLookUp.ShowHeader = False
       GridDiseno.RepositoryItems.Add(oLookUp)
 
-      CType(GridDiseno.MainView, ColumnView).Columns("Valida").ColumnEdit = oLookUp
-
-   End Sub
+        CType(GridDiseno.MainView, ColumnView).Columns("Valida").ColumnEdit = oLookUp
+    End Sub
 
    Private Sub btnGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGuardar.Click
       GuardarDiseno()
@@ -700,7 +717,9 @@ Public Class frmMain
          Dim row As DataRow
          Dim da As OleDb.OleDbDataAdapter
          Dim cb As OleDb.OleDbCommandBuilder
-
+            If Not ValidarPeriodo() Then
+                Exit Sub
+            End If
             sSQL = "DELETE " &
                 "FROM      DISPOS " &
                 "WHERE     DP_NOMBRE = '" & Llave(cboTabla1) & "' " &
@@ -716,36 +735,36 @@ Public Class frmMain
             ds = oAdmlocal.AbrirDataset(sSQL, da)
          cb = New OleDb.OleDbCommandBuilder(da)
 
-         With ds.Tables(0)
+            With ds.Tables(0)
 
-            For Each oCampo As DataRow In oTabla.Diseno.Rows
+                For Each oCampo As DataRow In oTabla.Diseno.Rows
 
-               row = .NewRow
+                    row = .NewRow
 
                     row("DP_NOMBRE") = Llave(cboTabla1)
                     row("DP_CAMPO") = oCampo("Campo")
-               row("DP_INICIO") = oCampo("Inicio")
-               row("DP_LONGITUD") = oCampo("Longitud")
-               row("DP_FIN") = oCampo("Fin")
-               row("DP_CAMPO_DESTINO") = oCampo("Campo destino")
-               row("DP_TIPO") = oCampo("Tipo")
-               row("DP_FORMATO") = oCampo("Formato")
-               row("DP_MARCA") = oCampo("Marca")
-               row("DP_RELACION") = oCampo("Relacion")
-               row("DP_VALIDA") = oCampo("Valida")
-               row("DP_CODENT") = oCampo("CodEnt")
-               row("DP_FECVIG") = oCampo("Fecha")
-               row("DP_CLAVE") = oCampo("Clave")
+                    row("DP_INICIO") = oCampo("Inicio")
+                    row("DP_LONGITUD") = oCampo("Longitud")
+                    row("DP_FIN") = oCampo("Fin")
+                    row("DP_CAMPO_DESTINO") = oCampo("Campo destino")
+                    row("DP_TIPO") = oCampo("Tipo")
+                    row("DP_FORMATO") = oCampo("Formato")
+                    row("DP_MARCA") = oCampo("Marca")
+                    row("DP_RELACION") = oCampo("Relacion")
+                    row("DP_VALIDA") = oCampo("Valida")
+                    row("DP_CODENT") = oCampo("CodEnt")
+                    row("DP_FECVIG") = DateTime.Parse(cboPeriodo1.Text)
+                    row("DP_CLAVE") = oCampo("Clave")
 
-               ds.Tables(0).Rows.Add(row)
-               da.Update(ds)
-               ds.AcceptChanges()
+                    ds.Tables(0).Rows.Add(row)
+                    da.Update(ds)
+                    ds.AcceptChanges()
 
-            Next
+                Next
 
-         End With
+            End With
 
-         ds = Nothing
+            ds = Nothing
 
             sSQL = "SELECT * FROM SYSOBJECTS WHERE NAME='" & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & "' AND TYPE='U'"
             ds = oAdmlocal.AbrirDataset(sSQL)
@@ -780,27 +799,27 @@ Public Class frmMain
 
             For Each oCampo As DataRow In oTabla.Diseno.Rows
 
-            sTipo = oCampo("Tipo")
+                sTipo = oCampo("Tipo")
 
-            If sTipo.Substring(0, 1) = "N" Then
-               nLong = sTipo.Substring(1, 1)
-            Else
-               nLong = oCampo("Longitud")
-            End If
+                If sTipo.Substring(0, 1) = "N" Then
+                    nLong = sTipo.Substring(1, 1)
+                Else
+                    nLong = oCampo("Longitud")
+                End If
 
-            sSQL = sSQL & oCampo("Campo destino") & " " & TipoDatosSQL(sTipo, nLong) & ", " & vbCrLf
+                sSQL = sSQL & "["& oCampo("Campo destino") & "] " & TipoDatosSQL(sTipo, nLong) & ", " & vbCrLf
 
-            If oCampo("Clave") > 0 Then
-               bClave = True
-            End If
+                If Not IsDBNull(oCampo("Clave")) AndAlso oCampo("Clave") > 0 Then
+                    bClave = True
+                End If
 
-         Next
+            Next
 
-         If bClave Then
-            sSQL = sSQL & "PrexClave VARCHAR(255) NULL)"
-         Else
-            sSQL = Mid(sSQL, 1, Len(sSQL) - 2) & ")"
-         End If
+            If bClave Then
+                sSQL = sSQL & "PrexClave VARCHAR(255) NULL)"
+             Else
+                sSQL = Mid(sSQL, 1, Len(sSQL) - 2) & ")"
+             End If
 
          oAdmlocal.EjecutarComandoAsincrono(sSQL)
 
@@ -841,9 +860,9 @@ Public Class frmMain
                nLong = oCampo("Longitud")
             End If
 
-            sSQL = sSQL & oCampo("Campo destino") & " " & TipoDatosSQL(sTipo, nLong) & ", " & vbCrLf
+                sSQL = sSQL & "[" & oCampo("Campo destino") & "] " & TipoDatosSQL(sTipo, nLong) & ", " & vbCrLf
 
-            If oCampo("Clave") > 0 Then
+                If not IsDBNull(oCampo("Clave")) AndAlso oCampo("Clave") > 0 Then
                bClave = True
             End If
 
@@ -873,63 +892,74 @@ Public Class frmMain
          Dim sTipo As String
          Dim bClave As Boolean
          Dim nLong As Long
-         Dim bElimina As Boolean
+            Dim bElimina As Boolean
+
 
             'Primero verifico si tengo columnas para dropear
             sSQL = "SELECT TOP 1 * FROM " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & " "
             ds = oAdmlocal.AbrirDataset(sSQL)
+            sSQL = String.Empty
+            If ds.Tables(0).Columns.Count = 1 Then
+                sSQL = "DROP TABLE " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & vbCrLf
+                oAdmlocal.EjecutarComandoAsincrono(sSQL)
+                CrearTabla()
+                Exit Sub
+            End If
 
-         For Each oField In ds.Tables(0).Columns
-            bElimina = True
+            For Each oField In ds.Tables(0).Columns
+                bElimina = True
 
-            For Each oCampo As DataRow In oTabla.Diseno.Rows
-               If oCampo("Campo destino").ToString.ToUpper = oField.ColumnName.ToUpper Then
-                  bElimina = False
-                  Exit For
-               End If
+                For Each oCampo As DataRow In oTabla.Diseno.Rows
+                    If oCampo("Campo destino").ToString.ToUpper = oField.ColumnName.ToUpper Then
+                        bElimina = False
+                        Exit For
+                    End If
+                Next
+
+                If bElimina Then
+                    sSQL = sSQL & "ALTER TABLE " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & " " &
+                            "DROP COLUMN [" & oField.ColumnName & "]" & vbCrLf
+                End If
             Next
 
-            If bElimina Then
-                    sSQL = sSQL & "ALTER TABLE " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & " " &
-                      "DROP COLUMN " & oField.ColumnName & vbCrLf
-                End If
-         Next
 
-         ds = Nothing
+            ds = Nothing
 
          oAdmlocal.EjecutarComandoAsincrono(sSQL)
 
-         'Segundo altero los campos que hayan cambiado y agrego los nuevos
-         For Each oCampo As DataRow In oTabla.Diseno.Rows
+            'Segundo altero los campos que hayan cambiado y agrego los nuevos
+            For Each oCampo As DataRow In oTabla.Diseno.Rows
 
-            sTipo = oCampo("Tipo")
+                sTipo = oCampo("Tipo")
 
-            If sTipo.Substring(0, 1) = "N" Then
-               nLong = sTipo.Substring(1, 1)
-            Else
-               nLong = oCampo("Longitud")
-            End If
+                If sTipo.Substring(0, 1) = "N" Then
+                    nLong = sTipo.Substring(1, 1)
+                Else
+                    nLong = oCampo("Longitud")
+                End If
 
-            sSQL = sSQL & oCampo("Campo destino") & " " & TipoDatosSQL(sTipo, nLong) & ", " & vbCrLf
+                sSQL = sSQL & oCampo("Campo destino") & " " & TipoDatosSQL(sTipo, nLong) & ", " & vbCrLf
 
                 If oAdmlocal.ExisteCampo(Llave(cboTabla1) & "_" & Llave(cboPeriodo1), oCampo("Campo destino")) Then
                     sSQL = "ALTER TABLE " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & " " &
-                      "ALTER COLUMN " & oCampo("Campo destino") & " " & TipoDatosSQL(sTipo, nLong) & " "
+                        "ALTER COLUMN " & oCampo("Campo destino") & " " & TipoDatosSQL(sTipo, nLong) & " "
                 Else
+
                     sSQL = "ALTER TABLE " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1) & " " &
-                      "ADD " & oCampo("Campo destino") & " " & TipoDatosSQL(sTipo, nLong) & " "
+                        "ADD " & oCampo("Campo destino") & " " & TipoDatosSQL(sTipo, nLong) & " "
+
                 End If
 
-            oAdmlocal.EjecutarComandoAsincrono(sSQL)
+                oAdmlocal.EjecutarComandoAsincrono(sSQL)
 
-            If oCampo("Clave") > 0 Then
-               bClave = True
-            End If
+                If Not IsDBNull(oCampo("Clave")) AndAlso oCampo("Clave") > 0 Then
+                    bClave = True
+                End If
 
-         Next
+            Next
 
-         If bClave Then
-                sSQL = "SELECT TOP 1 * FROM " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1)
+            If bClave Then
+                sSQL = "Select TOP 1 * FROM " & Llave(cboTabla1) & "_" & Llave(cboPeriodo1)
                 ds = oAdmlocal.AbrirDataset(sSQL)
 
             bClave = False
@@ -950,7 +980,8 @@ Public Class frmMain
             End If
          End If
 
-      Catch ex As Exception
+
+        Catch ex As Exception
          TratarError(ex, "ModificarTabla")
       End Try
 
@@ -1541,11 +1572,11 @@ Public Class frmMain
 
             If sTipo.Substring(0, 1) = "N" Then
 
-               '''''''''''NUMERO'''''''''''''
-               If oCampo("Valida") = 98 Then
-                  sSQL = sSQL & FormatearNumeroSQL(CODIGO_ENTIDAD.ToString, oCampo("Valida"), Val(Mid(sTipo, 2))) & ", " & vbCrLf '& " AS " & .CampoDestino & ", " & vbCrLf
-               Else
-                  sSQL = sSQL & FormatearNumeroSQL(sFldOrigen, oCampo("Valida"), Val(Mid(sTipo, 2))) & ", " & vbCrLf '& " AS " & .CampoDestino & ", " & vbCrLf
+                    '''''''''''NUMERO'''''''''''''
+                    If Not IsDBNull(oCampo("Valida")) AndAlso oCampo("Valida") = 98 Then
+                        sSQL = sSQL & FormatearNumeroSQL(CODIGO_ENTIDAD.ToString, oCampo("Valida"), Val(Mid(sTipo, 2))) & ", " & vbCrLf '& " AS " & .CampoDestino & ", " & vbCrLf
+                    Else
+                        sSQL = sSQL & FormatearNumeroSQL(sFldOrigen, oCampo("Valida"), Val(Mid(sTipo, 2))) & ", " & vbCrLf '& " AS " & .CampoDestino & ", " & vbCrLf
                End If
 
             ElseIf sTipo.Substring(0, 1) = "F" Then
@@ -1592,15 +1623,15 @@ Public Class frmMain
 
             End Select
 
-            If oCampo("Clave") > 0 Then
-               bClave = True
-               If oCampo("Clave") > UBound(sCampoClave) Then
-                  ReDim Preserve sCampoClave(oCampo("Clave"))
-               End If
-               sCampoClave(oCampo("Clave")) = sFldOrigen
-            End If
+                If Not IsDBNull(oCampo("Clave")) AndAlso oCampo("Clave") > 0 Then
+                    bClave = True
+                    If oCampo("Clave") > UBound(sCampoClave) Then
+                        ReDim Preserve sCampoClave(oCampo("Clave"))
+                    End If
+                    sCampoClave(oCampo("Clave")) = sFldOrigen
+                End If
 
-         Next
+            Next
 
          If bClave Then
             Column = View.Columns.AddField("PrexClave")
@@ -1825,10 +1856,10 @@ Public Class frmMain
             sTabla = sTabla & "_" & Llave(cboPeriodo1)
 
             If Not oAdmlocal.ExisteTabla(sTabla) Then
-            CrearTabla()
-         End If
+                CrearTabla()
+            End If
 
-         oAdmlocal.EjecutarComandoAsincrono("SELECT TOP 1 * INTO " & TABLA_TEMPORAL & " FROM " & sTabla)
+            oAdmlocal.EjecutarComandoAsincrono("SELECT TOP 1 * INTO " & TABLA_TEMPORAL & " FROM " & sTabla)
          oAdmlocal.EjecutarComandoAsincrono("DELETE FROM " & TABLA_TEMPORAL)
 
          'Abro un recordset en modo escritura y agrego los registros.
@@ -1926,9 +1957,11 @@ Public Class frmMain
                   vTemp = sDato(nC)
                End If
 
-               sFormat = oCampo("Formato")
+                    If Not IsDBNull(oCampo("Formato")) Then
+                        sFormat = oCampo("Formato").ToString()
+                    End If
 
-               Select Case Mid(oCampo("Tipo"), 1, 1)
+                    Select Case Mid(oCampo("Tipo"), 1, 1)
                   'TEXTO
                   Case "T"
                      vTemp = Mid(CStr(vTemp), 1, oCampo("Longitud"))
@@ -2459,5 +2492,35 @@ GrabarCampo:
             btnSolapaSig.Enabled = True
 
         End If
+    End Sub
+
+    Private Sub GridDiseno_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridDiseno.KeyDown
+        If (e.KeyCode = Keys.Delete And e.Modifiers = Keys.Control) Then
+            If (MessageBox.Show("¿Elimnar registro?", "Confirmar", MessageBoxButtons.YesNo) <> DialogResult.Yes) Then Return
+            Dim view As GridView = CType(sender, GridView)
+            view.DeleteRow(view.FocusedRowHandle)
+        End If
+    End Sub
+
+    Private Sub gDiseno_CellValueChanged(sender As Object, e As CellValueChangedEventArgs) Handles gDiseno.CellValueChanged
+        Dim view As GridView = CType(sender, GridView)
+
+        Dim col As Columns.GridColumn = Nothing
+
+        If e.Column.Name = "colInicio" Then
+            col = colLongitud
+        ElseIf e.Column.Name = "colLongitud" Then
+            col = colInicio
+        End If
+
+        If col IsNot Nothing Then
+            Dim valor As Integer = 0
+            If (Not IsDBNull(view.GetRowCellValue(view.FocusedRowHandle, col))) Then
+                valor = Convert.ToInt32(view.GetRowCellValue(view.FocusedRowHandle, col))
+            End If
+            view.SetRowCellValue(view.FocusedRowHandle, colFin, Convert.ToUInt32(e.Value) + valor)
+        End If
+
+
     End Sub
 End Class

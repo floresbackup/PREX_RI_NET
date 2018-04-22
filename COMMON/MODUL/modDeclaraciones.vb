@@ -12,12 +12,15 @@ Module modDeclaraciones
 
    'DATASET DE CONFIGURACIÓN (COMO EL VIEJO INI)
    Public oConfig As New dsConfig
+#If DEBUG Then
+    Public ARCHIVO_CONFIG As String = "C:\Prex\DebugLocal\Prex.config"
+#Else
+    Public ARCHIVO_CONFIG As String = Application.StartupPath & "\Prex.config"
+#End If
+    'Public ARCHIVO_CONFIG_DEV As String = "D:\Develop\Proyectos.NET\Prex.config"
+    ' Public ARCHIVO_CONFIG_DEV As String = "\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\BIN\Prex.config"
 
-   Public ARCHIVO_CONFIG As String = Application.StartupPath & "\Prex.config"
-   'Public ARCHIVO_CONFIG_DEV As String = "D:\Develop\Proyectos.NET\Prex.config"
-   Public ARCHIVO_CONFIG_DEV As String = "\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\BIN\Prex.config"
-
-   Public CONN_LOCAL As String = ""
+    Public CONN_LOCAL As String = ""
    Public FORMATO_FECHA As String = ""
    Public CARPETA_LOCAL As String = ""
    Public RUTA_BIN As String = ""

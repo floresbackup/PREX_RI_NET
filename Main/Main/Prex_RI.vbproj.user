@@ -6,7 +6,7 @@
     <StartArguments>/IDE</StartArguments>
   </PropertyGroup>
   <PropertyGroup>
-    <PublishUrlHistory>http://localhost/Main/</PublishUrlHistory>
+    <PublishUrlHistory>C:\Documents and Settings\debernardig\Escritorio\|http://localhost/Main/</PublishUrlHistory>
     <InstallUrlHistory>
     </InstallUrlHistory>
     <SupportUrlHistory>
@@ -19,5 +19,8 @@
     <VerifyUploadedFiles>true</VerifyUploadedFiles>
     <ProjectView>ShowAllFiles</ProjectView>
     <ErrorReportUrlHistory />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
   </PropertyGroup>
 </Project>
