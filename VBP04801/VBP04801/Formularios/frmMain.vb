@@ -2494,11 +2494,10 @@ GrabarCampo:
         End If
     End Sub
 
-    Private Sub GridDiseno_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles GridDiseno.KeyDown
-        If (e.KeyCode = Keys.Delete And e.Modifiers = Keys.Control) Then
+    Private Sub gDiseno_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles gDiseno.KeyDown
+        If (e.KeyCode = Keys.Delete) Then
             If (MessageBox.Show("¿Elimnar registro?", "Confirmar", MessageBoxButtons.YesNo) <> DialogResult.Yes) Then Return
-            Dim view As GridView = CType(sender, GridView)
-            view.DeleteRow(view.FocusedRowHandle)
+            gDiseno.DeleteRow(gDiseno.FocusedRowHandle)
         End If
     End Sub
 

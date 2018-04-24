@@ -64,6 +64,9 @@ Module modFunciones
                         Case "ID_SISTEMA"
                             ID_SISTEMA = Val(sTemp)
 
+                        Case "SG_CONFIG"
+                            SG_CONFIG = sTemp
+
                         Case "SIMBOLO_DECIMAL"
                             SIMBOLO_DECIMAL = sTemp.Substring(0, 1)
 

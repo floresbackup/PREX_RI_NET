@@ -93,6 +93,7 @@ namespace Prex.Utils
 
         //Citi
         public long ID_SISTEMA           { get; internal set; }
+        public string SG_CONFIG { get; internal set; }
         public Usuario UsuarioActual { get; internal set; }
 
         public PrexConfig()

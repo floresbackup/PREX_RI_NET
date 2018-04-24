@@ -32,9 +32,10 @@ Module modDeclaraciones
     Public NOMBRE_ENTIDAD As String = ""
    Public CODIGO_ENTIDAD As Long = 0
    Public CODIGO_TRANSACCION As Long = 0
-   Public SIMBOLO_DECIMAL As Char
+    Public SIMBOLO_DECIMAL As Char
+    Public SG_CONFIG As String = ""
 
-   Public CulturaActual As System.Globalization.CultureInfo   'Cultura
+    Public CulturaActual As System.Globalization.CultureInfo   'Cultura
 
    Public CONSULTA_CANCELADA As Boolean
 

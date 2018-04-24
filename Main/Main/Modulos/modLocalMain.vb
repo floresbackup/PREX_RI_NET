@@ -1,5 +1,6 @@
 
 Imports System.Configuration
+Imports System.Linq
 Imports Prex.Utils
 
 Module modLocalMain
@@ -240,7 +241,7 @@ Module modLocalMain
         Dim strMsg As String
         Dim sToken As String
 
-        sToken = Command
+        sToken = Command()
 
         '    UsuarioActual.Nombre = "admin"
         '    USUARIO_DB = "sa"
@@ -339,10 +340,34 @@ Maneja_Error:
         sPerfil = Nothing
 
         Dim SGInterface As SGInterface = FactorySGInstance.getInstanceInterface()
-        Dim returnValue = SGInterface.RsmsLogin(ID_SISTEMA, "Gestión RI", "C:\Program Files (x86)\Citi\SGLibraryNET_5.8.004_net2.0\resources\config.xml", sPerfil)
+        Dim returnValue = SGInterface.RsmsLogin(ID_SISTEMA, "Gestión RI", SG_CONFIG, sPerfil)
         If (returnValue = 1) Then
 
             MessageBox.Show(frmMain, "Perfil devuelto: " & sPerfil, "Login SGLibrary", MessageBoxButtons.OK)
+
+            If (sPerfil.Split("|").FirstOrDefault() Is Nothing) Then
+                sNombre = String.Empty
+            Else
+                sNombre = sPerfil.Split("|").FirstOrDefault()
+            End If
+
+            sPerfil = SGInterface.AccFunctions()
+
+            Dim oAdmTablas As New AdmTablas
+
+            oAdmTablas.ConnectionString = CONN_LOCAL
+
+            NOMBRE_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_DESCRI", " TG_CODTAB=1 AND TG_NUME01=1")
+            CODIGO_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_CODCON", " TG_CODTAB=1 AND TG_NUME01=1")
+            UsuarioActual.Nombre = sNombre
+            UsuarioActual.Codigo = oAdmTablas.DevolverValor("USUARI", "US_CODUSU", " US_NOMBRE = '" & sNombre & "'", "0")
+            UsuarioActual.Descripcion = oAdmTablas.DevolverValor("USUARI", "US_DESCRI", " US_NOMBRE = '" & sNombre & "'", sNombre)
+
+            oAdmTablas = Nothing
+
+            GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "")
+
+            frmMain.ActualizarSeguridad(sPerfil.Replace("[", String.Empty).Replace("]", String.Empty))
 
             InicioCITI = True
         Else
