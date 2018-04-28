@@ -343,7 +343,7 @@ Maneja_Error:
         Dim returnValue = SGInterface.RsmsLogin(ID_SISTEMA, "Gestión RI", SG_CONFIG, sPerfil)
         If (returnValue = 1) Then
 
-            MessageBox.Show(frmMain, "Perfil devuelto: " & sPerfil, "Login SGLibrary", MessageBoxButtons.OK)
+            'MessageBox.Show(frmMain, "Perfil devuelto: " & sPerfil, "Login SGLibrary", MessageBoxButtons.OK)
 
             If (sPerfil.Split("|").FirstOrDefault() Is Nothing) Then
                 sNombre = String.Empty
@@ -368,7 +368,7 @@ Maneja_Error:
             GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "")
 
             frmMain.ActualizarSeguridad(sPerfil.Replace("[", String.Empty).Replace("]", String.Empty))
-
+            CITI_PERFIL = sPerfil
             InicioCITI = True
         Else
             InicioCITI = False

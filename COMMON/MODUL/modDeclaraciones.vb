@@ -21,7 +21,7 @@ Module modDeclaraciones
     ' Public ARCHIVO_CONFIG_DEV As String = "\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\BIN\Prex.config"
 
     Public CONN_LOCAL As String = ""
-   Public FORMATO_FECHA As String = ""
+    Public FORMATO_FECHA As String = ""
    Public CARPETA_LOCAL As String = ""
    Public RUTA_BIN As String = ""
    Public RUTA_AYUDA As String = ""
@@ -34,6 +34,7 @@ Module modDeclaraciones
    Public CODIGO_TRANSACCION As Long = 0
     Public SIMBOLO_DECIMAL As Char
     Public SG_CONFIG As String = ""
+    Public CITI_PERFIL As String = ""
 
     Public CulturaActual As System.Globalization.CultureInfo   'Cultura
 

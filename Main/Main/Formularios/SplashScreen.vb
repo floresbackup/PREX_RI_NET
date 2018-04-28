@@ -64,6 +64,7 @@ Public NotInheritable Class SplashScreen
             sSQL = "SELECT DB_NAME() AS BASEDATOS "
             ds = oAdmTablas.AbrirDataset(sSQL)
 
+            DatosEquipo = DatosEquipo & "Perfil CITI: " & CITI_PERFIL & vbCrLf & vbCrLf
             DatosEquipo = DatosEquipo & "Base de datos: " & vbCrLf & ds.Tables(0).Rows(0).Item("BASEDATOS") & vbCrLf & vbCrLf
 
             sSQL = "SELECT   CONVERT(char(20), SERVERPROPERTY('servername')) AS SERVIDOR "
