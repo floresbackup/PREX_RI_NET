@@ -222,14 +222,6 @@
       <Link>Formularios\frmExportar.vb</Link>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\..\COMMON\FORM\frmInputGeneral.designer.vb">
-      <Link>Formularios\frmInputGeneral.designer.vb</Link>
-      <DependentUpon>frmInputGeneral.vb</DependentUpon>
-    </Compile>
-    <Compile Include="..\..\COMMON\FORM\frmInputGeneral.vb">
-      <Link>Formularios\frmInputGeneral.vb</Link>
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="..\..\COMMON\FORM\frmTablaGeneral.designer.vb">
       <Link>Formularios\frmTablaGeneral.designer.vb</Link>
       <DependentUpon>frmTablaGeneral.vb</DependentUpon>
@@ -257,22 +249,10 @@
       <Link>Modulos\modGlobalBase64.vb</Link>
     </Compile>
     <Compile Include="Clases\clsItem.vb" />
-    <Compile Include="Formularios\frmABMRegistro.Designer.vb">
-      <DependentUpon>frmABMRegistro.vb</DependentUpon>
+    <Compile Include="Formularios\frmAdjuntos.Designer.vb">
+      <DependentUpon>frmAdjuntos.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formularios\frmABMRegistro.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formularios\frmDrillDown.Designer.vb">
-      <DependentUpon>frmDrillDown.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Formularios\frmDrillDown.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Formularios\frmNotas.Designer.vb">
-      <DependentUpon>frmNotas.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Formularios\frmNotas.vb">
+    <Compile Include="Formularios\frmAdjuntos.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modulos\modLocalMain.vb" />
@@ -314,27 +294,13 @@
       <DependentUpon>frmExportar.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\..\COMMON\FORM\frmInputGeneral.resx">
-      <Link>Formularios\frmInputGeneral.resx</Link>
-      <DependentUpon>frmInputGeneral.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="..\..\COMMON\FORM\frmTablaGeneral.resx">
       <Link>Formularios\frmTablaGeneral.resx</Link>
       <DependentUpon>frmTablaGeneral.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formularios\frmABMRegistro.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>frmABMRegistro.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formularios\frmDrillDown.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>frmDrillDown.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Formularios\frmNotas.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>frmNotas.vb</DependentUpon>
+    <EmbeddedResource Include="Formularios\frmAdjuntos.resx">
+      <DependentUpon>frmAdjuntos.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\licenses.licx" />
     <EmbeddedResource Include="My Project\Resources.resx">

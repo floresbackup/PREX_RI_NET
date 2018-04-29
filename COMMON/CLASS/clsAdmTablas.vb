@@ -421,35 +421,32 @@ Public Class AdmTablas
    End Function
 
    Public Function ExisteCampo(ByVal sTabla As String, ByVal sCampo As String)
-
-      Try
-
-         Dim ds As DataSet
-
-         ds = AbrirDataset("SELECT TOP 1 " & sCampo & " FROM " & sTabla)
+        Try
+            Dim ds = AbrirDataset("SELECT TOP 1 " & sCampo & " FROM " & sTabla)
             If ds Is Nothing Then Return False
+            ds = Nothing
 
             Return True
 
-      Catch ex As Exception
-         Return False
+        Catch ex As Exception
+            Return False
       End Try
 
    End Function
 
    Public Function ExisteTabla(ByVal sTabla As String)
+        Try
+            Dim ds = AbrirDataset("SELECT TOP 1 * FROM " & sTabla)
+            If ds Is Nothing Then
+                Return False
+            Else
+                ds = Nothing
+            End If
 
-      Try
+            Return True
 
-         Dim ds As DataSet
-
-         ds = AbrirDataset("SELECT TOP 1 * FROM " & sTabla)
-         ds = Nothing
-
-         Return True
-
-      Catch ex As Exception
-         Return False
+        Catch ex As Exception
+            Return False
       End Try
 
    End Function

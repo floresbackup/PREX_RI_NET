@@ -1,24 +1,24 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmMain
-   Inherits System.Windows.Forms.Form
+    Inherits System.Windows.Forms.Form
 
-   'Form overrides dispose to clean up the component list.
-   <System.Diagnostics.DebuggerNonUserCode()> _
-   Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-      If disposing AndAlso components IsNot Nothing Then
-         components.Dispose()
-      End If
-      MyBase.Dispose(disposing)
-   End Sub
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()>
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        If disposing AndAlso components IsNot Nothing Then
+            components.Dispose()
+        End If
+        MyBase.Dispose(disposing)
+    End Sub
 
-   'Required by the Windows Form Designer
-   Private components As System.ComponentModel.IContainer
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
 
-   'NOTE: The following procedure is required by the Windows Form Designer
-   'It can be modified using the Windows Form Designer.  
-   'Do not modify it using the code editor.
-   <System.Diagnostics.DebuggerStepThrough()> _
-   Private Sub InitializeComponent()
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
         Dim EditorButtonImageOptions2 As DevExpress.XtraEditors.Controls.EditorButtonImageOptions = New DevExpress.XtraEditors.Controls.EditorButtonImageOptions()
         Dim SerializableAppearanceObject5 As DevExpress.Utils.SerializableAppearanceObject = New DevExpress.Utils.SerializableAppearanceObject()
         Dim SerializableAppearanceObject6 As DevExpress.Utils.SerializableAppearanceObject = New DevExpress.Utils.SerializableAppearanceObject()
@@ -48,8 +48,12 @@ Partial Class frmMain
         Me.picLogo = New DevExpress.XtraEditors.PictureEdit()
         Me.PrintingSystem1 = New DevExpress.XtraPrinting.PrintingSystem()
         Me.PrintableComponentLink1 = New DevExpress.XtraPrinting.PrintableComponentLink()
-        Me.Grid = New DevExpress.XtraGrid.GridControl()
-        Me.GridView1 = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.GridDiseno = New DevExpress.XtraGrid.GridControl()
+        Me.gDiseno = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.colUsuario = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.RepositoryItemSpinEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit()
+        Me.RepositoryItemSpinEdit2 = New DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit()
+        Me.RepositoryItemSpinEdit3 = New DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit()
         Me.PanGrid = New DevExpress.XtraEditors.PanelControl()
         Me.PanGrilla = New DevExpress.XtraEditors.PanelControl()
         Me.PanTool = New DevExpress.XtraEditors.PanelControl()
@@ -61,6 +65,12 @@ Partial Class frmMain
         Me.btnExportar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton()
         Me.ToolTipText = New System.Windows.Forms.ToolTip()
+        Me.colFecha = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colHora = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colCodTrans = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colTransaccion = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colAccion = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colExtra = New DevExpress.XtraGrid.Columns.GridColumn()
         CType(Me.PanControles, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanControles.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -76,8 +86,11 @@ Partial Class frmMain
         Me.PanTop.SuspendLayout()
         CType(Me.picLogo.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PrintingSystem1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.GridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.GridDiseno, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.gDiseno, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.RepositoryItemSpinEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.RepositoryItemSpinEdit2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.RepositoryItemSpinEdit3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PanGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanGrid.SuspendLayout()
         CType(Me.PanGrilla, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -129,31 +142,31 @@ Partial Class frmMain
         '
         'txtUsuario
         '
-        Me.txtUsuario.Location = New System.Drawing.Point(376, 70)
+        Me.txtUsuario.Location = New System.Drawing.Point(376, 68)
         Me.txtUsuario.Name = "txtUsuario"
         Me.txtUsuario.Size = New System.Drawing.Size(171, 20)
         Me.txtUsuario.TabIndex = 7
         '
         'txtDescripcion
         '
-        Me.txtDescripcion.Location = New System.Drawing.Point(376, 44)
+        Me.txtDescripcion.Location = New System.Drawing.Point(376, 42)
         Me.txtDescripcion.Name = "txtDescripcion"
         Me.txtDescripcion.Size = New System.Drawing.Size(171, 20)
-        Me.txtDescripcion.TabIndex = 7
+        Me.txtDescripcion.TabIndex = 6
         '
         'txtCodigosTransaccion
         '
         Me.txtCodigosTransaccion.Location = New System.Drawing.Point(376, 18)
         Me.txtCodigosTransaccion.Name = "txtCodigosTransaccion"
         Me.txtCodigosTransaccion.Size = New System.Drawing.Size(171, 20)
-        Me.txtCodigosTransaccion.TabIndex = 7
+        Me.txtCodigosTransaccion.TabIndex = 5
         '
         'cmdConsultar
         '
         Me.cmdConsultar.Location = New System.Drawing.Point(553, 68)
         Me.cmdConsultar.Name = "cmdConsultar"
-        Me.cmdConsultar.Size = New System.Drawing.Size(76, 23)
-        Me.cmdConsultar.TabIndex = 6
+        Me.cmdConsultar.Size = New System.Drawing.Size(79, 23)
+        Me.cmdConsultar.TabIndex = 8
         Me.cmdConsultar.Text = "&Consultar"
         '
         'cmdBuscarAcciones
@@ -162,7 +175,7 @@ Partial Class frmMain
         Me.cmdBuscarAcciones.Location = New System.Drawing.Point(169, 66)
         Me.cmdBuscarAcciones.Name = "cmdBuscarAcciones"
         Me.cmdBuscarAcciones.Size = New System.Drawing.Size(23, 23)
-        Me.cmdBuscarAcciones.TabIndex = 6
+        Me.cmdBuscarAcciones.TabIndex = 4
         '
         'txtAcciones
         '
@@ -171,7 +184,7 @@ Partial Class frmMain
         Me.txtAcciones.Name = "txtAcciones"
         Me.txtAcciones.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, True, False, False, EditorButtonImageOptions2, New DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), SerializableAppearanceObject5, SerializableAppearanceObject6, SerializableAppearanceObject7, SerializableAppearanceObject8, "", Nothing, Nothing, DevExpress.Utils.ToolTipAnchor.[Default])})
         Me.txtAcciones.Size = New System.Drawing.Size(71, 20)
-        Me.txtAcciones.TabIndex = 5
+        Me.txtAcciones.TabIndex = 3
         Me.txtAcciones.UseWaitCursor = True
         '
         'txtHasta
@@ -182,7 +195,7 @@ Partial Class frmMain
         Me.txtHasta.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
         Me.txtHasta.Properties.CalendarTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
         Me.txtHasta.Size = New System.Drawing.Size(100, 20)
-        Me.txtHasta.TabIndex = 4
+        Me.txtHasta.TabIndex = 2
         '
         'txtDesde
         '
@@ -192,7 +205,7 @@ Partial Class frmMain
         Me.txtDesde.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
         Me.txtDesde.Properties.CalendarTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
         Me.txtDesde.Size = New System.Drawing.Size(100, 20)
-        Me.txtDesde.TabIndex = 4
+        Me.txtDesde.TabIndex = 1
         '
         'Label4
         '
@@ -296,49 +309,90 @@ Partial Class frmMain
         '
         'PrintableComponentLink1
         '
-        Me.PrintableComponentLink1.Component = Me.Grid
+        Me.PrintableComponentLink1.Component = Me.GridDiseno
         Me.PrintableComponentLink1.PrintingSystemBase = Me.PrintingSystem1
         '
-        'Grid
+        'GridDiseno
         '
-        Me.Grid.Cursor = System.Windows.Forms.Cursors.Default
-        Me.Grid.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Grid.EmbeddedNavigator.Buttons.Append.Visible = False
-        Me.Grid.EmbeddedNavigator.Buttons.CancelEdit.Visible = False
-        Me.Grid.EmbeddedNavigator.Buttons.Edit.Visible = False
-        Me.Grid.EmbeddedNavigator.Buttons.EndEdit.Visible = False
-        Me.Grid.EmbeddedNavigator.Buttons.Remove.Visible = False
-        Me.Grid.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Grid.Location = New System.Drawing.Point(0, 0)
-        Me.Grid.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat
-        Me.Grid.LookAndFeel.UseWindowsXPTheme = True
-        Me.Grid.MainView = Me.GridView1
-        Me.Grid.Name = "Grid"
-        Me.Grid.Size = New System.Drawing.Size(635, 244)
-        Me.Grid.TabIndex = 6
-        Me.Grid.UseEmbeddedNavigator = True
-        Me.Grid.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.GridView1})
+        Me.GridDiseno.Cursor = System.Windows.Forms.Cursors.Default
+        Me.GridDiseno.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GridDiseno.EmbeddedNavigator.Buttons.Append.Visible = False
+        Me.GridDiseno.EmbeddedNavigator.Buttons.CancelEdit.Visible = False
+        Me.GridDiseno.EmbeddedNavigator.Buttons.Edit.Visible = False
+        Me.GridDiseno.EmbeddedNavigator.Buttons.EndEdit.Visible = False
+        Me.GridDiseno.EmbeddedNavigator.Buttons.Remove.Visible = False
+        Me.GridDiseno.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridDiseno.Location = New System.Drawing.Point(0, 0)
+        Me.GridDiseno.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat
+        Me.GridDiseno.LookAndFeel.UseWindowsXPTheme = True
+        Me.GridDiseno.MainView = Me.gDiseno
+        Me.GridDiseno.Name = "GridDiseno"
+        Me.GridDiseno.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.RepositoryItemSpinEdit1, Me.RepositoryItemSpinEdit2, Me.RepositoryItemSpinEdit3})
+        Me.GridDiseno.Size = New System.Drawing.Size(635, 244)
+        Me.GridDiseno.TabIndex = 16
+        Me.GridDiseno.UseEmbeddedNavigator = True
+        Me.GridDiseno.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gDiseno})
         '
-        'GridView1
+        'gDiseno
         '
-        Me.GridView1.AppearancePrint.FooterPanel.Options.UseTextOptions = True
-        Me.GridView1.AppearancePrint.FooterPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center
-        Me.GridView1.AppearancePrint.FooterPanel.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center
-        Me.GridView1.AppearancePrint.HeaderPanel.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.GridView1.AppearancePrint.HeaderPanel.Options.UseFont = True
-        Me.GridView1.GridControl = Me.Grid
-        Me.GridView1.GroupPanelText = "Arrastre el encabezado de columna aquí para agrupar por esa columna"
-        Me.GridView1.Name = "GridView1"
-        Me.GridView1.OptionsBehavior.AutoPopulateColumns = False
-        Me.GridView1.OptionsBehavior.Editable = False
-        Me.GridView1.OptionsFilter.AllowFilterEditor = False
-        Me.GridView1.OptionsFilter.ShowAllTableValuesInFilterPopup = True
-        Me.GridView1.OptionsMenu.EnableColumnMenu = False
-        Me.GridView1.OptionsView.ColumnAutoWidth = False
-        Me.GridView1.OptionsView.ShowFooter = True
-        Me.GridView1.OptionsView.ShowGroupedColumns = True
-        Me.GridView1.PaintStyleName = "WindowsXP"
-        Me.GridView1.RowHeight = 19
+        Me.gDiseno.GridControl = Me.GridDiseno
+        Me.gDiseno.GroupPanelText = "Arrastre el encabezado de columna aquí para agrupar por esa columna"
+        Me.gDiseno.Name = "gDiseno"
+        Me.gDiseno.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.[False]
+        Me.gDiseno.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.[False]
+        Me.gDiseno.OptionsBehavior.AllowValidationErrors = False
+        Me.gDiseno.OptionsBehavior.Editable = False
+        Me.gDiseno.OptionsBehavior.ReadOnly = True
+        Me.gDiseno.OptionsMenu.EnableColumnMenu = False
+        Me.gDiseno.OptionsView.BestFitMode = DevExpress.XtraGrid.Views.Grid.GridBestFitMode.Full
+        Me.gDiseno.OptionsView.ShowPreview = True
+        Me.gDiseno.PaintStyleName = "WindowsXP"
+        Me.gDiseno.PreviewFieldName = "LS_EXTRA"
+        Me.gDiseno.RowHeight = 19
+        '
+        'colUsuario
+        '
+        Me.colUsuario.AppearanceCell.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.colUsuario.Caption = "Usuario"
+        Me.colUsuario.FieldName = "US_DESCRI"
+        Me.colUsuario.Name = "colUsuario"
+        Me.colUsuario.OptionsColumn.AllowEdit = False
+        Me.colUsuario.Visible = True
+        Me.colUsuario.VisibleIndex = 0
+        '
+        'RepositoryItemSpinEdit1
+        '
+        Me.RepositoryItemSpinEdit1.AutoHeight = False
+        Me.RepositoryItemSpinEdit1.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.RepositoryItemSpinEdit1.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+        Me.RepositoryItemSpinEdit1.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+        Me.RepositoryItemSpinEdit1.IsFloatValue = False
+        Me.RepositoryItemSpinEdit1.Mask.EditMask = "N00"
+        Me.RepositoryItemSpinEdit1.MaxValue = New Decimal(New Integer() {999, 0, 0, 0})
+        Me.RepositoryItemSpinEdit1.MinValue = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.RepositoryItemSpinEdit1.Name = "RepositoryItemSpinEdit1"
+        '
+        'RepositoryItemSpinEdit2
+        '
+        Me.RepositoryItemSpinEdit2.AutoHeight = False
+        Me.RepositoryItemSpinEdit2.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.RepositoryItemSpinEdit2.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+        Me.RepositoryItemSpinEdit2.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+        Me.RepositoryItemSpinEdit2.IsFloatValue = False
+        Me.RepositoryItemSpinEdit2.Mask.EditMask = "N00"
+        Me.RepositoryItemSpinEdit2.Name = "RepositoryItemSpinEdit2"
+        '
+        'RepositoryItemSpinEdit3
+        '
+        Me.RepositoryItemSpinEdit3.AutoHeight = False
+        Me.RepositoryItemSpinEdit3.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.RepositoryItemSpinEdit3.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+        Me.RepositoryItemSpinEdit3.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+        Me.RepositoryItemSpinEdit3.IsFloatValue = False
+        Me.RepositoryItemSpinEdit3.Mask.EditMask = "N00"
+        Me.RepositoryItemSpinEdit3.MaxValue = New Decimal(New Integer() {9999, 0, 0, 0})
+        Me.RepositoryItemSpinEdit3.MinValue = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.RepositoryItemSpinEdit3.Name = "RepositoryItemSpinEdit3"
         '
         'PanGrid
         '
@@ -354,7 +408,7 @@ Partial Class frmMain
         'PanGrilla
         '
         Me.PanGrilla.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder
-        Me.PanGrilla.Controls.Add(Me.Grid)
+        Me.PanGrilla.Controls.Add(Me.GridDiseno)
         Me.PanGrilla.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PanGrilla.Location = New System.Drawing.Point(0, 29)
         Me.PanGrilla.Name = "PanGrilla"
@@ -399,8 +453,8 @@ Partial Class frmMain
         Me.btnVerAdjunto.Image = Global.VBP04711.My.Resources.Resources.page_attach
         Me.btnVerAdjunto.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnVerAdjunto.Name = "btnVerAdjunto"
-        Me.btnVerAdjunto.Size = New System.Drawing.Size(90, 26)
-        Me.btnVerAdjunto.Text = "Ver Adjunto"
+        Me.btnVerAdjunto.Size = New System.Drawing.Size(68, 26)
+        Me.btnVerAdjunto.Text = "Ver Txts"
         '
         'btnImprimir
         '
@@ -426,6 +480,55 @@ Partial Class frmMain
         Me.ToolStripButton2.Name = "ToolStripButton2"
         Me.ToolStripButton2.Size = New System.Drawing.Size(62, 26)
         Me.ToolStripButton2.Text = "Copiar"
+        '
+        'colFecha
+        '
+        Me.colFecha.Caption = "fecha"
+        Me.colFecha.FieldName = "LS_FECLOG"
+        Me.colFecha.Name = "colFecha"
+        Me.colFecha.OptionsColumn.AllowEdit = False
+        Me.colFecha.Visible = True
+        Me.colFecha.VisibleIndex = 1
+        '
+        'colHora
+        '
+        Me.colHora.Caption = "Hora"
+        Me.colHora.FieldName = "LS_HORLOG"
+        Me.colHora.Name = "colHora"
+        Me.colHora.Visible = True
+        Me.colHora.VisibleIndex = 2
+        '
+        'colCodTrans
+        '
+        Me.colCodTrans.Caption = "Cód. Trans."
+        Me.colCodTrans.FieldName = "LS_CODTRA"
+        Me.colCodTrans.Name = "colCodTrans"
+        Me.colCodTrans.Visible = True
+        Me.colCodTrans.VisibleIndex = 3
+        '
+        'colTransaccion
+        '
+        Me.colTransaccion.Caption = "Transacción"
+        Me.colTransaccion.FieldName = "MU_TRANSA"
+        Me.colTransaccion.Name = "colTransaccion"
+        Me.colTransaccion.Visible = True
+        Me.colTransaccion.VisibleIndex = 4
+        '
+        'colAccion
+        '
+        Me.colAccion.Caption = "Acción"
+        Me.colAccion.FieldName = "TG_DESCRI"
+        Me.colAccion.Name = "colAccion"
+        Me.colAccion.Visible = True
+        Me.colAccion.VisibleIndex = 5
+        '
+        'colExtra
+        '
+        Me.colExtra.Caption = "Extra"
+        Me.colExtra.FieldName = "LS_EXTRA"
+        Me.colExtra.Name = "colExtra"
+        Me.colExtra.Visible = True
+        Me.colExtra.VisibleIndex = 6
         '
         'frmMain
         '
@@ -455,8 +558,11 @@ Partial Class frmMain
         Me.PanTop.PerformLayout()
         CType(Me.picLogo.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PrintingSystem1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.GridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.GridDiseno, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.gDiseno, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.RepositoryItemSpinEdit1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.RepositoryItemSpinEdit2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.RepositoryItemSpinEdit3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PanGrid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PanGrid.ResumeLayout(False)
         CType(Me.PanGrilla, System.ComponentModel.ISupportInitialize).EndInit()
@@ -471,15 +577,13 @@ Partial Class frmMain
     End Sub
 
     Friend WithEvents Skin As DevExpress.LookAndFeel.DefaultLookAndFeel
-   Friend WithEvents PanControles As DevExpress.XtraEditors.PanelControl
-   Friend WithEvents PanTop As DevExpress.XtraEditors.PanelControl
-   Friend WithEvents picLogo As DevExpress.XtraEditors.PictureEdit
-   Friend WithEvents PanGrid As DevExpress.XtraEditors.PanelControl
-   Friend WithEvents PanGrilla As DevExpress.XtraEditors.PanelControl
-   Friend WithEvents Grid As DevExpress.XtraGrid.GridControl
-   Friend WithEvents GridView1 As DevExpress.XtraGrid.Views.Grid.GridView
-   Friend WithEvents PanTool As DevExpress.XtraEditors.PanelControl
-   Friend WithEvents ToolBarra As System.Windows.Forms.ToolStrip
+    Friend WithEvents PanControles As DevExpress.XtraEditors.PanelControl
+    Friend WithEvents PanTop As DevExpress.XtraEditors.PanelControl
+    Friend WithEvents picLogo As DevExpress.XtraEditors.PictureEdit
+    Friend WithEvents PanGrid As DevExpress.XtraEditors.PanelControl
+    Friend WithEvents PanGrilla As DevExpress.XtraEditors.PanelControl
+    Friend WithEvents PanTool As DevExpress.XtraEditors.PanelControl
+    Friend WithEvents ToolBarra As System.Windows.Forms.ToolStrip
     Friend WithEvents lblSubtitulo As DevExpress.XtraEditors.LabelControl
     Friend WithEvents lblTitulo As DevExpress.XtraEditors.LabelControl
     Friend WithEvents btnExportar As System.Windows.Forms.ToolStripButton
@@ -502,8 +606,20 @@ Partial Class frmMain
     Friend WithEvents txtUsuario As DevExpress.XtraEditors.TextEdit
     Friend WithEvents txtDescripcion As DevExpress.XtraEditors.TextEdit
     Friend WithEvents txtCodigosTransaccion As DevExpress.XtraEditors.TextEdit
-    Friend WithEvents cmdConsultar As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents cmdBuscarAcciones As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents txtAcciones As DevExpress.XtraEditors.SpinEdit
     Friend WithEvents btnVerAdjunto As ToolStripButton
+    Friend WithEvents cmdConsultar As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents colUsuario As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents colFecha As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents colHora As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents colCodTrans As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents colTransaccion As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents colAccion As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents colExtra As DevExpress.XtraGrid.Columns.GridColumn
+    Private WithEvents GridDiseno As DevExpress.XtraGrid.GridControl
+    Private WithEvents gDiseno As DevExpress.XtraGrid.Views.Grid.GridView
+    Friend WithEvents RepositoryItemSpinEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit
+    Friend WithEvents RepositoryItemSpinEdit2 As DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit
+    Friend WithEvents RepositoryItemSpinEdit3 As DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit
 End Class
