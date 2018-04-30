@@ -263,7 +263,7 @@ Public Class frmMain
           "WHERE      LS_FECLOG BETWEEN " & FechaSQL(txtDesde.DateTime) & " AND " & FechaSQL(txtHasta.DateTime) & " "
 
 
-        If Trim(txtAcciones.Text) <> "" AndAlso txtAcciones.Value > 0 Then
+        If Trim(txtAcciones.Text) <> "" Then
 
             If InStr(1, Trim(txtAcciones.Text), ",") > 0 Then
                 sSQL = sSQL &
@@ -311,7 +311,7 @@ Public Class frmMain
 
     Private Sub Actualizar()
         Try
-
+            Me.Cursor = Cursors.WaitCursor
             Try
 
                 Dim sSQL = ConformarSQL()
@@ -319,7 +319,12 @@ Public Class frmMain
 
                 Dim ds = oAdmTablas.AbrirDataset(sSQL)
 
-                GridDiseno.DataSource = ds.Tables(0)
+                If ds.Tables(0).Rows.Count > 0 Then
+                    GridDiseno.DataSource = ds.Tables(0)
+                Else
+                    GridDiseno.DataSource = Nothing
+                End If
+
                 GridDiseno.RefreshDataSource()
                 GridDiseno.Refresh()
 
@@ -329,15 +334,37 @@ Public Class frmMain
                     MensajeError("No se han encontrado resultados según el criterio de búsqueda utilizado")
                 End If
 
-            Finally
-                GuardarLOG(AccionesLOG.Copia_LOG, "Fecha desde: " & txtDesde.Text & "; Fecha Hasta: " & txtHasta.Text & "; Nombre Usuario Contiene: " & Trim(txtUsuario.Text), CODIGO_TRANSACCION, UsuarioActual.Codigo)
-                Me.Cursor = Cursors.Default
+            Catch ex As Exception
+                TratarError(ex, "Actualizar")
             End Try
-        Catch ex As Exception
-            TratarError(ex, "Actualizar")
-        End Try
 
+        Finally
+            GuardarLOG(AccionesLOG.Consulta_LOG, GetTextoLog(), CODIGO_TRANSACCION, UsuarioActual.Codigo)
+            Me.Cursor = Cursors.Default
+        End Try
     End Sub
+
+    Private Function GetTextoLog() As String
+        Dim filtros = "Fecha desde: " & txtDesde.Text & "; Fecha Hasta: " & txtHasta.Text
+
+        If Trim(txtAcciones.Text) <> "" Then
+            filtros = filtros & "; Acciones: " & txtAcciones.Text
+        End If
+
+        If Trim(txtCodigosTransaccion.Text) <> "" Then
+            filtros = filtros & "; Códigos de Trans.: " & txtCodigosTransaccion.Text
+        End If
+
+        If Trim(txtDescripcion.Text) <> "" Then
+            filtros = filtros & "; Descripción de trans. contiene: " & txtDescripcion.Text
+        End If
+
+        If Trim(txtUsuario.Text) <> "" Then
+            filtros = filtros & "; Nombre Usuario Contiene: " & txtUsuario.Text
+        End If
+
+        Return filtros
+    End Function
 
     Private Sub cmdBuscarAcciones_Click(sender As Object, e As EventArgs) Handles cmdBuscarAcciones.Click
 
@@ -356,7 +383,7 @@ Public Class frmMain
         '                          TGL_ACCIONES_LOG,
         '                          "Acciones del LOG")
 
-        oTG.PasarInfo(sSQL, CONN_LOCAL, 1, False, "Acciones del LOG")
+        oTG.PasarInfo(sSQL, CONN_LOCAL, 1, True, "Acciones del LOG")
 
         If oTG.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
             txtAcciones.Text = INPUT_GENERAL
@@ -385,33 +412,38 @@ Public Class frmMain
     End Sub
 
     Private Sub VistaPrevia(ByVal sTitulo As String)
+        Try
+            Me.Cursor = Cursors.WaitCursor
 
-        Dim pl As New DevExpress.XtraPrinting.PrintableComponentLink
-        Dim phf As DevExpress.XtraPrinting.PageHeaderFooter
-        Dim Period As String
+            Dim pl As New DevExpress.XtraPrinting.PrintableComponentLink
+            Dim phf As DevExpress.XtraPrinting.PageHeaderFooter
+            Dim Period As String
 
-        Period = Format(DateTime.Today, "dd-MM-yyyy")
+            Period = Format(DateTime.Today, "dd-MM-yyyy")
 
-        pl.Component = GridDiseno
-        ps1.Links.Add(pl)
-        phf = pl.PageHeaderFooter
+            pl.Component = GridDiseno
+            ps1.Links.Add(pl)
+            phf = pl.PageHeaderFooter
 
-        phf.Header.Font = New Font("Tahoma", 10, FontStyle.Bold)
-        phf.Header.LineAlignment = DevExpress.XtraPrinting.BrickAlignment.Center
+            phf.Header.Font = New Font("Tahoma", 10, FontStyle.Bold)
+            phf.Header.LineAlignment = DevExpress.XtraPrinting.BrickAlignment.Center
 
-        phf.Header.Content.Clear()
-        phf.Header.Content.Add(sTitulo)
+            phf.Header.Content.Clear()
+            phf.Header.Content.Add(sTitulo)
 
-        phf.Footer.Font = New Font("Tahoma", 8, FontStyle.Bold)
-        phf.Footer.LineAlignment = DevExpress.XtraPrinting.BrickAlignment.Center
+            phf.Footer.Font = New Font("Tahoma", 8, FontStyle.Bold)
+            phf.Footer.LineAlignment = DevExpress.XtraPrinting.BrickAlignment.Center
 
-        phf.Footer.Content.Clear()
-        phf.Footer.Content.Add("Fecha: " & Period)
+            phf.Footer.Content.Clear()
+            phf.Footer.Content.Add("Fecha: " & Period)
 
-        pl.CreateDocument()
-        pl.ShowPreview()
+            pl.CreateDocument()
+            pl.ShowPreview()
 
-        GuardarLOG(AccionesLOG.Impresión_LOG, "Fecha desde: " & txtDesde.Text & "; Fecha Hasta: " & txtHasta.Text & "; Nombre Usuario Contiene: " & Trim(txtUsuario.Text), CODIGO_TRANSACCION, UsuarioActual.Codigo)
+        Finally
+            Me.Cursor = Cursors.Default
+            GuardarLOG(AccionesLOG.Impresión_LOG, "Fecha desde: " & txtDesde.Text & "; Fecha Hasta: " & txtHasta.Text & "; Nombre Usuario Contiene: " & Trim(txtUsuario.Text), CODIGO_TRANSACCION, UsuarioActual.Codigo)
+        End Try
     End Sub
 
     Private Sub btnExportar_Click(sender As Object, e As EventArgs) Handles btnExportar.Click
@@ -425,6 +457,14 @@ Public Class frmMain
         GuardarLOG(AccionesLOG.Copia_LOG, "Fecha desde: " & txtDesde.Text & "; Fecha Hasta: " & txtHasta.Text & "; Nombre Usuario Contiene: " & Trim(txtUsuario.Text), CODIGO_TRANSACCION, UsuarioActual.Codigo)
         MessageBox.Show(Me, "Se han copiado los resultados al portapapeles", "Copiar", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
+    End Sub
+
+    Private Sub txtAcciones_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtAcciones.KeyPress
+        If IsNumeric(e.KeyChar) OrElse e.KeyChar = "," OrElse e.KeyChar = vbBack Then
+            Exit Sub
+        Else
+            e.KeyChar = ""
+        End If
     End Sub
 End Class
 

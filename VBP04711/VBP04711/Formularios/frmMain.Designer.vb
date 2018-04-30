@@ -19,13 +19,9 @@ Partial Class frmMain
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim EditorButtonImageOptions2 As DevExpress.XtraEditors.Controls.EditorButtonImageOptions = New DevExpress.XtraEditors.Controls.EditorButtonImageOptions()
-        Dim SerializableAppearanceObject5 As DevExpress.Utils.SerializableAppearanceObject = New DevExpress.Utils.SerializableAppearanceObject()
-        Dim SerializableAppearanceObject6 As DevExpress.Utils.SerializableAppearanceObject = New DevExpress.Utils.SerializableAppearanceObject()
-        Dim SerializableAppearanceObject7 As DevExpress.Utils.SerializableAppearanceObject = New DevExpress.Utils.SerializableAppearanceObject()
-        Dim SerializableAppearanceObject8 As DevExpress.Utils.SerializableAppearanceObject = New DevExpress.Utils.SerializableAppearanceObject()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Me.Skin = New DevExpress.LookAndFeel.DefaultLookAndFeel()
+        Me.Skin = New DevExpress.LookAndFeel.DefaultLookAndFeel(Me.components)
         Me.PanControles = New DevExpress.XtraEditors.PanelControl()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.txtUsuario = New DevExpress.XtraEditors.TextEdit()
@@ -33,7 +29,6 @@ Partial Class frmMain
         Me.txtCodigosTransaccion = New DevExpress.XtraEditors.TextEdit()
         Me.cmdConsultar = New DevExpress.XtraEditors.SimpleButton()
         Me.cmdBuscarAcciones = New DevExpress.XtraEditors.SimpleButton()
-        Me.txtAcciones = New DevExpress.XtraEditors.SpinEdit()
         Me.txtHasta = New DevExpress.XtraEditors.DateEdit()
         Me.txtDesde = New DevExpress.XtraEditors.DateEdit()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -46,11 +41,16 @@ Partial Class frmMain
         Me.lblSubtitulo = New DevExpress.XtraEditors.LabelControl()
         Me.lblTitulo = New DevExpress.XtraEditors.LabelControl()
         Me.picLogo = New DevExpress.XtraEditors.PictureEdit()
-        Me.PrintingSystem1 = New DevExpress.XtraPrinting.PrintingSystem()
-        Me.PrintableComponentLink1 = New DevExpress.XtraPrinting.PrintableComponentLink()
+        Me.PrintingSystem1 = New DevExpress.XtraPrinting.PrintingSystem(Me.components)
+        Me.PrintableComponentLink1 = New DevExpress.XtraPrinting.PrintableComponentLink(Me.components)
         Me.GridDiseno = New DevExpress.XtraGrid.GridControl()
         Me.gDiseno = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.colUsuario = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colFecha = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colHora = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colCodTrans = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colTransaccion = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colAccion = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.RepositoryItemSpinEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit()
         Me.RepositoryItemSpinEdit2 = New DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit()
         Me.RepositoryItemSpinEdit3 = New DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit()
@@ -64,20 +64,16 @@ Partial Class frmMain
         Me.btnImprimir = New System.Windows.Forms.ToolStripButton()
         Me.btnExportar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolTipText = New System.Windows.Forms.ToolTip()
-        Me.colFecha = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.colHora = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.colCodTrans = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.colTransaccion = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.colAccion = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.ToolTipText = New System.Windows.Forms.ToolTip(Me.components)
         Me.colExtra = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.GridColumn1 = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.txtAcciones = New DevExpress.XtraEditors.TextEdit()
         CType(Me.PanControles, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanControles.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.txtUsuario.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtDescripcion.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtCodigosTransaccion.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.txtAcciones.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtHasta.Properties.CalendarTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtHasta.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtDesde.Properties.CalendarTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -98,6 +94,7 @@ Partial Class frmMain
         CType(Me.PanTool, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanTool.SuspendLayout()
         Me.ToolBarra.SuspendLayout()
+        CType(Me.txtAcciones.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Skin
@@ -117,12 +114,12 @@ Partial Class frmMain
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.txtAcciones)
         Me.GroupBox1.Controls.Add(Me.txtUsuario)
         Me.GroupBox1.Controls.Add(Me.txtDescripcion)
         Me.GroupBox1.Controls.Add(Me.txtCodigosTransaccion)
         Me.GroupBox1.Controls.Add(Me.cmdConsultar)
         Me.GroupBox1.Controls.Add(Me.cmdBuscarAcciones)
-        Me.GroupBox1.Controls.Add(Me.txtAcciones)
         Me.GroupBox1.Controls.Add(Me.txtHasta)
         Me.GroupBox1.Controls.Add(Me.txtDesde)
         Me.GroupBox1.Controls.Add(Me.Label4)
@@ -177,16 +174,6 @@ Partial Class frmMain
         Me.cmdBuscarAcciones.Size = New System.Drawing.Size(23, 23)
         Me.cmdBuscarAcciones.TabIndex = 4
         '
-        'txtAcciones
-        '
-        Me.txtAcciones.EditValue = New Decimal(New Integer() {0, 0, 0, 0})
-        Me.txtAcciones.Location = New System.Drawing.Point(92, 68)
-        Me.txtAcciones.Name = "txtAcciones"
-        Me.txtAcciones.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, True, False, False, EditorButtonImageOptions2, New DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), SerializableAppearanceObject5, SerializableAppearanceObject6, SerializableAppearanceObject7, SerializableAppearanceObject8, "", Nothing, Nothing, DevExpress.Utils.ToolTipAnchor.[Default])})
-        Me.txtAcciones.Size = New System.Drawing.Size(71, 20)
-        Me.txtAcciones.TabIndex = 3
-        Me.txtAcciones.UseWaitCursor = True
-        '
         'txtHasta
         '
         Me.txtHasta.EditValue = Nothing
@@ -223,7 +210,7 @@ Partial Class frmMain
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(156, 13)
         Me.Label5.TabIndex = 2
-        Me.Label5.Text = "Descripción de trnas. contiene:"
+        Me.Label5.Text = "Descripción de trans. contiene:"
         '
         'Label6
         '
@@ -335,6 +322,7 @@ Partial Class frmMain
         '
         'gDiseno
         '
+        Me.gDiseno.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colUsuario, Me.colFecha, Me.colHora, Me.colCodTrans, Me.colTransaccion, Me.colAccion})
         Me.gDiseno.GridControl = Me.GridDiseno
         Me.gDiseno.GroupPanelText = "Arrastre el encabezado de columna aquí para agrupar por esa columna"
         Me.gDiseno.Name = "gDiseno"
@@ -359,6 +347,47 @@ Partial Class frmMain
         Me.colUsuario.OptionsColumn.AllowEdit = False
         Me.colUsuario.Visible = True
         Me.colUsuario.VisibleIndex = 0
+        '
+        'colFecha
+        '
+        Me.colFecha.Caption = "Fecha"
+        Me.colFecha.FieldName = "LS_FECLOG"
+        Me.colFecha.Name = "colFecha"
+        Me.colFecha.OptionsColumn.AllowEdit = False
+        Me.colFecha.Visible = True
+        Me.colFecha.VisibleIndex = 1
+        '
+        'colHora
+        '
+        Me.colHora.Caption = "Hora"
+        Me.colHora.FieldName = "LS_HORLOG"
+        Me.colHora.Name = "colHora"
+        Me.colHora.Visible = True
+        Me.colHora.VisibleIndex = 2
+        '
+        'colCodTrans
+        '
+        Me.colCodTrans.Caption = "Cód. Trans."
+        Me.colCodTrans.FieldName = "LS_CODTRA"
+        Me.colCodTrans.Name = "colCodTrans"
+        Me.colCodTrans.Visible = True
+        Me.colCodTrans.VisibleIndex = 3
+        '
+        'colTransaccion
+        '
+        Me.colTransaccion.Caption = "Transacción"
+        Me.colTransaccion.FieldName = "MU_TRANSA"
+        Me.colTransaccion.Name = "colTransaccion"
+        Me.colTransaccion.Visible = True
+        Me.colTransaccion.VisibleIndex = 4
+        '
+        'colAccion
+        '
+        Me.colAccion.Caption = "Acción"
+        Me.colAccion.FieldName = "TG_DESCRI"
+        Me.colAccion.Name = "colAccion"
+        Me.colAccion.Visible = True
+        Me.colAccion.VisibleIndex = 5
         '
         'RepositoryItemSpinEdit1
         '
@@ -453,7 +482,7 @@ Partial Class frmMain
         Me.btnVerAdjunto.Image = Global.VBP04711.My.Resources.Resources.page_attach
         Me.btnVerAdjunto.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnVerAdjunto.Name = "btnVerAdjunto"
-        Me.btnVerAdjunto.Size = New System.Drawing.Size(68, 26)
+        Me.btnVerAdjunto.Size = New System.Drawing.Size(66, 26)
         Me.btnVerAdjunto.Text = "Ver Txts"
         '
         'btnImprimir
@@ -481,47 +510,6 @@ Partial Class frmMain
         Me.ToolStripButton2.Size = New System.Drawing.Size(62, 26)
         Me.ToolStripButton2.Text = "Copiar"
         '
-        'colFecha
-        '
-        Me.colFecha.Caption = "fecha"
-        Me.colFecha.FieldName = "LS_FECLOG"
-        Me.colFecha.Name = "colFecha"
-        Me.colFecha.OptionsColumn.AllowEdit = False
-        Me.colFecha.Visible = True
-        Me.colFecha.VisibleIndex = 1
-        '
-        'colHora
-        '
-        Me.colHora.Caption = "Hora"
-        Me.colHora.FieldName = "LS_HORLOG"
-        Me.colHora.Name = "colHora"
-        Me.colHora.Visible = True
-        Me.colHora.VisibleIndex = 2
-        '
-        'colCodTrans
-        '
-        Me.colCodTrans.Caption = "Cód. Trans."
-        Me.colCodTrans.FieldName = "LS_CODTRA"
-        Me.colCodTrans.Name = "colCodTrans"
-        Me.colCodTrans.Visible = True
-        Me.colCodTrans.VisibleIndex = 3
-        '
-        'colTransaccion
-        '
-        Me.colTransaccion.Caption = "Transacción"
-        Me.colTransaccion.FieldName = "MU_TRANSA"
-        Me.colTransaccion.Name = "colTransaccion"
-        Me.colTransaccion.Visible = True
-        Me.colTransaccion.VisibleIndex = 4
-        '
-        'colAccion
-        '
-        Me.colAccion.Caption = "Acción"
-        Me.colAccion.FieldName = "TG_DESCRI"
-        Me.colAccion.Name = "colAccion"
-        Me.colAccion.Visible = True
-        Me.colAccion.VisibleIndex = 5
-        '
         'colExtra
         '
         Me.colExtra.Caption = "Extra"
@@ -529,6 +517,20 @@ Partial Class frmMain
         Me.colExtra.Name = "colExtra"
         Me.colExtra.Visible = True
         Me.colExtra.VisibleIndex = 6
+        '
+        'GridColumn1
+        '
+        Me.GridColumn1.Caption = "GridColumn1"
+        Me.GridColumn1.Name = "GridColumn1"
+        Me.GridColumn1.Visible = True
+        Me.GridColumn1.VisibleIndex = 0
+        '
+        'txtAcciones
+        '
+        Me.txtAcciones.Location = New System.Drawing.Point(92, 68)
+        Me.txtAcciones.Name = "txtAcciones"
+        Me.txtAcciones.Size = New System.Drawing.Size(71, 20)
+        Me.txtAcciones.TabIndex = 7
         '
         'frmMain
         '
@@ -548,7 +550,6 @@ Partial Class frmMain
         CType(Me.txtUsuario.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtDescripcion.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtCodigosTransaccion.Properties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.txtAcciones.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtHasta.Properties.CalendarTimeProperties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtHasta.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtDesde.Properties.CalendarTimeProperties, System.ComponentModel.ISupportInitialize).EndInit()
@@ -572,6 +573,7 @@ Partial Class frmMain
         Me.PanTool.PerformLayout()
         Me.ToolBarra.ResumeLayout(False)
         Me.ToolBarra.PerformLayout()
+        CType(Me.txtAcciones.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -607,7 +609,6 @@ Partial Class frmMain
     Friend WithEvents txtDescripcion As DevExpress.XtraEditors.TextEdit
     Friend WithEvents txtCodigosTransaccion As DevExpress.XtraEditors.TextEdit
     Friend WithEvents cmdBuscarAcciones As DevExpress.XtraEditors.SimpleButton
-    Friend WithEvents txtAcciones As DevExpress.XtraEditors.SpinEdit
     Friend WithEvents btnVerAdjunto As ToolStripButton
     Friend WithEvents cmdConsultar As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents colUsuario As DevExpress.XtraGrid.Columns.GridColumn
@@ -622,4 +623,6 @@ Partial Class frmMain
     Friend WithEvents RepositoryItemSpinEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit
     Friend WithEvents RepositoryItemSpinEdit2 As DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit
     Friend WithEvents RepositoryItemSpinEdit3 As DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit
+    Friend WithEvents GridColumn1 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents txtAcciones As DevExpress.XtraEditors.TextEdit
 End Class

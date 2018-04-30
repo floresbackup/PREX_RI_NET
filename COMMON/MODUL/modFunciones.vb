@@ -493,34 +493,36 @@ Module modFunciones
       If nCodigoUsuario = -1 Then nCodigoUsuario = UsuarioActual.Codigo
       If nCodigoTransaccion = 0 Then nCodigoTransaccion = -1
 
-      sSQL = "INSERT " & _
-             "INTO 			LOGSIS " & _
-             "					( " & _
-             "						LS_CODUSU, " & _
-             "						LS_FECLOG, " & _
-             "						LS_HORLOG, " & _
-             "						LS_ACCION, " & _
-             "						LS_CODTRA, " & _
-             "						LS_EXTRA " & _
-             "					) " & _
-             "VALUES " & _
-             "					( " & _
-             "						@CODUSU, " & _
-             "						@FECLOG, " & _
-             "						@HORLOG, " & _
-             "						@ACCION, " & _
-             "						@CODTRA, " & _
-             "						@EXTRA " & _
-             "					) "
+        sSQL = "INSERT " &
+             "INTO 			LOGSIS " &
+             "					( " &
+             "						LS_CODUSU, " &
+             "						LS_FECLOG, " &
+             "						LS_HORLOG, " &
+             "						LS_ACCION, " &
+             "						LS_CODTRA, " &
+             "						LS_EXTRA, " &
+             "                      LS_WKSTAT " &
+             "					) " &
+             "VALUES " &
+             "					( " &
+             "						@CODUSU, " &
+             "						@FECLOG, " &
+             "						@HORLOG, " &
+             "						@ACCION, " &
+             "						@CODTRA, " &
+             "						@EXTRA, " &
+             "                      @WKSTAT) "
 
-      sSQL = sSQL.Replace("@CODUSU", nCodigoUsuario)
-      sSQL = sSQL.Replace("@FECLOG", Date.Today)
-      sSQL = sSQL.Replace("@HORLOG", Format(Date.Now, "HH:mm:ss"))
-      sSQL = sSQL.Replace("@ACCION", nAccionLOG)
-      sSQL = sSQL.Replace("@CODTRA", nCodigoTransaccion)
-      sSQL = sSQL.Replace("@EXTRA", "'" & sExtra & "'")
+        sSQL = sSQL.Replace("@CODUSU", nCodigoUsuario)
+        sSQL = sSQL.Replace("@FECLOG", "'" & DateTime.Now.ToString("yyyy-MM-dd") & "'")
+        sSQL = sSQL.Replace("@HORLOG", "'" & Format(DateTime.Now, "HH:mm:ss") & "'")
+        sSQL = sSQL.Replace("@ACCION", nAccionLOG)
+        sSQL = sSQL.Replace("@CODTRA", nCodigoTransaccion)
+        sSQL = sSQL.Replace("@EXTRA", "'" & sExtra & "'")
+        sSQL = sSQL.Replace("@WKSTAT", "'" & System.Environment.MachineName & "'")
 
-      oAdmLOG.EjecutarComandoAsincrono(sSQL)
+        oAdmLOG.EjecutarComandoAsincrono(sSQL)
 
       oAdmLOG = Nothing
 
