@@ -73,35 +73,13 @@
     <Reference Include="ABCpdf">
       <HintPath>..\..\BIN\ABCpdf.dll</HintPath>
     </Reference>
-    <Reference Include="Andromeda.Framework, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\COMMON\Citi\Andromeda.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Andromeda.SGWayProviders, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\COMMON\Citi\Andromeda.SGWayProviders.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Pdf.v17.2.Core">
-    </Reference>
-    <Reference Include="DevExpress.Office.v17.2.Core">
-    </Reference>
-    <Reference Include="DevExpress.RichEdit.v17.2.Core">
-    </Reference>
-    <Reference Include="DevExpress.RichEdit.v17.2.Export">
-    </Reference>
     <Reference Include="DevExpress.Printing.v17.2.Core">
     </Reference>
     <Reference Include="DevExpress.Data.v17.2">
     </Reference>
     <Reference Include="DevExpress.Utils.v17.2">
     </Reference>
-    <Reference Include="DevExpress.Xpo.v17.2">
-    </Reference>
     <Reference Include="DevExpress.XtraBars.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
-    </Reference>
-    <Reference Include="DevExpress.Charts.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-    </Reference>
-    <Reference Include="DevExpress.XtraCharts.v17.2.Wizard, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
     </Reference>
     <Reference Include="DevExpress.XtraCharts.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
     </Reference>
@@ -111,21 +89,7 @@
     </Reference>
     <Reference Include="DevExpress.PivotGrid.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
     </Reference>
-    <Reference Include="DevExpress.XtraPrinting.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
-    </Reference>
-    <Reference Include="DevExpress.Sparkline.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-    </Reference>
-    <Reference Include="DevExpress.CodeParser.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-    </Reference>
-    <Reference Include="DevExpress.Utils.v17.2.UI, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-    </Reference>
-    <Reference Include="DevExpress.XtraReports.v17.2.Extensions, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-    </Reference>
     <Reference Include="DevExpress.XtraReports.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-    </Reference>
-    <Reference Include="SecurityGateway, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\COMMON\Citi\SecurityGateway.dll</HintPath>
     </Reference>
     <Reference Include="SGLibrary, Version=5.0.0.0, Culture=neutral, PublicKeyToken=d9c98cb01572a861, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -136,13 +100,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.OracleClient" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Design" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -594,12 +553,6 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Prex.Utils\Prex.Utils\Prex.Utils.csproj">
-      <Project>{2eeedb12-2ee1-4d8c-a5c5-1e99954aa4ae}</Project>
-      <Name>Prex.Utils</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
