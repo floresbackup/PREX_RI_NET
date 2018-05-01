@@ -1,19 +1,16 @@
+Imports System.IO
 Imports DevExpress.Utils
-Imports DevExpress.XtraGrid
-Imports WebSupergoo
-Imports DevExpress.XtraGrid.Views.Base
-Imports System.Data.SqlClient
-Imports System.Windows.Forms
+Imports DevExpress.Xpo
 Imports DevExpress.XtraBars.Localization
-Imports DevExpress.XtraGrid.Localization
-Imports DevExpress.XtraPivotGrid.Localization
 Imports DevExpress.XtraCharts.Localization
+Imports DevExpress.XtraEditors.Controls
+Imports DevExpress.XtraGrid
+Imports DevExpress.XtraGrid.Localization
+Imports DevExpress.XtraGrid.Views.Base
+Imports DevExpress.XtraPivotGrid.Localization
 Imports DevExpress.XtraPrinting.Localization
 Imports DevExpress.XtraReports.Localization
-Imports DevExpress.XtraEditors.Controls
-Imports System.IO
-Imports DevExpress.XtraGrid.Views.Grid
-Imports DevExpress.Xpo
+Imports WebSupergoo
 
 Public Class frmMain
 
@@ -200,34 +197,33 @@ Public ps1 = New DevExpress.XtraPrinting.PrintingSystem
 
    End Sub
 
-   Public Sub Ejecutar()
+    Public Sub Ejecutar()
+        If ProcesosPrevios() Then
 
-      If ProcesosPrevios() Then
+            Dim sSQL As String = ReemplazarVariables(oConsulta.Query)
+            Dim ad As OleDb.OleDbDataAdapter = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
+            Dim dt As New DataTable
+            ad.Fill(dt)
 
-         Dim sSQL As String = ReemplazarVariables(oConsulta.Query)
-         Dim ad As OleDb.OleDbDataAdapter = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
-         Dim dt As New DataTable
-         ad.Fill(dt)
+            If Not bFlagCargado Then
+                For Each oCol As clsColumnas In oColumnas
 
-         If Not bFlagCargado Then
-            For Each oCol As clsColumnas In oColumnas
+                    If oCol.Help = 1 And oCol.Reemplazar Then
+                        CargarValoresColumna(oCol.Campo, oCol.HelpQuery)
+                    End If
 
-               If oCol.Help = 1 And oCol.Reemplazar Then
-                  CargarValoresColumna(oCol.Campo, oCol.HelpQuery)
-               End If
+                Next
+                bFlagCargado = True
+            End If
 
-            Next
-            bFlagCargado = True
-         End If
+            Grid.DataSource = dt
+            Grid.RefreshDataSource()
+            Grid.Refresh()
+        End If
 
-         Grid.DataSource = dt
-         Grid.RefreshDataSource()
-         Grid.Refresh()
-      End If
+    End Sub
 
-   End Sub
-
-   Private Sub Columnas()
+    Private Sub Columnas()
 
       Dim View As ColumnView = Grid.MainView
       Dim Column As DevExpress.XtraGrid.Columns.GridColumn
@@ -344,8 +340,13 @@ Public ps1 = New DevExpress.XtraPrinting.PrintingSystem
          ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
          If oVar.Help <> 2 And oVar.Help <> 3 Then
             lblInput.Name = "_lbl" & oVar.Nombre
-            lblInput.Text = oVar.Titulo & ":"
-            lblInput.Location = New System.Drawing.Point(5, PanTop.Height + 23 * oVar.Orden - 17)
+                If oVar.Titulo.Contains(":") Then
+                    lblInput.Text = oVar.Titulo
+                Else
+                    lblInput.Text = oVar.Titulo & ":"
+                End If
+
+                lblInput.Location = New System.Drawing.Point(5, PanTop.Height + 23 * oVar.Orden - 17)
             lblInput.Size() = New System.Drawing.Size(200, 18)
             PanControles.Controls.Add(lblInput)
          End If
