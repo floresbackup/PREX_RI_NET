@@ -846,41 +846,45 @@ Public Class frmMain
 
    End Sub
 
-   Private Sub CargarArchivos()
+    Private Sub CargarArchivos()
 
-      Dim sSQL As String
-      Dim ds As DataSet
+        Dim sSQL As String
+        Dim ds As DataSet
+        Try
+            RemoveHandler cboArchivos.SelectedIndexChanged, AddressOf cboArchivos_SelectedIndexChanged
+            Try
 
-      Try
-
-         sSQL = "SELECT * " & _
-                "FROM TXTNOM " & _
+                sSQL = "SELECT * " &
+                "FROM TXTNOM " &
                 "ORDER BY TN_NOMBRETXT"
 
-         ds = oAdmLocal.AbrirDataset(sSQL)
-            cboArchivos.Items.Clear()
-            cboArchivos.Items.Add(New clsItem.Item("", "<Seleccionar ...>"))
-            With ds.Tables(0)
+                ds = oAdmLocal.AbrirDataset(sSQL)
+                cboArchivos.Items.Clear()
+                cboArchivos.Items.Add(New clsItem.Item("", "<Seleccionar ...>"))
+                With ds.Tables(0)
 
-            For Each row As DataRow In .Rows
+                    For Each row As DataRow In .Rows
 
-               cboArchivos.Items.Add(New clsItem.Item(row("TN_CODIGO"), row("TN_NOMBRETXT")))
+                        cboArchivos.Items.Add(New clsItem.Item(row("TN_CODIGO"), row("TN_NOMBRETXT")))
 
-            Next
+                    Next
 
-         End With
+                End With
 
-         ds = Nothing
+                ds = Nothing
 
-         If cboArchivos.Items.Count > 0 Then
-            cboArchivos.SelectedIndex = 0
-         End If
+                If cboArchivos.Items.Count > 0 Then
+                    cboArchivos.SelectedIndex = 0
+                End If
 
-      Catch ex As Exception
-         TratarError(ex, "CargarArchivos")
-      End Try
+            Catch ex As Exception
+                TratarError(ex, "CargarArchivos")
+            End Try
 
-   End Sub
+        Finally
+            AddHandler cboArchivos.SelectedIndexChanged, AddressOf cboArchivos_SelectedIndexChanged
+        End Try
+    End Sub
 
     Private Sub IniciarControles()
 
