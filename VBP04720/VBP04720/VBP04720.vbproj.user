@@ -20,4 +20,7 @@
     <ErrorReportUrlHistory />
     <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <StartArguments>/u:1/t:4720/e:319</StartArguments>
+  </PropertyGroup>
 </Project>

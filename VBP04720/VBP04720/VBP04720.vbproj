@@ -70,14 +70,6 @@
     <Reference Include="ABCpdf">
       <HintPath>..\..\..\..\..\..\..\Externos\PREX_RI (Versión NET)\BIN\ABCpdf.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Pdf.v17.2.Core">
-    </Reference>
-    <Reference Include="DevExpress.Office.v17.2.Core">
-    </Reference>
-    <Reference Include="DevExpress.RichEdit.v17.2.Core">
-    </Reference>
-    <Reference Include="DevExpress.RichEdit.v17.2.Export">
-    </Reference>
     <Reference Include="DevExpress.Printing.v17.2.Core">
     </Reference>
     <Reference Include="DevExpress.Data.v17.2">
@@ -88,10 +80,6 @@
     </Reference>
     <Reference Include="DevExpress.XtraBars.v17.2">
     </Reference>
-    <Reference Include="DevExpress.Charts.v17.2.Core">
-    </Reference>
-    <Reference Include="DevExpress.XtraCharts.v17.2.Wizard">
-    </Reference>
     <Reference Include="DevExpress.XtraCharts.v17.2">
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v17.2">
@@ -100,28 +88,13 @@
     </Reference>
     <Reference Include="DevExpress.PivotGrid.v17.2.Core">
     </Reference>
-    <Reference Include="DevExpress.XtraPrinting.v17.2">
-    </Reference>
-    <Reference Include="DevExpress.Sparkline.v17.2.Core">
-    </Reference>
-    <Reference Include="DevExpress.CodeParser.v17.2">
-    </Reference>
-    <Reference Include="DevExpress.Utils.v17.2.UI">
-    </Reference>
-    <Reference Include="DevExpress.XtraReports.v17.2.Extensions">
-    </Reference>
     <Reference Include="DevExpress.XtraReports.v17.2">
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.OracleClient" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
