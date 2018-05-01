@@ -19,4 +19,7 @@
     <VerifyUploadedFiles>true</VerifyUploadedFiles>
     <ErrorReportUrlHistory />
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <StartArguments>/u:1/t:4721/e:319</StartArguments>
+  </PropertyGroup>
 </Project>
