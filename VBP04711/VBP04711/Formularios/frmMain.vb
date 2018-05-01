@@ -19,7 +19,7 @@ Public Class frmMain
         txtHasta.DateTime = DateTime.Today
 
         Habilitar(False)
-        GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "Ingreso a transacción", CODIGO_TRANSACCION, UsuarioActual.Codigo)
+
     End Sub
 
     Public Sub AnalizarCommand()
@@ -207,7 +207,7 @@ Public Class frmMain
 
         ToolBarra.Enabled = bHab
 
-        If oAdmTablas.ExisteTabla("TXTADJ") Then
+        If oAdmTablas.ExisteTabla("TXTADJ") AndAlso False Then
             btnVerAdjunto.Visible = bHab
             btnVerAdjunto.Enabled = bHab
         Else

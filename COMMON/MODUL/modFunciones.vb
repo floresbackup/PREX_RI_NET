@@ -515,7 +515,7 @@ Module modFunciones
              "                      @WKSTAT) "
 
         sSQL = sSQL.Replace("@CODUSU", nCodigoUsuario)
-        sSQL = sSQL.Replace("@FECLOG", "'" & DateTime.Now.ToString("yyyy-MM-dd") & "'")
+        sSQL = sSQL.Replace("@FECLOG", FechaSQL(DateTime.Now))
         sSQL = sSQL.Replace("@HORLOG", "'" & Format(DateTime.Now, "HH:mm:ss") & "'")
         sSQL = sSQL.Replace("@ACCION", nAccionLOG)
         sSQL = sSQL.Replace("@CODTRA", nCodigoTransaccion)

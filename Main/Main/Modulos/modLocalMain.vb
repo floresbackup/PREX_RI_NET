@@ -85,6 +85,7 @@ Module modLocalMain
 
             frmMain.ShowDialog()
             GuardarXMLLocal()
+            GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "", -1, UsuarioActual.Codigo)
         End If
 
         End

@@ -250,12 +250,13 @@ Public Class frmMain
 
             If IO.Path.GetExtension(sPrograma).ToLower().Contains("exe") Then
                 If IO.File.Exists(RUTA_BIN & sPrograma) Then
-
                     oTrx.StartInfo.FileName = RUTA_BIN & sPrograma
                     oTrx.StartInfo.Arguments = "/u:" & nCodigoUsuario.ToString & "/t:" & nTransaccion.ToString & "/e:" & CODIGO_ENTIDAD.ToString
                     oTrx.StartInfo.UseShellExecute = True
                     oTrx.StartInfo.WorkingDirectory = RUTA_BIN
                     oTrx.Start()
+
+                    GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "Ingreso a transacción", CODIGO_TRANSACCION, UsuarioActual.Codigo)
 
                     If MULTIEXEC = 0 Then
                         oTrx.WaitForExit()
