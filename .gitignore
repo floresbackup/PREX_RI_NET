@@ -45,3 +45,16 @@ VBP04730/VBP04730/obj
 **/bin/**
 Main/.vs/Main/v15/.suo
 Main/.vs/Main/v15/Server/sqlite3/storage.ide
+Main/.vs/Main/v15/.suo
+*.cache
+*.cache
+Prex.Utils/Prex.Utils/obj/Release/Prex.Utils.csproj.FileListAbsolute.txt
+VBP04295/VBP04295/obj/Release/VBP04295.vbproj.FileListAbsolute.txt
+VBP04395/VBP04395/obj/Release/VBP04395.vbproj.FileListAbsolute.txt
+VBP04720/VBP04720/obj/Release/DesignTimeResolveAssemblyReferencesInput.cache
+VBP04720/VBP04720/obj/Release/VBP04720.vbproj.FileListAbsolute.txt
+VBP04721/VBP04721/obj/Release/VBP04721.vbproj.FileListAbsolute.txt
+VBP04723/VBP04723/obj/Release/VBP04723.vbproj.FileListAbsolute.txt
+VBP04730/VBP04730/obj/Release/VBP04730.vbproj.FileListAbsolute.txt
+VBP09001/VBP09001/obj/x86/Release/VBP09001.vbproj.CoreCompileInputs.cache
+VBP09001/VBP09001/obj/x86/Release/VBP09001.vbproj.ResolveComReference.cache
