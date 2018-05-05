@@ -929,28 +929,432 @@ Public Class frmMain
 
    Private Sub cmdGenerar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdGenerar.Click
 
-      Dim oItem As clsItem.Item
+        'Dim oItem As clsItem.Item
 
-      If DatosOK Then
+        'If DatosOK Then
 
-         Me.lblStatus.Text = ""
-         Me.lblStatus.Visible = True
+        '   Me.lblStatus.Text = ""
+        '   Me.lblStatus.Visible = True
 
-         oItem = cboArchivos.SelectedItem
-            'Todo: si es diario no hacer fecha correcta y cambiar los controles a dia mes anio
-            If oItem.Valor = 2813 Or oItem.Valor = 2816 Then
-            GenerarPDF(oItem.Valor, FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text)))
-         Else
-            GenerarTXT(oItem.Valor, FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text)))
-         End If
+        '   oItem = cboArchivos.SelectedItem
+        '      'Todo: si es diario no hacer fecha correcta y cambiar los controles a dia mes anio
+        '      If oItem.Valor = 2813 Or oItem.Valor = 2816 Then
+        '      GenerarPDF(oItem.Valor, FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text)))
+        '   Else
+        '      GenerarTXT(oItem.Valor, FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text)))
+        '   End If
 
 
+
+        '  End If
+
+        Dim oItem As clsItem.Item
+        Dim sSQL As String
+        Dim rstAux As DataSet
+        Dim nCont As Integer
+
+        'Agregado para usar un SP que grabe en otro lado - 2013/10/03
+
+        Dim nRutPre = oAdmLocal.DevolverValor("TABGEN", "ISNULL(TG_NUME01, 0)", " TG_CODTAB = 10 AND TG_CODCON = 10", "")
+
+        Dim sRutaPrevia = oAdmLocal.DevolverValor("TABGEN", "ISNULL(TG_ALFA01, '')", " TG_CODTAB = 10 AND TG_CODCON = 10")
+
+        ' FIN AGREGADO SP
+
+        If DatosOK() Then
+
+            Dim dFecPro As Date
+
+            'Todo: hacer combo de dia
+            'If cboArchivos.SelectedItem.Tag = "D" Then
+            '    dFecPro = CDate(cboDia.Text & "/" & DatoItemCombo(cboMes) & "/" & cboAnio.Text)
+            'Else
+            dFecPro = FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text))
+            ' End If
+
+            If (Val(Llave(cboArchivos)) >= 4300 And
+             Val(Llave(cboArchivos)) <= 4399) Or
+             (Val(Llave(cboArchivos)) >= 3901 And
+             Val(Llave(cboArchivos)) <= 3903) Or
+             (Val(Llave(cboArchivos)) >= 2900 And
+             Val(Llave(cboArchivos)) <= 2910) Then
+
+                nCont = 1
+
+                'Programado para soportar TXTs de más de un diseño
+                sSQL = "SELECT    DISTINCT TN_CODIGO " &
+                "FROM      TXTNOM " &
+                "WHERE     UPPER(TN_NOMBRETXT) = '" & UCase(LTrim(RTrim(cboArchivos.Text))) & "' " &
+                "ORDER BY  TN_CODIGO"
+
+                rstAux = oAdmLocal.AbrirDataset(sSQL)
+                With rstAux.Tables(0)
+                    For Each row As DataRow In .Rows
+                        GenerarTXTMultiple
+                    Next
+                End With
+                rstAux = Nothing
+            Else
+                GenerarTXT(oItem.Valor, FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text)))
+            End If
 
         End If
 
-   End Sub
 
-   Private Function DatosOK() As Boolean
+
+    End Sub
+
+    Private Sub GenerarTXTMultiple(ByVal nCod As Long, ByVal dFecha As Date, nReg As Integer, nPosic As Integer)
+
+        On Error GoTo Err_Trap
+
+        Dim oText As TextStream
+        Dim sFile As String
+        Dim sSQL As String
+        Dim rstTemp As Recordset
+        Dim rstCuadros As Recordset
+        Dim rstAux As Recordset
+        Dim rstTrabajo As Recordset
+        Dim rstFormato As Recordset
+        Dim i As Integer
+        Dim sTabla As String
+        Dim sCampo As String
+        Dim sCuadro As String
+        Dim nOrdenTXT As Integer
+        Dim sLine As String
+        Dim dNewValue As Date
+        Dim vDato As Variant
+        Dim j As Long
+        Dim sFiltroTrabajo As String
+        Dim nOrden As Integer
+        Dim dFechaReal As Date
+        Dim sCampoLog As String
+        Dim sArchFTP As String
+        Dim nGrabaSegTXT As Integer
+
+        Screen.MousePointer = 11
+
+        cmdGenerar.Enabled = False
+
+        dFechaReal = dFecha
+
+        sFile = txtCarpeta & cboArchivos.Text
+        If nPosic = 1 Then
+   Set oText = oFSO.CreateTextFile(sFile)
+Else
+   Set oText = oFSO.OpenTextFile(sFile, ForAppending)
+End If
+
+        sSQL = "SELECT MAX(TR_FECHAVIG) AS MAX_FECHA " &
+       "FROM TXTREL " &
+       "WHERE TR_FECHAVIG <= " & FechaSQL(dFecha) & " " &
+       "AND TR_CODIGO = " & nCod
+
+Set rstTemp = oAdmlocal.AbrirRecordset(sSQL, True)
+
+With rstTemp
+            If .BOF And .EOF Then
+Salir:
+                MensajeError "No existe el diseño para la fecha ingresada"
+      Exit Sub
+            Else
+                If IsNull(!MAX_FECHA) Then
+                    GoTo Salir
+                Else
+                    dFechaProx = !MAX_FECHA
+                End If
+            End If
+        End With
+
+Set rstTemp = Nothing
+
+sSQL = "SELECT DISTINCT TR_CUADRO, TR_TABLATRABAJO FROM TXTREL " &
+       "WHERE TR_CODIGO = " & nCod & " " &
+       "AND TR_FECHAVIG = " & FechaSQL(dFechaProx) & " " &
+       "ORDER BY TR_CUADRO ASC"
+
+Set rstCuadros = oAdmlocal.AbrirRecordset(sSQL, True)
+
+' Ver formato ----------
+   
+sSQL = "SELECT   * " &
+       "FROM     TXTDIS " &
+       "WHERE    TD_CODIGO = " & nCod & " " &
+       "AND      TD_FECHAVIG = " & FechaSQL(dFechaProx) & " " &
+       "ORDER BY TD_ORDEN"
+
+Set rstFormato = oAdmlocal.AbrirRecordset(sSQL, True)
+
+ReDim Preserve Formato(1)
+
+        Do Until rstFormato.EOF
+            With rstFormato
+                Formato(!TD_ORDEN).CODIGO = !TD_CODIGO
+                Formato(!TD_ORDEN).DECIMALES = !TD_CANTDECIMALES
+                Formato(!TD_ORDEN).DESCRI = "" & !TD_DESCRIPCION
+                Formato(!TD_ORDEN).FECVIG = !TD_FECHAVIG
+                Formato(!TD_ORDEN).FORMATOCAMPO = "" & !TD_FORMATO
+                Formato(!TD_ORDEN).INICIO = !TD_INICIO
+                Formato(!TD_ORDEN).LONGITUD = !TD_LONGITUD
+                Formato(!TD_ORDEN).Tipo = "" & !TD_TIPO
+                .MoveNext
+            End With
+            ReDim Preserve Formato(UBound(Formato) + 1)
+        Loop
+
+Set rstFormato = Nothing
+
+'-- Generar TXT
+sTabla = rstCuadros!TR_TABLATRABAJO
+
+        '-- Generar Tabla de Trabajo
+        If Not (PreparaTxt(dFechaReal, sTabla, nCod)) Then
+            cmdGenerar.Enabled = True
+            lblStatus = ""
+            Screen.MousePointer = 0
+            Exit Sub
+        End If
+
+        Do Until rstCuadros.EOF
+
+            sCuadro = rstCuadros!TR_CUADRO
+
+            sSQL = "SELECT * " &
+          "FROM " & sTabla & " " &
+          "WHERE FECHAVIG = " & FechaSQL(dFecha) & " " &
+          "AND CUADRO = '" & sCuadro & "' " &
+          "AND GENERATXT = 1 " &
+          FiltroTablaTrabajo(sTabla) & " " &
+          "ORDER BY CODIGO, CAMPO8, PERIODO"
+                
+   Set rstTrabajo = oAdmlocal.AbrirRecordset(sSQL, True)
+         
+    sSQL = "SELECT * " &
+           "FROM TXTREL " &
+           "WHERE TR_CODIGO = " & nCod & " " &
+           "AND TR_CUADRO = '" & sCuadro & "' " &
+           "AND TR_FECHAVIG = " & FechaSQL(dFechaProx) & " " &
+           "ORDER BY TR_ORDENTXT ASC"
+        
+    Set rstAux = oAdmlocal.AbrirRecordset(sSQL, True)
+   
+   Do Until rstTrabajo.EOF
+
+                rstAux.MoveFirst
+
+                Do Until rstAux.EOF
+                    nOrden = rstAux!TR_ORDENTXT
+
+                    If "" & rstAux!TR_CAMPOTRABAJO = "" Then ' Dato fijo !!
+
+                        If InStr(1, "" & rstAux!TR_DATOFIJO, "[") > 0 Then
+
+                            Select Case rstAux!TR_DATOFIJO
+
+                                Case "[RECTIFICATIVA]"
+                                    sLine = sLine & IIf(chkRectivicativa.Value = 1, "R", "N")
+                                Case "[ENTIDAD]"
+                                    sLine = sLine & Format(NoNulo(CODIGO_ENTIDAD, 0), Left(Formato(nOrden).FORMATOCAMPO, Formato(nOrden).LONGITUD))
+
+                            End Select
+
+                        Else
+
+                            Select Case Formato(nOrden).Tipo
+
+                                Case "N"
+                                    sLine = sLine & Format(NoNulo(rstAux!TR_DATOFIJO, 0), Left(Formato(nOrden).FORMATOCAMPO, Formato(nOrden).LONGITUD))
+
+                                Case "F"
+                                    If NoNulo(rstAux!TR_DATOFIJO, 0) = 0 Then
+                                        sLine = sLine & String(Formato(nOrden).LONGITUD, "0")
+                                    Else
+                                        sLine = sLine & Format(NoNulo(rstAux!TR_DATOFIJO, 0), Left(Formato(nOrden).FORMATOCAMPO, Formato(nOrden).LONGITUD))
+                                    End If
+
+                                Case Else
+                                    sLine = sLine & RellenarCadena(Trim("" & rstAux!TR_DATOFIJO), Formato(nOrden).LONGITUD)
+
+                            End Select
+                        End If
+
+                        ' Ver rutina --------
+
+                    Else
+
+                        sCampo = rstAux!TR_CAMPOTRABAJO
+
+                        Select Case Formato(nOrden).Tipo
+
+                            Case "N"
+                                vDato = NoNulo(rstTrabajo.Fields(sCampo).Value, "0")
+                                If Formato(nOrden).DECIMALES > 0 Then
+                                    sLine = sLine & Format(vDato * Val("1" & String(Formato(nOrden).DECIMALES, "0")), Formato(nOrden).FORMATOCAMPO)
+                                Else
+                                    If vDato >= 0 Then
+
+                                        ' Exclusivo para Deudores a partir de JULIO 2017
+                                        If vDato = 0 And Formato(nOrden).CODIGO >= 4301 And Formato(nOrden).CODIGO <= 4316 Then
+
+                                            sLine = sLine & IIf(Formato(nOrden).FORMATOCAMPO = "", "", Format(vDato, Formato(nOrden).FORMATOCAMPO))
+
+                                        Else
+
+                                            sLine = sLine & Format(vDato, Formato(nOrden).FORMATOCAMPO)
+
+                                        End If
+
+                                    Else
+                                        sLine = sLine & Format(vDato, Right(Formato(nOrden).FORMATOCAMPO, Formato(nOrden).LONGITUD - 1))
+                                    End If
+                                End If
+
+                                If Right("" & rstAux!TR_DATOFIJO, 1) = ";" Then
+                                    sLine = sLine & ";"
+                                End If
+
+                            Case "T"
+
+                                If Right("" & rstAux!TR_DATOFIJO, 1) = ";" Then
+
+                                    vDato = RTrim("" & rstTrabajo.Fields(sCampo).Value)
+                                    sLine = sLine & vDato & ";"
+
+                                ElseIf Right("" & rstAux!TR_DATOFIJO, 2) = "||" Then
+
+                                    vDato = RTrim("" & rstTrabajo.Fields(sCampo).Value)
+                                    sLine = sLine & vDato & ""
+
+                                Else
+
+                                    vDato = Trim("" & rstTrabajo.Fields(sCampo).Value)
+                                    sLine = sLine & RellenarCadena(vDato, Formato(nOrden).LONGITUD)
+
+                                End If
+
+                            Case "F"
+
+                                vDato = NoNulo(rstTrabajo.Fields(sCampo).Value, "0")
+
+                                Select Case rstAux!TR_DATOFIJO
+
+                                    Case "[PERIODOANT]"
+
+                                        dNewValue = UnAnioMenos(vDato)
+                                        sLine = sLine & Format(dNewValue, Formato(nOrden).FORMATOCAMPO)
+
+                                    Case Else ' VACIO !!
+
+                                        If vDato = "0" Then
+
+                                            If Right("" & rstAux!TR_DATOFIJO, 1) = ";" Then
+
+                                                sLine = sLine
+
+                                            Else
+
+                                                sLine = sLine & Format(vDato, String(Len(Formato(nOrden).FORMATOCAMPO), "0"))
+
+                                            End If
+
+                                        Else
+                                            sLine = sLine & Format(vDato, Formato(nOrden).FORMATOCAMPO)
+                                        End If
+
+                                End Select
+
+                        End Select
+
+                    End If
+
+                    rstAux.MoveNext
+                    DoEvents
+                Loop
+
+                rstTrabajo.MoveNext
+                j = j + 1
+                oText.WriteLine sLine
+      sLine = ""
+                sbMain.SimpleText = "Procesados: " & j & " ..."
+
+                lblStatus.Refresh()
+                DoEvents
+            Loop
+   
+   Set rstTrabajo = Nothing
+   Set rstAux = Nothing
+   rstCuadros.MoveNext
+
+        Loop
+   
+Set rstCuadros = Nothing
+
+If nPosic = nReg Then
+
+            cmdGenerar.Enabled = True
+
+            'Agregado para que grabe en un servidor FTP - 2014/08/26
+            'SOLO METROPOLIS
+            If CODIGO_ENTIDAD = 44068 Or CODIGO_ENTIDAD = 432 Then
+
+                sArchFTP = cboArchivos.Text
+
+                SubirFTP "192.9.200.249", "/proyex/" + CStr(Year(dFechaReal) * 100 + Month(dFechaReal)) + "/", "reginf", "metropolis", sFile, sArchFTP
+
+    End If
+
+            ' FIN AGREGADO FTP
+
+            nGrabaSegTXT = IIf(oAdmLocal.DevolverValor("TABGEN", "ISNULL(TG_NUME02, 0)", "",
+                                 " TG_CODTAB = 3 AND TG_CODCON = 60", "") = " inexistente", 0,
+                   oAdmLocal.DevolverValor("TABGEN", "ISNULL(TG_NUME02, 0)", "",
+                                 " TG_CODTAB = 3 AND TG_CODCON = 60", ""))
+
+
+            If nGrabaSegTXT = 1 Then
+
+                AdjuntarArchivo sFile,
+         Left(cboArchivos.Text, InStr(1, cboArchivos.Text, ".", vbTextCompare) - 1) & "_" & CStr(Year(Of Date)() * 10000 + Month(Of Date)() * 100 + Day(Of Date)()) & "_" & Right("00" & CStr(Hour(Time)), 2) & ":" & Right("00" & CStr(Minute(Time)), 2),
+         Left(cboArchivos.Text, InStr(1, cboArchivos.Text, ".", vbTextCompare) - 1) & "_" & CStr(Year(dFechaReal) * 100 + Month(dFechaReal)) & "_" & IIf(chkRectivicativa.Value = 1, "R", "N")
+
+   End If
+
+            ' FIN AGREGADO TXTADJ
+
+            'Agregado para que genere LOG
+
+            If chkRectivicativa.Value = 0 And nGenerado = 0 Then
+                GuardarLOG 61, "Archivo: " + cboArchivos.Text + ", Ruta: " + txtCarpeta + ", Período: " + CStr(dFechaReal) + ", Filas: " + Str(j), CODIGO_TRANSACCION, UsuarioActual.Codigo
+   ElseIf chkRectivicativa.Value = 0 And nGenerado >= 1 Then
+                GuardarLOG 63, "Archivo Nro.(" + Str(nGenerado) + "): " + cboArchivos.Text + ", Ruta: " + txtCarpeta + ", Período: " + CStr(dFechaReal) + ", Filas: " + Str(j), CODIGO_TRANSACCION, UsuarioActual.Codigo
+   ElseIf chkRectivicativa.Value = 1 And nGenerado = 0 Then
+                GuardarLOG 62, "Archivo: " + cboArchivos.Text + ", Ruta: " + txtCarpeta + ", Período: " + CStr(dFechaReal) + ", Filas: " + Str(j), CODIGO_TRANSACCION, UsuarioActual.Codigo
+   ElseIf chkRectivicativa.Value = 1 And nGenerado >= 1 Then
+                GuardarLOG 64, "Archivo Nro.(" + Str(nGenerado) + "): " + cboArchivos.Text + ", Ruta: " + txtCarpeta + ", Período: " + CStr(dFechaReal) + ", Filas: " + Str(j), CODIGO_TRANSACCION, UsuarioActual.Codigo
+   End If
+            ' FIN AGREGADO para que genere LOG
+
+            Screen.MousePointer = 0
+            MensajeInformacion "Proceso finalizado"
+   lblStatus = ""
+
+            If chkOpen.Value = 1 Then
+                ShellEx sFile
+   End If
+
+        End If
+
+        Exit Sub
+
+Err_Trap:
+
+        TratarError "GenerarTXTMultiple", "Campo: " & sCampo & vbCrLf & Err.Description
+   lblStatus = ""
+
+    End Sub
+
+
+    Private Function DatosOK() As Boolean
 
       Dim bTemp As Boolean
 
@@ -1176,50 +1580,76 @@ Salir:
 
                      Case "N"
                         vDato = Val(rowTrabajo(sCampo))
-                        If CType(Formato(nOrden), clsFormato).Decimales > 0 Then
-                           sLine = sLine & Format(vDato * Val("1" & "".PadLeft(CType(Formato(nOrden), clsFormato).Decimales, "0")), CType(Formato(nOrden), clsFormato).FormatoCampo)
-                        Else
-                           If vDato >= 0 Then
-                              sLine = sLine & Format(vDato, CType(Formato(nOrden), clsFormato).FormatoCampo)
-                           Else
-                              sLine = sLine & Format(vDato, Microsoft.VisualBasic.Strings.Right(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud - 1))
-                           End If
-                        End If
-                     Case "T"
+                                If CType(Formato(nOrden), clsFormato).Decimales > 0 Then
+                                    sLine = sLine & Format(vDato * Val("1" & "".PadLeft(CType(Formato(nOrden), clsFormato).Decimales, "0")), CType(Formato(nOrden), clsFormato).FormatoCampo)
+                                Else
+                                    If vDato >= 0 Then
+                                        sLine = sLine & Format(vDato, CType(Formato(nOrden), clsFormato).FormatoCampo)
+                                    Else
+                                        sLine = sLine & Format(vDato, Microsoft.VisualBasic.Strings.Right(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud - 1))
+                                    End If
+                                End If
 
+                                If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then
+                                    sLine = sLine & ";"
+                                End If
+                            Case "T"
 
-                        vDato = Trim(rowTrabajo(sCampo).ToString)
-                        sLine = sLine & RellenarCadena(vDato, CType(Formato(nOrden), clsFormato).Longitud)
+                                If  Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then ' Right("" & rowAux("TR_DATOFIJO", 1) = ";" Then
 
-                     Case "F"
-                        vDato = rowTrabajo(sCampo)
+                                    vDato = rowTrabajo(sCampo).ToString.Trim
+                                    sLine = sLine & vDato.ToString & ";"
 
-                        Select Case "" & rowAux("TR_DATOFIJO")
+                                ElseIf Strings.Right(rowAux("TR_DATOFIJO").ToString, 2) = "||" Then 'Right("" & rstAux!TR_DATOFIJO, 2) = "||" Then
 
-                           Case "[PERIODOANT]"
+                                    vDato = rowTrabajo(sCampo).ToString.Trim
+                                    sLine = sLine & vDato.ToString & ""
 
-                              dNewValue = UnAnioMenos(vDato)
-                              sLine = sLine & Format(dNewValue, CType(Formato(nOrden), clsFormato).FormatoCampo)
+                                Else
 
-                           Case Else ' VACIO !!
+                                    vDato = Trim(rowTrabajo(sCampo).ToString)
+                                    sLine = sLine & RellenarCadena(vDato, CType(Formato(nOrden), clsFormato).Longitud)
 
+                                End If
 
-                              If vDato.ToString = "0" Then
+                                'Codigo anterior
+                                'vDato = Trim(rowTrabajo(sCampo).ToString)
+                                'sLine = sLine & RellenarCadena(vDato, CType(Formato(nOrden), clsFormato).Longitud)
 
-                                 sLine = sLine & Format(vDato, "".PadLeft(Len(CType(Formato(nOrden), clsFormato).FormatoCampo), "0"))
+                            Case "F"
+                                vDato = NoNulo(rowTrabajo(sCampo))
 
-                              Else
-                                 If IsDBNull(vDato) Then
-                                    sLine = sLine & New String("0", CType(Formato(nOrden), clsFormato).Longitud)
-                                 Else
-                                    sLine = sLine & Format(NoNulo(vDato), CType(Formato(nOrden), clsFormato).FormatoCampo)
-                                 End If
-                              End If
+                                Select Case rowAux("TR_DATOFIJO").ToString
+
+                                    Case "[PERIODOANT]"
+
+                                        dNewValue = UnAnioMenos(DateTime.Parse(vDato.ToString))
+                                        sLine = sLine & Format(dNewValue, Formato(nOrden).FORMATOCAMPO)
+
+                                    Case Else ' VACIO !!
+
+                                        If vDato.ToString = "0" Then
+
+                                            If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then
+                                                sLine = sLine
+                                            Else
+                                                sLine = sLine & Format(vDato, "".PadLeft(Len(Formato(nOrden).FORMATOCAMPO), "0"))
+                                            End If
+
+                                        Else
+
+                                            sLine = sLine & Format(vDato, Formato(nOrden).FORMATOCAMPO)
+
+                                        End If
+
+                                End Select
+
+                                If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then
+                                    sLine = sLine & ";"
+                                End If
+
 
                         End Select
-
-
-                  End Select
 
                End If
 

@@ -2188,8 +2188,15 @@ Reinicio:
     Public Function ConsFechaFinMes(ByVal sParametros As String) As Boolean
         Dim sParam() As String
         sParam = Split(sParametros, "|")
+        Dim fechaFinDeMes As DateTime
 
-        Dim fechaFinDeMes = DateTime.Parse(Year(sParam(0)).ToString() & "-" & Format(Month(sParam(0)) + 1, "00") & "-01").AddDays(-1)
+        If Month(sParam(0)) = 12 Then
+            fechaFinDeMes = DateTime.Parse((Year(sParam(0)) + 1).ToString() & "-" & Format(1, "00") & "-01").AddDays(-1)
+        Else
+            fechaFinDeMes = DateTime.Parse(Year(sParam(0)).ToString() & "-" & Format(IIf(Month(sParam(0)) = 12, 1, Month(sParam(0)) + 1), "00") & "-01").AddDays(-1)
+        End If
+
+
         Dim fecha As DateTime
         If DateTime.TryParse(sParametros, fecha) Then
             If fecha.Equals(fechaFinDeMes) Then

@@ -396,21 +396,25 @@ Module modFunciones
 
       Dim i As Integer
       Dim sTemp As String
+        If nMes = 12 Then
+            Return DateTime.Parse((nAnio + 1).ToString() & "-" & Format(1, "00") & "-01").AddDays(-1)
+        Else
+            Return DateTime.Parse(nAnio.ToString() & "-" & Format(nMes + 1, "00") & "-01").AddDays(-1)
+        End If
+        '  For i = 31 To 28 Step -1
 
-      For i = 31 To 28 Step -1
+        '   sTemp = Format(i, "00") & "-" & Format(nMes, "00") & "-" & nAnio
 
-         sTemp = Format(i, "00") & "-" & Format(nMes, "00") & "-" & nAnio
+        '   If IsDate(sTemp) Then
 
-         If IsDate(sTemp) Then
+        '      Return CDate(sTemp)
+        '      Exit Function
 
-            Return CDate(sTemp)
-            Exit Function
+        '   End If
 
-         End If
+        'Next
 
-      Next
-
-   End Function
+    End Function
 
    Public Function RellenarCadena(ByVal sCadena As String, ByVal nCantCaracteres As Integer) As String
 
