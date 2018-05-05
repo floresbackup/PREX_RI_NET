@@ -20,9 +20,9 @@
     <ErrorReportUrlHistory />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <StartArguments>/u:1/t:4901/e:319</StartArguments>
+    <StartArguments>/u:1/t:70099/e:15</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <StartArguments>/u:1/t:4095/e:20</StartArguments>
+    <StartArguments>/u:1/t:70099/e:94</StartArguments>
   </PropertyGroup>
 </Project>

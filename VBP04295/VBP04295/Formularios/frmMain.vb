@@ -203,7 +203,7 @@ Public Class frmMain
         If ProcesosPrevios() Then
             GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - PROCESOSPREVIOS OK ", CODIGO_TRANSACCION)
 
-            Dim sSQL As String = ReemplazarVariables(oConsulta.Query)
+            Dim sSQL As String = ReemplazarVariables(oConsulta.Query, PanControles.Controls)
             GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - ReemplazarVariables:  " & sSQL, CODIGO_TRANSACCION)
 
             Dim ad As OleDb.OleDbDataAdapter = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
@@ -631,42 +631,42 @@ Public Class frmMain
 
     End Sub
 
-    Public Function ReemplazarVariables(ByVal sSQL As String) As String
+    'Public Function ReemplazarVariables(ByVal sSQL As String) As String
 
-        Dim oCtl As Windows.Forms.Control
-        Dim sValor As String
-        Dim oItem As clsItem.Item
+    '    Dim oCtl As Windows.Forms.Control
+    '    Dim sValor As String
+    '    Dim oItem As clsItem.Item
 
-        For Each oCtl In PanControles.Controls
+    '    For Each oCtl In PanControles.Controls
 
-            Select Case oCtl.GetType.ToString.Substring(oCtl.GetType.ToString.LastIndexOf(".") + 1)
-                Case "ComboBox"
-                    oItem = CType(oCtl, ComboBox).SelectedItem
-                    sValor = oItem.Valor
-                Case "ComboBoxEdit"
-                    oItem = CType(oCtl, DevExpress.XtraEditors.ComboBoxEdit).SelectedItem
-                    sValor = oItem.Valor
-                Case "CheckBox"
-                    sValor = IIf(CType(oCtl, CheckBox).Checked, oCtl.Tag, "")
-                Case "CheckEdit"
-                    sValor = IIf(CType(oCtl, DevExpress.XtraEditors.CheckEdit).Checked, oCtl.Tag, "")
-                Case "DateTimePicker"
-                    sValor = FechaSQL(DirectCast(oCtl, DateTimePicker).Value)
-                Case "DateEdit"
-                    sValor = FechaSQL(DirectCast(oCtl, DevExpress.XtraEditors.DateEdit).DateTime)
-                Case Else
-                    sValor = oCtl.Text
-            End Select
+    '        Select Case oCtl.GetType.ToString.Substring(oCtl.GetType.ToString.LastIndexOf(".") + 1)
+    '            Case "ComboBox"
+    '                oItem = CType(oCtl, ComboBox).SelectedItem
+    '                sValor = oItem.Valor
+    '            Case "ComboBoxEdit"
+    '                oItem = CType(oCtl, DevExpress.XtraEditors.ComboBoxEdit).SelectedItem
+    '                sValor = oItem.Valor
+    '            Case "CheckBox"
+    '                sValor = IIf(CType(oCtl, CheckBox).Checked, oCtl.Tag, "")
+    '            Case "CheckEdit"
+    '                sValor = IIf(CType(oCtl, DevExpress.XtraEditors.CheckEdit).Checked, oCtl.Tag, "")
+    '            Case "DateTimePicker"
+    '                sValor = FechaSQL(DirectCast(oCtl, DateTimePicker).Value)
+    '            Case "DateEdit"
+    '                sValor = FechaSQL(DirectCast(oCtl, DevExpress.XtraEditors.DateEdit).DateTime)
+    '            Case Else
+    '                sValor = oCtl.Text
+    '        End Select
 
-            If oCtl.Name.Substring(0, 1) = "_" Then
-                sSQL = sSQL.Replace(oCtl.Name.Substring(1), sValor)
-            End If
+    '        If oCtl.Name.Substring(0, 1) = "_" Then
+    '            sSQL = sSQL.Replace(oCtl.Name.Substring(1), sValor)
+    '        End If
 
-        Next
+    '    Next
 
-        Return sSQL
+    '    Return sSQL
 
-    End Function
+    'End Function
 
     Private Sub Modificar(Optional ByVal MODO_APE As String = "M")
 
@@ -709,7 +709,7 @@ Public Class frmMain
             Next
         End If
 
-        sSQL = ReemplazarVariables(sSQL)
+        sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
 
         Me.Enabled = True
 
@@ -805,7 +805,7 @@ Maneja_Error:
                "                       AND      RO_FECVIG <= @FECVIG) " &
                "AND       RO_REPITE IN (0, 1) "
 
-        sSQL = ReemplazarVariables(sSQL)
+        sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
         sSQL = Replace(sSQL, "@CODENT", CODIGO_ENTIDAD)
         sSQL = Replace(sSQL, "@FECVIG", FechaSQL(Date.Today))
         ds = oAdmTablas.AbrirDataset(sSQL)
@@ -885,7 +885,7 @@ Maneja_Error:
         End If
 
         sSQL = Replace(sSQL, "@CODENT", CODIGO_ENTIDAD)
-        ds = oAdmTablas.AbrirDataset(ReemplazarVariables(sSQL))
+        ds = oAdmTablas.AbrirDataset(ReemplazarVariables(sSQL, PanControles.Controls))
 
         For Each oRow As DataRow In ds.Tables(0).Rows
             nCont = nCont + 1
@@ -990,7 +990,7 @@ Maneja_Error:
                "                       AND      RO_FECVIG <= @FECVIG) " &
                "AND       RO_REPITE IN (2) "
 
-        sSQL = ReemplazarVariables(sSQL)
+        sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
         sSQL = Replace(sSQL, "@CODENT", CODIGO_ENTIDAD)
         sSQL = Replace(sSQL, "@FECVIG", FechaSQL(Date.Today))
         ds = oAdmTablas.AbrirDataset(sSQL)
@@ -1063,7 +1063,7 @@ Maneja_Error:
         ProcesarDetalle(sFuente)
 
         sSQL = sSQL.Replace("@CODENT", CODIGO_ENTIDAD)
-        ds = oAdmTablas.AbrirDataset(ReemplazarVariables(sSQL))
+        ds = oAdmTablas.AbrirDataset(ReemplazarVariables(sSQL, PanControles.Controls))
 
         sDetalle = ""
 
@@ -1616,7 +1616,7 @@ Reinicio:
                 sSQL = Replace(sSQL, "@NOMBRE_COLUMNA", GridView1.FocusedColumn.FieldName)
                 sSQL = Replace(sSQL, "@TITULO_COLUMNA", GridView1.FocusedColumn.Caption)
 
-                sSQL = ReemplazarVariables(sSQL)
+                sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
             End If
         End If
 
@@ -1643,7 +1643,7 @@ Reinicio:
                 sSQL = Replace(sSQL, "@NOMBRE_COLUMNA", GridView1.FocusedColumn.FieldName)
                 sSQL = Replace(sSQL, "@TITULO_COLUMNA", GridView1.FocusedColumn.Caption)
 
-                sSQL = ReemplazarVariables(sSQL)
+                sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
             End If
         End If
 
@@ -1686,7 +1686,7 @@ Reinicio:
         sSQL = Replace(sSQL, "@CODIGO_ENTIDAD", CODIGO_ENTIDAD, , , vbTextCompare)
         sSQL = Replace(sSQL, "@CODIGO_TRANSACCION", CODIGO_TRANSACCION, , , vbTextCompare)
 
-        sSQL = ReemplazarVariables(sSQL)
+        sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
 
         oAdmTablas.EjecutarComandoAsincrono(sSQL)
 
@@ -2400,7 +2400,7 @@ Reinicio:
 
         xpCollectionTipo.DisplayableProperties = "This;Oid;Descripcion"
 
-        sSQL = ReemplazarVariables(sSQL)
+        sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
         ds = oAdmTablas.AbrirDataset(sSQL)
 
         With ds.Tables(0)
@@ -2539,6 +2539,10 @@ Reinicio:
 
 
     End Sub
+
+    Public Function ReemplazarVariablesExt(ByVal sConsulta As String) As String
+        Return ReemplazarVariables(sConsulta, PanControles.Controls)
+    End Function
 
 End Class
 
