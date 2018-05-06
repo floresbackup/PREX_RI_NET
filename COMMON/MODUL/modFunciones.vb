@@ -1,18 +1,105 @@
 Imports System.IO
+Imports System.Runtime.InteropServices
 
+Module Impersonation
+
+#Region "API Structures"
+    <StructLayout(LayoutKind.Sequential)>
+    Public Structure PROCESS_INFORMATION
+        Dim hProcess As System.IntPtr
+        Dim hThread As System.IntPtr
+        Dim dwProcessId As Integer
+        Dim dwThreadId As Integer
+    End Structure
+
+    <StructLayout(LayoutKind.Sequential)>
+    Public Structure STARTUPINFO
+        Dim cb As Integer
+        Dim lpReserved As System.IntPtr
+        Dim lpDesktop As System.IntPtr
+        Dim lpTitle As System.IntPtr
+        Dim dwX As Integer
+        Dim dwY As Integer
+        Dim dwXSize As Integer
+        Dim dwYSize As Integer
+        Dim dwXCountChars As Integer
+        Dim dwYCountChars As Integer
+        Dim dwFillAttribute As Integer
+        Dim dwFlags As Integer
+        Dim wShowWindow As Short
+        Dim cbReserved2 As Short
+        Dim lpReserved2 As System.IntPtr
+        Dim hStdInput As System.IntPtr
+        Dim hStdOutput As System.IntPtr
+        Dim hStdError As System.IntPtr
+    End Structure
+#End Region
+
+#Region "API Constants"
+    Private Const LOGON_NETCREDENTIALS_ONLY As Integer = &H2
+    Private Const NORMAL_PRIORITY_CLASS As Integer = &H20
+    Private Const CREATE_DEFAULT_ERROR_MODE As Integer = &H4000000
+    Private Const CREATE_NEW_CONSOLE As Integer = &H10
+    Private Const CREATE_NEW_PROCESS_GROUP As Integer = &H200
+    Private Const LOGON_WITH_PROFILE As Integer = &H1
+#End Region
+
+#Region "API Functions"
+    Private Declare Unicode Function CreateProcessWithLogon Lib "Advapi32" Alias "CreateProcessWithLogonW" _
+        (ByVal lpUsername As String,
+         ByVal lpDomain As String,
+         ByVal lpPassword As String,
+         ByVal dwLogonFlags As Integer,
+         ByVal lpApplicationName As String,
+         ByVal lpCommandLine As String,
+         ByVal dwCreationFlags As Integer,
+         ByVal lpEnvironment As System.IntPtr,
+         ByVal lpCurrentDirectory As System.IntPtr,
+         ByRef lpStartupInfo As STARTUPINFO,
+         ByRef lpProcessInfo As PROCESS_INFORMATION) As Integer
+
+    Private Declare Function CloseHandle Lib "kernel32" (ByVal hObject As System.IntPtr) As Integer
+
+#End Region
+
+    Public Sub RunProgram(ByVal UserName As String, ByVal Password As String, ByVal Domain As String, ByVal Application As String, ByVal CommandLine As String)
+
+        Dim siStartup As STARTUPINFO
+        Dim piProcess As PROCESS_INFORMATION
+        Dim intReturn As Integer
+
+        If CommandLine Is Nothing OrElse CommandLine = "" Then CommandLine = String.Empty
+
+        siStartup.cb = Marshal.SizeOf(siStartup)
+        siStartup.dwFlags = 0
+
+        intReturn = CreateProcessWithLogon(UserName, Domain, Password, LOGON_WITH_PROFILE, Application, CommandLine,
+        NORMAL_PRIORITY_CLASS Or CREATE_DEFAULT_ERROR_MODE Or CREATE_NEW_CONSOLE Or CREATE_NEW_PROCESS_GROUP,
+        IntPtr.Zero, IntPtr.Zero, siStartup, piProcess)
+
+        If intReturn = 0 Then
+            Throw New System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error())
+        End If
+
+        CloseHandle(piProcess.hProcess)
+        CloseHandle(piProcess.hThread)
+
+    End Sub
+
+End Module
 Module modFunciones
 
-   Public Enum eTipoDatoADO
-      eNumero = 0
-      eTexto = 1
-      eFecha = 2
-   End Enum
+    Public Enum eTipoDatoADO
+        eNumero = 0
+        eTexto = 1
+        eFecha = 2
+    End Enum
 
-   Public Sub LeerXML()
+    Public Sub LeerXML()
 
-      Try
+        Try
 
-         Dim sTemp As String
+            Dim sTemp As String
 
             If Not File.Exists(ARCHIVO_CONFIG) Then
                 'ARCHIVO_CONFIG = ARCHIVO_CONFIG_DEV
@@ -20,13 +107,13 @@ Module modFunciones
             End If
 
             If File.Exists(ARCHIVO_CONFIG) Then
-            oConfig.ReadXml(ARCHIVO_CONFIG)
+                oConfig.ReadXml(ARCHIVO_CONFIG)
 
-            For Each row As DataRow In oConfig.Tables("CONFIG").Rows
+                For Each row As DataRow In oConfig.Tables("CONFIG").Rows
 
-               sTemp = row("VALOR").ToString
+                    sTemp = row("VALOR").ToString
 
-               Select Case row("NOMBRE").ToString
+                    Select Case row("NOMBRE").ToString
 
                         Case "CONN_LOCAL"
                             CONN_LOCAL = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
@@ -75,327 +162,327 @@ Module modFunciones
 
                     End Select
 
-            Next
-
-         End If
-
-         If AUTENTICACIONSQL Then
-
-            If File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
-
-               Dim sUser As String = ""
-               Dim sPass As String = ""
-
-               LeerArchivoEncriptado(CARPETA_LOCAL & "TEMP\conn.enc", sUser, sPass)
-               CONN_LOCAL = CONN_LOCAL & ";User id=" & sUser & ";Password=" & sPass & ";"
-
-            Else
-
-               If Command().Trim <> "" And Command().ToUpper <> "/IDE" Then
-
-                  MensajeError("No se encuentra el archivo encriptado con la conexion SQL")
-                  End
-
-               End If
+                Next
 
             End If
 
-         End If
+            If AUTENTICACIONSQL Then
 
-      Catch ex As Exception
-         TratarError(ex, "LeerXML")
-      End Try
+                If File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
 
-   End Sub
+                    Dim sUser As String = ""
+                    Dim sPass As String = ""
 
-   Public Sub TratarError(ByVal ex As Exception, _
-                          Optional ByVal sFuncion As String = "", _
-                          Optional ByVal sCustomError As String = "", _
-                          Optional ByVal bGuardaLog As Boolean = True)
+                    LeerArchivoEncriptado(CARPETA_LOCAL & "TEMP\conn.enc", sUser, sPass)
+                    CONN_LOCAL = CONN_LOCAL & ";User id=" & sUser & ";Password=" & sPass & ";"
 
-      Dim frm As New frmError
+                Else
 
-      frm.txtCodigo.Text = ex.GetHashCode.ToString
-      frm.txtOrigen.Text = ex.Source & " - " & ex.TargetSite.Name
-      frm.txtFuncion.Text = IIf(sFuncion = "", "", sFuncion)
-      frm.txtFecha.Text = System.DateTime.Today.ToShortDateString
-      frm.txtHora.Text = System.DateTime.Now.ToShortTimeString
+                    If Command().Trim <> "" And Command().ToUpper <> "/IDE" Then
 
-      If sCustomError <> "" Then
-         frm.txtDescripcion.Text = sCustomError
-      Else
-         frm.txtDescripcion.Text = ex.Message
-      End If
+                        MensajeError("No se encuentra el archivo encriptado con la conexion SQL")
+                        End
 
-      frm.txtDescripcion.Text = frm.txtDescripcion.Text & vbCrLf & vbCrLf & "TRAZA:" & vbCrLf & ex.StackTrace
-      If bGuardaLog Then
-         '        GuardarLOG(AL_ERROR_SISTEMA, .Description & vbCrLf & vbCrLf & "Función/Proc.: " & sFuncion, CODIGO_TRANSACCION)
-      End If
+                    End If
 
-      frm.ShowDialog()
+                End If
 
-   End Sub
+            End If
 
-   Public Sub TratarErrorErr(ByVal ex As ErrObject, _
-                       Optional ByVal sFuncion As String = "", _
-                       Optional ByVal sCustomError As String = "", _
-                       Optional ByVal bGuardaLog As Boolean = True)
+        Catch ex As Exception
+            TratarError(ex, "LeerXML")
+        End Try
 
-      TratarError(ex.GetException(), sFuncion, sCustomError, bGuardaLog)
+    End Sub
 
-   End Sub
+    Public Sub TratarError(ByVal ex As Exception,
+                           Optional ByVal sFuncion As String = "",
+                           Optional ByVal sCustomError As String = "",
+                           Optional ByVal bGuardaLog As Boolean = True)
 
-   Public Function FlotanteSQL(ByVal nNumero As Double) As String
+        Dim frm As New frmError
 
-      Return Format(nNumero, "Fixed").Replace(",", ".")
+        frm.txtCodigo.Text = ex.GetHashCode.ToString
+        frm.txtOrigen.Text = ex.Source & " - " & ex.TargetSite.Name
+        frm.txtFuncion.Text = IIf(sFuncion = "", "", sFuncion)
+        frm.txtFecha.Text = System.DateTime.Today.ToShortDateString
+        frm.txtHora.Text = System.DateTime.Now.ToShortTimeString
 
-   End Function
+        If sCustomError <> "" Then
+            frm.txtDescripcion.Text = sCustomError
+        Else
+            frm.txtDescripcion.Text = ex.Message
+        End If
 
-   Public Function FechaSQL(ByVal dFecha As Date) As String
+        frm.txtDescripcion.Text = frm.txtDescripcion.Text & vbCrLf & vbCrLf & "TRAZA:" & vbCrLf & ex.StackTrace
+        If bGuardaLog Then
+            '        GuardarLOG(AL_ERROR_SISTEMA, .Description & vbCrLf & vbCrLf & "Función/Proc.: " & sFuncion, CODIGO_TRANSACCION)
+        End If
 
-      Return "'" & Format(dFecha, FORMATO_FECHA) & "'"
+        frm.ShowDialog()
 
-   End Function
+    End Sub
 
-   Public Function Pregunta(ByVal sMensaje As String) As DialogResult
+    Public Sub TratarErrorErr(ByVal ex As ErrObject,
+                        Optional ByVal sFuncion As String = "",
+                        Optional ByVal sCustomError As String = "",
+                        Optional ByVal bGuardaLog As Boolean = True)
 
-      Return MsgBox(sMensaje, vbQuestion + vbYesNo, "Pregunta")
+        TratarError(ex.GetException(), sFuncion, sCustomError, bGuardaLog)
 
-   End Function
+    End Sub
 
-   Public Sub MensajeInformacion(ByVal sMensaje As String)
+    Public Function FlotanteSQL(ByVal nNumero As Double) As String
 
-      MsgBox(sMensaje, vbInformation, "Mensaje del sistema")
+        Return Format(nNumero, "Fixed").Replace(",", ".")
 
-   End Sub
+    End Function
 
-   Public Sub MensajeError(ByVal sMensaje As String)
+    Public Function FechaSQL(ByVal dFecha As Date) As String
 
-      MsgBox(sMensaje, vbExclamation, "Mensaje del sistema")
+        Return "'" & Format(dFecha, FORMATO_FECHA) & "'"
 
-   End Sub
+    End Function
 
-   Public Function TipoDatosADO(ByVal nTipo As Integer, Optional ByRef nTipoDato As Integer = 0) As String
+    Public Function Pregunta(ByVal sMensaje As String) As DialogResult
 
-      Select Case nTipo
+        Return MsgBox(sMensaje, vbQuestion + vbYesNo, "Pregunta")
 
-         Case 7, 133, 134, 135
-            Return "Fecha/Hora"
-            nTipoDato = 2
-         Case 128, 136, 129, 200, 202, 130, 8, 201, 203
-            Return "Texto"
-            nTipoDato = 1
-         Case Else
-            Return "Numérico"
-            nTipoDato = 0
+    End Function
 
-      End Select
+    Public Sub MensajeInformacion(ByVal sMensaje As String)
 
-   End Function
+        MsgBox(sMensaje, vbInformation, "Mensaje del sistema")
 
-   Public Function TipoDatoADO(ByVal nTipo As Integer) As eTipoDatoADO
+    End Sub
 
-      Select Case nTipo
-         Case 7, 133, 134, 135
-            Return eTipoDatoADO.eFecha
-         Case 128, 136, 129, 200, 202, 130, 8, 201, 203
-            Return eTipoDatoADO.eTexto
-         Case Else
-            Return eTipoDatoADO.eNumero
-      End Select
+    Public Sub MensajeError(ByVal sMensaje As String)
 
-   End Function
+        MsgBox(sMensaje, vbExclamation, "Mensaje del sistema")
 
-   'Seleccióna un campo especificado de un ImageCombo a partir de la "Key".
-   Public Sub SelCombo(ByVal oCombo As Object, ByVal sCadena As String)
+    End Sub
 
-      Dim oItem As clsItem.Item
+    Public Function TipoDatosADO(ByVal nTipo As Integer, Optional ByRef nTipoDato As Integer = 0) As String
 
-      For Each oItem In oCombo.Items
-         If oItem.Nombre.ToUpper = sCadena.ToUpper Then
-            oCombo.SelectedItem = oItem
-         End If
-      Next
+        Select Case nTipo
 
-   End Sub
+            Case 7, 133, 134, 135
+                Return "Fecha/Hora"
+                nTipoDato = 2
+            Case 128, 136, 129, 200, 202, 130, 8, 201, 203
+                Return "Texto"
+                nTipoDato = 1
+            Case Else
+                Return "Numérico"
+                nTipoDato = 0
 
-   'Seleccióna un campo especificado de un ImageCombo a partir de la "Key".
-   Public Sub SelComboDevExpress(ByVal oCombo As DevExpress.XtraEditors.ComboBoxEdit, ByVal sCadena As String)
+        End Select
 
-      Dim oItem As clsItem.Item
+    End Function
 
-      For Each oItem In oCombo.Properties.Items
-         If "K" & oItem.Valor.ToString.ToUpper = sCadena.ToUpper Then
-            oCombo.SelectedItem = oItem
-         End If
-      Next
+    Public Function TipoDatoADO(ByVal nTipo As Integer) As eTipoDatoADO
 
-   End Sub
+        Select Case nTipo
+            Case 7, 133, 134, 135
+                Return eTipoDatoADO.eFecha
+            Case 128, 136, 129, 200, 202, 130, 8, 201, 203
+                Return eTipoDatoADO.eTexto
+            Case Else
+                Return eTipoDatoADO.eNumero
+        End Select
 
-   'Seleccióna un item de un combo box o list box
-   Public Sub SelComboBox(ByVal oCombo_List As Object, ByVal sCadena As String)
+    End Function
 
-      Dim oItem As clsItem.Item
+    'Seleccióna un campo especificado de un ImageCombo a partir de la "Key".
+    Public Sub SelCombo(ByVal oCombo As Object, ByVal sCadena As String)
 
-      For Each oItem In oCombo_List.Items
+        Dim oItem As clsItem.Item
+
+        For Each oItem In oCombo.Items
+            If oItem.Nombre.ToUpper = sCadena.ToUpper Then
+                oCombo.SelectedItem = oItem
+            End If
+        Next
+
+    End Sub
+
+    'Seleccióna un campo especificado de un ImageCombo a partir de la "Key".
+    Public Sub SelComboDevExpress(ByVal oCombo As DevExpress.XtraEditors.ComboBoxEdit, ByVal sCadena As String)
+
+        Dim oItem As clsItem.Item
+
+        For Each oItem In oCombo.Properties.Items
+            If "K" & oItem.Valor.ToString.ToUpper = sCadena.ToUpper Then
+                oCombo.SelectedItem = oItem
+            End If
+        Next
+
+    End Sub
+
+    'Seleccióna un item de un combo box o list box
+    Public Sub SelComboBox(ByVal oCombo_List As Object, ByVal sCadena As String)
+
+        Dim oItem As clsItem.Item
+
+        For Each oItem In oCombo_List.Items
             If oItem.Valor.ToUpper = sCadena.ToUpper Then
                 oCombo_List.SelectedItem = oItem
             End If
         Next
 
-   End Sub
+    End Sub
 
-   Public Sub SelItemCombo(ByVal oCombo As Object, ByVal nCodigo As Long)
+    Public Sub SelItemCombo(ByVal oCombo As Object, ByVal nCodigo As Long)
 
-      Dim oItem As clsItem.Item
+        Dim oItem As clsItem.Item
 
-      For Each oItem In oCombo.Items
-         If oItem.Valor = nCodigo Then
-            oCombo.SelectedItem = oItem
-         End If
-      Next
+        For Each oItem In oCombo.Items
+            If oItem.Valor = nCodigo Then
+                oCombo.SelectedItem = oItem
+            End If
+        Next
 
-   End Sub
+    End Sub
 
-   Public Sub CargarCombo(ByVal oCombo As Object, ByVal sSQL As String)
+    Public Sub CargarCombo(ByVal oCombo As Object, ByVal sSQL As String)
 
-      Dim ad As OleDb.OleDbDataAdapter
-      Dim dt As DataTable
-      Dim dr As DataRow
-      Dim nC As Integer = 0
+        Dim ad As OleDb.OleDbDataAdapter
+        Dim dt As DataTable
+        Dim dr As DataRow
+        Dim nC As Integer = 0
 
-      Try
+        Try
 
-         ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
-         dt = New DataTable
+            ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
+            dt = New DataTable
 
-         ad.Fill(dt)
+            ad.Fill(dt)
 
-         oCombo.Items.Clear()
+            oCombo.Items.Clear()
 
-         For Each dr In dt.Rows
+            For Each dr In dt.Rows
                 oCombo.Items.Add(New clsItem.Item(dr(0).ToString, dr(1).ToString))
             Next
 
-         Application.DoEvents()
+            Application.DoEvents()
 
-      Catch ex As Exception
-         TratarError(ex, "CargarCombo")
-      End Try
+        Catch ex As Exception
+            TratarError(ex, "CargarCombo")
+        End Try
 
-   End Sub
+    End Sub
 
-   Public Sub AgregarItemCombo(ByVal oCombo As Object, ByVal nCodigo As Long, ByVal sDescripcion As String)
+    Public Sub AgregarItemCombo(ByVal oCombo As Object, ByVal nCodigo As Long, ByVal sDescripcion As String)
 
-      Try
+        Try
 
-         oCombo.Items.Add(New clsItem.Item(nCodigo, sDescripcion))
+            oCombo.Items.Add(New clsItem.Item(nCodigo, sDescripcion))
 
-      Catch ex As Exception
-         TratarError(ex, "AgregarItemCombo")
-      End Try
+        Catch ex As Exception
+            TratarError(ex, "AgregarItemCombo")
+        End Try
 
-   End Sub
+    End Sub
 
-   Public Sub QuitarItemCombo(ByVal oCombo As Object, ByVal nCodigo As Long)
+    Public Sub QuitarItemCombo(ByVal oCombo As Object, ByVal nCodigo As Long)
 
-      Try
+        Try
 
-         For Each item As clsItem.Item In oCombo.Items
-            If item.Valor = nCodigo Then
-               oCombo.Items.Remove(item)
-               Exit For
-            End If
-         Next
+            For Each item As clsItem.Item In oCombo.Items
+                If item.Valor = nCodigo Then
+                    oCombo.Items.Remove(item)
+                    Exit For
+                End If
+            Next
 
-      Catch ex As Exception
-         TratarError(ex, "QuitarItemCombo")
-      End Try
+        Catch ex As Exception
+            TratarError(ex, "QuitarItemCombo")
+        End Try
 
-   End Sub
+    End Sub
 
-   Public Function NormalizarRuta(ByVal sRuta As String) As String
+    Public Function NormalizarRuta(ByVal sRuta As String) As String
 
-      If Right(sRuta, 1) <> "\" Then
-         NormalizarRuta = sRuta & "\"
-      Else
-         NormalizarRuta = sRuta
-      End If
+        If Right(sRuta, 1) <> "\" Then
+            NormalizarRuta = sRuta & "\"
+        Else
+            NormalizarRuta = sRuta
+        End If
 
-   End Function
+    End Function
 
-   Public Sub CargarComboDevExpress(ByVal oCombo As DevExpress.XtraEditors.ComboBoxEdit, ByVal sSQL As String)
+    Public Sub CargarComboDevExpress(ByVal oCombo As DevExpress.XtraEditors.ComboBoxEdit, ByVal sSQL As String)
 
-      Dim ad As OleDb.OleDbDataAdapter
-      Dim dt As DataTable
-      Dim oRow As DataRow
-      Dim oItem As clsItem.Item
+        Dim ad As OleDb.OleDbDataAdapter
+        Dim dt As DataTable
+        Dim oRow As DataRow
+        Dim oItem As clsItem.Item
 
-      Try
-         oCombo.Properties.Items.Clear()
+        Try
+            oCombo.Properties.Items.Clear()
 
-         ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
-         dt = New DataTable
+            ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
+            dt = New DataTable
 
-         ad.Fill(dt)
+            ad.Fill(dt)
 
-         For Each oRow In dt.Rows
+            For Each oRow In dt.Rows
 
-            oItem.Valor = oRow(0)
-            oItem.Nombre = oRow(1).ToString
-            oCombo.Properties.Items.Add(oItem)
+                oItem.Valor = oRow(0)
+                oItem.Nombre = oRow(1).ToString
+                oCombo.Properties.Items.Add(oItem)
 
-         Next
+            Next
 
-      Catch ex As Exception
-         'nada
-      End Try
+        Catch ex As Exception
+            'nada
+        End Try
 
-   End Sub
+    End Sub
 
-   'Obtiene el Key de un ImageCombo o ListView.
-   Public Function Llave(ByVal oLlave As Object) As String
+    'Obtiene el Key de un ImageCombo o ListView.
+    Public Function Llave(ByVal oLlave As Object) As String
 
-      Dim oItem As clsItem.Item
+        Dim oItem As clsItem.Item
 
-      If Not (oLlave.SelectedItem Is Nothing) Then
-         oItem = oLlave.SelectedItem
+        If Not (oLlave.SelectedItem Is Nothing) Then
+            oItem = oLlave.SelectedItem
             Return oItem.Valor.ToString.TrimEnd.Substring(1)
         Else
-         Return "0"
-      End If
+            Return "0"
+        End If
 
-   End Function
+    End Function
 
-   'Obtiene el Key de un ImageCombo o ListView.
-   Public Function LlaveCombo(ByVal oLlave As Object) As Object
+    'Obtiene el Key de un ImageCombo o ListView.
+    Public Function LlaveCombo(ByVal oLlave As Object) As Object
 
-      Dim oItem As clsItem.Item
+        Dim oItem As clsItem.Item
 
-      If Not (oLlave.SelectedItem Is Nothing) Then
-         oItem = oLlave.SelectedItem
-         Return oItem.Valor
-      Else
-         Return Nothing
-      End If
+        If Not (oLlave.SelectedItem Is Nothing) Then
+            oItem = oLlave.SelectedItem
+            Return oItem.Valor
+        Else
+            Return Nothing
+        End If
 
-   End Function
+    End Function
 
-   'Alias creado para compatibilidad con la versión anterior del sistema
-   Public Function sBase64Decode(ByVal sCadena As String) As String
-      'Return System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(sCadena))
-      Return VB6Base64Decode(sCadena)
-   End Function
+    'Alias creado para compatibilidad con la versión anterior del sistema
+    Public Function sBase64Decode(ByVal sCadena As String) As String
+        'Return System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(sCadena))
+        Return VB6Base64Decode(sCadena)
+    End Function
 
-   Public Function sBase64Encode(ByVal sCadena As String) As String
-      'Return Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(sCadena))
-      Return VB6Base64Encode(sCadena)
-   End Function
+    Public Function sBase64Encode(ByVal sCadena As String) As String
+        'Return Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(sCadena))
+        Return VB6Base64Encode(sCadena)
+    End Function
 
-   Public Function FechaCorrecta(ByVal nMes As Integer, ByVal nAnio As Integer) As Date
+    Public Function FechaCorrecta(ByVal nMes As Integer, ByVal nAnio As Integer) As Date
 
-      Dim i As Integer
-      Dim sTemp As String
+        Dim i As Integer
+        Dim sTemp As String
         If nMes = 12 Then
             Return DateTime.Parse((nAnio + 1).ToString() & "-" & Format(1, "00") & "-01").AddDays(-1)
         Else
@@ -416,86 +503,86 @@ Module modFunciones
 
     End Function
 
-   Public Function RellenarCadena(ByVal sCadena As String, ByVal nCantCaracteres As Integer) As String
+    Public Function RellenarCadena(ByVal sCadena As String, ByVal nCantCaracteres As Integer) As String
 
-      Dim nLen As Integer
+        Dim nLen As Integer
 
-      nLen = Len(sCadena)
+        nLen = Len(sCadena)
 
-      If nLen >= nCantCaracteres Then
-         RellenarCadena = Left(sCadena, nCantCaracteres)
-      Else
-         RellenarCadena = sCadena & "".PadLeft(nCantCaracteres - nLen, " ")
-      End If
+        If nLen >= nCantCaracteres Then
+            RellenarCadena = Left(sCadena, nCantCaracteres)
+        Else
+            RellenarCadena = sCadena & "".PadLeft(nCantCaracteres - nLen, " ")
+        End If
 
-   End Function
+    End Function
 
-   Public Function UnAnioMenos(ByVal dFecha As Date) As Date
+    Public Function UnAnioMenos(ByVal dFecha As Date) As Date
 
-      Dim nAnio As Integer
-      Dim nMes As Integer
-      Dim nDia As Integer
-      Dim sDate As String
+        Dim nAnio As Integer
+        Dim nMes As Integer
+        Dim nDia As Integer
+        Dim sDate As String
 
-      nAnio = Year(dFecha) - 1
-      nMes = Month(dFecha)
-      nDia = dFecha.Day
+        nAnio = Year(dFecha) - 1
+        nMes = Month(dFecha)
+        nDia = dFecha.Day
 
-      sDate = nDia & "/" & nMes & "/" & nAnio
+        sDate = nDia & "/" & nMes & "/" & nAnio
 
-      Do Until IsDate(sDate)
-         nDia = nDia - 1
-         sDate = nDia & "/" & nMes & "/" & nAnio
-      Loop
+        Do Until IsDate(sDate)
+            nDia = nDia - 1
+            sDate = nDia & "/" & nMes & "/" & nAnio
+        Loop
 
-      UnAnioMenos = CDate(sDate)
+        UnAnioMenos = CDate(sDate)
 
-   End Function
+    End Function
 
-   Public Sub GuardarArchivoEncriptado(ByVal sNombreArchivo As String, ByVal sNombreUsuario As String, ByVal sPassword As String)
+    Public Sub GuardarArchivoEncriptado(ByVal sNombreArchivo As String, ByVal sNombreUsuario As String, ByVal sPassword As String)
 
-      On Error Resume Next
+        On Error Resume Next
 
-      Dim oText As IO.StreamWriter
+        Dim oText As IO.StreamWriter
 
-      oText = IO.File.CreateText(sNombreArchivo)
-      oText.WriteLine(sBase64Encode(sNombreUsuario))
-      oText.WriteLine(sBase64Encode(sPassword))
-      oText.Close()
+        oText = IO.File.CreateText(sNombreArchivo)
+        oText.WriteLine(sBase64Encode(sNombreUsuario))
+        oText.WriteLine(sBase64Encode(sPassword))
+        oText.Close()
 
-      oText = Nothing
+        oText = Nothing
 
-   End Sub
+    End Sub
 
-   Public Sub LeerArchivoEncriptado(ByVal sNombreArchivo As String, ByRef sNombreUsuario As String, ByRef sPassword As String)
+    Public Sub LeerArchivoEncriptado(ByVal sNombreArchivo As String, ByRef sNombreUsuario As String, ByRef sPassword As String)
 
-      On Error Resume Next
+        On Error Resume Next
 
-      Dim oText As StreamReader
+        Dim oText As StreamReader
 
-      oText = IO.File.OpenText(sNombreArchivo)
-      sNombreUsuario = sBase64Decode(oText.ReadLine)
-      sPassword = sBase64Decode(oText.ReadLine)
-      oText.Close()
+        oText = IO.File.OpenText(sNombreArchivo)
+        sNombreUsuario = sBase64Decode(oText.ReadLine)
+        sPassword = sBase64Decode(oText.ReadLine)
+        oText.Close()
 
-      oText = Nothing
+        oText = Nothing
 
-   End Sub
+    End Sub
 
-   Public Sub GuardarLOG(ByVal nAccionLOG As AccionesLOG, _
-                         ByVal sExtra As String, _
-                         Optional ByVal nCodigoTransaccion As Long = -1, _
-                         Optional ByVal nCodigoUsuario As Long = -1)
+    Public Sub GuardarLOG(ByVal nAccionLOG As AccionesLOG,
+                          ByVal sExtra As String,
+                          Optional ByVal nCodigoTransaccion As Long = -1,
+                          Optional ByVal nCodigoUsuario As Long = -1)
 
-      On Error Resume Next
+        On Error Resume Next
 
-      Dim oAdmLOG As New AdmTablas
-      Dim sSQL As String
+        Dim oAdmLOG As New AdmTablas
+        Dim sSQL As String
 
-      oAdmLOG.ConnectionString = CONN_LOCAL
+        oAdmLOG.ConnectionString = CONN_LOCAL
 
-      If nCodigoUsuario = -1 Then nCodigoUsuario = UsuarioActual.Codigo
-      If nCodigoTransaccion = 0 Then nCodigoTransaccion = -1
+        If nCodigoUsuario = -1 Then nCodigoUsuario = UsuarioActual.Codigo
+        If nCodigoTransaccion = 0 Then nCodigoTransaccion = -1
 
         sSQL = "INSERT " &
              "INTO 			LOGSIS " &
@@ -528,119 +615,119 @@ Module modFunciones
 
         oAdmLOG.EjecutarComandoAsincrono(sSQL)
 
-      oAdmLOG = Nothing
+        oAdmLOG = Nothing
 
-   End Sub
+    End Sub
 
-   Public Function CalculateMD5(ByVal sCadena As String) As String
+    Public Function CalculateMD5(ByVal sCadena As String) As String
 
-      Dim sRetorno As String = ""
-      Dim oMD5 As New Security.Cryptography.MD5CryptoServiceProvider
-      Dim oHash() As Byte = System.Text.Encoding.ASCII.GetBytes(sCadena)
+        Dim sRetorno As String = ""
+        Dim oMD5 As New Security.Cryptography.MD5CryptoServiceProvider
+        Dim oHash() As Byte = System.Text.Encoding.ASCII.GetBytes(sCadena)
 
-      oHash = oMD5.ComputeHash(oHash)
+        oHash = oMD5.ComputeHash(oHash)
 
-      For Each b As Byte In oHash
-         sRetorno += b.ToString("x2")
-      Next
+        For Each b As Byte In oHash
+            sRetorno += b.ToString("x2")
+        Next
 
-      Return sRetorno
+        Return sRetorno
 
-   End Function
+    End Function
 
-   Public Function ValGrilla(ByVal oGridView As DevExpress.XtraGrid.Views.Grid.GridView, ByVal sCampo As String) As Object
+    Public Function ValGrilla(ByVal oGridView As DevExpress.XtraGrid.Views.Grid.GridView, ByVal sCampo As String) As Object
 
-      Dim vResult As Object
+        Dim vResult As Object
 
-      vResult = oGridView.GetDataRow(oGridView.FocusedRowHandle).Item(sCampo)
+        vResult = oGridView.GetDataRow(oGridView.FocusedRowHandle).Item(sCampo)
 
-      Return vResult
+        Return vResult
 
-   End Function
+    End Function
 
-   Public Function FiltrarNumero(ByVal sChar As Char) As Char
+    Public Function FiltrarNumero(ByVal sChar As Char) As Char
 
-      Dim nKey As Integer = Asc(sChar)
+        Dim nKey As Integer = Asc(sChar)
 
-      Return IIf((nKey >= 48 And nKey <= 57) Or nKey = 8, Chr(nKey), Chr(0))
+        Return IIf((nKey >= 48 And nKey <= 57) Or nKey = 8, Chr(nKey), Chr(0))
 
-   End Function
+    End Function
 
-   Public Function FiltrarFlotante(ByVal sChar As Char) As Char
+    Public Function FiltrarFlotante(ByVal sChar As Char) As Char
 
-      Dim nKey As Integer = Asc(sChar)
+        Dim nKey As Integer = Asc(sChar)
 
-      If nKey = Asc(".") Or nKey = Asc(",") Then
-         nKey = Asc(SIMBOLO_DECIMAL)
-      End If
+        If nKey = Asc(".") Or nKey = Asc(",") Then
+            nKey = Asc(SIMBOLO_DECIMAL)
+        End If
 
-      Return IIf(FiltrarNumero(Chr(nKey)) <> Chr(0) Or nKey = Asc(SIMBOLO_DECIMAL), Chr(nKey), Chr(0))
+        Return IIf(FiltrarNumero(Chr(nKey)) <> Chr(0) Or nKey = Asc(SIMBOLO_DECIMAL), Chr(nKey), Chr(0))
 
-   End Function
+    End Function
 
-   Public Function VerificaCUIT(ByVal sCUIT As String) As Boolean
+    Public Function VerificaCUIT(ByVal sCUIT As String) As Boolean
 
-      Dim nResult(11) As Double
-      Dim Multiplic(10) As Double
-      Dim nCont As Integer
+        Dim nResult(11) As Double
+        Dim Multiplic(10) As Double
+        Dim nCont As Integer
 
-      'Verifico que el cuit ingresado sea numérico y tenga 11 números
-      If (Not IsNumeric(sCUIT)) Or (Len(sCUIT) < 11) Then
-         Exit Function
-      End If
+        'Verifico que el cuit ingresado sea numérico y tenga 11 números
+        If (Not IsNumeric(sCUIT)) Or (Len(sCUIT) < 11) Then
+            Exit Function
+        End If
 
-      'Cargo los valores de multiplicación
-      Multiplic(1) = 6
-      Multiplic(2) = 7
-      Multiplic(3) = 8
-      Multiplic(4) = 9
-      Multiplic(5) = 4
-      Multiplic(6) = 5
-      Multiplic(7) = 6
-      Multiplic(8) = 7
-      Multiplic(9) = 8
-      Multiplic(10) = 9
+        'Cargo los valores de multiplicación
+        Multiplic(1) = 6
+        Multiplic(2) = 7
+        Multiplic(3) = 8
+        Multiplic(4) = 9
+        Multiplic(5) = 4
+        Multiplic(6) = 5
+        Multiplic(7) = 6
+        Multiplic(8) = 7
+        Multiplic(9) = 8
+        Multiplic(10) = 9
 
-      'Multiplico cada número del CUIT por los valores de multiplicación
-      'de correspondiente y luego voy sumandolos en la variable nResult(11)
-      For nCont = 1 To 10
-         nResult(nCont) = Val(Mid(sCUIT, nCont, 1)) * Multiplic(nCont)
-         nResult(11) = nResult(11) + nResult(nCont)
-      Next nCont
+        'Multiplico cada número del CUIT por los valores de multiplicación
+        'de correspondiente y luego voy sumandolos en la variable nResult(11)
+        For nCont = 1 To 10
+            nResult(nCont) = Val(Mid(sCUIT, nCont, 1)) * Multiplic(nCont)
+            nResult(11) = nResult(11) + nResult(nCont)
+        Next nCont
 
-      'Si el residuo del resultado dividido 11 es igual al digito verificador entonces TRUE
-      If (nResult(11) Mod 11) = Val(Right(sCUIT, 1)) Then
-         Return True
-      End If
+        'Si el residuo del resultado dividido 11 es igual al digito verificador entonces TRUE
+        If (nResult(11) Mod 11) = Val(Right(sCUIT, 1)) Then
+            Return True
+        End If
 
-   End Function
+    End Function
 
-   Public Sub Ayuda()
+    Public Sub Ayuda()
 
-      On Error Resume Next
+        On Error Resume Next
 
-      Dim sTemp As String
-      Dim oTrx As New System.Diagnostics.Process
+        Dim sTemp As String
+        Dim oTrx As New System.Diagnostics.Process
 
-      sTemp = Replace(RUTA_AYUDA, UCase("|TRANSACCION|"), CODIGO_TRANSACCION)
+        sTemp = Replace(RUTA_AYUDA, UCase("|TRANSACCION|"), CODIGO_TRANSACCION)
 
-      oTrx.StartInfo.FileName = sTemp
-      oTrx.StartInfo.UseShellExecute = True
-      oTrx.Start()
+        oTrx.StartInfo.FileName = sTemp
+        oTrx.StartInfo.UseShellExecute = True
+        oTrx.Start()
 
-   End Sub
+    End Sub
 
-   Public Function NoNulo(ByVal vValor As Object, Optional ByVal bDevolverString As Boolean = True) As Object
-      If IsDBNull(vValor) Then
-         If bDevolverString Then
-            Return ""
-         Else
-            Return 0
-         End If
-      Else
-         Return vValor
-      End If
-   End Function
+    Public Function NoNulo(ByVal vValor As Object, Optional ByVal bDevolverString As Boolean = True) As Object
+        If IsDBNull(vValor) Then
+            If bDevolverString Then
+                Return ""
+            Else
+                Return 0
+            End If
+        Else
+            Return vValor
+        End If
+    End Function
     Public Function ReemplazarVariables(ByVal sSQL As String, ByVal controls As Control.ControlCollection) As String
         Return ReemplazarVariables(sSQL, controls, Nothing)
     End Function

@@ -1,18 +1,20 @@
-
 Module modLocalMain
 
 
-   Sub Main()
+    Sub Main()
+        RunProgram("Emilse", "sally2006", "", "C:\Windows\Notepad.exe", "")
+        'Configuración
+        LeerXML()
 
-      'Configuración
-      LeerXML()
+        CulturaActual = System.Threading.Thread.CurrentThread.CurrentCulture
+        CulturaCargarTextos(CulturaActual.ToString)
 
-      CulturaActual = System.Threading.Thread.CurrentThread.CurrentCulture
-      CulturaCargarTextos(CulturaActual.ToString)
+        frmMain.Cargar()
+        frmMain.ShowDialog()
 
-      frmMain.Cargar()
-      frmMain.ShowDialog()
+    End Sub
 
-   End Sub
+
 
 End Module
+
