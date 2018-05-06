@@ -2,7 +2,6 @@ Module modLocalMain
 
 
     Sub Main()
-        RunProgram("Emilse", "sally2006", "", "C:\Windows\Notepad.exe", "")
         'Configuración
         LeerXML()
 

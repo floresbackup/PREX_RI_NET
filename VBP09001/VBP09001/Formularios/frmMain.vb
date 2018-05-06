@@ -9,6 +9,12 @@ Public Class frmMain
     Private Formato As New Collection
     Private nGenerado As Integer
 
+    Private ReadOnly Property IsArchivoPorDia As Boolean
+        Get
+            Return CType(cboArchivos.SelectedItem, clsItem.Item).Periodo = "D"
+        End Get
+    End Property
+
     Public Sub AnalizarCommand()
 
         Try
@@ -861,8 +867,10 @@ Public Class frmMain
                 With ds.Tables(0)
 
                     For Each row As DataRow In .Rows
+                        Dim item As New clsItem.Item(row("TN_CODIGO"), row("TN_NOMBRETXT"))
+                        If Not row("TN_PERIOD") Is DBNull.Value Then item.Periodo = row("TN_PERIOD").ToString
 
-                        cboArchivos.Items.Add(New clsItem.Item(row("TN_CODIGO"), row("TN_NOMBRETXT")))
+                        cboArchivos.Items.Add(item)
 
                     Next
 
@@ -887,6 +895,11 @@ Public Class frmMain
 
         Dim i As Integer
         Dim oFecha As Date = Date.Today
+
+        For i = 1 To 31
+            cboDia.Items.Add(New clsItem.Item(i, i))
+        Next
+        cboDia.SelectedIndex = 0
 
         For i = 1 To 12
             cboMes.Items.Add(New clsItem.Item(i, MonthName(i).ToUpper))
@@ -926,80 +939,64 @@ Public Class frmMain
 
     Private Sub cmdGenerar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdGenerar.Click
 
-        'Dim oItem As clsItem.Item
-
-        'If DatosOK Then
-
-        '   Me.lblStatus.Text = ""
-        '   Me.lblStatus.Visible = True
-
-        '   oItem = cboArchivos.SelectedItem
-        '      'Todo: si es diario no hacer fecha correcta y cambiar los controles a dia mes anio
-        '      If oItem.Valor = 2813 Or oItem.Valor = 2816 Then
-        '      GenerarPDF(oItem.Valor, FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text)))
-        '   Else
-        '      GenerarTXT(oItem.Valor, FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text)))
-        '   End If
-
-
-
-        '  End If
-
         Dim oItem As clsItem.Item
         Dim sSQL As String
         Dim nCont As Integer
+        Try
+            Me.Cursor = Cursors.WaitCursor
+            'Agregado para usar un SP que grabe en otro lado - 2013/10/03
 
-        'Agregado para usar un SP que grabe en otro lado - 2013/10/03
+            Dim nRutPre = oAdmLocal.DevolverValor("TABGEN", "ISNULL(TG_NUME01, 0)", " TG_CODTAB = 10 AND TG_CODCON = 10", "")
 
-        Dim nRutPre = oAdmLocal.DevolverValor("TABGEN", "ISNULL(TG_NUME01, 0)", " TG_CODTAB = 10 AND TG_CODCON = 10", "")
+            Dim sRutaPrevia = oAdmLocal.DevolverValor("TABGEN", "ISNULL(TG_ALFA01, '')", " TG_CODTAB = 10 AND TG_CODCON = 10")
 
-        Dim sRutaPrevia = oAdmLocal.DevolverValor("TABGEN", "ISNULL(TG_ALFA01, '')", " TG_CODTAB = 10 AND TG_CODCON = 10")
+            ' FIN AGREGADO SP
 
-        ' FIN AGREGADO SP
+            If DatosOK() Then
 
-        If DatosOK() Then
+                Dim dFecPro As Date
 
-            Dim dFecPro As Date
+                If IsArchivoPorDia Then
+                    dFecPro = New Date(cboDia.Text, cboMes.SelectedIndex + 1, cboDia.Text)
+                Else
+                    dFecPro = FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text))
+                End If
 
-            'Todo: hacer combo de dia
-            'If cboArchivos.SelectedItem.Tag = "D" Then
-            '    dFecPro = CDate(cboDia.Text & "/" & DatoItemCombo(cboMes) & "/" & cboAnio.Text)
-            'Else
-            dFecPro = FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text))
-            ' End If
-
-            If (Val(Llave(cboArchivos)) >= 4300 And
-             Val(Llave(cboArchivos)) <= 4399) Or
+                If (Val(Llave(cboArchivos)) >= 4300 And
+        Val(Llave(cboArchivos)) <= 4399) Or
              (Val(Llave(cboArchivos)) >= 3901 And
-             Val(Llave(cboArchivos)) <= 3903) Or
+        Val(Llave(cboArchivos)) <= 3903) Or
              (Val(Llave(cboArchivos)) >= 2900 And
-             Val(Llave(cboArchivos)) <= 2910) Then
+        Val(Llave(cboArchivos)) <= 2910) Then
 
-                nCont = 1
+                    nCont = 1
 
-                'Programado para soportar TXTs de más de un diseño
-                sSQL = "SELECT    DISTINCT TN_CODIGO " &
-                "FROM      TXTNOM " &
-                "WHERE     UPPER(TN_NOMBRETXT) = '" & UCase(LTrim(RTrim(cboArchivos.Text))) & "' " &
-                "ORDER BY  TN_CODIGO"
+                    'Programado para soportar TXTs de más de un diseño
+                    sSQL = "SELECT    DISTINCT TN_CODIGO " &
+            "FROM      TXTNOM " &
+            "WHERE     UPPER(TN_NOMBRETXT) = '" & UCase(LTrim(RTrim(cboArchivos.Text))) & "' " &
+            "ORDER BY  TN_CODIGO"
 
-                Dim rstAux As DataSet = oAdmLocal.AbrirDataset(sSQL)
-                With rstAux.Tables(0)
-                    For Each row As DataRow In .Rows
-                        GenerarTXTMultiple(Long.Parse(row("TN_CODIGO").ToString()), dFecPro, Val(.Rows.Count), nCont)
-                        nCont = nCont + 1
-                    Next
-                End With
+                    Dim rstAux As DataSet = oAdmLocal.AbrirDataset(sSQL)
+                    With rstAux.Tables(0)
 
-                rstAux = Nothing
-            Else
-                GenerarTXT(Long.Parse(oItem.Valor.ToString()), FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text)))
+                        For Each row As DataRow In .Rows
+                            GenerarTXTMultiple(Long.Parse(row("TN_CODIGO").ToString()), dFecPro, Val(.Rows.Count), nCont)
+                            nCont = nCont + 1
+                        Next
+
+                    End With
+
+                    rstAux = Nothing
+                Else
+                    oItem = cboArchivos.SelectedItem
+                    GenerarTXT(Long.Parse(oItem.Valor.ToString()), FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text)))
+                End If
+
             End If
-
-        End If
-
-
-
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
     End Sub
 
     Private Sub GenerarTXTMultiple(ByVal nCod As Long, ByVal dFecha As Date, nReg As Integer, nPosic As Integer)
@@ -1427,6 +1424,18 @@ Salir:
             Exit Function
         End If
 
+
+        If IsArchivoPorDia Then
+            Dim d As Date
+            Try
+                d = New Date(cboAno.Text, cboMes.SelectedIndex + 1, cboDia.Text)
+            Catch ex As System.ArgumentOutOfRangeException
+                MensajeError("La fecha es invalida")
+                cboDia.SelectAll()
+                Exit Function
+            End Try
+        End If
+
         txtCarpeta.Text = NormalizarRuta(txtCarpeta.Text)
 
         bTemp = File.Exists(txtCarpeta.Text & cboArchivos.Text)
@@ -1442,30 +1451,29 @@ Salir:
 
             Dim dFecPro As Date
 
-            'Todo: hacer combo de dia
-            'If cboArchivos.SelectedItem.Tag = "D" Then
-            '    dFecPro = CDate(cboDia.Text & "/" & DatoItemCombo(cboMes) & "/" & cboAnio.Text)
-            'Else
-            dFecPro = FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text)) 'FechaCorrecta(DatoItemCombo(cboMes), Val(cboAnio.Text))
-            'End If
+            If IsArchivoPorDia Then
+                dFecPro = New Date(cboAno.Text, cboMes.SelectedIndex + 1, cboDia.Text)
+            Else
+                dFecPro = FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text)) 'FechaCorrecta(DatoItemCombo(cboMes), Val(cboAnio.Text))
+            End If
 
             nGenerado = Val(oAdmLocal.DevolverValor("TXTADJ (NOLOCK)", "ISNULL(COUNT(*), 0)",
                       " AD_DESCRI = '" & Strings.Left(cboArchivos.Text, InStr(1, cboArchivos.Text, ".", vbTextCompare) - 1) & "_" & CStr(Year(dFecPro) * 100 + Month(dFecPro)) & "_N'", ""))
 
-            If nGenerado = 0 And chkRectivicativa.Checked = True Then
-                MensajeInformacion("El archivo NO fue generado como NORMAL. Quite la marca de Rectificativa!")
-                Exit Function
-            End If
-
-            If nGenerado > 0 And chkRectivicativa.Checked = False Then
-                If MsgBox("El archivo ya fue generado como NORMAL. Volverá a generarlo?", vbQuestion + vbYesNo + vbDefaultButton2, "Pregunta") = vbNo Then
+                If nGenerado = 0 And chkRectivicativa.Checked = True Then
+                    MensajeInformacion("El archivo NO fue generado como NORMAL. Quite la marca de Rectificativa!")
                     Exit Function
                 End If
+
+                If nGenerado > 0 And chkRectivicativa.Checked = False Then
+                    If MsgBox("El archivo ya fue generado como NORMAL. Volverá a generarlo?", vbQuestion + vbYesNo + vbDefaultButton2, "Pregunta") = vbNo Then
+                        Exit Function
+                    End If
+                End If
+
             End If
 
-        End If
-
-        Return True
+            Return True
 
     End Function
 
@@ -1917,6 +1925,17 @@ Salir:
     End Sub
 
     Private Sub cboArchivos_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboArchivos.SelectedIndexChanged
+
+        If IsArchivoPorDia Then
+            cboDia.Visible = True
+            cboMes.Size = New Size(184, cboMes.Size.Height)
+            cboMes.Location = New Point(223, cboMes.Location.Y)
+        Else
+            cboMes.Size = New Size(265, cboMes.Size.Height)
+            cboMes.Location = New Point(142, cboMes.Location.Y)
+        End If
+
+
         Dim sRutaDefault As String = CType(NoNulo(oAdmLocal.DevolverValor("TXTNOM", "TN_RUTA", $"TN_NOMBRETXT='{CType(cboArchivos.SelectedItem, clsItem.Item).Nombre}'", String.Empty), True), String)
 
         If (sRutaDefault.Length() > 0) Then

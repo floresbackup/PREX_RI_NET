@@ -44,6 +44,7 @@ Partial Class frmMain
         Me.lblUsuario = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lblEntidad = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lblStatus = New System.Windows.Forms.Label()
+        Me.cboDia = New System.Windows.Forms.ComboBox()
         Me.toolMain.SuspendLayout()
         Me.sbMain.SuspendLayout()
         Me.SuspendLayout()
@@ -198,7 +199,7 @@ Partial Class frmMain
         '
         Me.lblVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.lblVersion.Name = "lblVersion"
-        Me.lblVersion.Size = New System.Drawing.Size(76, 22)
+        Me.lblVersion.Size = New System.Drawing.Size(75, 22)
         Me.lblVersion.Text = "Versión: 1.0.0"
         '
         'ToolStripSeparator6
@@ -265,6 +266,16 @@ Partial Class frmMain
         Me.lblStatus.Size = New System.Drawing.Size(0, 13)
         Me.lblStatus.TabIndex = 39
         '
+        'cboDia
+        '
+        Me.cboDia.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboDia.FormattingEnabled = True
+        Me.cboDia.Location = New System.Drawing.Point(142, 66)
+        Me.cboDia.Name = "cboDia"
+        Me.cboDia.Size = New System.Drawing.Size(75, 21)
+        Me.cboDia.TabIndex = 28
+        Me.cboDia.Visible = False
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -281,6 +292,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.chkRectivicativa)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.cboAno)
+        Me.Controls.Add(Me.cboDia)
         Me.Controls.Add(Me.cboMes)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.toolMain)
@@ -326,4 +338,5 @@ Partial Class frmMain
     Friend WithEvents lblUsuario As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents lblEntidad As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents lblStatus As System.Windows.Forms.Label
+    Friend WithEvents cboDia As ComboBox
 End Class
