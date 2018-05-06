@@ -160,6 +160,11 @@ Module modFunciones
                         Case "RUTA_AYUDA"
                             RUTA_AYUDA = sTemp
 
+                        '28-11-2014 SE AGREGA PARA USUARIO ENCRIPTADO DE RUN AS
+                        Case "RUTAENCR_RA"
+                            RUTAENCR_RA = sTemp
+                        Case "DOMINIO_DEFAULT"
+                            DOMINIO_DEFAULT = sTemp
                     End Select
 
                 Next

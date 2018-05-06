@@ -55,6 +55,7 @@ namespace Prex.Utils
         public string CONN_LOCAL_ADO => CONN_LOCAL.Substring(CONN_LOCAL.IndexOf(';')+1, CONN_LOCAL.Length-(CONN_LOCAL.IndexOf(';') + 1));
         public  string FFECHA     { get; internal set; }
         public string CARPETA_LOCAL      { get; internal set; }
+        public string RUTAENCR_RA { get; protected set; }
         public string RUTA_BIN           { get; internal set; }
         public string RUTA_AYUDA         { get; internal set; }
         public string NOMBRE_INI_LOCAL   { get; internal set; }
