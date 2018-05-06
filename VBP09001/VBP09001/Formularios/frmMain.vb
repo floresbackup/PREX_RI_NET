@@ -1,10 +1,4 @@
-Imports DevExpress.XtraGrid.Views.Base
-Imports System.Data.SqlClient
-Imports System.Windows.Forms
-Imports DevExpress.Utils
-Imports DevExpress.XtraGrid
 Imports System.IO
-Imports DevExpress.XtraGrid.Views.Grid
 
 Public Class frmMain
 
