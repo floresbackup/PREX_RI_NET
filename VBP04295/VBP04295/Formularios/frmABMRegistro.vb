@@ -181,9 +181,9 @@ Public Class frmABMRegistro
                   AddHandler cboInput.SelectedIndexChanged, AddressOf cboInput_SelectedIndexChanged
                   Cont.Controls.Add(cboInput)
 
-                  CargarComboDevExpress(cboInput, frmMain.ReemplazarVariables(oCol.HelpQuery))
+                        CargarComboDevExpress(cboInput, frmMain.ReemplazarVariablesExt(oCol.HelpQuery))
 
-               End If
+                    End If
 
                If oCol.Valor.ToString.Trim <> "" Then
                   If oCol.Help = 0 Then

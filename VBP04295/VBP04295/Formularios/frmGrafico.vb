@@ -52,8 +52,8 @@ Public Class frmGrafico
                Clipboard.SetText(sSQL)
 
                If sSQL.Trim <> "" Then
-                  sSQL = frmMain.ReemplazarVariables(sSQL)
-                  dt = Nothing
+                        sSQL = frmMain.ReemplazarVariablesExt(sSQL)
+                        dt = Nothing
                   dt = New DataTable
                   Dim ad As OleDb.OleDbDataAdapter
                   ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
