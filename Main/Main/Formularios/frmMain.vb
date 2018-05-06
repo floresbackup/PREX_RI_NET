@@ -249,10 +249,11 @@ Public Class frmMain
             End If
 
             If IO.Path.GetExtension(sPrograma).ToLower().Contains("exe") Then
-                If IO.File.Exists(RUTA_BIN & sPrograma) Then
+                Dim sRuta = RUTA_BIN & sPrograma
+                Dim sParametros = "/u:" & nCodigoUsuario.ToString & "/t:" & nTransaccion.ToString & "/e:" & CODIGO_ENTIDAD.ToString
+                If IO.File.Exists(sRuta) Then
 
                     GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "Ingreso a transacción", CODIGO_TRANSACCION, UsuarioActual.Codigo)
-
                     If MULTIEXEC = 1 Then
                         If sPrograma.Contains("VBP09001") AndAlso System.IO.File.Exists(RUTAENCR_RA) Then
 
@@ -261,13 +262,13 @@ Public Class frmMain
 
                             LeerArchivoEncriptado(RUTAENCR_RA, sUsuEncr_RA, sPwdEncr_RA)
 
-                            RunProgram(sUsuEncr_RA, sPwdEncr_RA, DOMINIO_DEFAULT, sRuta, sParametros)
+                            RunProgram(sUsuEncr_RA, sPwdEncr_RA, DOMINIO_DEFAULT, RUTA_BIN & sPrograma, sParametros)
                         Else
                             Process.Start(sRuta, sParametros)
                         End If
                     Else
-                        oTrx.StartInfo.FileName = RUTA_BIN & sPrograma
-                        oTrx.StartInfo.Arguments = "/u:" & nCodigoUsuario.ToString & "/t:" & nTransaccion.ToString & "/e:" & CODIGO_ENTIDAD.ToString
+                        oTrx.StartInfo.FileName = sRuta 'RUTA_BIN & sPrograma
+                        oTrx.StartInfo.Arguments = sParametros
                         oTrx.StartInfo.UseShellExecute = True
                         oTrx.StartInfo.WorkingDirectory = RUTA_BIN
                         oTrx.Start()
