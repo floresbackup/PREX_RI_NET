@@ -6,10 +6,8 @@
     <StartArguments>/u:1/t:6101/e:94</StartArguments>
   </PropertyGroup>
   <PropertyGroup>
-    <PublishUrlHistory>
-    </PublishUrlHistory>
-    <InstallUrlHistory>
-    </InstallUrlHistory>
+    <PublishUrlHistory>Y:\Prex.NET\BIN\</PublishUrlHistory>
+    <InstallUrlHistory>\\svr-dom-f001\Desarrollo\Prex.NET\BIN\</InstallUrlHistory>
     <SupportUrlHistory>
     </SupportUrlHistory>
     <UpdateUrlHistory>

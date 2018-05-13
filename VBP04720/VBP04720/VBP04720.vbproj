@@ -67,9 +67,6 @@
     <OutputPath>Z:\BIN\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ABCpdf">
-      <HintPath>..\..\..\..\..\..\..\Externos\PREX_RI (Versión NET)\BIN\ABCpdf.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.Printing.v17.2.Core">
     </Reference>
     <Reference Include="DevExpress.Data.v17.2">
