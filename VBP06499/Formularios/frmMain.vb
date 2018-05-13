@@ -117,7 +117,6 @@
 
             PresentarDatos(nCodigoTransaccion, nCodigoUsuario, nCodigoEntidad)
 
-            Exit Sub
 
         Catch ex As Exception
             TratarError(ex, "AnalizarCommand")
@@ -208,7 +207,6 @@
                 Application.Exit()
             End If
 
-            Exit Sub
 
         Catch ex As Exception
             TratarError(ex, "PresentarDatos")

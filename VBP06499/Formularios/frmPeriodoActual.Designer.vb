@@ -29,17 +29,17 @@ Partial Class frmPeriodoActual
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.cmdAceptar = New DevExpress.XtraEditors.SimpleButton()
+        Me.cboFECACT = New DevExpress.XtraEditors.ComboBoxEdit()
+        Me.SeparatorControl1 = New DevExpress.XtraEditors.SeparatorControl()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.SeparatorControl1 = New DevExpress.XtraEditors.SeparatorControl()
-        Me.cboFECACT = New DevExpress.XtraEditors.ComboBoxEdit()
-        Me.cmdAceptar = New DevExpress.XtraEditors.SimpleButton()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel3.SuspendLayout()
-        CType(Me.SeparatorControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.cboFECACT.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.SeparatorControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -117,26 +117,21 @@ Partial Class frmPeriodoActual
         Me.Panel3.Size = New System.Drawing.Size(425, 110)
         Me.Panel3.TabIndex = 2
         '
-        'Label3
+        'cmdAceptar
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(53, 28)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(113, 13)
-        Me.Label3.TabIndex = 0
-        Me.Label3.Text = "Período a sincronizar: "
+        Me.cmdAceptar.Location = New System.Drawing.Point(172, 83)
+        Me.cmdAceptar.Name = "cmdAceptar"
+        Me.cmdAceptar.Size = New System.Drawing.Size(75, 23)
+        Me.cmdAceptar.TabIndex = 3
+        Me.cmdAceptar.Text = "&Aceptar"
         '
-        'Label4
+        'cboFECACT
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.BackColor = System.Drawing.SystemColors.Control
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.ForeColor = System.Drawing.Color.LightSeaGreen
-        Me.Label4.Location = New System.Drawing.Point(53, 61)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(339, 13)
-        Me.Label4.TabIndex = 0
-        Me.Label4.Text = "ATENCIÓN: Este proceso puede demorar algunos minutos."
+        Me.cboFECACT.Location = New System.Drawing.Point(172, 14)
+        Me.cboFECACT.Name = "cboFECACT"
+        Me.cboFECACT.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.cboFECACT.Size = New System.Drawing.Size(127, 20)
+        Me.cboFECACT.TabIndex = 2
         '
         'SeparatorControl1
         '
@@ -149,22 +144,26 @@ Partial Class frmPeriodoActual
         Me.SeparatorControl1.TabIndex = 1
         Me.SeparatorControl1.TabStop = False
         '
-        'cboFECACT
+        'Label3
         '
-        Me.cboFECACT.Location = New System.Drawing.Point(172, 25)
-        Me.cboFECACT.Name = "cboFECACT"
-        Me.cboFECACT.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-        Me.cboFECACT.Properties.ReadOnly = True
-        Me.cboFECACT.Size = New System.Drawing.Size(127, 20)
-        Me.cboFECACT.TabIndex = 2
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(53, 17)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(113, 13)
+        Me.Label3.TabIndex = 0
+        Me.Label3.Text = "Período a sincronizar: "
         '
-        'cmdAceptar
+        'Label4
         '
-        Me.cmdAceptar.Location = New System.Drawing.Point(172, 83)
-        Me.cmdAceptar.Name = "cmdAceptar"
-        Me.cmdAceptar.Size = New System.Drawing.Size(75, 23)
-        Me.cmdAceptar.TabIndex = 3
-        Me.cmdAceptar.Text = "&Aceptar"
+        Me.Label4.AutoSize = True
+        Me.Label4.BackColor = System.Drawing.SystemColors.Control
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.ForeColor = System.Drawing.Color.LightSeaGreen
+        Me.Label4.Location = New System.Drawing.Point(53, 50)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(339, 13)
+        Me.Label4.TabIndex = 0
+        Me.Label4.Text = "ATENCIÓN: Este proceso puede demorar algunos minutos."
         '
         'frmPeriodoActual
         '
@@ -184,8 +183,8 @@ Partial Class frmPeriodoActual
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel3.ResumeLayout(False)
         Me.Panel3.PerformLayout()
-        CType(Me.SeparatorControl1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.cboFECACT.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.SeparatorControl1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

@@ -56,7 +56,7 @@ Module modLocalMain
         End If
 
         For Each row As DataRow In RS.Tables(0).Rows
-            sMarcar = sMarcar & "|" & row("TG_CODCON").ToString() & "|"
+            sMarcar = sMarcar & row("TG_CODCON").ToString() & "|"
         Next
 
         RS = Nothing
@@ -91,7 +91,7 @@ Module modLocalMain
         ' frmMain.txtMonedas, True, CONN_LOCAL, sSQL, 0, "Monedas y Títulos", , , sMarcar
 
         Dim frmBuscadorTablaGeneral As New frmTablaGeneral()
-        frmBuscadorTablaGeneral.PasarInfo(sSQL, CONN_LOCAL, 0, True, "Monedas y Títulos") 'agregar seleccion default
+        frmBuscadorTablaGeneral.PasarInfo(sSQL, CONN_LOCAL, 1, True, "Monedas y Títulos", sMarcar) 'agregar seleccion default
         frmBuscadorTablaGeneral.ShowDialog()
         frmMain.txtMonedas.Text = INPUT_GENERAL
 
@@ -109,7 +109,7 @@ Module modLocalMain
             frmPeriodoActual.ShowDialog()
 
             If INPUT_GENERAL <> "" Then
-                ActualizarMapa(DateTime.Parse(INPUT_GENERAL))
+                ActualizarMapa(Date.Parse(INPUT_GENERAL))
             End If
 
         End If
