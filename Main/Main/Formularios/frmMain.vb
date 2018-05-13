@@ -262,7 +262,7 @@ Public Class frmMain
 
                             LeerArchivoEncriptado(RUTAENCR_RA, sUsuEncr_RA, sPwdEncr_RA)
 
-                            RunProgram(sUsuEncr_RA, sPwdEncr_RA, DOMINIO_DEFAULT, RUTA_BIN & sPrograma, sParametros)
+                            RunProgram(sUsuEncr_RA, sPwdEncr_RA, DOMINIO_DEFAULT, sRuta, sParametros)
                         Else
                             Process.Start(sRuta, sParametros)
                         End If
