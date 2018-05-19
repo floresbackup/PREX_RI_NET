@@ -79,23 +79,13 @@ Module modLocalMain
         sSQL = sSQL & "ORDER BY    TG_CODCON                           "
 
         INPUT_GENERAL = "Cancelar"
-        'PasarInfo(ByVal oTextResult As TextBox,
-        '             ByVal bMultiSelect As Boolean,
-        '             ByVal sConnString As String,
-        '             ByVal sSQL As String,
-        '             ByVal nCodigoTabla As Double,
-        '             ByVal sDescripcionTabla As String,
-        '             Optional ByVal nRowHeight As Long = 0,
-        '             Optional ByVal bDescripcionItem As Boolean = False,
-        '             Optional ByVal sMarcarCasillas As String = "")
-        ' frmMain.txtMonedas, True, CONN_LOCAL, sSQL, 0, "Monedas y Títulos", , , sMarcar
 
         Dim frmBuscadorTablaGeneral As New frmTablaGeneral()
         frmBuscadorTablaGeneral.PasarInfo(sSQL, CONN_LOCAL, 1, True, "Monedas y Títulos", sMarcar) 'agregar seleccion default
         frmBuscadorTablaGeneral.ShowDialog()
         frmMain.txtMonedas.Text = INPUT_GENERAL
 
-        If frmMain.txtMonedas.Text <> "Cancelar" Then
+        If frmMain.txtMonedas.Text <> "Cancelar" AndAlso frmMain.txtMonedas.Text <> "" Then
             sSQL = "UPDATE TABGEN SET TG_NUME02 = 0 WHERE TG_CODTAB IN (100,1000)"
             oAdmLocal.EjecutarComandoSQL(sSQL)
 
@@ -104,9 +94,9 @@ Module modLocalMain
 
             INPUT_GENERAL = ""
 
-            Dim frmPeriodoActual As New frmPeriodoActual()
+            'Dim frmPeriodoActual As New frmPeriodoActual()
 
-            frmPeriodoActual.ShowDialog()
+            'frmPeriodoActual.ShowDialog()
 
             If INPUT_GENERAL <> "" Then
                 ActualizarMapa(Date.Parse(INPUT_GENERAL))

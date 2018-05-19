@@ -1,4 +1,5 @@
 Imports System.Linq
+Imports DevExpress.XtraGrid.Columns
 
 Public Class frmTablaGeneral
 
@@ -29,7 +30,12 @@ Public Class frmTablaGeneral
         lblTitulo.Text = sTitulo
         sSeleccionar = sMarcar
         gvwResultados.OptionsSelection.MultiSelect = bMultiSeleccion
+        btnInvertirSel.Visible = bMultiSelect
+        btnSelectAll.Visible = bMultiSelect
 
+        If bMultiSeleccion Then
+            gvwResultados.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect
+        End If
         Ejecutar()
 
     End Sub
@@ -48,7 +54,13 @@ Public Class frmTablaGeneral
             gvwResultados.BestFitColumns()
 
             If bMultiSeleccion Then
+
                 For Each oCol As DevExpress.XtraGrid.Columns.GridColumn In gvwResultados.Columns
+                    If oCol.FieldName.ToLower.Contains("cod") Then
+                        oCol.Caption = "Código"
+                    ElseIf oCol.FieldName.ToLower.Contains("desc") Then
+                        oCol.Caption = "Descripción"
+                    End If
                     If oCol.VisibleIndex > 0 Then
                         oCol.OptionsColumn.AllowEdit = False
                     Else
@@ -87,7 +99,7 @@ Public Class frmTablaGeneral
         INPUT_GENERAL = ""
     End Sub
 
-    Private Sub cmdAceptar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAceptar.Click
+    Private Sub cmdAceptar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
         Dim vValores() As VariantType
         Dim vValor As VariantType
@@ -129,8 +141,37 @@ Public Class frmTablaGeneral
 
     End Sub
 
-    Private Sub cmdCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancelar.Click
+    Private Sub cmdCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.DialogResult = Windows.Forms.DialogResult.Cancel
+    End Sub
+
+    Private Sub frmTablaGeneral_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        If e IsNot Nothing Then
+            If Me.DialogResult = DialogResult.Cancel Then
+                INPUT_GENERAL = ""
+            End If
+        End If
+    End Sub
+
+    Private Sub btnInvertirSel_Click(sender As Object, e As EventArgs)
+        Try
+            SuspendLayout()
+            Me.Cursor = Cursors.WaitCursor
+            For rowHandle As Integer = 0 To gvwResultados.RowCount - 1
+                gvwResultados.InvertRowSelection(rowHandle)
+            Next
+        Finally
+            ResumeLayout()
+            Me.Cursor = Cursors.Default
+        End Try
+    End Sub
+
+    Private Sub btnSelectAll_Click(sender As Object, e As EventArgs)
+        If gvwResultados.SelectedRowsCount = gvwResultados.RowCount Then
+            gvwResultados.ClearSelection()
+        Else
+            gvwResultados.SelectAll()
+        End If
     End Sub
 
 End Class
