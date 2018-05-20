@@ -158,7 +158,7 @@ Module modLocalMain
             End If
 
         Catch ex As Exception
-            TratarError(ex, "LeerXML")
+            TratarError(ex, "LeerXMLLocal")
         End Try
 
     End Sub
