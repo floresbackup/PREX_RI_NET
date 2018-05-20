@@ -172,9 +172,9 @@
     <EmbeddedResource Include="My Project\licenses.licx" />
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -209,15 +209,26 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="Resources\About.ico" />
-    <Content Include="Resources\Cross.ico" />
-    <Content Include="Resources\db-post.ico" />
-    <Content Include="Resources\db-refresh.ico" />
-    <Content Include="Resources\Help-2.ico" />
-    <Content Include="Resources\Home.ico" />
-    <Content Include="Resources\Messenger-Information.ico" />
+    <None Include="Resources\db-post.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Messenger-Information.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Home.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cross.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Help-2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\About.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\db-refresh.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

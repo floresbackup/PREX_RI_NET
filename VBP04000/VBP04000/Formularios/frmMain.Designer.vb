@@ -64,7 +64,7 @@ Partial Class frmMain
         Me.lblUsuario.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
             Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.lblUsuario.Image = Global.VBP04000.My.Resources.Resources.Messenger_Information
+        Me.lblUsuario.Image = Global.VBP04000.My.Resources.Resources.Messenger_Information1
         Me.lblUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.lblUsuario.Name = "lblUsuario"
         Me.lblUsuario.Size = New System.Drawing.Size(472, 20)
@@ -119,7 +119,7 @@ Partial Class frmMain
         'btnAyuda
         '
         Me.btnAyuda.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.btnAyuda.Image = Global.VBP04000.My.Resources.Resources.Help_2
+        Me.btnAyuda.Image = Global.VBP04000.My.Resources.Resources.Help_21
         Me.btnAyuda.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnAyuda.Name = "btnAyuda"
         Me.btnAyuda.Size = New System.Drawing.Size(64, 22)
@@ -135,7 +135,7 @@ Partial Class frmMain
         '
         Me.lblVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.lblVersion.Name = "lblVersion"
-        Me.lblVersion.Size = New System.Drawing.Size(76, 22)
+        Me.lblVersion.Size = New System.Drawing.Size(75, 22)
         Me.lblVersion.Text = "Versión: 1.0.0"
         '
         'ToolStripSeparator6
@@ -176,7 +176,7 @@ Partial Class frmMain
         '
         'cmdInv
         '
-        Me.cmdInv.Image = Global.VBP04000.My.Resources.Resources.db_refresh
+        Me.cmdInv.Image = Global.VBP04000.My.Resources.Resources.db_refresh1
         Me.cmdInv.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.cmdInv.Location = New System.Drawing.Point(35, 5)
         Me.cmdInv.Name = "cmdInv"
@@ -186,7 +186,7 @@ Partial Class frmMain
         '
         'cmdTodo
         '
-        Me.cmdTodo.Image = Global.VBP04000.My.Resources.Resources.db_post
+        Me.cmdTodo.Image = Global.VBP04000.My.Resources.Resources.db_post1
         Me.cmdTodo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.cmdTodo.Location = New System.Drawing.Point(4, 5)
         Me.cmdTodo.Name = "cmdTodo"
