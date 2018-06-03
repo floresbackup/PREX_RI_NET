@@ -378,7 +378,7 @@ Partial Class frmMain
 
     End Sub
 
-   Friend WithEvents Skin As DevExpress.LookAndFeel.DefaultLookAndFeel
+    Friend WithEvents Skin As DevExpress.LookAndFeel.DefaultLookAndFeel
    Friend WithEvents PanControles As DevExpress.XtraEditors.PanelControl
    Friend WithEvents PanTop As DevExpress.XtraEditors.PanelControl
    Friend WithEvents picLogo As DevExpress.XtraEditors.PictureEdit

@@ -26,7 +26,11 @@ Public Class frmMain
         Public NombreSP As String
         Public TipoInstruccion As Integer
         Public CadenaConexion As String
-        Public Detalles As DetalleConsulta
+        Public Detalles As List(Of DetalleConsulta)
+
+        Public Sub New()
+            Detalles = New List(Of DetalleConsulta)()
+        End Sub
 
     End Class
 
@@ -35,8 +39,8 @@ Public Class frmMain
 
 
     Private udtConsultaActual As ConsultaVaria
-        Private nX As Long
-        Private nY As Long
+    Private nX As Long
+    Private nY As Long
     Private nLastCol As Integer
 
     Public Sub New()
@@ -51,81 +55,81 @@ Public Class frmMain
 
 
     Private Sub AnalizarCommand()
-            Try
+        Try
 
-                Dim sTemp As String
-                Dim nPos As Integer
-                Dim nPosAux As Integer
-                Dim nCodigoUsuario As Long
-                Dim nCodigoTransaccion As Long
-                Dim nCodigoEntidad As Long
+            Dim sTemp As String
+            Dim nPos As Integer
+            Dim nPosAux As Integer
+            Dim nCodigoUsuario As Long
+            Dim nCodigoTransaccion As Long
+            Dim nCodigoEntidad As Long
 
-                sTemp = Command()
+            sTemp = Command()
 
-                '''''' USUARIO ''''''
+            '''''' USUARIO ''''''
 
-                nPos = InStr(1, UCase(sTemp), "/U:")
+            nPos = InStr(1, UCase(sTemp), "/U:")
 
-                If nPos = 0 Then
-                    MensajeError("Los argumentos de la línea de comandos no son válidos")
-                    End
-                End If
+            If nPos = 0 Then
+                MensajeError("Los argumentos de la línea de comandos no son válidos")
+                End
+            End If
 
-                nPosAux = InStr(1, Mid(sTemp, nPos + 3), "/")
+            nPosAux = InStr(1, Mid(sTemp, nPos + 3), "/")
 
-                If nPosAux > 0 Then
-                    nCodigoUsuario = CLng(Val(Mid(sTemp, nPos + 3, nPosAux - 1)))
-                Else
-                    nCodigoUsuario = CLng(Val(Mid(sTemp, nPos + 3)))
-                End If
+            If nPosAux > 0 Then
+                nCodigoUsuario = CLng(Val(Mid(sTemp, nPos + 3, nPosAux - 1)))
+            Else
+                nCodigoUsuario = CLng(Val(Mid(sTemp, nPos + 3)))
+            End If
 
-                '''''' TRANSACCION ''''''
+            '''''' TRANSACCION ''''''
 
-                nPos = InStr(1, UCase(sTemp), "/T:")
+            nPos = InStr(1, UCase(sTemp), "/T:")
 
-                If nPos = 0 Then
-                    MensajeError("Los argumentos de la línea de comandos no son válidos")
-                    End
-                End If
+            If nPos = 0 Then
+                MensajeError("Los argumentos de la línea de comandos no son válidos")
+                End
+            End If
 
-                nPosAux = InStr(1, Mid(sTemp, nPos + 3), "/")
+            nPosAux = InStr(1, Mid(sTemp, nPos + 3), "/")
 
-                If nPosAux > 0 Then
-                    nCodigoTransaccion = CLng(Val(Mid(sTemp, nPos + 3, nPosAux - 1)))
-                Else
-                    nCodigoTransaccion = CLng(Val(Mid(sTemp, nPos + 3)))
-                End If
+            If nPosAux > 0 Then
+                nCodigoTransaccion = CLng(Val(Mid(sTemp, nPos + 3, nPosAux - 1)))
+            Else
+                nCodigoTransaccion = CLng(Val(Mid(sTemp, nPos + 3)))
+            End If
 
-                '''''' ENTIDAD ''''''
+            '''''' ENTIDAD ''''''
 
-                nPos = InStr(1, UCase(sTemp), "/E:")
+            nPos = InStr(1, UCase(sTemp), "/E:")
 
-                If nPos = 0 Then
-                    MensajeError("Los argumentos de la línea de comandos no son válidos")
-                    End
-                End If
+            If nPos = 0 Then
+                MensajeError("Los argumentos de la línea de comandos no son válidos")
+                End
+            End If
 
-                nPosAux = InStr(1, Mid(sTemp, nPos + 3), "/")
+            nPosAux = InStr(1, Mid(sTemp, nPos + 3), "/")
 
-                If nPosAux > 0 Then
-                    nCodigoEntidad = CLng(Val(Mid(sTemp, nPos + 3, nPosAux - 1)))
-                Else
-                    nCodigoEntidad = CLng(Val(Mid(sTemp, nPos + 3)))
-                End If
+            If nPosAux > 0 Then
+                nCodigoEntidad = CLng(Val(Mid(sTemp, nPos + 3, nPosAux - 1)))
+            Else
+                nCodigoEntidad = CLng(Val(Mid(sTemp, nPos + 3)))
+            End If
 
-                CODIGO_TRANSACCION = nCodigoTransaccion
-                CODIGO_ENTIDAD = nCodigoEntidad
+            CODIGO_TRANSACCION = nCodigoTransaccion
+            CODIGO_ENTIDAD = nCodigoEntidad
 
-                PresentarDatos(nCodigoTransaccion, nCodigoUsuario, nCodigoEntidad)
+            PresentarDatos(nCodigoTransaccion, nCodigoUsuario, nCodigoEntidad)
 
-                Exit Sub
+            Exit Sub
 
-            Catch ex As Exception
-                TratarError(ex, "AnalizarCommand")
-            End Try
+        Catch ex As Exception
+            TratarError(ex, "AnalizarCommand")
+        End Try
 
 
-        End Sub
+    End Sub
 
 
     Private Sub PresentarDatos(ByVal nCodigoTransaccion As Long, ByVal nCodigoUsuario As Long, ByVal nCodigoEntidad As Long)
@@ -243,20 +247,403 @@ Public Class frmMain
 
 
     Private Sub HabilitarEjecucion(ByVal bHab As Boolean)
+        btnAbrirConsulta.Enabled = Not bHab
+        btnEjecutarConsulta.Enabled = bHab
+        btnCancelar.Enabled = bHab
 
-        '     Dim dckCommand As CommandToolButton
-
-        'Set dckCommand = dckMenu.Commands("btnAbrirConsulta")
-        'dckCommand.Enabled = Not bHab
-
-        'Set dckCommand = dckMenu.Commands("btnEjecutarConsulta")
-        'dckCommand.Enabled = bHab
-
-        'Set dckCommand = dckMenu.Commands("btnCancelar")
-        'dckCommand.Enabled = bHab
-
-        '     GridParametros.Enabled = bHab
+        GridParametros.Enabled = bHab
 
     End Sub
 
+    Private Sub btnAbrirConsulta_Click(sender As Object, e As EventArgs) Handles btnAbrirConsulta.Click
+        PreAbrirConsulta()
+    End Sub
+    Private Sub btnEjecutarConsulta_Click(sender As Object, e As EventArgs) Handles btnEjecutarConsulta.Click
+        If CONSULTA_SELECCIONADA > 0 Then
+            EjecutarConsulta()
+        Else
+            MensajeError("No se ha seleccionado ninguna consulta")
+        End If
+    End Sub
+
+    Private Sub btnCancelar_click(sender As Object, e As EventArgs) Handles btnCancelar.Click
+        NuevaConsulta()
+        LimpiarConsultaActual()
+        HabilitarEjecucion(False)
+    End Sub
+
+    Private Sub EjecutarConsulta()
+        If Validar() Then
+            Actualizar()
+        End If
+    End Sub
+
+
+    Private Sub NuevaConsulta()
+
+        On Error Resume Next
+
+        With Grid
+            .DatabaseName = ""
+            .RecordSource = ""
+            .Rebind
+        End With
+
+        Habilitar(False)
+
+        HabilitarEjecucion(True)
+        TAB()
+        'tabPanel.SelectedTabPageIndex = 0
+        tabParametros.Select()
+        'LimpiarConsultaActual
+        'HabilitarEjecucion False
+
+    End Sub
+
+    Private Sub LimpiarConsultaActual()
+
+        udtConsultaActual.Detalles.Clear()
+        GridParametros.ItemCount = 0
+        GridParametros.Refresh
+
+        With udtConsultaActual
+            .Categoria = ""
+            .CODIGO = 0
+            .Descripcion = ""
+            .Layout = ""
+            .Nombre = ""
+            .SQLFinal = ""
+            .SQLInicial = ""
+            .NombreSP = ""
+            .TipoInstruccion = 0
+            .CadenaConexion = ""
+        End With
+
+        lblCategoriaConsulta.Text = ""
+        lblCodigoConsulta.Text = ""
+        lblDescripcionConsulta.Text = ""
+        lblNombreConsulta.Text = ""
+
+    End Sub
+
+    Private Function Validar() As Boolean
+
+        Dim i As Integer
+
+        If GridViewParametros.RowCount > 0 Then
+
+            For i = 0 To udtConsultaActual.Detalles.Count - 1
+
+                If Trim(udtConsultaActual.Detalles(i).Valor) <> "" Then
+
+                    If udtConsultaActual.Detalles(i).TipoDatos.ToUpper = "F" Then
+                        If Not IsDate(udtConsultaActual.Detalles(i).Valor) Then
+                            MensajeError("Fecha no válida para el parámetro " & udtConsultaActual.Detalles(i).NombreParametro)
+                            Return False
+                        End If
+                    ElseIf udtConsultaActual.Detalles(i).TipoDatos.ToUpper = "N" Then
+                        If Not udtConsultaActual.Detalles(i).EsIN Then
+                            If Not IsNumeric(udtConsultaActual.Detalles(i).Valor) Then
+                                MensajeError("Tipo de datos no válido para el parámetro " & udtConsultaActual.Detalles(i).NombreParametro)
+                                Return False
+                            End If
+                        End If
+                    End If
+
+                Else
+
+                    If Math.Abs(udtConsultaActual.Detalles(i).Requerido) = 1 Then
+                        MensajeError("El parámetro " & udtConsultaActual.Detalles(i).NombreParametro & " no puede quedar vacío")
+                        Return False
+                    End If
+
+                End If
+
+            Next
+
+        End If
+
+        Return True
+
+    End Function
+
+
+    Private Sub Actualizar(Optional ByVal sCustomSQL As String = vbNullString)
+        Try
+            Me.Cursor = Cursors.WaitCursor
+            Try
+
+                Dim sSQL As String = String.Empty
+
+                If sCustomSQL <> vbNullString Then
+                    sSQL = sCustomSQL
+                Else
+                    sSQL = ConformarSQL()
+                End If
+
+                With Grid
+
+                    If udtConsultaActual.Layout <> "" Then
+                        .LoadLayout App.Path & "\LAYOUTS\" & udtConsultaActual.Layout
+            End If
+
+                    If udtConsultaActual.CadenaConexion = "" Then
+                        .DatabaseName = CONN_LOCAL
+                    Else
+                        .DatabaseName = udtConsultaActual.CadenaConexion
+                    End If
+
+                    .RecordSource = sSQL
+
+                    If udtConsultaActual.Layout <> "" Then
+
+                        .Rebind True
+
+            Else
+
+                        .Rebind
+
+                        AjusteColumnas
+                        FormatearColumnas
+
+                    End If
+
+                End With
+
+
+                If Grid.RowCount > 0 Then
+                    Habilitar True
+            Tabs.Tabs(2).Selected = True
+                    HabilitarEjecucion True
+
+      Set oCommand = dckResultados.Commands("btnCuadroAgrupar")
+
+            If Grid.GroupByBoxVisible = True Then
+                        oCommand.State = dsxpCommandToolButtonStateChecked
+                    Else
+                        oCommand.State = dsxpCommandToolButtonStateUnchecked
+                    End If
+
+      Set oCommand = dckResultados.Commands("btnFilaTotales")
+
+            If Grid.GroupFooterStyle = jgexTotalsGroupFooter Then
+                        oCommand.State = dsxpCommandToolButtonStateChecked
+                    Else
+                        oCommand.State = dsxpCommandToolButtonStateUnchecked
+                    End If
+
+                Else
+                    MensajeError("No se han encontrado resultados según el criterio de búsqueda utilizado")
+                End If
+
+                Exit Sub
+
+            Catch ex As Exception
+                TratarError(ex, "Actualizar")
+            End Try
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
+    End Sub
+
+    Private Function ConformarSQL() As String
+
+        Dim sSQL As String
+        Dim sTemp As String
+        Dim i As Integer
+
+        If udtConsultaActual.TipoInstruccion = 1 Then ' CONSULTA SQL
+
+            sSQL = udtConsultaActual.SQLInicial
+
+            If GridViewParametros.RowCount > 0 Then
+
+                For i = 0 To udtConsultaActual.Detalles.Count - 1
+
+                    If Trim(udtConsultaActual.Detalles(i).Valor) <> "" Then
+
+                        If udtConsultaActual.Detalles(i).TipoDatos.ToUpper = "F" Then
+                            udtConsultaActual.Detalles(i).Valor = Format(udtConsultaActual.Detalles(i).Valor, FORMATO_FECHA)
+                            sTemp = Replace(udtConsultaActual.Detalles(i).ParteSQL, udtConsultaActual.Detalles(i).Variable, FechaSQL(udtConsultaActual.Detalles(i).Valor))
+                        ElseIf udtConsultaActual.Detalles(i).TipoDatos.ToUpper = "T" Then
+                            sTemp = Replace(udtConsultaActual.Detalles(i).ParteSQL, udtConsultaActual.Detalles(i).Variable, "'" & udtConsultaActual.Detalles(i).Valor & "'")
+                        Else
+                            sTemp = Replace(udtConsultaActual.Detalles(i).ParteSQL, udtConsultaActual.Detalles(i).Variable, udtConsultaActual.Detalles(i).Valor)
+                        End If
+
+                        sSQL = sSQL & " " & sTemp & " "
+
+                    End If
+
+                Next
+
+            End If
+
+            sSQL = sSQL & " " & udtConsultaActual.SQLFinal
+
+            ConformarSQL = sSQL
+
+        Else ' PROCEDIMIENTO ALMACENADO
+
+            sSQL = udtConsultaActual.NombreSP
+
+            If GridViewParametros.RowCount > 0 Then
+
+                For i = 0 To udtConsultaActual.Detalles.Count - 1
+
+                    If Trim(udtConsultaActual.Detalles(i).Valor) <> "" Then
+
+                        If udtConsultaActual.Detalles(i).TipoDatos.ToUpper = "F" Then
+                            sSQL = sSQL & " " & FechaSQL(Date.Parse(udtConsultaActual.Detalles(i).Valor)) & ", "
+                        ElseIf udtConsultaActual.Detalles(i).TipoDatos.ToUpper = "T" Then
+                            sSQL = sSQL & " '" & udtConsultaActual.Detalles(i).Valor & "', "
+                        Else
+                            sSQL = sSQL & " " & udtConsultaActual.Detalles(i).Valor & ", "
+                        End If
+
+                    Else
+
+                        sSQL = sSQL & ", "
+
+                    End If
+
+                Next
+
+            End If
+
+            If Strings.Right(sSQL, 2) = ", " Then
+                sSQL = Mid(sSQL, 1, Len(sSQL) - 2)
+            End If
+
+            ConformarSQL = sSQL
+
+        End If
+
+        Debug.Print(sSQL)
+
+    End Function
+
+
+    Private Sub PreAbrirConsulta()
+
+        CONSULTA_SELECCIONADA = 0
+
+        Dim frmCons = New frmConsultas()
+        frmCons.ShowModal()
+
+        If CONSULTA_SELECCIONADA > 0 Then
+
+            If SeguridadConsulta(CONSULTA_SELECCIONADA) Then
+                AbrirConsulta(CONSULTA_SELECCIONADA)
+                HabilitarEjecucion(True)
+            Else
+                MensajeError("No dispone de privilegios para ejecutar esta consulta")
+            End If
+        End If
+
+    End Sub
+
+    Private Function SeguridadConsulta(ByVal nCodigo As Long) As Boolean
+        Try
+
+            Dim sSQL As String = "SELECT    COUNT(*) AS XX_TOTAL " &
+                      "FROM   CONSEG " &
+                      "WHERE  CS_CODUSU = " & UsuarioActual.Codigo & " " &
+                      "AND    CS_CODCON = " & nCodigo
+
+            Dim rstAux As DataSet = oAdmlocal.AbrirDataset(sSQL)
+            Dim sReturn As Boolean = True
+            If rstAux.Tables(0) Is Nothing Then
+                sReturn = False
+            Else
+                With rstAux.Tables(0)
+                    If .Rows.Count = 0 OrElse CInt(.Rows(0).Item("XX_TOTAL").ToString()) > 0 Then
+                        sReturn = False
+                    End If
+                End With
+            End If
+
+            rstAux = Nothing
+            Return sReturn
+        Catch ex As Exception
+            TratarError(ex, "SeguridadConsulta")
+            Return False
+        End Try
+    End Function
+
+    Private Sub AbrirConsulta(ByVal nCodigoConsulta As Long)
+        Try
+            Dim i As Integer
+
+            Dim sSQL As String = "SELECT    CONVAR.*, TG_DESCRI " &
+          "FROM  CONVAR, TABGEN " &
+          "WHERE CV_CODCON = " & nCodigoConsulta & " " &
+          "AND   CV_CATEGO = TG_CODCON " &
+          "AND   TG_CODTAB = " & TablasGenerales.TGL_CATEGORIAS_CONVAR
+
+            Dim rstAux As DataSet = oAdmlocal.AbrirDataset(sSQL)
+
+            With rstAux.Tables(0)
+                udtConsultaActual.Categoria = .Rows(0).Item("TG_DESCRI").ToString()
+                udtConsultaActual.CODIGO = Long.Parse(.Rows(0).Item("CV_CODCON").ToString())
+                udtConsultaActual.Descripcion = .Rows(0).Item("CV_DESCRI").ToString()
+                udtConsultaActual.Layout = .Rows(0).Item("CV_LAYOUT").ToString()
+                udtConsultaActual.Nombre = .Rows(0).Item("CV_NOMBRE").ToString()
+                udtConsultaActual.SQLInicial = .Rows(0).Item("CV_SQLINI").ToString()
+                udtConsultaActual.SQLFinal = .Rows(0).Item("CV_SQLFIN").ToString()
+                udtConsultaActual.NombreSP = .Rows(0).Item("CV_NOMBSP").ToString()
+                udtConsultaActual.TipoInstruccion = CInt(.Rows(0).Item("CV_TIPINS").ToString())
+                udtConsultaActual.CadenaConexion = .Rows(0).Item("CV_CADCON").ToString()
+            End With
+
+            rstAux = Nothing
+
+            lblCodigoConsulta.Text = udtConsultaActual.CODIGO.ToString
+            lblNombreConsulta.Text = udtConsultaActual.Nombre
+            lblDescripcionConsulta.Text = udtConsultaActual.Descripcion
+            lblCategoriaConsulta.Text = udtConsultaActual.Categoria
+
+            sSQL = "SELECT    * " &
+                  "FROM      CONDET " &
+                  "WHERE     CD_CODCON = " & nCodigoConsulta & " " &
+                  "ORDER BY  CD_ORDEN ASC"
+
+            rstAux = oAdmlocal.AbrirDataset(sSQL)
+
+            With rstAux.Tables(0)
+
+                For i = 1 To .Rows.Count
+                    Dim detalle As DetalleConsulta = New DetalleConsulta()
+
+                    detalle.NombreParametro = .Rows(0).Item("CD_NOMPAR").ToString()
+                    detalle.Orden = CInt(.Rows(0).Item("CD_ORDEN").ToString())
+                    detalle.ParteSQL = .Rows(0).Item("CD_PARSQL").ToString()
+                    detalle.TipoDatos = .Rows(0).Item("CD_TIPDAT").ToString()
+                    detalle.Variable = .Rows(0).Item("CD_VARIAB").ToString()
+                    detalle.EsIN = Boolean.Parse(.Rows(0).Item("CD_INSQL").ToString())
+                    detalle.Help = CInt(.Rows(0).Item("CD_HELP").ToString())
+                    detalle.Requerido = CInt(.Rows(0).Item("CD_REQUER").ToString())
+                    detalle.SQLTablaGeneral = .Rows(0).Item("CD_SQLTBG").ToString()
+
+                    udtConsultaActual.Detalles.Add(detalle)
+                Next
+
+
+            End With
+
+            rstAux = Nothing
+
+            If i > 0 Then
+                GridParametros.Enabled = True
+                GridParametros.ItemCount = i
+                GridParametros.Refresh
+                GridParametros.SetFocus
+                'SendKeys("{RIGHT}")
+            End If
+
+            Exit Sub
+        Catch ex As Exception
+            TratarError(ex, "AbrirConsulta")
+        End Try
+    End Sub
 End Class
