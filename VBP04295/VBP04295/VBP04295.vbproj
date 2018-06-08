@@ -222,14 +222,6 @@
       <Link>Formularios\frmInputGeneral.vb</Link>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\..\COMMON\FORM\frmTablaGeneral.designer.vb">
-      <Link>Formularios\frmTablaGeneral.designer.vb</Link>
-      <DependentUpon>frmTablaGeneral.vb</DependentUpon>
-    </Compile>
-    <Compile Include="..\..\COMMON\FORM\frmTablaGeneral.vb">
-      <Link>Formularios\frmTablaGeneral.vb</Link>
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="..\..\COMMON\MODUL\modAbcPDF.vb">
       <Link>Modulos\modAbcPDF.vb</Link>
     </Compile>
@@ -279,6 +271,12 @@
     <Compile Include="Formularios\frmNotas.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\frmTablaGeneral.designer.vb">
+      <DependentUpon>frmTablaGeneral.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\frmTablaGeneral.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Modulos\modLocalMain.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -323,11 +321,6 @@
       <DependentUpon>frmInputGeneral.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\..\COMMON\FORM\frmTablaGeneral.resx">
-      <Link>Formularios\frmTablaGeneral.resx</Link>
-      <DependentUpon>frmTablaGeneral.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmABMRegistro.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmABMRegistro.vb</DependentUpon>
@@ -347,6 +340,9 @@
     <EmbeddedResource Include="Formularios\frmNotas.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmNotas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\frmTablaGeneral.resx">
+      <DependentUpon>frmTablaGeneral.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\licenses.licx" />
     <EmbeddedResource Include="My Project\Resources.resx">

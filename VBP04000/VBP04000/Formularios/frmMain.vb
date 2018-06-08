@@ -1,3 +1,5 @@
+'Tipos de campos de parametros Numerico/Texto/Fecha
+
 Public Class frmMain
     Private Class DetalleConsulta
 
@@ -304,7 +306,7 @@ Public Class frmMain
 
         udtConsultaActual.Detalles.Clear()
         GridParametros.ItemCount = 0
-        GridParametros.Refresh
+        GridParametros.Refresh()
 
         With udtConsultaActual
             .Categoria = ""
@@ -636,7 +638,7 @@ Public Class frmMain
             If i > 0 Then
                 GridParametros.Enabled = True
                 GridParametros.ItemCount = i
-                GridParametros.Refresh
+                GridParametros.Refresh()
                 GridParametros.SetFocus
                 'SendKeys("{RIGHT}")
             End If

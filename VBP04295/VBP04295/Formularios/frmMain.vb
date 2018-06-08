@@ -455,8 +455,13 @@ Public Class frmMain
 
     Private Sub btnEjecutar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEjecutar.Click
         If DatosOK() Then
+            Try
+                Me.Cursor = Cursors.WaitCursor
+                Ejecutar()
 
-            Ejecutar()
+            Finally
+                Me.Cursor = Cursors.Default
+            End Try
         End If
     End Sub
 
