@@ -1,5 +1,11 @@
 'Tipos de campos de parametros Numerico/Texto/Fecha
 
+Imports System.Linq
+Imports DevExpress.XtraEditors.Repository
+Imports DevExpress.XtraGrid.Columns
+Imports DevExpress.XtraGrid.Views.Base
+Imports DevExpress.XtraGrid.Views.Grid
+
 Public Class frmMain
     Private Class DetalleConsulta
 
@@ -11,7 +17,7 @@ Public Class frmMain
         Public Valor As String
         Public EsIN As Boolean
         Public Help As Integer
-        Public Requerido As Integer
+        Public Requerido As Boolean
         Public SQLTablaGeneral As String
 
     End Class
@@ -37,7 +43,7 @@ Public Class frmMain
     End Class
 
     Private oAdmlocal As New AdmTablas
-
+    Private currentRepositoryItems As IDictionary(Of Integer, RepositoryItem)
 
 
     Private udtConsultaActual As ConsultaVaria
@@ -53,6 +59,7 @@ Public Class frmMain
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
         oAdmlocal.ConnectionString = CONN_LOCAL
         AnalizarCommand()
+        currentRepositoryItems = New Dictionary(Of Integer, RepositoryItem)()
     End Sub
 
 
@@ -202,6 +209,8 @@ Public Class frmMain
                 Else
                     lblTransaccion.Text = CType(.Rows(0).Item("MU_DESCRI"), String)
                     Me.Text = CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA").ToString
+                    lblTitulo.Text = .Rows(0).Item("MU_TRANSA").ToString
+                    lblSubtitulo.Text = .Rows(0).Item("MU_DESCRI").ToString
                 End If
 
             End With
@@ -308,23 +317,25 @@ Public Class frmMain
     Private Sub LimpiarConsultaActual()
         Try
 
-            udtConsultaActual.Detalles.Clear()
-            GridParametros.DataSource = Nothing
-            GridViewParametros.Columns.Clear()
-            GridParametros.Refresh()
 
-            With udtConsultaActual
-                .Categoria = ""
-                .CODIGO = 0
-                .Descripcion = ""
-                .Layout = ""
-                .Nombre = ""
-                .SQLFinal = ""
-                .SQLInicial = ""
-                .NombreSP = ""
-                .TipoInstruccion = 0
-                .CadenaConexion = ""
-            End With
+            GridParametros.DataSource = Nothing
+            'GridViewParametros.Columns.Clear()
+            GridParametros.Refresh()
+            If udtConsultaActual IsNot Nothing Then
+                With udtConsultaActual
+                    .Detalles.Clear()
+                    .Categoria = ""
+                    .CODIGO = 0
+                    .Descripcion = ""
+                    .Layout = ""
+                    .Nombre = ""
+                    .SQLFinal = ""
+                    .SQLInicial = ""
+                    .NombreSP = ""
+                    .TipoInstruccion = 0
+                    .CadenaConexion = ""
+                End With
+            End If
 
             lblCategoriaConsulta.Text = ""
             lblCodigoConsulta.Text = ""
@@ -362,7 +373,7 @@ Public Class frmMain
 
                 Else
 
-                    If Math.Abs(udtConsultaActual.Detalles(i).Requerido) = 1 Then
+                    If udtConsultaActual.Detalles(i).Requerido Then
                         MensajeError("El parámetro " & udtConsultaActual.Detalles(i).NombreParametro & " no puede quedar vacío")
                         Return False
                     End If
@@ -392,34 +403,7 @@ Public Class frmMain
                     sSQL = ConformarSQL()
                 End If
 
-                '    With GridResultado
 
-                '        'If udtConsultaActual.Layout <> "" Then
-                '        '    .LoadLayout App.Path & "\LAYOUTS\" & udtConsultaActual.Layout
-                '        'End If
-
-                '        If udtConsultaActual.CadenaConexion = "" Then
-                '            .DatabaseName = CONN_LOCAL
-                '        Else
-                '            .DatabaseName = udtConsultaActual.CadenaConexion
-                '        End If
-
-                '        .RecordSource = sSQL
-
-                '        If udtConsultaActual.Layout <> "" Then
-
-                '            .Rebind True
-
-                'Else
-
-                '            .Rebind
-
-                '            AjusteColumnas
-                '            FormatearColumnas
-
-                '        End If
-
-                '    End With
                 If udtConsultaActual.CadenaConexion = "" Then
                     coneccion = CONN_LOCAL
                 Else
@@ -434,27 +418,15 @@ Public Class frmMain
                 Grid.RefreshDataSource()
                 Grid.Refresh()
 
+                AjusteColumnas()
+                FormatearColumnas()
+
                 If GridResultado.RowCount > 0 Then
                     Habilitar(True)
                     tabResultados.Select()
+                    tabPanel.SelectedTabPage = tabResultados
                     HabilitarEjecucion(True)
-
-                    '              set oCommand = dckResultados.Commands("btnCuadroAgrupar")
-
-                    '              If Grid.GroupByBoxVisible = True Then
-                    '                  oCommand.State = dsxpCommandToolButtonStateChecked
-                    '              Else
-                    '                  oCommand.State = dsxpCommandToolButtonStateUnchecked
-                    '              End If
-
-                    'Set oCommand = dckResultados.Commands("btnFilaTotales")
-
-                    '      If Grid.GroupFooterStyle = jgexTotalsGroupFooter Then
-                    '                  oCommand.State = dsxpCommandToolButtonStateChecked
-                    '              Else
-                    '                  oCommand.State = dsxpCommandToolButtonStateUnchecked
-                    '              End If
-
+                    'todo: habilitar botonera
                 Else
                     MensajeError("No se han encontrado resultados según el criterio de búsqueda utilizado")
                 End If
@@ -468,6 +440,81 @@ Public Class frmMain
             Me.Cursor = Cursors.Default
         End Try
     End Sub
+
+    Private Sub FormatearColumnas()
+
+        Try
+
+            Dim sSQL As String
+
+            sSQL = "SELECT * " &
+                  "FROM   CONFOR " &
+                  "WHERE  CF_CODCON = " & udtConsultaActual.CODIGO
+
+            Dim rstAux As DataSet = oAdmlocal.AbrirDataset(sSQL)
+
+            With rstAux.Tables(0)
+                For Each row As DataRow In .Rows
+                    Dim col As GridColumn = GridResultado.Columns.Item(row.Item("CF_COLKEY").ToString())
+                    If col Is Nothing Then
+                        Continue For
+                    End If
+                    col.DisplayFormat.FormatString = row.Item("CF_FORMAT").ToString()
+                    col.GroupFormat.FormatString = row.Item("CF_FORMAT").ToString()
+                Next
+            End With
+
+            'For Each oCol In Grid.Columns
+            '   Debug.Print oCol.Key
+            'Next
+
+            rstAux = Nothing
+
+        Catch ex As Exception
+            Throw New Exception("Ocurrió un error en FormatearColumnas", ex)
+        End Try
+    End Sub
+    Private Sub AjusteColumnas()
+        For Each oCol As GridColumn In GridResultado.Columns
+
+            If FORMATEAR_NUMEROS Then
+
+                If IsNumericType(oCol.ColumnType) Then
+                    If InStr(1, UCase(oCol.Caption), "NRO") <= 0 And
+               InStr(1, UCase(oCol.Caption), "NUMERO") <= 0 And
+               InStr(1, UCase(oCol.Caption), "COD") <= 0 And
+               InStr(1, UCase(oCol.Caption), "CODIGO") <= 0 Then
+
+                        oCol.DisplayFormat.FormatString = "#,##0.00"
+
+                    End If
+                End If
+
+            End If
+        Next
+
+    End Sub
+
+    Private Function IsNumericType(ByVal type As Type) As Boolean
+        If type Is Nothing Then
+            Return False
+        End If
+
+        Select Case Type.GetTypeCode(type)
+            Case TypeCode.Byte, TypeCode.Decimal, TypeCode.Double, TypeCode.Int16, TypeCode.Int32, TypeCode.Int64, TypeCode.SByte, TypeCode.Single, TypeCode.UInt16, TypeCode.UInt32, TypeCode.UInt64
+                Return True
+            Case TypeCode.Object
+
+                If type.IsGenericType AndAlso type.GetGenericTypeDefinition() = GetType(Nullable(Of)) Then
+                    Return IsNumericType(Nullable.GetUnderlyingType(type))
+                End If
+
+                Return False
+        End Select
+
+        Return False
+    End Function
+
 
     Private Function ConformarSQL() As String
 
@@ -486,7 +533,7 @@ Public Class frmMain
                     If Trim(udtConsultaActual.Detalles(i).Valor) <> "" Then
 
                         If udtConsultaActual.Detalles(i).TipoDatos.ToUpper = "F" Then
-                            udtConsultaActual.Detalles(i).Valor = Format(udtConsultaActual.Detalles(i).Valor, FORMATO_FECHA)
+                            'udtConsultaActual.Detalles(i).Valor = FechaSQL(udtConsultaActual.Detalles(i).Valor)
                             sTemp = Replace(udtConsultaActual.Detalles(i).ParteSQL, udtConsultaActual.Detalles(i).Variable, FechaSQL(udtConsultaActual.Detalles(i).Valor))
                         ElseIf udtConsultaActual.Detalles(i).TipoDatos.ToUpper = "T" Then
                             sTemp = Replace(udtConsultaActual.Detalles(i).ParteSQL, udtConsultaActual.Detalles(i).Variable, "'" & udtConsultaActual.Detalles(i).Valor & "'")
@@ -605,7 +652,7 @@ Public Class frmMain
           "AND   TG_CODTAB = " & TablasGenerales.TGL_CATEGORIAS_CONVAR
 
             Dim rstAux As DataSet = oAdmlocal.AbrirDataset(sSQL)
-
+            If udtConsultaActual Is Nothing Then udtConsultaActual = New ConsultaVaria
             With rstAux.Tables(0)
                 udtConsultaActual.Categoria = .Rows(0).Item("TG_DESCRI").ToString()
                 udtConsultaActual.CODIGO = Long.Parse(.Rows(0).Item("CV_CODCON").ToString())
@@ -626,7 +673,7 @@ Public Class frmMain
             lblDescripcionConsulta.Text = udtConsultaActual.Descripcion
             lblCategoriaConsulta.Text = udtConsultaActual.Categoria
 
-            sSQL = "SELECT    * " &
+            sSQL = "SELECT    *, '' as Valor " &
                   "FROM      CONDET " &
                   "WHERE     CD_CODCON = " & nCodigoConsulta & " " &
                   "ORDER BY  CD_ORDEN ASC"
@@ -645,7 +692,7 @@ Public Class frmMain
                     detalle.Variable = .Rows(0).Item("CD_VARIAB").ToString()
                     detalle.EsIN = Boolean.Parse(.Rows(0).Item("CD_INSQL").ToString())
                     detalle.Help = CInt(.Rows(0).Item("CD_HELP").ToString())
-                    detalle.Requerido = CInt(.Rows(0).Item("CD_REQUER").ToString())
+                    detalle.Requerido = Boolean.Parse(.Rows(0).Item("CD_REQUER").ToString())
                     detalle.SQLTablaGeneral = .Rows(0).Item("CD_SQLTBG").ToString()
 
                     udtConsultaActual.Detalles.Add(detalle)
@@ -654,19 +701,88 @@ Public Class frmMain
 
             End With
 
+            GridParametros.DataSource = rstAux.Tables(0)
+            Grid.RefreshDataSource()
+            Grid.Refresh()
+            currentRepositoryItems.Clear()
+
             rstAux = Nothing
+            For Each detalle As DetalleConsulta In udtConsultaActual.Detalles.OrderBy(Function(d) d.Orden)
+                'Dim rowHandle As Integer = GridViewParametros.GetRowHandle(GridViewParametros.DataRowCount)
+                'If GridViewParametros.IsNewItemRow(rowHandle) Then
+                Dim colEditor As New GridColumn
+                Dim oLookUp As RepositoryItem
 
-            If i > 0 Then
-                'GridParametros.Enabled = True
-                'GridParametros.ItemCount = i
-                'GridParametros.Refresh()
-                'GridParametros.SetFocus
-                ''SendKeys("{RIGHT}")
-            End If
+                Select Case detalle.Help
+                    Case 0
+                        oLookUp = New RepositoryItemTextEdit()
+                        oLookUp.Name = "input" & detalle.Variable
+                        '.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+                    Case 1
+                        oLookUp = New RepositoryItemDateEdit()
 
-            Exit Sub
+                        'oLookUp.EditFormat.FormatString = "MM/dd/yyyy"
+                        'oLookUp.DisplayFormat.FormatString = "MM/dd/yyyy"
+
+                        oLookUp.Name = "date" & detalle.Variable
+                    Case 2
+                        oLookUp = New RepositoryItemTextEdit()
+                        oLookUp.Name = "input" & detalle.Variable
+                End Select
+                If Not currentRepositoryItems.ContainsKey(detalle.Help) Then
+                    currentRepositoryItems.Add(detalle.Help, Nothing)
+                End If
+
+                'AddHandler oLookUp.EditValueChanged, AddressOf ReporitoryChangedValue
+
+                oLookUp.Name = oLookUp.Name.Replace("@", String.Empty)
+                GridParametros.RepositoryItems.Add(oLookUp)
+                currentRepositoryItems(detalle.Help) = oLookUp
+            Next
+
+            GridViewParametros.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways
+            GridParametros.Refresh()
+
         Catch ex As Exception
             TratarError(ex, "AbrirConsulta")
         End Try
+    End Sub
+
+    Private Sub ReporitoryChangedValue(sender As Object, e As EventArgs)
+        If e IsNot Nothing Then
+            Select Case GridViewParametros.GetDataRow(GridViewParametros.GetSelectedRows().FirstOrDefault()).Item(7)
+                Case 0
+                Case 2
+                    GridViewParametros.SetFocusedRowCellValue(colEditorParametro, CType(sender, DevExpress.XtraEditors.TextEdit).Text)
+                Case 1
+                    GridViewParametros.SetFocusedRowCellValue(colEditorParametro, CType(sender, DevExpress.XtraEditors.DateEdit).DateTime)
+
+            End Select
+        End If
+    End Sub
+
+    Private Sub GridView1_CustomRowCellEdit(sender As Object, e As CustomRowCellEditEventArgs) Handles GridViewParametros.CustomRowCellEdit
+        Dim view As GridView = CType(sender, GridView)
+        If GridParametros.RepositoryItems.Count > 0 AndAlso e.Column.Name = colEditorParametro.Name Then
+            'colEditorParametro.ColumnEdit 
+            e.RepositoryItem = currentRepositoryItems(GridViewParametros.GetDataRow(e.RowHandle).Item(7))
+        End If
+
+    End Sub
+
+    Private Sub GridViewParametros_CellValueChanged(sender As Object, e As CellValueChangedEventArgs) Handles GridViewParametros.CellValueChanged
+        If e.Column.Name <> colEditorParametro.Name Then
+            Exit Sub
+        End If
+
+        Dim row As String = GridViewParametros.GetDataRow(e.RowHandle).Item(4).ToString()
+        Select Case GridViewParametros.GetDataRow(GridViewParametros.GetSelectedRows().FirstOrDefault()).Item(7)
+            Case 0
+            Case 2
+                udtConsultaActual.Detalles.FirstOrDefault(Function(d) d.Variable.ToUpper.Equals(row.ToUpper, StringComparison.InvariantCultureIgnoreCase)).Valor = e.Value
+            Case 1
+                udtConsultaActual.Detalles.FirstOrDefault(Function(d) d.Variable.ToUpper.Equals(row.ToUpper, StringComparison.InvariantCultureIgnoreCase)).Valor = Date.Parse(e.Value)
+
+        End Select
     End Sub
 End Class

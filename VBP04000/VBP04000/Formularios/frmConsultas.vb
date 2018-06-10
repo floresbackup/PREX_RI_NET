@@ -1,4 +1,5 @@
 ﻿Imports System.Linq
+Imports DevExpress.XtraGrid.Views.Grid.ViewInfo
 
 Public Class frmConsultas
 
@@ -111,7 +112,7 @@ Public Class frmConsultas
             If GridView1.SelectedRowsCount > 0 Then
 
                 'If Not GridView1.GetSelectedRows() Then
-                nConsulta = GridView1.GetDataRow(GridView1.GetSelectedRows().FirstOrDefault()).Item("CV_CODCON")
+                nConsulta = GridView1.GetDataRow(GridView1.GetSelectedRows().FirstOrDefault()).Item(1)
 
                 CONSULTA_SELECCIONADA = nConsulta
                 Me.Close()
@@ -121,16 +122,15 @@ Public Class frmConsultas
     End Sub
 
     Private Sub GridView1_DoubleClick(sender As Object, e As EventArgs) Handles GridView1.DoubleClick
-        If GridView1.SelectedRowsCount > 0 Then
+        Dim hitInfo As GridHitInfo = GridView1.CalcHitInfo(CType(e, MouseEventArgs).Location)
+        If Not hitInfo.InGroupRow AndAlso GridView1.SelectedRowsCount > 0 Then
             Devolver()
         End If
     End Sub
 
     Private Sub GridView1_KeyDown(sender As Object, e As KeyEventArgs) Handles GridView1.KeyDown
-        If e.KeyCode = Keys.Enter Then
-            If GridView1.SelectedRowsCount > 0 Then
-                Devolver()
-            End If
+        If e.KeyCode = Keys.Enter AndAlso GridView1.SelectedRowsCount > 0 Then
+            Devolver()
         End If
     End Sub
 

@@ -38,6 +38,9 @@ Partial Class frmConsultas
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Grid = New DevExpress.XtraGrid.GridControl()
         Me.GridView1 = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.colXX_CATEGO = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colCV_CODCON = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colCV_NOMBRE = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.PanelControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanelControl1.SuspendLayout()
@@ -201,11 +204,39 @@ Partial Class frmConsultas
         '
         'GridView1
         '
+        Me.GridView1.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colXX_CATEGO, Me.colCV_CODCON, Me.colCV_NOMBRE})
         Me.GridView1.GridControl = Me.Grid
+        Me.GridView1.GroupCount = 1
         Me.GridView1.Name = "GridView1"
+        Me.GridView1.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.[False]
+        Me.GridView1.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.[False]
+        Me.GridView1.OptionsBehavior.Editable = False
+        Me.GridView1.OptionsBehavior.ReadOnly = True
         Me.GridView1.OptionsView.ShowGroupPanel = False
         Me.GridView1.OptionsView.ShowPreview = True
         Me.GridView1.PreviewFieldName = "CV_DESCRI"
+        Me.GridView1.SortInfo.AddRange(New DevExpress.XtraGrid.Columns.GridColumnSortInfo() {New DevExpress.XtraGrid.Columns.GridColumnSortInfo(Me.colXX_CATEGO, DevExpress.Data.ColumnSortOrder.Ascending)})
+        '
+        'colXX_CATEGO
+        '
+        Me.colXX_CATEGO.FieldName = "XX_CATEGO"
+        Me.colXX_CATEGO.GroupFormat.FormatString = " "
+        Me.colXX_CATEGO.Name = "colXX_CATEGO"
+        Me.colXX_CATEGO.Visible = True
+        Me.colXX_CATEGO.VisibleIndex = 0
+        '
+        'colCV_CODCON
+        '
+        Me.colCV_CODCON.FieldName = "CV_CODCON"
+        Me.colCV_CODCON.Name = "colCV_CODCON"
+        '
+        'colCV_NOMBRE
+        '
+        Me.colCV_NOMBRE.Caption = "Denominación de la consulta"
+        Me.colCV_NOMBRE.FieldName = "CV_NOMBRE"
+        Me.colCV_NOMBRE.Name = "colCV_NOMBRE"
+        Me.colCV_NOMBRE.Visible = True
+        Me.colCV_NOMBRE.VisibleIndex = 0
         '
         'frmConsultas
         '
@@ -250,4 +281,7 @@ Partial Class frmConsultas
     Friend WithEvents cmdFiltrar As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents Grid As DevExpress.XtraGrid.GridControl
     Friend WithEvents GridView1 As DevExpress.XtraGrid.Views.Grid.GridView
+    Friend WithEvents colXX_CATEGO As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents colCV_CODCON As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents colCV_NOMBRE As DevExpress.XtraGrid.Columns.GridColumn
 End Class
