@@ -28,17 +28,25 @@ Partial Class frmConsultas
         Me.cmdAceptar = New DevExpress.XtraEditors.SimpleButton()
         Me.cmdCancelar = New DevExpress.XtraEditors.SimpleButton()
         Me.PanelControl2 = New DevExpress.XtraEditors.PanelControl()
+        Me.lblFiltro = New System.Windows.Forms.Label()
+        Me.txtNombre = New DevExpress.XtraEditors.TextEdit()
         Me.btnContraerTodo = New DevExpress.XtraEditors.SimpleButton()
         Me.btnExpandirTodo = New DevExpress.XtraEditors.SimpleButton()
+        Me.cmdFiltrar = New DevExpress.XtraEditors.SimpleButton()
         Me.btnFiltrar = New DevExpress.XtraEditors.SimpleButton()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.Grid = New DevExpress.XtraGrid.GridControl()
+        Me.GridView1 = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.PanelControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanelControl1.SuspendLayout()
         CType(Me.PanelControl2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanelControl2.SuspendLayout()
+        CType(Me.txtNombre.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.GridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -47,6 +55,7 @@ Partial Class frmConsultas
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.PanelControl1, 0, 2)
         Me.TableLayoutPanel1.Controls.Add(Me.PanelControl2, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.Grid, 0, 1)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
@@ -54,7 +63,7 @@ Partial Class frmConsultas
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70.0!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 33.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(358, 417)
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(421, 417)
         Me.TableLayoutPanel1.TabIndex = 0
         '
         'PanelControl1
@@ -65,12 +74,13 @@ Partial Class frmConsultas
         Me.PanelControl1.Location = New System.Drawing.Point(1, 385)
         Me.PanelControl1.Margin = New System.Windows.Forms.Padding(1)
         Me.PanelControl1.Name = "PanelControl1"
-        Me.PanelControl1.Size = New System.Drawing.Size(356, 31)
+        Me.PanelControl1.Size = New System.Drawing.Size(419, 31)
         Me.PanelControl1.TabIndex = 0
         '
         'cmdAceptar
         '
-        Me.cmdAceptar.Location = New System.Drawing.Point(193, 5)
+        Me.cmdAceptar.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cmdAceptar.Location = New System.Drawing.Point(250, 5)
         Me.cmdAceptar.Name = "cmdAceptar"
         Me.cmdAceptar.Size = New System.Drawing.Size(75, 23)
         Me.cmdAceptar.TabIndex = 0
@@ -78,8 +88,9 @@ Partial Class frmConsultas
         '
         'cmdCancelar
         '
+        Me.cmdCancelar.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdCancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.cmdCancelar.Location = New System.Drawing.Point(276, 5)
+        Me.cmdCancelar.Location = New System.Drawing.Point(333, 5)
         Me.cmdCancelar.Name = "cmdCancelar"
         Me.cmdCancelar.Size = New System.Drawing.Size(75, 23)
         Me.cmdCancelar.TabIndex = 0
@@ -87,20 +98,41 @@ Partial Class frmConsultas
         '
         'PanelControl2
         '
+        Me.PanelControl2.Controls.Add(Me.lblFiltro)
+        Me.PanelControl2.Controls.Add(Me.txtNombre)
         Me.PanelControl2.Controls.Add(Me.btnContraerTodo)
         Me.PanelControl2.Controls.Add(Me.btnExpandirTodo)
+        Me.PanelControl2.Controls.Add(Me.cmdFiltrar)
         Me.PanelControl2.Controls.Add(Me.btnFiltrar)
         Me.PanelControl2.Controls.Add(Me.Panel1)
         Me.PanelControl2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PanelControl2.Location = New System.Drawing.Point(1, 1)
         Me.PanelControl2.Margin = New System.Windows.Forms.Padding(1)
         Me.PanelControl2.Name = "PanelControl2"
-        Me.PanelControl2.Size = New System.Drawing.Size(356, 68)
+        Me.PanelControl2.Size = New System.Drawing.Size(419, 68)
         Me.PanelControl2.TabIndex = 1
+        '
+        'lblFiltro
+        '
+        Me.lblFiltro.AutoSize = True
+        Me.lblFiltro.Location = New System.Drawing.Point(2, 75)
+        Me.lblFiltro.Name = "lblFiltro"
+        Me.lblFiltro.Size = New System.Drawing.Size(161, 13)
+        Me.lblFiltro.TabIndex = 3
+        Me.lblFiltro.Text = "Nombre de la consulta contiene:"
+        '
+        'txtNombre
+        '
+        Me.txtNombre.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtNombre.Location = New System.Drawing.Point(169, 73)
+        Me.txtNombre.Name = "txtNombre"
+        Me.txtNombre.Size = New System.Drawing.Size(186, 20)
+        Me.txtNombre.TabIndex = 2
         '
         'btnContraerTodo
         '
-        Me.btnContraerTodo.ImageOptions.Image = CType(resources.GetObject("SimpleButton6.ImageOptions.Image"), System.Drawing.Image)
+        Me.btnContraerTodo.ImageOptions.Image = CType(resources.GetObject("btnContraerTodo.ImageOptions.Image"), System.Drawing.Image)
         Me.btnContraerTodo.Location = New System.Drawing.Point(115, 41)
         Me.btnContraerTodo.Name = "btnContraerTodo"
         Me.btnContraerTodo.Size = New System.Drawing.Size(23, 23)
@@ -109,16 +141,26 @@ Partial Class frmConsultas
         '
         'btnExpandirTodo
         '
-        Me.btnExpandirTodo.ImageOptions.Image = CType(resources.GetObject("SimpleButton5.ImageOptions.Image"), System.Drawing.Image)
+        Me.btnExpandirTodo.ImageOptions.Image = CType(resources.GetObject("btnExpandirTodo.ImageOptions.Image"), System.Drawing.Image)
         Me.btnExpandirTodo.Location = New System.Drawing.Point(86, 41)
         Me.btnExpandirTodo.Name = "btnExpandirTodo"
         Me.btnExpandirTodo.Size = New System.Drawing.Size(23, 23)
         Me.btnExpandirTodo.TabIndex = 1
         Me.btnExpandirTodo.ToolTip = "Expandir todo"
         '
+        'cmdFiltrar
+        '
+        Me.cmdFiltrar.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cmdFiltrar.Location = New System.Drawing.Point(361, 70)
+        Me.cmdFiltrar.Name = "cmdFiltrar"
+        Me.cmdFiltrar.Size = New System.Drawing.Size(47, 23)
+        Me.cmdFiltrar.TabIndex = 1
+        Me.cmdFiltrar.Text = "Filtrar"
+        Me.cmdFiltrar.ToolTip = "Copiar el contenido al portapapeles"
+        '
         'btnFiltrar
         '
-        Me.btnFiltrar.ImageOptions.Image = CType(resources.GetObject("SimpleButton4.ImageOptions.Image"), System.Drawing.Image)
+        Me.btnFiltrar.ImageOptions.Image = CType(resources.GetObject("btnFiltrar.ImageOptions.Image"), System.Drawing.Image)
         Me.btnFiltrar.Location = New System.Drawing.Point(5, 41)
         Me.btnFiltrar.Name = "btnFiltrar"
         Me.btnFiltrar.Size = New System.Drawing.Size(75, 23)
@@ -134,7 +176,7 @@ Partial Class frmConsultas
         Me.Panel1.Controls.Add(Me.Label1)
         Me.Panel1.Location = New System.Drawing.Point(5, 5)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(346, 30)
+        Me.Panel1.Size = New System.Drawing.Size(409, 30)
         Me.Panel1.TabIndex = 0
         '
         'Label1
@@ -147,12 +189,30 @@ Partial Class frmConsultas
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Seleccione la consulta que desea realizar de la lista debajo..."
         '
+        'Grid
+        '
+        Me.Grid.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Grid.Location = New System.Drawing.Point(3, 73)
+        Me.Grid.MainView = Me.GridView1
+        Me.Grid.Name = "Grid"
+        Me.Grid.Size = New System.Drawing.Size(415, 308)
+        Me.Grid.TabIndex = 2
+        Me.Grid.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.GridView1})
+        '
+        'GridView1
+        '
+        Me.GridView1.GridControl = Me.Grid
+        Me.GridView1.Name = "GridView1"
+        Me.GridView1.OptionsView.ShowGroupPanel = False
+        Me.GridView1.OptionsView.ShowPreview = True
+        Me.GridView1.PreviewFieldName = "CV_DESCRI"
+        '
         'frmConsultas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.cmdCancelar
-        Me.ClientSize = New System.Drawing.Size(358, 417)
+        Me.ClientSize = New System.Drawing.Size(421, 417)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
@@ -165,8 +225,12 @@ Partial Class frmConsultas
         Me.PanelControl1.ResumeLayout(False)
         CType(Me.PanelControl2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PanelControl2.ResumeLayout(False)
+        Me.PanelControl2.PerformLayout()
+        CType(Me.txtNombre.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.GridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -181,4 +245,9 @@ Partial Class frmConsultas
     Friend WithEvents btnContraerTodo As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents btnExpandirTodo As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents btnFiltrar As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents lblFiltro As Label
+    Friend WithEvents txtNombre As DevExpress.XtraEditors.TextEdit
+    Friend WithEvents cmdFiltrar As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents Grid As DevExpress.XtraGrid.GridControl
+    Friend WithEvents GridView1 As DevExpress.XtraGrid.Views.Grid.GridView
 End Class

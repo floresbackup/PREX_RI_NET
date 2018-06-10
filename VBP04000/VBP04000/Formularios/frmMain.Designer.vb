@@ -38,6 +38,8 @@ Partial Class frmMain
         Me.tabResultados = New DevExpress.XtraTab.XtraTabPage()
         Me.tabParametros = New DevExpress.XtraTab.XtraTabPage()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.GridParametros = New DevExpress.XtraGrid.GridControl()
+        Me.GridViewParametros = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.PanelControl1 = New DevExpress.XtraEditors.PanelControl()
         Me.LabelControl1 = New DevExpress.XtraEditors.LabelControl()
         Me.PictureEdit1 = New DevExpress.XtraEditors.PictureEdit()
@@ -60,15 +62,18 @@ Partial Class frmMain
         Me.PictureEdit3 = New DevExpress.XtraEditors.PictureEdit()
         Me.PictureEdit2 = New DevExpress.XtraEditors.PictureEdit()
         Me.tabPanel = New DevExpress.XtraTab.XtraTabControl()
-        Me.GridParametros = New DevExpress.XtraGrid.GridControl()
-        Me.GridViewParametros = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.Grid = New DevExpress.XtraGrid.GridControl()
+        Me.GridResultado = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.sbMain.SuspendLayout()
         Me.toolMain.SuspendLayout()
         CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanTop.SuspendLayout()
         CType(Me.picLogo.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tabResultados.SuspendLayout()
         Me.tabParametros.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
+        CType(Me.GridParametros, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.GridViewParametros, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PanelControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanelControl1.SuspendLayout()
         CType(Me.PictureEdit1.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -81,8 +86,8 @@ Partial Class frmMain
         CType(Me.PictureEdit2.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.tabPanel, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tabPanel.SuspendLayout()
-        CType(Me.GridParametros, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.GridViewParametros, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.GridResultado, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'sbMain
@@ -223,6 +228,7 @@ Partial Class frmMain
         '
         'tabResultados
         '
+        Me.tabResultados.Controls.Add(Me.Grid)
         Me.tabResultados.ImageOptions.Image = CType(resources.GetObject("tabResultados.ImageOptions.Image"), System.Drawing.Image)
         Me.tabResultados.Name = "tabResultados"
         Me.tabResultados.Size = New System.Drawing.Size(733, 294)
@@ -257,6 +263,78 @@ Partial Class frmMain
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(733, 294)
         Me.TableLayoutPanel1.TabIndex = 0
+        '
+        'GridParametros
+        '
+        Me.GridParametros.Cursor = System.Windows.Forms.Cursors.Default
+        Me.GridParametros.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GridParametros.EmbeddedNavigator.Buttons.Append.Visible = False
+        Me.GridParametros.EmbeddedNavigator.Buttons.CancelEdit.Visible = False
+        Me.GridParametros.EmbeddedNavigator.Buttons.Edit.Visible = False
+        Me.GridParametros.EmbeddedNavigator.Buttons.EndEdit.Visible = False
+        Me.GridParametros.EmbeddedNavigator.Buttons.Remove.Visible = False
+        Me.GridParametros.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridParametros.Location = New System.Drawing.Point(3, 162)
+        Me.GridParametros.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat
+        Me.GridParametros.LookAndFeel.UseWindowsXPTheme = True
+        Me.GridParametros.MainView = Me.GridViewParametros
+        Me.GridParametros.Name = "GridParametros"
+        Me.GridParametros.Size = New System.Drawing.Size(727, 129)
+        Me.GridParametros.TabIndex = 7
+        Me.GridParametros.UseEmbeddedNavigator = True
+        Me.GridParametros.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.GridViewParametros})
+        '
+        'GridViewParametros
+        '
+        Me.GridViewParametros.AppearancePrint.FooterPanel.Options.UseTextOptions = True
+        Me.GridViewParametros.AppearancePrint.FooterPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center
+        Me.GridViewParametros.AppearancePrint.FooterPanel.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center
+        Me.GridViewParametros.AppearancePrint.HeaderPanel.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.GridViewParametros.AppearancePrint.HeaderPanel.Options.UseFont = True
+        Me.GridViewParametros.GridControl = Me.GridParametros
+        Me.GridViewParametros.GroupPanelText = "Arrastre el encabezado de columna aquí para agrupar por esa columna"
+        Me.GridViewParametros.Name = "GridViewParametros"
+        Me.GridViewParametros.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.[False]
+        Me.GridViewParametros.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.[False]
+        Me.GridViewParametros.OptionsBehavior.AllowFixedGroups = DevExpress.Utils.DefaultBoolean.[False]
+        Me.GridViewParametros.OptionsBehavior.AllowSortAnimation = DevExpress.Utils.DefaultBoolean.[False]
+        Me.GridViewParametros.OptionsBehavior.AllowValidationErrors = False
+        Me.GridViewParametros.OptionsBehavior.AutoPopulateColumns = False
+        Me.GridViewParametros.OptionsBehavior.AutoSelectAllInEditor = False
+        Me.GridViewParametros.OptionsBehavior.AutoUpdateTotalSummary = False
+        Me.GridViewParametros.OptionsBehavior.Editable = False
+        Me.GridViewParametros.OptionsCustomization.AllowColumnMoving = False
+        Me.GridViewParametros.OptionsCustomization.AllowFilter = False
+        Me.GridViewParametros.OptionsCustomization.AllowGroup = False
+        Me.GridViewParametros.OptionsCustomization.AllowQuickHideColumns = False
+        Me.GridViewParametros.OptionsCustomization.AllowSort = False
+        Me.GridViewParametros.OptionsFilter.AllowColumnMRUFilterList = False
+        Me.GridViewParametros.OptionsFilter.AllowFilterEditor = False
+        Me.GridViewParametros.OptionsFilter.AllowFilterIncrementalSearch = False
+        Me.GridViewParametros.OptionsFilter.AllowMRUFilterList = False
+        Me.GridViewParametros.OptionsFilter.AllowMultiSelectInCheckedFilterPopup = False
+        Me.GridViewParametros.OptionsFilter.FilterEditorUseMenuForOperandsAndOperators = False
+        Me.GridViewParametros.OptionsFilter.ShowAllTableValuesInCheckedFilterPopup = False
+        Me.GridViewParametros.OptionsFind.AllowFindPanel = False
+        Me.GridViewParametros.OptionsFind.ShowClearButton = False
+        Me.GridViewParametros.OptionsFind.ShowCloseButton = False
+        Me.GridViewParametros.OptionsFind.ShowFindButton = False
+        Me.GridViewParametros.OptionsHint.ShowFooterHints = False
+        Me.GridViewParametros.OptionsMenu.EnableColumnMenu = False
+        Me.GridViewParametros.OptionsMenu.EnableFooterMenu = False
+        Me.GridViewParametros.OptionsMenu.EnableGroupPanelMenu = False
+        Me.GridViewParametros.OptionsMenu.ShowAutoFilterRowItem = False
+        Me.GridViewParametros.OptionsMenu.ShowDateTimeGroupIntervalItems = False
+        Me.GridViewParametros.OptionsMenu.ShowGroupSortSummaryItems = False
+        Me.GridViewParametros.OptionsMenu.ShowSplitItem = False
+        Me.GridViewParametros.OptionsNavigation.AutoMoveRowFocus = False
+        Me.GridViewParametros.OptionsNavigation.UseOfficePageNavigation = False
+        Me.GridViewParametros.OptionsNavigation.UseTabKey = False
+        Me.GridViewParametros.OptionsView.ColumnAutoWidth = False
+        Me.GridViewParametros.OptionsView.ShowGroupExpandCollapseButtons = False
+        Me.GridViewParametros.OptionsView.ShowGroupPanel = False
+        Me.GridViewParametros.PaintStyleName = "WindowsXP"
+        Me.GridViewParametros.RowHeight = 19
         '
         'PanelControl1
         '
@@ -479,77 +557,20 @@ Partial Class frmMain
         Me.tabPanel.TabIndex = 16
         Me.tabPanel.TabPages.AddRange(New DevExpress.XtraTab.XtraTabPage() {Me.tabParametros, Me.tabResultados})
         '
-        'GridParametros
+        'Grid
         '
-        Me.GridParametros.Cursor = System.Windows.Forms.Cursors.Default
-        Me.GridParametros.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GridParametros.EmbeddedNavigator.Buttons.Append.Visible = False
-        Me.GridParametros.EmbeddedNavigator.Buttons.CancelEdit.Visible = False
-        Me.GridParametros.EmbeddedNavigator.Buttons.Edit.Visible = False
-        Me.GridParametros.EmbeddedNavigator.Buttons.EndEdit.Visible = False
-        Me.GridParametros.EmbeddedNavigator.Buttons.Remove.Visible = False
-        Me.GridParametros.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GridParametros.Location = New System.Drawing.Point(3, 162)
-        Me.GridParametros.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat
-        Me.GridParametros.LookAndFeel.UseWindowsXPTheme = True
-        Me.GridParametros.MainView = Me.GridViewParametros
-        Me.GridParametros.Name = "GridParametros"
-        Me.GridParametros.Size = New System.Drawing.Size(727, 129)
-        Me.GridParametros.TabIndex = 7
-        Me.GridParametros.UseEmbeddedNavigator = True
-        Me.GridParametros.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.GridViewParametros})
+        Me.Grid.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Grid.Location = New System.Drawing.Point(0, 0)
+        Me.Grid.MainView = Me.GridResultado
+        Me.Grid.Name = "Grid"
+        Me.Grid.Size = New System.Drawing.Size(733, 294)
+        Me.Grid.TabIndex = 0
+        Me.Grid.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.GridResultado})
         '
-        'GridViewParametros
+        'GridResultado
         '
-        Me.GridViewParametros.AppearancePrint.FooterPanel.Options.UseTextOptions = True
-        Me.GridViewParametros.AppearancePrint.FooterPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center
-        Me.GridViewParametros.AppearancePrint.FooterPanel.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center
-        Me.GridViewParametros.AppearancePrint.HeaderPanel.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.GridViewParametros.AppearancePrint.HeaderPanel.Options.UseFont = True
-        Me.GridViewParametros.GridControl = Me.GridParametros
-        Me.GridViewParametros.GroupPanelText = "Arrastre el encabezado de columna aquí para agrupar por esa columna"
-        Me.GridViewParametros.Name = "GridViewParametros"
-        Me.GridViewParametros.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.[False]
-        Me.GridViewParametros.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.[False]
-        Me.GridViewParametros.OptionsBehavior.AllowFixedGroups = DevExpress.Utils.DefaultBoolean.[False]
-        Me.GridViewParametros.OptionsBehavior.AllowSortAnimation = DevExpress.Utils.DefaultBoolean.[False]
-        Me.GridViewParametros.OptionsBehavior.AllowValidationErrors = False
-        Me.GridViewParametros.OptionsBehavior.AutoPopulateColumns = False
-        Me.GridViewParametros.OptionsBehavior.AutoSelectAllInEditor = False
-        Me.GridViewParametros.OptionsBehavior.AutoUpdateTotalSummary = False
-        Me.GridViewParametros.OptionsBehavior.Editable = False
-        Me.GridViewParametros.OptionsCustomization.AllowColumnMoving = False
-        Me.GridViewParametros.OptionsCustomization.AllowFilter = False
-        Me.GridViewParametros.OptionsCustomization.AllowGroup = False
-        Me.GridViewParametros.OptionsCustomization.AllowQuickHideColumns = False
-        Me.GridViewParametros.OptionsCustomization.AllowSort = False
-        Me.GridViewParametros.OptionsFilter.AllowColumnMRUFilterList = False
-        Me.GridViewParametros.OptionsFilter.AllowFilterEditor = False
-        Me.GridViewParametros.OptionsFilter.AllowFilterIncrementalSearch = False
-        Me.GridViewParametros.OptionsFilter.AllowMRUFilterList = False
-        Me.GridViewParametros.OptionsFilter.AllowMultiSelectInCheckedFilterPopup = False
-        Me.GridViewParametros.OptionsFilter.FilterEditorUseMenuForOperandsAndOperators = False
-        Me.GridViewParametros.OptionsFilter.ShowAllTableValuesInCheckedFilterPopup = False
-        Me.GridViewParametros.OptionsFind.AllowFindPanel = False
-        Me.GridViewParametros.OptionsFind.ShowClearButton = False
-        Me.GridViewParametros.OptionsFind.ShowCloseButton = False
-        Me.GridViewParametros.OptionsFind.ShowFindButton = False
-        Me.GridViewParametros.OptionsHint.ShowFooterHints = False
-        Me.GridViewParametros.OptionsMenu.EnableColumnMenu = False
-        Me.GridViewParametros.OptionsMenu.EnableFooterMenu = False
-        Me.GridViewParametros.OptionsMenu.EnableGroupPanelMenu = False
-        Me.GridViewParametros.OptionsMenu.ShowAutoFilterRowItem = False
-        Me.GridViewParametros.OptionsMenu.ShowDateTimeGroupIntervalItems = False
-        Me.GridViewParametros.OptionsMenu.ShowGroupSortSummaryItems = False
-        Me.GridViewParametros.OptionsMenu.ShowSplitItem = False
-        Me.GridViewParametros.OptionsNavigation.AutoMoveRowFocus = False
-        Me.GridViewParametros.OptionsNavigation.UseOfficePageNavigation = False
-        Me.GridViewParametros.OptionsNavigation.UseTabKey = False
-        Me.GridViewParametros.OptionsView.ColumnAutoWidth = False
-        Me.GridViewParametros.OptionsView.ShowGroupExpandCollapseButtons = False
-        Me.GridViewParametros.OptionsView.ShowGroupPanel = False
-        Me.GridViewParametros.PaintStyleName = "WindowsXP"
-        Me.GridViewParametros.RowHeight = 19
+        Me.GridResultado.GridControl = Me.Grid
+        Me.GridResultado.Name = "GridResultado"
         '
         'frmMain
         '
@@ -574,8 +595,11 @@ Partial Class frmMain
         Me.PanTop.ResumeLayout(False)
         Me.PanTop.PerformLayout()
         CType(Me.picLogo.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tabResultados.ResumeLayout(False)
         Me.tabParametros.ResumeLayout(False)
         Me.TableLayoutPanel1.ResumeLayout(False)
+        CType(Me.GridParametros, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.GridViewParametros, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PanelControl1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PanelControl1.ResumeLayout(False)
         Me.PanelControl1.PerformLayout()
@@ -591,8 +615,8 @@ Partial Class frmMain
         CType(Me.PictureEdit2.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.tabPanel, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tabPanel.ResumeLayout(False)
-        CType(Me.GridParametros, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.GridViewParametros, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.GridResultado, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -639,4 +663,6 @@ Partial Class frmMain
     Friend WithEvents PictureEdit2 As DevExpress.XtraEditors.PictureEdit
     Friend WithEvents GridParametros As DevExpress.XtraGrid.GridControl
     Friend WithEvents GridViewParametros As DevExpress.XtraGrid.Views.Grid.GridView
+    Friend WithEvents Grid As DevExpress.XtraGrid.GridControl
+    Friend WithEvents GridResultado As DevExpress.XtraGrid.Views.Grid.GridView
 End Class

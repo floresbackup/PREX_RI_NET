@@ -149,6 +149,12 @@
     <Compile Include="Formularios\frmConsultas.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\frmError.designer.vb">
+      <DependentUpon>frmError.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\frmError.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\frmMain.Designer.vb">
       <DependentUpon>frmMain.vb</DependentUpon>
     </Compile>
@@ -177,6 +183,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Formularios\frmConsultas.resx">
       <DependentUpon>frmConsultas.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\frmError.resx">
+      <DependentUpon>frmError.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>

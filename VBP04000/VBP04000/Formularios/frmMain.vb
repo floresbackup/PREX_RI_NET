@@ -269,9 +269,13 @@ Public Class frmMain
     End Sub
 
     Private Sub btnCancelar_click(sender As Object, e As EventArgs) Handles btnCancelar.Click
-        NuevaConsulta()
-        LimpiarConsultaActual()
-        HabilitarEjecucion(False)
+        Try
+            NuevaConsulta()
+            LimpiarConsultaActual()
+            HabilitarEjecucion(False)
+        Catch ex As Exception
+            TratarError(ex)
+        End Try
     End Sub
 
     Private Sub EjecutarConsulta()
@@ -283,49 +287,53 @@ Public Class frmMain
 
     Private Sub NuevaConsulta()
 
-        On Error Resume Next
+        Try
 
-        With Grid
-            .DatabaseName = ""
-            .RecordSource = ""
-            .Rebind
-        End With
+            Grid.DataSource = Nothing
+            GridResultado.Columns.Clear()
 
-        Habilitar(False)
+            Habilitar(False)
 
-        HabilitarEjecucion(True)
-        TAB()
-        'tabPanel.SelectedTabPageIndex = 0
-        tabParametros.Select()
-        'LimpiarConsultaActual
-        'HabilitarEjecucion False
-
+            HabilitarEjecucion(True)
+            TAB()
+            'tabPanel.SelectedTabPageIndex = 0
+            tabParametros.Select()
+            'LimpiarConsultaActual
+            'HabilitarEjecucion False
+        Catch ex As Exception
+            Throw New Exception("Ocurrió un error en NuevaConsulta", ex)
+        End Try
     End Sub
 
     Private Sub LimpiarConsultaActual()
+        Try
 
-        udtConsultaActual.Detalles.Clear()
-        GridParametros.ItemCount = 0
-        GridParametros.Refresh()
+            udtConsultaActual.Detalles.Clear()
+            GridParametros.DataSource = Nothing
+            GridViewParametros.Columns.Clear()
+            GridParametros.Refresh()
 
-        With udtConsultaActual
-            .Categoria = ""
-            .CODIGO = 0
-            .Descripcion = ""
-            .Layout = ""
-            .Nombre = ""
-            .SQLFinal = ""
-            .SQLInicial = ""
-            .NombreSP = ""
-            .TipoInstruccion = 0
-            .CadenaConexion = ""
-        End With
+            With udtConsultaActual
+                .Categoria = ""
+                .CODIGO = 0
+                .Descripcion = ""
+                .Layout = ""
+                .Nombre = ""
+                .SQLFinal = ""
+                .SQLInicial = ""
+                .NombreSP = ""
+                .TipoInstruccion = 0
+                .CadenaConexion = ""
+            End With
 
-        lblCategoriaConsulta.Text = ""
-        lblCodigoConsulta.Text = ""
-        lblDescripcionConsulta.Text = ""
-        lblNombreConsulta.Text = ""
+            lblCategoriaConsulta.Text = ""
+            lblCodigoConsulta.Text = ""
+            lblDescripcionConsulta.Text = ""
+            lblNombreConsulta.Text = ""
 
+        Catch ex As Exception
+            Throw New Exception("Ocurrió un error LimpiarConsultaActual", ex)
+        End Try
     End Sub
 
     Private Function Validar() As Boolean
@@ -376,6 +384,7 @@ Public Class frmMain
             Try
 
                 Dim sSQL As String = String.Empty
+                Dim coneccion As String
 
                 If sCustomSQL <> vbNullString Then
                     sSQL = sCustomSQL
@@ -383,56 +392,68 @@ Public Class frmMain
                     sSQL = ConformarSQL()
                 End If
 
-                With Grid
+                '    With GridResultado
 
-                    If udtConsultaActual.Layout <> "" Then
-                        .LoadLayout App.Path & "\LAYOUTS\" & udtConsultaActual.Layout
-            End If
+                '        'If udtConsultaActual.Layout <> "" Then
+                '        '    .LoadLayout App.Path & "\LAYOUTS\" & udtConsultaActual.Layout
+                '        'End If
 
-                    If udtConsultaActual.CadenaConexion = "" Then
-                        .DatabaseName = CONN_LOCAL
-                    Else
-                        .DatabaseName = udtConsultaActual.CadenaConexion
-                    End If
+                '        If udtConsultaActual.CadenaConexion = "" Then
+                '            .DatabaseName = CONN_LOCAL
+                '        Else
+                '            .DatabaseName = udtConsultaActual.CadenaConexion
+                '        End If
 
-                    .RecordSource = sSQL
+                '        .RecordSource = sSQL
 
-                    If udtConsultaActual.Layout <> "" Then
+                '        If udtConsultaActual.Layout <> "" Then
 
-                        .Rebind True
+                '            .Rebind True
 
-            Else
+                'Else
 
-                        .Rebind
+                '            .Rebind
 
-                        AjusteColumnas
-                        FormatearColumnas
+                '            AjusteColumnas
+                '            FormatearColumnas
 
-                    End If
+                '        End If
 
-                End With
+                '    End With
+                If udtConsultaActual.CadenaConexion = "" Then
+                    coneccion = CONN_LOCAL
+                Else
+                    coneccion = udtConsultaActual.CadenaConexion
+                End If
 
+                Dim ad As OleDb.OleDbDataAdapter = New OleDb.OleDbDataAdapter(sSQL, coneccion)
+                Dim dt As New DataTable
+                ad.Fill(dt)
 
-                If Grid.RowCount > 0 Then
-                    Habilitar True
-            Tabs.Tabs(2).Selected = True
-                    HabilitarEjecucion True
+                Grid.DataSource = dt
+                Grid.RefreshDataSource()
+                Grid.Refresh()
 
-      Set oCommand = dckResultados.Commands("btnCuadroAgrupar")
+                If GridResultado.RowCount > 0 Then
+                    Habilitar(True)
+                    tabResultados.Select()
+                    HabilitarEjecucion(True)
 
-            If Grid.GroupByBoxVisible = True Then
-                        oCommand.State = dsxpCommandToolButtonStateChecked
-                    Else
-                        oCommand.State = dsxpCommandToolButtonStateUnchecked
-                    End If
+                    '              set oCommand = dckResultados.Commands("btnCuadroAgrupar")
 
-      Set oCommand = dckResultados.Commands("btnFilaTotales")
+                    '              If Grid.GroupByBoxVisible = True Then
+                    '                  oCommand.State = dsxpCommandToolButtonStateChecked
+                    '              Else
+                    '                  oCommand.State = dsxpCommandToolButtonStateUnchecked
+                    '              End If
 
-            If Grid.GroupFooterStyle = jgexTotalsGroupFooter Then
-                        oCommand.State = dsxpCommandToolButtonStateChecked
-                    Else
-                        oCommand.State = dsxpCommandToolButtonStateUnchecked
-                    End If
+                    'Set oCommand = dckResultados.Commands("btnFilaTotales")
+
+                    '      If Grid.GroupFooterStyle = jgexTotalsGroupFooter Then
+                    '                  oCommand.State = dsxpCommandToolButtonStateChecked
+                    '              Else
+                    '                  oCommand.State = dsxpCommandToolButtonStateUnchecked
+                    '              End If
 
                 Else
                     MensajeError("No se han encontrado resultados según el criterio de búsqueda utilizado")
@@ -530,8 +551,8 @@ Public Class frmMain
 
         CONSULTA_SELECCIONADA = 0
 
-        Dim frmCons = New frmConsultas()
-        frmCons.ShowModal()
+        Dim frmCons As New frmConsultas()
+        frmCons.ShowDialog()
 
         If CONSULTA_SELECCIONADA > 0 Then
 
@@ -636,11 +657,11 @@ Public Class frmMain
             rstAux = Nothing
 
             If i > 0 Then
-                GridParametros.Enabled = True
-                GridParametros.ItemCount = i
-                GridParametros.Refresh()
-                GridParametros.SetFocus
-                'SendKeys("{RIGHT}")
+                'GridParametros.Enabled = True
+                'GridParametros.ItemCount = i
+                'GridParametros.Refresh()
+                'GridParametros.SetFocus
+                ''SendKeys("{RIGHT}")
             End If
 
             Exit Sub
