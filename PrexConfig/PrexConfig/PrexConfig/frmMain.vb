@@ -54,7 +54,19 @@ Public Class frmMain
 
    End Sub
 
-   Private Sub btnConnString_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnConnString.Click
+    Private Sub SimpleButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SimpleButton1.Click
+
+        GuardarDialogo.OverwritePrompt = False
+        GuardarDialogo.Title = "Especifique el archivo de configuración SG"
+        GuardarDialogo.Filter = "Archivos de configuración (*.xml)|*.xml"
+        GuardarDialogo.InitialDirectory = txtSGLibrary.Text
+        If GuardarDialogo.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            txtSGLibrary.Text = System.IO.Path.GetFileName(GuardarDialogo.FileName)
+        End If
+
+    End Sub
+
+    Private Sub btnConnString_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnConnString.Click
       txtConnString.Text = CrearConnString(Me)
    End Sub
 
@@ -112,54 +124,135 @@ Public Class frmMain
 
    End Sub
 
-   Private Sub CargarXML()
+    Private Sub CargarXML()
 
-      Try
+        Try
 
-         Dim sTemp As String
-         Dim oItem As ListViewItem
+            Dim sTemp As String
+            Dim oItem As ListViewItem
 
-         If File.Exists(ARCHIVO_CONFIG) Then
-            oConfig.ReadXml(ARCHIVO_CONFIG)
+            If File.Exists(ARCHIVO_CONFIG) Then
+                oConfig.ReadXml(ARCHIVO_CONFIG)
 
-            For Each row As DataRow In oConfig.Tables("CONFIG").Rows
+                For Each row As DataRow In oConfig.Tables("CONFIG").Rows
 
-               sTemp = row("VALOR").ToString
+                    sTemp = row("VALOR").ToString
 
-               Select Case row("NOMBRE").ToString
+                    Select Case row("NOMBRE").ToString
 
-                  Case "CONN_LOCAL"
-                     sTemp = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
+                        Case "CONN_LOCAL"
+                            sTemp = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
 
-                     txtConnString.Text = sTemp.Substring(0, sTemp.LastIndexOf(";"))
-                     sTemp = sTemp.Substring(sTemp.LastIndexOf(";"))
-                     txtPassword.Text = sTemp.Substring(sTemp.LastIndexOf("=") + 1)
+                            txtConnString.Text = sTemp.Substring(0, sTemp.LastIndexOf(";"))
+                            ' sTemp = sTemp.Substring(sTemp.LastIndexOf(";"))
+                            txtPassword.Text = GetPasswordFromConnection(sTemp) ' sTemp.Substring(sTemp.LastIndexOf("=") + 1)
+                            txtUsuario.Text = GetUserNameFromConnection(sTemp)
+                            txtBaseDeDatos.Text = GetDBNameFromConnection(sTemp)
+                            txtServidor.Text = GetServerFromConnection(sTemp)
+                            ckSeguridadIntegrada.Checked = sTemp.Contains("Integrated Security=true")
+                        Case "FFECHA"
+                            txtFFecha.Text = sTemp
 
-                  Case "FFECHA"
-                     txtFFecha.Text = sTemp
+                        Case "CARPETA_LOCAL"
+                            txtCarpetaLocal.Text = sTemp
 
-                  Case "CARPETA_LOCAL"
-                     txtCarpetaLocal.Text = sTemp
+                        Case "NOMBRE_INI_LOCAL"
+                            txtArchivoConfig.Text = sTemp
+                        Case "SG_CONFIG"
+                            txtSGLibrary.Text = sTemp
 
-                  Case "NOMBRE_INI_LOCAL"
-                     txtArchivoConfig.Text = sTemp
+                        Case Else
+                            oItem = lvConfig.Items.Add(row("NOMBRE").ToString)
+                            oItem.SubItems.Add(sTemp)
 
-                  Case Else
-                     oItem = lvConfig.Items.Add(row("NOMBRE").ToString)
-                     oItem.SubItems.Add(sTemp)
+                    End Select
 
-               End Select
-            Next
+                Next
 
-         End If
+            End If
+            lvConfig.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
+        Catch ex As Exception
+            MessageBox.Show(ex.Source & " - " & ex.Message, "Error")
+        End Try
 
-      Catch ex As Exception
-         MessageBox.Show(ex.Source & " - " & ex.Message, "Error")
-      End Try
+    End Sub
+    Private Function ReemplazarValorConexion(value As String, conexion As String) As String
+        Dim str As New System.Text.StringBuilder()
+        For Each item As String In conexion.Split(";")
+            If Not item.Contains(value) AndAlso item.Trim().Length > 1 Then
+                str.Append(item & ";")
+            End If
+        Next
+        Return str.ToString()
 
-   End Sub
+        'If conexion.Contains(value) Then
+        '    Dim inicio As Integer = conexion.IndexOf(value, 0) - 1
+        '    Dim fin As Integer = conexion.IndexOf(";", inicio + 1)
+        '    If fin <= 0 Then
+        '        fin = conexion.Length - 1
+        '    End If
+        '    Dim reemplazar As String = conexion.Substring(inicio, fin - inicio)
+        '    conexion = conexion.Replace(reemplazar, String.Empty)
+        'End If
+        'Return conexion
+    End Function
 
-   Private Sub Guardar()
+    Private Function GetConnectionStringWithOutLogin() As String
+        Dim conexion As String = ReemplazarValorConexion("User Id=", txtConnString.Text)
+        conexion = ReemplazarValorConexion("Password=", conexion)
+        conexion = ReemplazarValorConexion("Initial Catalog=", conexion)
+        conexion = ReemplazarValorConexion("Data Source=", conexion)
+
+        Return conexion.Replace(";;", ";").Replace("  ", " ").Trim()
+    End Function
+
+    Private Function GetFullConnectionString() As String
+        Dim con As String = GetConnectionStringWithOutLogin()
+        If ckSeguridadIntegrada.Checked Then
+            con &= ";Integrated Security=true;"
+        Else
+            con &= ";Password=" & txtPassword.Text.Trim() & ";User Id=" & txtUsuario.Text.Trim()
+        End If
+        con &= ";Initial Catalog=" & txtBaseDeDatos.Text.Trim() & ";Data Source=" & txtServidor.Text.Trim()
+        'Initial Catalog=GESTIONRI_PNP;Data Source=NTB-EMILSE\SQLEXPRESS
+        Return con.Replace(";;", ";")
+    End Function
+
+    Private Function GetUserNameFromConnection(conexion As String) As String
+        For Each item As String In conexion.Split(";")
+            If item.Contains("User Id=") Then
+                Return item.Replace(";", String.Empty).Replace("User Id=", String.Empty)
+            End If
+        Next
+        Return String.Empty
+    End Function
+    Private Function GetDBNameFromConnection(conexion As String) As String
+        For Each item As String In conexion.Split(";")
+            If item.Contains("Initial Catalog=") Then
+                Return item.Replace(";", String.Empty).Replace("Initial Catalog=", String.Empty)
+            End If
+        Next
+        Return String.Empty
+    End Function
+    Private Function GetServerFromConnection(conexion As String) As String
+        For Each item As String In conexion.Split(";")
+            If item.Contains("Data Source=") Then
+                Return item.Replace(";", String.Empty).Replace("Data Source=", String.Empty)
+            End If
+        Next
+        Return String.Empty
+    End Function
+    Private Function GetPasswordFromConnection(conexion As String) As String
+        For Each item As String In conexion.Split(";")
+            If item.Contains("Password=") Then
+                Return item.Replace(";", String.Empty).Replace("Password=", String.Empty)
+            End If
+        Next
+
+        Return String.Empty
+    End Function
+
+    Private Sub Guardar()
 
       Try
 
@@ -170,8 +263,8 @@ Public Class frmMain
          'Conexión Base de datos
          dr = dt.NewRow()
          dr("NOMBRE") = "CONN_LOCAL"
-         dr("VALOR") = Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(txtConnString.Text & ";Password=" & txtPassword.Text))
-         dt.Rows.Add(dr)
+            dr("VALOR") = Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(GetFullConnectionString()))
+            dt.Rows.Add(dr)
          ds.AcceptChanges()
 
          'Formato de Fecha del Servidor SQL
@@ -188,8 +281,15 @@ Public Class frmMain
          dt.Rows.Add(dr)
          ds.AcceptChanges()
 
-         'Nombre de archivo de configuración local
-         dr = dt.NewRow()
+            'Ruta configuracion SG
+            dr = dt.NewRow()
+            dr("NOMBRE") = "SG_CONFIG"
+            dr("VALOR") = txtSGLibrary.Text
+            dt.Rows.Add(dr)
+            ds.AcceptChanges()
+
+            'Nombre de archivo de configuración local
+            dr = dt.NewRow()
          dr("NOMBRE") = "NOMBRE_INI_LOCAL"
          dr("VALOR") = txtArchivoConfig.Text
          dt.Rows.Add(dr)
@@ -229,4 +329,9 @@ Public Class frmMain
 
    End Sub
 
+    Private Sub ckSeguridadIntegrada_CheckedChanged(sender As Object, e As EventArgs) Handles ckSeguridadIntegrada.CheckedChanged
+        txtUsuario.Enabled = ckSeguridadIntegrada.CheckState = CheckState.Unchecked
+        txtPassword.Enabled = ckSeguridadIntegrada.CheckState = CheckState.Unchecked
+
+    End Sub
 End Class
