@@ -31,6 +31,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VBP06499", "..\VBP06499\VBP
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VBP04000", "..\VBP04000\VBP04000\VBP04000.vbproj", "{AB4B5CFC-CCCA-47D2-ACF8-A1F03FBACCDF}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PrexEncrypt", "..\PrexEncrypt\PrexEncrypt.vbproj", "{676EDA5E-7771-4E27-AA9B-FB663075F1EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -151,6 +153,14 @@ Global
 		{AB4B5CFC-CCCA-47D2-ACF8-A1F03FBACCDF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB4B5CFC-CCCA-47D2-ACF8-A1F03FBACCDF}.Release|x86.ActiveCfg = Release|x86
 		{AB4B5CFC-CCCA-47D2-ACF8-A1F03FBACCDF}.Release|x86.Build.0 = Release|x86
+		{676EDA5E-7771-4E27-AA9B-FB663075F1EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{676EDA5E-7771-4E27-AA9B-FB663075F1EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{676EDA5E-7771-4E27-AA9B-FB663075F1EC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{676EDA5E-7771-4E27-AA9B-FB663075F1EC}.Debug|x86.Build.0 = Debug|Any CPU
+		{676EDA5E-7771-4E27-AA9B-FB663075F1EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{676EDA5E-7771-4E27-AA9B-FB663075F1EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{676EDA5E-7771-4E27-AA9B-FB663075F1EC}.Release|x86.ActiveCfg = Release|Any CPU
+		{676EDA5E-7771-4E27-AA9B-FB663075F1EC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
