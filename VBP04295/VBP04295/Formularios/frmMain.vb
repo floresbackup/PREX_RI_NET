@@ -453,12 +453,34 @@ Public Class frmMain
         End If
     End Function
 
+    Private Sub RefreshCombosVariables()
+        Try
+            Dim i As Integer
+            For i = 0 To PanControles.Controls.Count - 1
+                If TypeOf (PanControles.Controls.Item(i)) Is ComboBox Then
+                    Dim combo As ComboBox = CType(PanControles.Controls.Item(i), ComboBox)
+                    Dim txtSelected = combo.SelectedItem
+                    Dim oVar As clsVariables
+                    For Each oVar In oVariables
+                        If combo.Name = "_" & oVar.Nombre Then
+                            combo.Items.Clear()
+                            CargarCombo(combo, oVar.HelpQuery)
+                            combo.SelectedItem = txtSelected
+                        End If
+                    Next
+                End If
+            Next
+        Catch ex As Exception
+            TratarError(ex, "RefreshCombosVariables")
+        End Try
+    End Sub
+
     Private Sub btnEjecutar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEjecutar.Click
         If DatosOK() Then
             Try
                 Me.Cursor = Cursors.WaitCursor
                 Ejecutar()
-
+                RefreshCombosVariables()
             Finally
                 Me.Cursor = Cursors.Default
             End Try

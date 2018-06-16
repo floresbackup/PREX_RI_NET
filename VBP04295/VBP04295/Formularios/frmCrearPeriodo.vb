@@ -184,7 +184,9 @@ Public Class frmCrearPeriodo
             nCuadro = 411 Then
 
 
-                frmTablaGeneral.PasarInfo("SELECT  TG_CODCON AS [Cód.], TG_DESCRI AS [Moneda] FROM TABGEN WHERE TG_CODTAB = 100 AND TG_CODCON <> 999999 ORDER BY TG_CODCON", CONN_LOCAL, 1, True, "Indique las Monedas/Especies")
+                frmTablaGeneral.PasarInfo("SELECT  TG_CODCON AS [Cód.], TG_DESCRI AS [Moneda] " &
+                                          "FROM TABGEN WHERE TG_CODTAB = 100 AND TG_CODCON <> 999999 " &
+                                          "ORDER BY TG_CODCON", CONN_LOCAL, 1, True, "Indique las Monedas/Especies", )
 
                 If frmTablaGeneral.ShowDialog = Windows.Forms.DialogResult.Cancel Then
                Exit Function

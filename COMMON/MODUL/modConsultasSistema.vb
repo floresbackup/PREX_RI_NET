@@ -161,7 +161,7 @@ Module modConsultasSistema
          oVar.Key = oVar.Nombre
             oVariables.Add(oVar, oVar.Key)
 
-         oVar = Nothing
+            oVar = Nothing
 
       Next
 
