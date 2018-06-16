@@ -202,6 +202,7 @@ Public Class frmMain
         conexion = ReemplazarValorConexion("Password=", conexion)
         conexion = ReemplazarValorConexion("Initial Catalog=", conexion)
         conexion = ReemplazarValorConexion("Data Source=", conexion)
+        conexion = ReemplazarValorConexion("Integrated Security=", conexion)
 
         Return conexion.Replace(";;", ";").Replace("  ", " ").Trim()
     End Function
@@ -211,7 +212,7 @@ Public Class frmMain
         If ckSeguridadIntegrada.Checked Then
             con &= ";Integrated Security=true;"
         Else
-            con &= ";Password=" & txtPassword.Text.Trim() & ";User Id=" & txtUsuario.Text.Trim()
+            con &= "Integrated Security=SSPI;Password=" & txtPassword.Text.Trim() & ";User Id=" & txtUsuario.Text.Trim()
         End If
         con &= ";Initial Catalog=" & txtBaseDeDatos.Text.Trim() & ";Data Source=" & txtServidor.Text.Trim()
         'Initial Catalog=GESTIONRI_PNP;Data Source=NTB-EMILSE\SQLEXPRESS
