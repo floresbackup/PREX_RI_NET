@@ -159,8 +159,8 @@ Global
 		{676EDA5E-7771-4E27-AA9B-FB663075F1EC}.Debug|x86.Build.0 = Debug|Any CPU
 		{676EDA5E-7771-4E27-AA9B-FB663075F1EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{676EDA5E-7771-4E27-AA9B-FB663075F1EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{676EDA5E-7771-4E27-AA9B-FB663075F1EC}.Release|x86.ActiveCfg = Release|Any CPU
-		{676EDA5E-7771-4E27-AA9B-FB663075F1EC}.Release|x86.Build.0 = Release|Any CPU
+		{676EDA5E-7771-4E27-AA9B-FB663075F1EC}.Release|x86.ActiveCfg = Release|x86
+		{676EDA5E-7771-4E27-AA9B-FB663075F1EC}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
