@@ -47,9 +47,9 @@ Partial Class frmMain
         Me.btnQuitar = New DevExpress.XtraEditors.SimpleButton()
         Me.DsConfig = New PrexConfig.dsConfig()
         Me.CONFIGBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.SimpleButton1 = New DevExpress.XtraEditors.SimpleButton()
+        Me.btnBuscarSgLibrary = New DevExpress.XtraEditors.SimpleButton()
         Me.txtSGLibrary = New DevExpress.XtraEditors.TextEdit()
-        Me.LabelControl7 = New DevExpress.XtraEditors.LabelControl()
+        Me.lblSgLibrary = New DevExpress.XtraEditors.LabelControl()
         Me.LabelControl6 = New DevExpress.XtraEditors.LabelControl()
         Me.txtUsuario = New DevExpress.XtraEditors.TextEdit()
         Me.ckSeguridadIntegrada = New DevExpress.XtraEditors.CheckEdit()
@@ -209,10 +209,10 @@ Partial Class frmMain
         Me.lvConfig.FullRowSelect = True
         Me.lvConfig.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.lvConfig.HideSelection = False
-        Me.lvConfig.Location = New System.Drawing.Point(39, 314)
+        Me.lvConfig.Location = New System.Drawing.Point(39, 291)
         Me.lvConfig.MultiSelect = False
         Me.lvConfig.Name = "lvConfig"
-        Me.lvConfig.Size = New System.Drawing.Size(593, 80)
+        Me.lvConfig.Size = New System.Drawing.Size(593, 103)
         Me.lvConfig.TabIndex = 28
         Me.lvConfig.UseCompatibleStateImageBehavior = False
         Me.lvConfig.View = System.Windows.Forms.View.Details
@@ -253,13 +253,13 @@ Partial Class frmMain
         Me.CONFIGBindingSource.DataMember = "CONFIG"
         Me.CONFIGBindingSource.DataSource = Me.DsConfig
         '
-        'SimpleButton1
+        'btnBuscarSgLibrary
         '
-        Me.SimpleButton1.Location = New System.Drawing.Point(607, 290)
-        Me.SimpleButton1.Name = "SimpleButton1"
-        Me.SimpleButton1.Size = New System.Drawing.Size(25, 21)
-        Me.SimpleButton1.TabIndex = 33
-        Me.SimpleButton1.Text = "..."
+        Me.btnBuscarSgLibrary.Location = New System.Drawing.Point(607, 290)
+        Me.btnBuscarSgLibrary.Name = "btnBuscarSgLibrary"
+        Me.btnBuscarSgLibrary.Size = New System.Drawing.Size(25, 21)
+        Me.btnBuscarSgLibrary.TabIndex = 33
+        Me.btnBuscarSgLibrary.Text = "..."
         '
         'txtSGLibrary
         '
@@ -269,13 +269,13 @@ Partial Class frmMain
         Me.txtSGLibrary.Size = New System.Drawing.Size(452, 22)
         Me.txtSGLibrary.TabIndex = 31
         '
-        'LabelControl7
+        'lblSgLibrary
         '
-        Me.LabelControl7.Location = New System.Drawing.Point(48, 294)
-        Me.LabelControl7.Name = "LabelControl7"
-        Me.LabelControl7.Size = New System.Drawing.Size(95, 13)
-        Me.LabelControl7.TabIndex = 32
-        Me.LabelControl7.Text = "Ruta config.xml SG:"
+        Me.lblSgLibrary.Location = New System.Drawing.Point(48, 294)
+        Me.lblSgLibrary.Name = "lblSgLibrary"
+        Me.lblSgLibrary.Size = New System.Drawing.Size(95, 13)
+        Me.lblSgLibrary.TabIndex = 32
+        Me.lblSgLibrary.Text = "Ruta config.xml SG:"
         '
         'LabelControl6
         '
@@ -341,9 +341,9 @@ Partial Class frmMain
         Me.BackgroundImageStore = Global.PrexConfig.My.Resources.Resources.fondo_degrade_prex_con_cuadro2
         Me.ClientSize = New System.Drawing.Size(643, 461)
         Me.Controls.Add(Me.ckSeguridadIntegrada)
-        Me.Controls.Add(Me.SimpleButton1)
+        Me.Controls.Add(Me.btnBuscarSgLibrary)
         Me.Controls.Add(Me.txtSGLibrary)
-        Me.Controls.Add(Me.LabelControl7)
+        Me.Controls.Add(Me.lblSgLibrary)
         Me.Controls.Add(Me.btnQuitar)
         Me.Controls.Add(Me.btnAgregar)
         Me.Controls.Add(Me.lvConfig)
@@ -417,9 +417,9 @@ Partial Class frmMain
    Friend WithEvents Valor As System.Windows.Forms.ColumnHeader
    Friend WithEvents btnAgregar As DevExpress.XtraEditors.SimpleButton
    Friend WithEvents btnQuitar As DevExpress.XtraEditors.SimpleButton
-    Friend WithEvents SimpleButton1 As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents btnBuscarSgLibrary As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents txtSGLibrary As DevExpress.XtraEditors.TextEdit
-    Friend WithEvents LabelControl7 As DevExpress.XtraEditors.LabelControl
+    Friend WithEvents lblSgLibrary As DevExpress.XtraEditors.LabelControl
     Friend WithEvents LabelControl6 As DevExpress.XtraEditors.LabelControl
     Friend WithEvents txtUsuario As DevExpress.XtraEditors.TextEdit
     Friend WithEvents ckSeguridadIntegrada As DevExpress.XtraEditors.CheckEdit

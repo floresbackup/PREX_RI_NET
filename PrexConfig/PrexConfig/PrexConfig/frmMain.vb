@@ -54,7 +54,7 @@ Public Class frmMain
 
    End Sub
 
-    Private Sub SimpleButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SimpleButton1.Click
+    Private Sub SimpleButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBuscarSgLibrary.Click
 
         GuardarDialogo.OverwritePrompt = False
         GuardarDialogo.Title = "Especifique el archivo de configuración SG"
@@ -159,8 +159,8 @@ Public Class frmMain
                         Case "NOMBRE_INI_LOCAL"
                             txtArchivoConfig.Text = sTemp
                         Case "SG_CONFIG"
+                            MostrarRutaSG(True)
                             txtSGLibrary.Text = sTemp
-
                         Case Else
                             oItem = lvConfig.Items.Add(row("NOMBRE").ToString)
                             oItem.SubItems.Add(sTemp)
@@ -283,11 +283,13 @@ Public Class frmMain
          ds.AcceptChanges()
 
             'Ruta configuracion SG
-            dr = dt.NewRow()
-            dr("NOMBRE") = "SG_CONFIG"
-            dr("VALOR") = txtSGLibrary.Text
-            dt.Rows.Add(dr)
-            ds.AcceptChanges()
+            If txtSGLibrary.Visible Then
+                dr = dt.NewRow()
+                dr("NOMBRE") = "SG_CONFIG"
+                dr("VALOR") = txtSGLibrary.Text
+                dt.Rows.Add(dr)
+                ds.AcceptChanges()
+            End If
 
             'Nombre de archivo de configuración local
             dr = dt.NewRow()
@@ -318,11 +320,26 @@ Public Class frmMain
 
    End Sub
 
-   Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-      CargarXML()
-   End Sub
+    Private Sub MostrarRutaSG(mostrar As Boolean)
+        If mostrar Then
+            lvConfig.Location = New Point(39, 314)
+            lvConfig.Height = 80
+        Else
+            lvConfig.Location = New Point(39, 290)
+            lvConfig.Height = 102
+        End If
+        lblSgLibrary.Visible = mostrar
+        btnBuscarSgLibrary.Visible = mostrar
+        txtSGLibrary.Visible = mostrar
+    End Sub
 
-   Private Sub btnQuitar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnQuitar.Click
+    Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        MostrarRutaSG(False)
+
+        CargarXML()
+    End Sub
+
+    Private Sub btnQuitar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnQuitar.Click
 
       If Not (oItemSel Is Nothing) Then
          lvConfig.Items.Remove(oItemSel)
