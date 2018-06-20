@@ -1,4 +1,5 @@
 ﻿Imports System.Linq
+Imports DevExpress.XtraGrid.Views.Grid
 Imports DevExpress.XtraGrid.Views.Grid.ViewInfo
 
 Public Class frmConsultas
@@ -141,5 +142,4 @@ Public Class frmConsultas
     Private Sub btnContraerTodo_Click(sender As Object, e As EventArgs) Handles btnContraerTodo.Click
         GridView1.CollapseAllGroups()
     End Sub
-
 End Class

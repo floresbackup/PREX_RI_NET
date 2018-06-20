@@ -155,6 +155,12 @@
     <Compile Include="Formularios\frmError.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\frmExportar.designer.vb">
+      <DependentUpon>frmExportar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\frmExportar.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\frmMain.Designer.vb">
       <DependentUpon>frmMain.vb</DependentUpon>
     </Compile>
@@ -186,6 +192,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmError.resx">
       <DependentUpon>frmError.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\frmExportar.resx">
+      <DependentUpon>frmExportar.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>
@@ -254,6 +263,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\logo prex.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\page-excel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

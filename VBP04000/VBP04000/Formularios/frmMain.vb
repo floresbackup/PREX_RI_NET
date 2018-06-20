@@ -277,6 +277,19 @@ Public Class frmMain
         End If
     End Sub
 
+    Private Sub cmdNuevaConsultaResultado_Click() Handles cmdNuevaConsultaResultado.ItemClick
+        Try
+            NuevaConsulta()
+            LimpiarConsultaActual()
+            HabilitarEjecucion(False)
+            tabParametros.Select()
+            tabPanel.SelectedTabPage = tabParametros
+            HabilitarComandasResultados(False)
+        Catch ex As Exception
+            TratarError(ex)
+        End Try
+    End Sub
+
     Private Sub btnCancelar_click(sender As Object, e As EventArgs) Handles btnCancelar.Click
         Try
             NuevaConsulta()
@@ -426,8 +439,9 @@ Public Class frmMain
                     tabResultados.Select()
                     tabPanel.SelectedTabPage = tabResultados
                     HabilitarEjecucion(True)
-                    'todo: habilitar botonera
+                    HabilitarComandasResultados(True)
                 Else
+                    HabilitarComandasResultados(False)
                     MensajeError("No se han encontrado resultados según el criterio de búsqueda utilizado")
                 End If
 
@@ -439,6 +453,16 @@ Public Class frmMain
         Finally
             Me.Cursor = Cursors.Default
         End Try
+    End Sub
+
+    Private Sub HabilitarComandasResultados(habilita As Boolean)
+        cmdNuevaConsultaResultado.Enabled = habilita
+        cmdExportarResultado.Enabled = habilita
+        cmdMostrarAgrupamiento.Enabled = habilita
+        cmdCopiarResultados.Enabled = habilita
+        cmdColumnasResultados.Enabled = habilita
+        cmdCopiarResultados.Enabled = habilita
+        cmdVistaPrevia.Enabled = habilita
     End Sub
 
     Private Sub FormatearColumnas()
@@ -784,5 +808,49 @@ Public Class frmMain
                 udtConsultaActual.Detalles.FirstOrDefault(Function(d) d.Variable.ToUpper.Equals(row.ToUpper, StringComparison.InvariantCultureIgnoreCase)).Valor = Date.Parse(e.Value)
 
         End Select
+    End Sub
+
+    Private Sub cmdColumnasResultados_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdColumnasResultados.ItemClick
+        GridResultado.ColumnsCustomization()
+    End Sub
+
+    Private Sub cmdVistaPrevia_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdVistaPrevia.ItemClick
+        Try
+            Me.Cursor = Cursors.WaitCursor
+            Try
+                If Not Grid.IsPrintingAvailable Then
+                    Throw New Exception("The 'DevExpress.XtraPrinting' library is not found")
+                End If
+                GridResultado.ShowPrintPreview()
+            Catch ex As Exception
+                TratarError(ex, "VistaPrevia")
+            End Try
+
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
+    End Sub
+
+    Private Sub cmdExportarResultado_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdExportarResultado.ItemClick
+        Dim frmExportar As New frmExportar()
+        frmExportar.PasarViewResultados("Consulta_" & CODIGO_TRANSACCION, "Consulta_" & CODIGO_TRANSACCION, GridResultado)
+        frmExportar.Show()
+    End Sub
+
+    Private Sub cmdCopiarResultados_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdCopiarResultados.ItemClick
+        GridResultado.OptionsClipboard.ClipboardMode = DevExpress.Export.ClipboardMode.PlainText
+        GridResultado.OptionsClipboard.CopyColumnHeaders = DevExpress.Utils.DefaultBoolean.True
+        GridResultado.OptionsClipboard.CopyCollapsedData = DevExpress.Utils.DefaultBoolean.True
+
+        GridResultado.OptionsSelection.MultiSelect = True
+        GridResultado.SelectAll()
+        GridResultado.CopyToClipboard()
+        GridResultado.OptionsSelection.MultiSelect = False
+
+        MensajeInformacion("Se han copiado los resultados en el portapapeles")
+    End Sub
+
+    Private Sub cmdMostrarAgrupamiento_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdMostrarAgrupamiento.ItemClick
+        GridResultado.OptionsView.ShowGroupPanel = Not GridResultado.OptionsView.ShowGroupPanel
     End Sub
 End Class

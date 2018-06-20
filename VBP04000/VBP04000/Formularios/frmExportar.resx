@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -112,52 +112,33 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="db_post" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\db-post.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="PictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAmhJREFUSEu91E1I
+        VFEUB/CXjIhu2/gxGn2JoOWqTYpUIO2EFkGtazGI0FIZCBLamAtxo25KF25CpBAXMS1sIUEiEijYRD7U
+        GGFG0sEBjXp48n/gPM9c3ozP8ebA4Y53fPf3/vfLcc77E+2OUilV8nsC+/3nL9cB5Sh3uEMZb50L39Pe
+        GqW8JNeGt8KFZzTY9mA87++iLyNgy5MISTmdDoOC6X4TrKweoAsN/acDkQSDdkxdoeqhKi6gSIV+3ed6
+        X/2EwGJDP04PZg8zPPCzzJ08VGPyEmveEoOCdfUu8PfQa4qHZc2QykR1OmAoTCGSAWt7+pFq701QxaVX
+        9Lhn+mRYg1izIBR9hTCAqJq74+FQAYHpKTSTarSsvo9TCdb6aIZQSAy4aFKA5ubANAatqaB4JnL5OaOA
+        MMUV1+NU2fTCRwuuaRAoA5uoBjEgUCSSY3Gjc8xHH8amgtdTgxhQTx3WTfr0b/rgl1/tzzsWQKuaBwj9
+        gSnxsNwgaGVzFGsFHHs7T6i69hFupWpuD/NLSH8erMEwmJxDDAJArkXdvnm3ygmjHaP8EtGbXcdpS7m4
+        dcIgEH3ALt56yeB04uh20mjoW8L4x0IJASJl4/3XDLqpXTtoEEjbc/40p7f3/ClFwjOnNEFg9OEave9x
+        aDe7TwA3t3YoPjjJZR88wmjB4VqMO4y5P3/RcjJlH5R0AiKlYIsrm/8BVOl0SmCfl1y7oJlOpwRmFdzL
+        HfBGEcRsMbWJ+VV7CZEOgxar2blle2AqneXN8c1N826UNfv05TsnA4abxtqxCMKwZhqzCiKZHOyTWisH
+        X66ssO0/BAyIvXiDyZcAAAAASUVORK5CYII=
+</value>
   </data>
-  <data name="About" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\About.ico;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="logo prex" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\logo prex.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="db-post1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\db-post.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Messenger-Information1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Messenger-Information.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Cross" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Cross.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="db_refresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\db-refresh.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Help-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Help-2.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="About1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\About.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Home" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Home.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="db-refresh1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\db-refresh.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Messenger-Information" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Messenger-Information.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Help-21" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Help-2.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="page-excel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\page-excel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
+  <metadata name="txtColor.Locked" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="ColorDialogExport.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>

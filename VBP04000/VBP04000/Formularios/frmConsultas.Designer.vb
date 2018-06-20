@@ -207,6 +207,7 @@ Partial Class frmConsultas
         Me.GridView1.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colXX_CATEGO, Me.colCV_CODCON, Me.colCV_NOMBRE})
         Me.GridView1.GridControl = Me.Grid
         Me.GridView1.GroupCount = 1
+        Me.GridView1.GroupFormat = "[#image]{1} {2}"
         Me.GridView1.Name = "GridView1"
         Me.GridView1.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.[False]
         Me.GridView1.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.[False]

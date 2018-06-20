@@ -19,6 +19,7 @@ Partial Class frmMain
    'No lo modifique con el editor de código.
    <System.Diagnostics.DebuggerStepThrough()> _
    Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Me.sbMain = New System.Windows.Forms.StatusStrip()
         Me.lblUsuario = New System.Windows.Forms.ToolStripStatusLabel()
@@ -36,6 +37,20 @@ Partial Class frmMain
         Me.lblTitulo = New DevExpress.XtraEditors.LabelControl()
         Me.picLogo = New DevExpress.XtraEditors.PictureEdit()
         Me.tabResultados = New DevExpress.XtraTab.XtraTabPage()
+        Me.StandaloneBarDockControl1 = New DevExpress.XtraBars.StandaloneBarDockControl()
+        Me.BarManager1 = New DevExpress.XtraBars.BarManager(Me.components)
+        Me.barResultado = New DevExpress.XtraBars.Bar()
+        Me.cmdNuevaConsultaResultado = New DevExpress.XtraBars.BarButtonItem()
+        Me.cmdVistaPrevia = New DevExpress.XtraBars.BarButtonItem()
+        Me.cmdExportarResultado = New DevExpress.XtraBars.BarButtonItem()
+        Me.cmdCopiarResultados = New DevExpress.XtraBars.BarButtonItem()
+        Me.cmdColumnasResultados = New DevExpress.XtraBars.BarButtonItem()
+        Me.barDockControlTop = New DevExpress.XtraBars.BarDockControl()
+        Me.barDockControlBottom = New DevExpress.XtraBars.BarDockControl()
+        Me.barDockControlLeft = New DevExpress.XtraBars.BarDockControl()
+        Me.barDockControlRight = New DevExpress.XtraBars.BarDockControl()
+        Me.BarEditItem1 = New DevExpress.XtraBars.BarEditItem()
+        Me.RepositoryItemTextEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemTextEdit()
         Me.Grid = New DevExpress.XtraGrid.GridControl()
         Me.GridResultado = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.tabParametros = New DevExpress.XtraTab.XtraTabPage()
@@ -68,12 +83,17 @@ Partial Class frmMain
         Me.PictureEdit3 = New DevExpress.XtraEditors.PictureEdit()
         Me.PictureEdit2 = New DevExpress.XtraEditors.PictureEdit()
         Me.tabPanel = New DevExpress.XtraTab.XtraTabControl()
+        Me.Bar3 = New DevExpress.XtraBars.Bar()
+        Me.cmdMostrarAgrupamiento = New DevExpress.XtraBars.BarButtonItem()
+        Me.BarToggleSwitchItem1 = New DevExpress.XtraBars.BarToggleSwitchItem()
         Me.sbMain.SuspendLayout()
         Me.toolMain.SuspendLayout()
         CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanTop.SuspendLayout()
         CType(Me.picLogo.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tabResultados.SuspendLayout()
+        CType(Me.BarManager1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.RepositoryItemTextEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.GridResultado, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tabParametros.SuspendLayout()
@@ -232,25 +252,151 @@ Partial Class frmMain
         '
         'tabResultados
         '
+        Me.tabResultados.Controls.Add(Me.StandaloneBarDockControl1)
         Me.tabResultados.Controls.Add(Me.Grid)
         Me.tabResultados.ImageOptions.Image = CType(resources.GetObject("tabResultados.ImageOptions.Image"), System.Drawing.Image)
         Me.tabResultados.Name = "tabResultados"
         Me.tabResultados.Size = New System.Drawing.Size(733, 294)
         Me.tabResultados.Text = "Resultados"
         '
+        'StandaloneBarDockControl1
+        '
+        Me.StandaloneBarDockControl1.CausesValidation = False
+        Me.StandaloneBarDockControl1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.StandaloneBarDockControl1.Location = New System.Drawing.Point(0, 0)
+        Me.StandaloneBarDockControl1.Manager = Me.BarManager1
+        Me.StandaloneBarDockControl1.Name = "StandaloneBarDockControl1"
+        Me.StandaloneBarDockControl1.Size = New System.Drawing.Size(733, 24)
+        Me.StandaloneBarDockControl1.Text = "StandaloneBarDockControl1"
+        '
+        'BarManager1
+        '
+        Me.BarManager1.Bars.AddRange(New DevExpress.XtraBars.Bar() {Me.barResultado})
+        Me.BarManager1.DockControls.Add(Me.barDockControlTop)
+        Me.BarManager1.DockControls.Add(Me.barDockControlBottom)
+        Me.BarManager1.DockControls.Add(Me.barDockControlLeft)
+        Me.BarManager1.DockControls.Add(Me.barDockControlRight)
+        Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl1)
+        Me.BarManager1.Form = Me
+        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.cmdNuevaConsultaResultado, Me.cmdVistaPrevia, Me.cmdExportarResultado, Me.cmdCopiarResultados, Me.BarEditItem1, Me.cmdColumnasResultados, Me.cmdMostrarAgrupamiento, Me.BarToggleSwitchItem1})
+        Me.BarManager1.MainMenu = Me.barResultado
+        Me.BarManager1.MaxItemId = 8
+        Me.BarManager1.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.RepositoryItemTextEdit1})
+        '
+        'barResultado
+        '
+        Me.barResultado.BarName = "Menú principal"
+        Me.barResultado.DockCol = 0
+        Me.barResultado.DockRow = 0
+        Me.barResultado.DockStyle = DevExpress.XtraBars.BarDockStyle.Standalone
+        Me.barResultado.FloatLocation = New System.Drawing.Point(69, 273)
+        Me.barResultado.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.cmdNuevaConsultaResultado, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.cmdVistaPrevia, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.cmdExportarResultado, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.cmdCopiarResultados, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.cmdColumnasResultados, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.cmdMostrarAgrupamiento, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)})
+        Me.barResultado.OptionsBar.UseWholeRow = True
+        Me.barResultado.StandaloneBarDockControl = Me.StandaloneBarDockControl1
+        Me.barResultado.Text = "mnuResultados"
+        '
+        'cmdNuevaConsultaResultado
+        '
+        Me.cmdNuevaConsultaResultado.Caption = "Nueva consulta"
+        Me.cmdNuevaConsultaResultado.Enabled = False
+        Me.cmdNuevaConsultaResultado.Id = 0
+        Me.cmdNuevaConsultaResultado.ImageOptions.Image = CType(resources.GetObject("cmdNuevaConsultaResultado.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdNuevaConsultaResultado.ImageOptions.LargeImage = CType(resources.GetObject("cmdNuevaConsultaResultado.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdNuevaConsultaResultado.Name = "cmdNuevaConsultaResultado"
+        '
+        'cmdVistaPrevia
+        '
+        Me.cmdVistaPrevia.Caption = "Vista previa"
+        Me.cmdVistaPrevia.Enabled = False
+        Me.cmdVistaPrevia.Id = 1
+        Me.cmdVistaPrevia.ImageOptions.Image = CType(resources.GetObject("cmdVistaPrevia.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdVistaPrevia.ImageOptions.LargeImage = CType(resources.GetObject("cmdVistaPrevia.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdVistaPrevia.Name = "cmdVistaPrevia"
+        '
+        'cmdExportarResultado
+        '
+        Me.cmdExportarResultado.Caption = "Exportar"
+        Me.cmdExportarResultado.Enabled = False
+        Me.cmdExportarResultado.Id = 2
+        Me.cmdExportarResultado.ImageOptions.Image = Global.VBP04000.My.Resources.Resources.page_excel
+        Me.cmdExportarResultado.Name = "cmdExportarResultado"
+        '
+        'cmdCopiarResultados
+        '
+        Me.cmdCopiarResultados.Caption = "Copiar"
+        Me.cmdCopiarResultados.Enabled = False
+        Me.cmdCopiarResultados.Id = 3
+        Me.cmdCopiarResultados.ImageOptions.Image = CType(resources.GetObject("cmdCopiarResultados.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdCopiarResultados.ImageOptions.LargeImage = CType(resources.GetObject("cmdCopiarResultados.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdCopiarResultados.Name = "cmdCopiarResultados"
+        '
+        'cmdColumnasResultados
+        '
+        Me.cmdColumnasResultados.Caption = "Columnas"
+        Me.cmdColumnasResultados.Enabled = False
+        Me.cmdColumnasResultados.Id = 5
+        Me.cmdColumnasResultados.ImageOptions.Image = CType(resources.GetObject("cmdColumnasResultados.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdColumnasResultados.ImageOptions.LargeImage = CType(resources.GetObject("cmdColumnasResultados.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdColumnasResultados.Name = "cmdColumnasResultados"
+        '
+        'barDockControlTop
+        '
+        Me.barDockControlTop.CausesValidation = False
+        Me.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.barDockControlTop.Location = New System.Drawing.Point(0, 0)
+        Me.barDockControlTop.Manager = Me.BarManager1
+        Me.barDockControlTop.Size = New System.Drawing.Size(739, 0)
+        '
+        'barDockControlBottom
+        '
+        Me.barDockControlBottom.CausesValidation = False
+        Me.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.barDockControlBottom.Location = New System.Drawing.Point(0, 429)
+        Me.barDockControlBottom.Manager = Me.BarManager1
+        Me.barDockControlBottom.Size = New System.Drawing.Size(739, 0)
+        '
+        'barDockControlLeft
+        '
+        Me.barDockControlLeft.CausesValidation = False
+        Me.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left
+        Me.barDockControlLeft.Location = New System.Drawing.Point(0, 0)
+        Me.barDockControlLeft.Manager = Me.BarManager1
+        Me.barDockControlLeft.Size = New System.Drawing.Size(0, 429)
+        '
+        'barDockControlRight
+        '
+        Me.barDockControlRight.CausesValidation = False
+        Me.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right
+        Me.barDockControlRight.Location = New System.Drawing.Point(739, 0)
+        Me.barDockControlRight.Manager = Me.BarManager1
+        Me.barDockControlRight.Size = New System.Drawing.Size(0, 429)
+        '
+        'BarEditItem1
+        '
+        Me.BarEditItem1.Caption = "BarEditItem1"
+        Me.BarEditItem1.Edit = Me.RepositoryItemTextEdit1
+        Me.BarEditItem1.Id = 4
+        Me.BarEditItem1.Name = "BarEditItem1"
+        '
+        'RepositoryItemTextEdit1
+        '
+        Me.RepositoryItemTextEdit1.AutoHeight = False
+        Me.RepositoryItemTextEdit1.Name = "RepositoryItemTextEdit1"
+        '
         'Grid
         '
-        Me.Grid.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Grid.Location = New System.Drawing.Point(0, 0)
+        Me.Grid.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.Grid.Location = New System.Drawing.Point(0, 24)
         Me.Grid.MainView = Me.GridResultado
         Me.Grid.Name = "Grid"
-        Me.Grid.Size = New System.Drawing.Size(733, 294)
+        Me.Grid.Size = New System.Drawing.Size(733, 270)
         Me.Grid.TabIndex = 0
         Me.Grid.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.GridResultado})
         '
         'GridResultado
         '
         Me.GridResultado.GridControl = Me.Grid
+        Me.GridResultado.GroupFormat = "[#image]{1} {2}"
         Me.GridResultado.Name = "GridResultado"
         Me.GridResultado.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.[False]
         Me.GridResultado.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.[False]
@@ -311,6 +457,7 @@ Partial Class frmMain
         Me.GridViewParametros.GroupPanelText = "Arrastre el encabezado de columna aquí para agrupar por esa columna"
         Me.GridViewParametros.Name = "GridViewParametros"
         Me.GridViewParametros.OptionsView.ShowColumnHeaders = False
+        Me.GridViewParametros.OptionsView.ShowGroupPanel = False
         Me.GridViewParametros.RowHeight = 19
         '
         'colCodParametro
@@ -561,6 +708,35 @@ Partial Class frmMain
         Me.tabPanel.TabIndex = 16
         Me.tabPanel.TabPages.AddRange(New DevExpress.XtraTab.XtraTabPage() {Me.tabParametros, Me.tabResultados})
         '
+        'Bar3
+        '
+        Me.Bar3.BarName = "Barra de estado"
+        Me.Bar3.CanDockStyle = DevExpress.XtraBars.BarCanDockStyle.Bottom
+        Me.Bar3.DockCol = 0
+        Me.Bar3.DockStyle = DevExpress.XtraBars.BarDockStyle.Bottom
+        Me.Bar3.OptionsBar.AllowQuickCustomization = False
+        Me.Bar3.OptionsBar.DrawDragBorder = False
+        Me.Bar3.OptionsBar.UseWholeRow = True
+        Me.Bar3.Text = "Barra de estado"
+        '
+        'cmdMostrarAgrupamiento
+        '
+        Me.cmdMostrarAgrupamiento.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.Check
+        Me.cmdMostrarAgrupamiento.Down = True
+        Me.cmdMostrarAgrupamiento.Enabled = False
+        Me.cmdMostrarAgrupamiento.Hint = "Mostrar u ocultar cuadro de agrupamiento"
+        Me.cmdMostrarAgrupamiento.Id = 6
+        Me.cmdMostrarAgrupamiento.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdMostrarAgrupamiento.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdMostrarAgrupamiento.ItemAppearance.Pressed.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.cmdMostrarAgrupamiento.ItemAppearance.Pressed.Options.UseBackColor = True
+        Me.cmdMostrarAgrupamiento.Name = "cmdMostrarAgrupamiento"
+        '
+        'BarToggleSwitchItem1
+        '
+        Me.BarToggleSwitchItem1.Id = 7
+        Me.BarToggleSwitchItem1.Name = "BarToggleSwitchItem1"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -570,6 +746,10 @@ Partial Class frmMain
         Me.Controls.Add(Me.PanTop)
         Me.Controls.Add(Me.toolMain)
         Me.Controls.Add(Me.sbMain)
+        Me.Controls.Add(Me.barDockControlLeft)
+        Me.Controls.Add(Me.barDockControlRight)
+        Me.Controls.Add(Me.barDockControlBottom)
+        Me.Controls.Add(Me.barDockControlTop)
         Me.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
@@ -585,6 +765,8 @@ Partial Class frmMain
         Me.PanTop.PerformLayout()
         CType(Me.picLogo.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tabResultados.ResumeLayout(False)
+        CType(Me.BarManager1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.RepositoryItemTextEdit1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Grid, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.GridResultado, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tabParametros.ResumeLayout(False)
@@ -658,4 +840,21 @@ Partial Class frmMain
     Friend WithEvents colParametro As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents colEditorParametro As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents colCD_HELP As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents StandaloneBarDockControl1 As DevExpress.XtraBars.StandaloneBarDockControl
+    Friend WithEvents BarManager1 As DevExpress.XtraBars.BarManager
+    Friend WithEvents barResultado As DevExpress.XtraBars.Bar
+    Friend WithEvents cmdNuevaConsultaResultado As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents cmdVistaPrevia As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents cmdExportarResultado As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents cmdCopiarResultados As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents barDockControlTop As DevExpress.XtraBars.BarDockControl
+    Friend WithEvents barDockControlBottom As DevExpress.XtraBars.BarDockControl
+    Friend WithEvents barDockControlLeft As DevExpress.XtraBars.BarDockControl
+    Friend WithEvents barDockControlRight As DevExpress.XtraBars.BarDockControl
+    Friend WithEvents Bar3 As DevExpress.XtraBars.Bar
+    Friend WithEvents cmdColumnasResultados As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents BarEditItem1 As DevExpress.XtraBars.BarEditItem
+    Friend WithEvents RepositoryItemTextEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemTextEdit
+    Friend WithEvents cmdMostrarAgrupamiento As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents BarToggleSwitchItem1 As DevExpress.XtraBars.BarToggleSwitchItem
 End Class
