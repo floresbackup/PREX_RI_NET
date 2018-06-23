@@ -225,68 +225,76 @@ Public Class frmMain
     Private Sub EjecutarTransaccion(ByVal nTransaccion As Long, ByVal sPrograma As String, Optional ByVal nCodigoUsuario As Integer = -1)
 
         Try
+            Me.Cursor = Cursors.WaitCursor
+            Try
 
-            Dim oTrx As New System.Diagnostics.Process
+                Dim oTrx As New System.Diagnostics.Process
 
-            If nCodigoUsuario = -1 Then
+                If nCodigoUsuario = -1 Then
 
-                nCodigoUsuario = UsuarioActual.Codigo
+                    nCodigoUsuario = UsuarioActual.Codigo
 
-                If Not TransaccionHabilitada(nTransaccion) Then
-                    GuardarLOG(AccionesLOG.AL_VIOLACION_SEGURIDAD, "", nTransaccion)
-                    MensajeError("Violación de seguridad. No dispone de privilegios para ingresar a esta transacción")
-                    Exit Try
+                    If Not TransaccionHabilitada(nTransaccion) Then
+                        GuardarLOG(AccionesLOG.AL_VIOLACION_SEGURIDAD, "", nTransaccion)
+                        MensajeError("Violación de seguridad. No dispone de privilegios para ingresar a esta transacción")
+                        Exit Try
+                    End If
+
+                Else
+
+                    If Not TransaccionHabilitadaEnUsuario(nTransaccion, nCodigoUsuario) Then
+                        GuardarLOG(AccionesLOG.AL_VIOLACION_SEGURIDAD, "", nTransaccion, nCodigoUsuario)
+                        MensajeError("Violación de seguridad. No dispone de privilegios para ingresar a esta transacción")
+                        Exit Try
+                    End If
+
                 End If
 
-            Else
+                If IO.Path.GetExtension(sPrograma).ToLower().Contains("exe") Then
+                    Dim sRuta = RUTA_BIN & sPrograma
+                    Dim sParametros = "/u:" & nCodigoUsuario.ToString & "/t:" & nTransaccion.ToString & "/e:" & CODIGO_ENTIDAD.ToString
+                    If IO.File.Exists(sRuta) Then
 
-                If Not TransaccionHabilitadaEnUsuario(nTransaccion, nCodigoUsuario) Then
-                    GuardarLOG(AccionesLOG.AL_VIOLACION_SEGURIDAD, "", nTransaccion, nCodigoUsuario)
-                    MensajeError("Violación de seguridad. No dispone de privilegios para ingresar a esta transacción")
-                    Exit Try
-                End If
-
-            End If
-
-            If IO.Path.GetExtension(sPrograma).ToLower().Contains("exe") Then
-                Dim sRuta = RUTA_BIN & sPrograma
-                Dim sParametros = "/u:" & nCodigoUsuario.ToString & "/t:" & nTransaccion.ToString & "/e:" & CODIGO_ENTIDAD.ToString
-                If IO.File.Exists(sRuta) Then
-
-                    GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "Ingreso a transacción", CODIGO_TRANSACCION, UsuarioActual.Codigo)
-                    If MULTIEXEC = 1 Then
-                        If sPrograma.Contains("VBP09001") AndAlso System.IO.File.Exists(RUTAENCR_RA) Then
+                        GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "Ingreso a transacción", CODIGO_TRANSACCION, UsuarioActual.Codigo)
+                        'If MULTIEXEC = 1 Then
+                        If sPrograma.Contains("VBP09001") AndAlso RUTAENCR_RA.Length > 2 Then
+                            If Not System.IO.File.Exists(RUTAENCR_RA & "\PrExEncr_RA.txt") Then
+                                Throw New Exception("No se encontró archivo de encriptación de usuario: [" & RUTAENCR_RA & "\PrExEncr_RA.txt]")
+                            End If
 
                             Dim sUsuEncr_RA As String
                             Dim sPwdEncr_RA As String
 
-                            LeerArchivoEncriptado(RUTAENCR_RA, sUsuEncr_RA, sPwdEncr_RA)
+                            LeerArchivoEncriptado(RUTAENCR_RA & "\PrExEncr_RA.txt", sUsuEncr_RA, sPwdEncr_RA)
 
                             RunProgram(sUsuEncr_RA, sPwdEncr_RA, DOMINIO_DEFAULT, sRuta, sParametros)
                         Else
                             Process.Start(sRuta, sParametros)
                         End If
+                        'Else
+                        '    oTrx.StartInfo.FileName = sRuta 'RUTA_BIN & sPrograma
+                        '    oTrx.StartInfo.Arguments = sParametros
+                        '    oTrx.StartInfo.UseShellExecute = True
+                        '    oTrx.StartInfo.WorkingDirectory = RUTA_BIN
+                        '    oTrx.Start()
+
+                        '    oTrx.WaitForExit()
+                        'End If
                     Else
-                        oTrx.StartInfo.FileName = sRuta 'RUTA_BIN & sPrograma
-                        oTrx.StartInfo.Arguments = sParametros
-                        oTrx.StartInfo.UseShellExecute = True
-                        oTrx.StartInfo.WorkingDirectory = RUTA_BIN
-                        oTrx.Start()
-
-                        oTrx.WaitForExit()
+                        MensajeError("No se encuentra el programa " & sPrograma)
                     End If
+                ElseIf IO.File.Exists(NormalizarRuta(RUTA_BIN) & "Informes\" & sPrograma) Then
+                    System.Diagnostics.Process.Start(NormalizarRuta(RUTA_BIN) & "Informes/" & sPrograma)
                 Else
-                    MensajeError("No se encuentra el programa " & sPrograma)
+                    MensajeError("No se encuentra el archivo " & sPrograma)
                 End If
-            ElseIf IO.File.Exists(NormalizarRuta(RUTA_BIN) & "Informes\" & sPrograma) Then
-                System.Diagnostics.Process.Start(NormalizarRuta(RUTA_BIN) & "Informes/" & sPrograma)
-            Else
-                MensajeError("No se encuentra el archivo " & sPrograma)
-            End If
-        Catch ex As Exception
-            TratarError(ex, "EjecutarTransaccion(" & nTransaccion.ToString & "," & sPrograma & "," & nCodigoUsuario & ")")
-        End Try
+            Catch ex As Exception
+                TratarError(ex, "EjecutarTransaccion(" & nTransaccion.ToString & "," & sPrograma & "," & nCodigoUsuario & ")")
+            End Try
 
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
     End Sub
 
     Private Sub btnIr_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnIr.Click

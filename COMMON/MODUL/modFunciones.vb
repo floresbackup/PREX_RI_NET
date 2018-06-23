@@ -1,3 +1,4 @@
+Imports System.ComponentModel
 Imports System.IO
 Imports System.Runtime.InteropServices
 
@@ -63,26 +64,36 @@ Module Impersonation
 #End Region
 
     Public Sub RunProgram(ByVal UserName As String, ByVal Password As String, ByVal Domain As String, ByVal Application As String, ByVal CommandLine As String)
+        Try
 
-        Dim siStartup As STARTUPINFO
-        Dim piProcess As PROCESS_INFORMATION
-        Dim intReturn As Integer
+            Dim siStartup As STARTUPINFO
+            Dim piProcess As PROCESS_INFORMATION
+            Dim intReturn As Integer
 
-        If CommandLine Is Nothing OrElse CommandLine = "" Then CommandLine = String.Empty
+            If CommandLine Is Nothing OrElse CommandLine = "" Then CommandLine = String.Empty
 
-        siStartup.cb = Marshal.SizeOf(siStartup)
-        siStartup.dwFlags = 0
+            siStartup.cb = Marshal.SizeOf(siStartup)
+            siStartup.dwFlags = 0
 
-        intReturn = CreateProcessWithLogon(UserName, Domain, Password, LOGON_WITH_PROFILE, Application, CommandLine,
+            intReturn = CreateProcessWithLogon(UserName, Domain, Password, LOGON_WITH_PROFILE, Application, CommandLine,
         NORMAL_PRIORITY_CLASS Or CREATE_DEFAULT_ERROR_MODE Or CREATE_NEW_CONSOLE Or CREATE_NEW_PROCESS_GROUP,
         IntPtr.Zero, IntPtr.Zero, siStartup, piProcess)
 
-        If intReturn = 0 Then
-            Throw New System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error())
-        End If
+            If intReturn = 0 Then
+                Throw New System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error())
+            End If
 
-        CloseHandle(piProcess.hProcess)
-        CloseHandle(piProcess.hThread)
+            CloseHandle(piProcess.hProcess)
+            CloseHandle(piProcess.hThread)
+        Catch ex As Win32Exception
+            If ex.NativeErrorCode = 1783 Then
+                TratarError(New Exception("Datos de usuario RA inválidos", ex), "RunProgram")
+            ElseIf ex.NativeErrorCode = 5 Then
+                TratarError(New Exception("Credenciales inválidas", ex), "RunProgram")
+            Else
+                TratarError(ex, "Error RunProgram")
+            End If
+        End Try
 
     End Sub
 
@@ -208,7 +219,9 @@ Module modFunciones
         Dim frm As New frmError
 
         frm.txtCodigo.Text = ex.GetHashCode.ToString
-        frm.txtOrigen.Text = ex.Source & " - " & ex.TargetSite.Name
+        If Not ex.Source Is Nothing AndAlso Not ex.TargetSite Is Nothing Then
+            frm.txtOrigen.Text = ex.Source & " - " & ex.TargetSite.Name
+        End If
         frm.txtFuncion.Text = IIf(sFuncion = "", "", sFuncion)
         frm.txtFecha.Text = System.DateTime.Today.ToShortDateString
         frm.txtHora.Text = System.DateTime.Now.ToShortTimeString
@@ -221,7 +234,7 @@ Module modFunciones
 
         frm.txtDescripcion.Text = frm.txtDescripcion.Text & vbCrLf & vbCrLf & "TRAZA:" & vbCrLf & ex.StackTrace
         If bGuardaLog Then
-            '        GuardarLOG(AL_ERROR_SISTEMA, .Description & vbCrLf & vbCrLf & "Función/Proc.: " & sFuncion, CODIGO_TRANSACCION)
+            GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, frm.txtDescripcion.Text & vbCrLf & vbCrLf & "Función/Proc.: " & sFuncion, CODIGO_TRANSACCION)
         End If
 
         frm.ShowDialog()
@@ -476,7 +489,7 @@ Module modFunciones
     'Alias creado para compatibilidad con la versión anterior del sistema
     Public Function sBase64Decode(ByVal sCadena As String) As String
         'Return System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(sCadena))
-        Return VB6Base64Decode(sCadena)
+        Return VB6Base64Decode(sCadena).Replace(vbNullChar, String.Empty)
     End Function
 
     Public Function sBase64Encode(ByVal sCadena As String) As String
@@ -566,8 +579,8 @@ Module modFunciones
         Dim oText As StreamReader
 
         oText = IO.File.OpenText(sNombreArchivo)
-        sNombreUsuario = sBase64Decode(oText.ReadLine)
-        sPassword = sBase64Decode(oText.ReadLine)
+        sNombreUsuario = sBase64Decode(oText.ReadLine).Replace(vbNullChar, String.Empty)
+        sPassword = sBase64Decode(oText.ReadLine).Replace(vbNullChar, String.Empty)
         oText.Close()
 
         oText = Nothing
