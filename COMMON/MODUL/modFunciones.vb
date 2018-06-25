@@ -93,19 +93,19 @@ Module Impersonation
 
             CloseHandle(piProcess.hProcess)
             CloseHandle(piProcess.hThread)
-        Catch ex As Exception
-            Throw ex
-        End Try
+            'Catch ex As Exception
+            '    Throw ex
+            'End Try
 
-        'Catch ex As Win32Exception
-        '    If ex.NativeErrorCode = 1783 Then
-        '        TratarError(New Exception("Datos de usuario RA inválidos", ex), "RunProgram")
-        '    ElseIf ex.NativeErrorCode = 5 Then
-        '        TratarError(New Exception("Credenciales inválidas", ex), "RunProgram")
-        '    Else
-        '        TratarError(ex, "Error RunProgram")
-        '    End If
-        'End Try
+        Catch ex As Win32Exception
+            If ex.NativeErrorCode = 1783 Then
+                TratarError(New Exception("Datos de usuario RA inválidos", ex), "RunProgram")
+            ElseIf ex.NativeErrorCode = 5 Then
+                TratarError(New Exception("Credenciales inválidas", ex), "RunProgram")
+            Else
+                TratarError(ex, "Error RunProgram")
+            End If
+        End Try
 
     End Sub
 
