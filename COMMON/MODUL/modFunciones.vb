@@ -75,9 +75,17 @@ Module Impersonation
             siStartup.cb = Marshal.SizeOf(siStartup)
             siStartup.dwFlags = 0
 
-            intReturn = CreateProcessWithLogon(UserName, Domain, Password, LOGON_WITH_PROFILE, Application, CommandLine,
-        NORMAL_PRIORITY_CLASS Or CREATE_DEFAULT_ERROR_MODE Or CREATE_NEW_CONSOLE Or CREATE_NEW_PROCESS_GROUP,
-        IntPtr.Zero, IntPtr.Zero, siStartup, piProcess)
+            Dim ruta = Directory.GetCurrentDirectory()
+            Dim fullpath As String = Application + " " + CommandLine
+            If Application.Contains(ruta) Then
+                fullpath = fullpath.Replace(ruta + "\", String.Empty)
+            Else
+                fullpath = ruta + "\" + Application + " " + CommandLine
+            End If
+            'MessageBox.Show(fullpath)
+            intReturn = CreateProcessWithLogon(UserName, Domain, Password, LOGON_WITH_PROFILE, Application, fullpath,
+                        NORMAL_PRIORITY_CLASS Or CREATE_DEFAULT_ERROR_MODE Or CREATE_NEW_CONSOLE Or CREATE_NEW_PROCESS_GROUP,
+                        IntPtr.Zero, IntPtr.Zero, siStartup, piProcess)
 
             If intReturn = 0 Then
                 Throw New System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error())
@@ -85,15 +93,19 @@ Module Impersonation
 
             CloseHandle(piProcess.hProcess)
             CloseHandle(piProcess.hThread)
-        Catch ex As Win32Exception
-            If ex.NativeErrorCode = 1783 Then
-                TratarError(New Exception("Datos de usuario RA inválidos", ex), "RunProgram")
-            ElseIf ex.NativeErrorCode = 5 Then
-                TratarError(New Exception("Credenciales inválidas", ex), "RunProgram")
-            Else
-                TratarError(ex, "Error RunProgram")
-            End If
+        Catch ex As Exception
+            Throw ex
         End Try
+
+        'Catch ex As Win32Exception
+        '    If ex.NativeErrorCode = 1783 Then
+        '        TratarError(New Exception("Datos de usuario RA inválidos", ex), "RunProgram")
+        '    ElseIf ex.NativeErrorCode = 5 Then
+        '        TratarError(New Exception("Credenciales inválidas", ex), "RunProgram")
+        '    Else
+        '        TratarError(ex, "Error RunProgram")
+        '    End If
+        'End Try
 
     End Sub
 
@@ -175,6 +187,7 @@ Module modFunciones
                         Case "RUTAENCR_RA"
                             RUTAENCR_RA = sTemp
                         Case "DOMINIO_DEFAULT"
+                        Case "DOMINIO"
                             DOMINIO_DEFAULT = sTemp
                     End Select
 

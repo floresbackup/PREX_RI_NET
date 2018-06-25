@@ -145,7 +145,7 @@ Partial Class frmMain
         Me.lblUsuario.Name = "lblUsuario"
         Me.lblUsuario.Size = New System.Drawing.Size(531, 20)
         Me.lblUsuario.Spring = True
-        Me.lblUsuario.Text = "Sebastián Buceta"
+        Me.lblUsuario.Text = ""
         Me.lblUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblEntidad

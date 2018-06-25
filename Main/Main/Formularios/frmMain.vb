@@ -289,7 +289,8 @@ Public Class frmMain
                     MensajeError("No se encuentra el archivo " & sPrograma)
                 End If
             Catch ex As Exception
-                TratarError(ex, "EjecutarTransaccion(" & nTransaccion.ToString & "," & sPrograma & "," & nCodigoUsuario & ")")
+                ' TratarError(ex, "EjecutarTransaccion(" & nTransaccion.ToString & "," & sPrograma & "," & nCodigoUsuario & ")")
+                Throw ex
             End Try
 
         Finally

@@ -107,7 +107,7 @@ Partial Class frmOpciones
       Me.lblSubtitulo.Name = "lblSubtitulo"
       Me.lblSubtitulo.Size = New System.Drawing.Size(273, 13)
       Me.lblSubtitulo.TabIndex = 1
-      Me.lblSubtitulo.Text = "Precione el botón Aceptar para guardar sus preferencias"
+      Me.lblSubtitulo.Text = "Presione el botón Aceptar para guardar sus preferencias"
       '
       'lblTitulo
       '

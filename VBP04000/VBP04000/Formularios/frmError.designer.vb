@@ -62,7 +62,7 @@ Partial Class frmError
       Me.lnkMail.Size = New System.Drawing.Size(210, 13)
       Me.lnkMail.TabIndex = 4
       Me.lnkMail.TabStop = True
-      Me.lnkMail.Text = "Enviar un informe por correo elecectrónico"
+      Me.lnkMail.Text = "Enviar un informe por correo electrónico"
       Me.lnkMail.VisitedLinkColor = System.Drawing.Color.DarkGreen
       '
       'Label3
@@ -216,7 +216,7 @@ Partial Class frmError
       Me.lblSubtitulo.Name = "lblSubtitulo"
       Me.lblSubtitulo.Size = New System.Drawing.Size(217, 13)
       Me.lblSubtitulo.TabIndex = 1
-      Me.lblSubtitulo.Text = "Precione el botón Aceptar para volver atrás"
+      Me.lblSubtitulo.Text = "Presione el botón Aceptar para volver atrás"
       '
       'lblTitulo
       '
