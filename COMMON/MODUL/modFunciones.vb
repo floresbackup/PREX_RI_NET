@@ -64,24 +64,25 @@ Module Impersonation
 #End Region
 
     Public Sub RunProgram(ByVal UserName As String, ByVal Password As String, ByVal Domain As String, ByVal Application As String, ByVal CommandLine As String)
-        Try
+        Dim ruta = Directory.GetCurrentDirectory()
+        Dim fullpath As String = Application + " " + CommandLine
+        Dim siStartup As STARTUPINFO
+        Dim piProcess As PROCESS_INFORMATION
+        Dim intReturn As Integer
 
-            Dim siStartup As STARTUPINFO
-            Dim piProcess As PROCESS_INFORMATION
-            Dim intReturn As Integer
+        Try
 
             If CommandLine Is Nothing OrElse CommandLine = "" Then CommandLine = String.Empty
 
             siStartup.cb = Marshal.SizeOf(siStartup)
             siStartup.dwFlags = 0
 
-            Dim ruta = Directory.GetCurrentDirectory()
-            Dim fullpath As String = Application + " " + CommandLine
             If Application.Contains(ruta) Then
                 fullpath = fullpath.Replace(ruta + "\", String.Empty)
             Else
                 fullpath = ruta + "\" + Application + " " + CommandLine
             End If
+
             'MessageBox.Show(fullpath)
             intReturn = CreateProcessWithLogon(UserName, Domain, Password, LOGON_WITH_PROFILE, Application, fullpath,
                         NORMAL_PRIORITY_CLASS Or CREATE_DEFAULT_ERROR_MODE Or CREATE_NEW_CONSOLE Or CREATE_NEW_PROCESS_GROUP,
@@ -99,11 +100,11 @@ Module Impersonation
 
         Catch ex As Win32Exception
             If ex.NativeErrorCode = 1783 Then
-                TratarError(New Exception("Datos de usuario RA inválidos", ex), "RunProgram")
+                TratarError(New Exception("Datos de usuario RA inválidos (ERROR=1783) [Path: " & fullpath & " - Dominio: " & Domain & " - Usuario: " & UserName + "]", ex), "RunProgram")
             ElseIf ex.NativeErrorCode = 5 Then
-                TratarError(New Exception("Credenciales inválidas", ex), "RunProgram")
+                TratarError(New Exception("Credenciales inválidas (ERROR=5) [Path: " & fullpath & " - Dominio: " & Domain & " - Usuario: " & UserName + "]", ex), "RunProgram")
             Else
-                TratarError(ex, "Error RunProgram")
+                TratarError(ex, "Error RunProgram", ex.Message & vbCrLf & "[Path: " & fullpath & " - Dominio: " & Domain & " - Usuario: " & UserName + "]")
             End If
         End Try
 
