@@ -111,7 +111,6 @@ Public Class frmConsultas
         Dim nConsulta As Long
         If GridView1.RowCount > 0 Then
             If GridView1.SelectedRowsCount > 0 Then
-
                 'If Not GridView1.GetSelectedRows() Then
                 nConsulta = GridView1.GetDataRow(GridView1.GetSelectedRows().FirstOrDefault()).Item(1)
 
