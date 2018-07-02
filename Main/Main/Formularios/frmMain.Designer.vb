@@ -25,7 +25,10 @@ Partial Class frmMain
         Me.sbMain = New System.Windows.Forms.StatusStrip()
         Me.lblUsuario = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lblEntidad = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblNum = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lblCaps = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblFecha = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.lblHora = New System.Windows.Forms.ToolStripStatusLabel()
         Me.mnuMain = New System.Windows.Forms.MenuStrip()
         Me.mnuSistema = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuActualizar = New System.Windows.Forms.ToolStripMenuItem()
@@ -56,12 +59,10 @@ Partial Class frmMain
         Me.il32x32 = New System.Windows.Forms.ImageList(Me.components)
         Me.il16x16 = New System.Windows.Forms.ImageList(Me.components)
         Me.TimerFooter = New System.Windows.Forms.Timer(Me.components)
-        Me.lblNum = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.lblFecha = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.lblHora = New System.Windows.Forms.ToolStripStatusLabel()
         Me.sbMain.SuspendLayout()
         Me.mnuMain.SuspendLayout()
         Me.tbMain.SuspendLayout()
+        CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
@@ -83,9 +84,8 @@ Partial Class frmMain
         Me.lblUsuario.Image = CType(resources.GetObject("lblUsuario.Image"), System.Drawing.Image)
         Me.lblUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.lblUsuario.Name = "lblUsuario"
-        Me.lblUsuario.Size = New System.Drawing.Size(234, 20)
+        Me.lblUsuario.Size = New System.Drawing.Size(265, 20)
         Me.lblUsuario.Spring = True
-        Me.lblUsuario.Text = ""
         Me.lblUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblEntidad
@@ -98,6 +98,15 @@ Partial Class frmMain
         Me.lblEntidad.Size = New System.Drawing.Size(139, 20)
         Me.lblEntidad.Text = "Banco de Prueba S.A."
         '
+        'lblNum
+        '
+        Me.lblNum.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
+        Me.lblNum.Name = "lblNum"
+        Me.lblNum.Size = New System.Drawing.Size(39, 20)
+        Me.lblNum.Text = "NUM"
+        '
         'lblCaps
         '
         Me.lblCaps.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
@@ -106,6 +115,24 @@ Partial Class frmMain
         Me.lblCaps.Name = "lblCaps"
         Me.lblCaps.Size = New System.Drawing.Size(40, 20)
         Me.lblCaps.Text = "CAPS"
+        '
+        'lblFecha
+        '
+        Me.lblFecha.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
+        Me.lblFecha.Name = "lblFecha"
+        Me.lblFecha.Size = New System.Drawing.Size(69, 20)
+        Me.lblFecha.Text = "01/01/2018"
+        '
+        'lblHora
+        '
+        Me.lblHora.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
+            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
+        Me.lblHora.Name = "lblHora"
+        Me.lblHora.Size = New System.Drawing.Size(59, 20)
+        Me.lblHora.Text = "00:00 pm"
         '
         'mnuMain
         '
@@ -272,7 +299,7 @@ Partial Class frmMain
         '
         Me.tvMenu.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tvMenu.HideSelection = False
-        Me.tvMenu.ImageIndex = 0
+        Me.tvMenu.ImageIndex = 5
         Me.tvMenu.ImageList = Me.ilMain
         Me.tvMenu.Location = New System.Drawing.Point(0, 0)
         Me.tvMenu.Name = "tvMenu"
@@ -352,57 +379,30 @@ Partial Class frmMain
         Me.il16x16.ImageStream = CType(resources.GetObject("il16x16.ImageStream"), System.Windows.Forms.ImageListStreamer)
         Me.il16x16.TransparentColor = System.Drawing.Color.Transparent
         Me.il16x16.Images.SetKeyName(0, "Transaccion")
-        Me.il16x16.Images.SetKeyName(1, "Carpeta2")
-        Me.il16x16.Images.SetKeyName(2, "Carpeta")
-        Me.il16x16.Images.SetKeyName(3, "Actualizador")
-        Me.il16x16.Images.SetKeyName(4, "Administracion")
-        Me.il16x16.Images.SetKeyName(5, "Calculadora")
-        Me.il16x16.Images.SetKeyName(6, "Consolida")
-        Me.il16x16.Images.SetKeyName(7, "Consultas")
-        Me.il16x16.Images.SetKeyName(8, "Control")
-        Me.il16x16.Images.SetKeyName(9, "Equivalencias")
-        Me.il16x16.Images.SetKeyName(10, "ExportExcel")
-        Me.il16x16.Images.SetKeyName(11, "Feriados")
-        Me.il16x16.Images.SetKeyName(12, "GeneraTXT")
-        Me.il16x16.Images.SetKeyName(13, "Logs")
-        Me.il16x16.Images.SetKeyName(14, "Notas")
-        Me.il16x16.Images.SetKeyName(15, "Relaciones")
-        Me.il16x16.Images.SetKeyName(16, "Seguridad")
-        Me.il16x16.Images.SetKeyName(17, "Spool")
-        Me.il16x16.Images.SetKeyName(18, "Tabgen")
-        Me.il16x16.Images.SetKeyName(19, "procesos.ico")
+        Me.il16x16.Images.SetKeyName(1, "Carpeta")
+        Me.il16x16.Images.SetKeyName(2, "Procesos")
+        Me.il16x16.Images.SetKeyName(3, "Formularios")
+        Me.il16x16.Images.SetKeyName(4, "Controles")
+        Me.il16x16.Images.SetKeyName(5, "Actualizador")
+        Me.il16x16.Images.SetKeyName(6, "Administracion")
+        Me.il16x16.Images.SetKeyName(7, "Calculadora")
+        Me.il16x16.Images.SetKeyName(8, "Consolida")
+        Me.il16x16.Images.SetKeyName(9, "Consultas")
+        Me.il16x16.Images.SetKeyName(10, "Equivalencias")
+        Me.il16x16.Images.SetKeyName(11, "ExportExcel")
+        Me.il16x16.Images.SetKeyName(12, "Feriados")
+        Me.il16x16.Images.SetKeyName(13, "GeneraTXT")
+        Me.il16x16.Images.SetKeyName(14, "Logs")
+        Me.il16x16.Images.SetKeyName(15, "Notas")
+        Me.il16x16.Images.SetKeyName(16, "Relaciones")
+        Me.il16x16.Images.SetKeyName(17, "Seguridad")
+        Me.il16x16.Images.SetKeyName(18, "Spool")
+        Me.il16x16.Images.SetKeyName(19, "Tabgen")
         '
         'TimerFooter
         '
         Me.TimerFooter.Enabled = True
         Me.TimerFooter.Interval = 60000
-        '
-        'lblNum
-        '
-        Me.lblNum.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
-            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
-            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.lblNum.Name = "lblNum"
-        Me.lblNum.Size = New System.Drawing.Size(39, 20)
-        Me.lblNum.Text = "NUM"
-        '
-        'lblFecha
-        '
-        Me.lblFecha.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
-            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
-            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.lblFecha.Name = "lblFecha"
-        Me.lblFecha.Size = New System.Drawing.Size(69, 20)
-        Me.lblFecha.Text = "01/01/2018"
-        '
-        'lblHora
-        '
-        Me.lblHora.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
-            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
-            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.lblHora.Name = "lblHora"
-        Me.lblHora.Size = New System.Drawing.Size(59, 20)
-        Me.lblHora.Text = "00:00 pm"
         '
         'frmMain
         '
@@ -429,6 +429,7 @@ Partial Class frmMain
         Me.tbMain.PerformLayout()
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel2.ResumeLayout(False)
+        CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()

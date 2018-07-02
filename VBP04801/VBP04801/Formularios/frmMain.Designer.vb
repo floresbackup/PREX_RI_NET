@@ -19,6 +19,7 @@ Partial Class frmMain
    'No lo modifique con el editor de código.
    <System.Diagnostics.DebuggerStepThrough()> _
    Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.sbMain = New System.Windows.Forms.StatusStrip()
         Me.lblUsuario = New System.Windows.Forms.ToolStripStatusLabel()
         Me.lblEntidad = New System.Windows.Forms.ToolStripStatusLabel()
@@ -96,7 +97,7 @@ Partial Class frmMain
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.DsTabla = New VBP04801.dsTabla()
-        Me.XpCollection1 = New DevExpress.Xpo.XPCollection()
+        Me.XpCollection1 = New DevExpress.Xpo.XPCollection(Me.components)
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.btnSolapaAnt = New DevExpress.XtraEditors.SimpleButton()
@@ -145,7 +146,6 @@ Partial Class frmMain
         Me.lblUsuario.Name = "lblUsuario"
         Me.lblUsuario.Size = New System.Drawing.Size(531, 20)
         Me.lblUsuario.Spring = True
-        Me.lblUsuario.Text = ""
         Me.lblUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblEntidad
@@ -172,7 +172,7 @@ Partial Class frmMain
         Me.lblTransaccion.Image = Global.VBP04801.My.Resources.Resources.About
         Me.lblTransaccion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.lblTransaccion.Name = "lblTransaccion"
-        Me.lblTransaccion.Size = New System.Drawing.Size(87, 22)
+        Me.lblTransaccion.Size = New System.Drawing.Size(86, 22)
         Me.lblTransaccion.Text = "Transacción"
         Me.lblTransaccion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -210,7 +210,7 @@ Partial Class frmMain
         '
         Me.lblVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.lblVersion.Name = "lblVersion"
-        Me.lblVersion.Size = New System.Drawing.Size(76, 22)
+        Me.lblVersion.Size = New System.Drawing.Size(75, 22)
         Me.lblVersion.Text = "Versión: 1.0.0"
         '
         'ToolStripSeparator6
@@ -731,11 +731,12 @@ Partial Class frmMain
         'lblRegistros
         '
         Me.lblRegistros.Name = "lblRegistros"
-        Me.lblRegistros.Size = New System.Drawing.Size(243, 22)
+        Me.lblRegistros.Size = New System.Drawing.Size(242, 22)
         Me.lblRegistros.Text = "Cantidad de registros a visualizar (0=Todos): "
         '
         'txtCantidad
         '
+        Me.txtCantidad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtCantidad.Name = "txtCantidad"
         Me.txtCantidad.Size = New System.Drawing.Size(50, 25)
         Me.txtCantidad.Text = "100"

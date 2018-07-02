@@ -16,13 +16,17 @@ Public Class frmMain
 
         lblUsuario.Text = UsuarioActual.Descripcion
         lblEntidad.Text = NOMBRE_ENTIDAD ' UsuarioActual.Entidad
+        CargarILMenu()
+    End Sub
+
+    Private Sub CargarILMenu()
 
         If SIEMPRE_ICONOS_GRANDES Then
             lvTrans.SmallImageList = il32x32
         Else
             lvTrans.SmallImageList = il16x16
         End If
-
+        lvTrans.Refresh()
     End Sub
 
     Private Sub btnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSalir.Click, btnSalir.Click
@@ -325,13 +329,17 @@ Public Class frmMain
     End Sub
 
     Private Sub mnuPreferencias_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPreferencias.Click
+        Try
+            Me.Cursor = Cursors.WaitCursor
+            Dim oOpciones As New frmOpciones
 
-        Dim oOpciones As New frmOpciones
+            oOpciones.ShowDialog(Me)
 
-        oOpciones.ShowDialog(Me)
-
-        oOpciones = Nothing
-
+            oOpciones = Nothing
+            CargarILMenu()
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
     End Sub
 
     Private Sub LimpiarIL()
@@ -655,6 +663,16 @@ Err_Trap:
         lblCaps.Enabled = Control.IsKeyLocked(Keys.CapsLock)
 
         lblNum.Enabled = Control.IsKeyLocked(Keys.NumLock)
+    End Sub
+
+    Private Sub mnuActualizar_Click(sender As Object, e As EventArgs) Handles mnuActualizar.Click
+        Try
+            Me.Cursor = Cursors.WaitCursor
+            CargarArbol()
+            CargarMenues(0)
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
     End Sub
 
     'resize de menu

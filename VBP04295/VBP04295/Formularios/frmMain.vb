@@ -369,7 +369,7 @@ Public Class frmMain
                             .CustomFormat = "dd/MM/yyyy"
                             .Format = DateTimePickerFormat.Custom
                             .Visible = True
-                            .Value = DateAdd(DateInterval.Day, -DateTime.Today.Day, DateTime.Today)
+                            .Value = Date.Today ' DateAdd(DateInterval.Day, -DateTime.Today.Day, DateTime.Today)
                             .Location = New System.Drawing.Point(210, PanTop.Height + 23 * oVar.Orden - 21)
                             .Size() = New System.Drawing.Size(130, 18)
 

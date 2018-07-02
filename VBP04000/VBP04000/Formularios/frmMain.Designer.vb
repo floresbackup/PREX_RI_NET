@@ -19,7 +19,6 @@ Partial Class frmMain
    'No lo modifique con el editor de código.
    <System.Diagnostics.DebuggerStepThrough()> _
    Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Me.sbMain = New System.Windows.Forms.StatusStrip()
         Me.lblUsuario = New System.Windows.Forms.ToolStripStatusLabel()
@@ -38,19 +37,21 @@ Partial Class frmMain
         Me.picLogo = New DevExpress.XtraEditors.PictureEdit()
         Me.tabResultados = New DevExpress.XtraTab.XtraTabPage()
         Me.StandaloneBarDockControl1 = New DevExpress.XtraBars.StandaloneBarDockControl()
-        Me.BarManager1 = New DevExpress.XtraBars.BarManager(Me.components)
+        Me.BarManager1 = New DevExpress.XtraBars.BarManager()
         Me.barResultado = New DevExpress.XtraBars.Bar()
         Me.cmdNuevaConsultaResultado = New DevExpress.XtraBars.BarButtonItem()
         Me.cmdVistaPrevia = New DevExpress.XtraBars.BarButtonItem()
         Me.cmdExportarResultado = New DevExpress.XtraBars.BarButtonItem()
         Me.cmdCopiarResultados = New DevExpress.XtraBars.BarButtonItem()
         Me.cmdColumnasResultados = New DevExpress.XtraBars.BarButtonItem()
+        Me.cmdMostrarAgrupamiento = New DevExpress.XtraBars.BarButtonItem()
         Me.barDockControlTop = New DevExpress.XtraBars.BarDockControl()
         Me.barDockControlBottom = New DevExpress.XtraBars.BarDockControl()
         Me.barDockControlLeft = New DevExpress.XtraBars.BarDockControl()
         Me.barDockControlRight = New DevExpress.XtraBars.BarDockControl()
         Me.BarEditItem1 = New DevExpress.XtraBars.BarEditItem()
         Me.RepositoryItemTextEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemTextEdit()
+        Me.BarToggleSwitchItem1 = New DevExpress.XtraBars.BarToggleSwitchItem()
         Me.Grid = New DevExpress.XtraGrid.GridControl()
         Me.GridResultado = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.tabParametros = New DevExpress.XtraTab.XtraTabPage()
@@ -84,8 +85,6 @@ Partial Class frmMain
         Me.PictureEdit2 = New DevExpress.XtraEditors.PictureEdit()
         Me.tabPanel = New DevExpress.XtraTab.XtraTabControl()
         Me.Bar3 = New DevExpress.XtraBars.Bar()
-        Me.cmdMostrarAgrupamiento = New DevExpress.XtraBars.BarButtonItem()
-        Me.BarToggleSwitchItem1 = New DevExpress.XtraBars.BarToggleSwitchItem()
         Me.sbMain.SuspendLayout()
         Me.toolMain.SuspendLayout()
         CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -133,7 +132,6 @@ Partial Class frmMain
         Me.lblUsuario.Name = "lblUsuario"
         Me.lblUsuario.Size = New System.Drawing.Size(585, 20)
         Me.lblUsuario.Spring = True
-        Me.lblUsuario.Text = ""
         Me.lblUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblEntidad
@@ -199,7 +197,7 @@ Partial Class frmMain
         '
         Me.lblVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.lblVersion.Name = "lblVersion"
-        Me.lblVersion.Size = New System.Drawing.Size(76, 22)
+        Me.lblVersion.Size = New System.Drawing.Size(75, 22)
         Me.lblVersion.Text = "Versión: 1.0.0"
         '
         'ToolStripSeparator6
@@ -339,6 +337,19 @@ Partial Class frmMain
         Me.cmdColumnasResultados.ImageOptions.LargeImage = CType(resources.GetObject("cmdColumnasResultados.ImageOptions.LargeImage"), System.Drawing.Image)
         Me.cmdColumnasResultados.Name = "cmdColumnasResultados"
         '
+        'cmdMostrarAgrupamiento
+        '
+        Me.cmdMostrarAgrupamiento.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.Check
+        Me.cmdMostrarAgrupamiento.Down = True
+        Me.cmdMostrarAgrupamiento.Enabled = False
+        Me.cmdMostrarAgrupamiento.Hint = "Mostrar u ocultar cuadro de agrupamiento"
+        Me.cmdMostrarAgrupamiento.Id = 6
+        Me.cmdMostrarAgrupamiento.ImageOptions.Image = CType(resources.GetObject("cmdMostrarAgrupamiento.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdMostrarAgrupamiento.ImageOptions.LargeImage = CType(resources.GetObject("cmdMostrarAgrupamiento.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdMostrarAgrupamiento.ItemAppearance.Pressed.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.cmdMostrarAgrupamiento.ItemAppearance.Pressed.Options.UseBackColor = True
+        Me.cmdMostrarAgrupamiento.Name = "cmdMostrarAgrupamiento"
+        '
         'barDockControlTop
         '
         Me.barDockControlTop.CausesValidation = False
@@ -382,6 +393,11 @@ Partial Class frmMain
         '
         Me.RepositoryItemTextEdit1.AutoHeight = False
         Me.RepositoryItemTextEdit1.Name = "RepositoryItemTextEdit1"
+        '
+        'BarToggleSwitchItem1
+        '
+        Me.BarToggleSwitchItem1.Id = 7
+        Me.BarToggleSwitchItem1.Name = "BarToggleSwitchItem1"
         '
         'Grid
         '
@@ -718,24 +734,6 @@ Partial Class frmMain
         Me.Bar3.OptionsBar.DrawDragBorder = False
         Me.Bar3.OptionsBar.UseWholeRow = True
         Me.Bar3.Text = "Barra de estado"
-        '
-        'cmdMostrarAgrupamiento
-        '
-        Me.cmdMostrarAgrupamiento.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.Check
-        Me.cmdMostrarAgrupamiento.Down = True
-        Me.cmdMostrarAgrupamiento.Enabled = False
-        Me.cmdMostrarAgrupamiento.Hint = "Mostrar u ocultar cuadro de agrupamiento"
-        Me.cmdMostrarAgrupamiento.Id = 6
-        Me.cmdMostrarAgrupamiento.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image"), System.Drawing.Image)
-        Me.cmdMostrarAgrupamiento.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.cmdMostrarAgrupamiento.ItemAppearance.Pressed.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.cmdMostrarAgrupamiento.ItemAppearance.Pressed.Options.UseBackColor = True
-        Me.cmdMostrarAgrupamiento.Name = "cmdMostrarAgrupamiento"
-        '
-        'BarToggleSwitchItem1
-        '
-        Me.BarToggleSwitchItem1.Id = 7
-        Me.BarToggleSwitchItem1.Name = "BarToggleSwitchItem1"
         '
         'frmMain
         '

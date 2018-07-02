@@ -215,6 +215,7 @@ Partial Class frmConsultas
         Me.GridView1.OptionsBehavior.ReadOnly = True
         Me.GridView1.OptionsView.ShowGroupPanel = False
         Me.GridView1.OptionsView.ShowPreview = True
+        Me.GridView1.PaintStyleName = "WindowsXP"
         Me.GridView1.PreviewFieldName = "CV_DESCRI"
         Me.GridView1.SortInfo.AddRange(New DevExpress.XtraGrid.Columns.GridColumnSortInfo() {New DevExpress.XtraGrid.Columns.GridColumnSortInfo(Me.colXX_CATEGO, DevExpress.Data.ColumnSortOrder.Ascending)})
         '
