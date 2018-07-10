@@ -55,7 +55,7 @@ Module modLocalMain
         If Command.Length > 30 Then 'MORGAN SSOBA
             oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionExterna
             InicioSSOBA()
-        ElseIf ID_SISTEMA Then
+        ElseIf ID_SISTEMA > 0 Then
             oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionExterna
             bIniciar = InicioCITI()
         ElseIf SEGURIDAD_INTEGRADA Then 'BANCOR
@@ -332,7 +332,7 @@ Maneja_Error:
     End Sub
 
     Public Function InicioCITI() As Boolean
-
+        GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "InicioCITI")
         Dim sNombre As String
         Dim sPerfil As String
         '        Dim sPerfil2 = String.Empty
@@ -369,9 +369,9 @@ Maneja_Error:
 
             frmMain.ActualizarSeguridad(sPerfil.Replace("[", String.Empty).Replace("]", String.Empty))
             CITI_PERFIL = sPerfil
-            InicioCITI = True
+            Return True
         Else
-            InicioCITI = False
+            Return False
         End If
         '        Dim r2 = SGInterface.noGuiLogin(1, "Gestion RI", "C:\Program Files (x86)\Citi\SGLibraryNET_5.8.004_net2.0\resources\config.xml", "pepe", "lala", sPerfil2)
 
