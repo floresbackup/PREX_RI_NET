@@ -1,5 +1,6 @@
 Imports System.ComponentModel
 Imports System.IO
+Imports System.Linq
 Imports System.Runtime.InteropServices
 
 Module Impersonation
@@ -815,5 +816,104 @@ Module modFunciones
         Return sSQL
 
     End Function
+
+    Public Sub PresentarDatos(ByVal formulario As Form, ByVal nCodigoTransaccion As Long, ByVal nCodigoUsuario As Long, ByVal nCodigoEntidad As Long)
+
+        Try
+            Try
+
+                Dim oAdmlocal As New AdmTablas
+                oAdmlocal.ConnectionString = CONN_LOCAL
+
+                Dim sSQL As String
+                Dim ds As DataSet
+                Dim sError As String = ""
+
+                ''''' USUARIO '''''
+
+                sSQL = "SELECT    US_CODUSU, US_NOMBRE, US_DESCRI, US_ADMIN " &
+            "FROM      USUARI " &
+            "WHERE     US_CODUSU = " & nCodigoUsuario
+                ds = oAdmlocal.AbrirDataset(sSQL)
+
+                With ds.Tables(0)
+
+                    If .Rows.Count = 0 Then
+                        Throw New Security.SecurityException("Falla de seguridad")
+                    Else
+                        UsuarioActual.Codigo = nCodigoUsuario
+                        UsuarioActual.Nombre = .Rows(0).Item("US_NOMBRE").ToString
+                        UsuarioActual.Descripcion = .Rows(0).Item("US_DESCRI").ToString
+                        UsuarioActual.Admin = CBool(.Rows(0).Item("US_ADMIN"))
+                        UsuarioActual.SoloLectura = False
+                        SetLabelTexto(formulario, "lblUsuario", UsuarioActual.Descripcion)
+                    End If
+
+                End With
+
+                ds = Nothing
+
+                ''''' ENTIDAD '''''
+
+                sSQL = "SELECT    TG_CODCON, TG_DESCRI " &
+            "FROM      TABGEN " &
+            "WHERE     TG_CODTAB = 1 " &
+            "AND       TG_CODCON = " & nCodigoEntidad
+                ds = oAdmlocal.AbrirDataset(sSQL)
+
+                With ds.Tables(0)
+
+                    If .Rows.Count = 0 Then
+                        Throw New Security.SecurityException("Parámetro de entidad no válido")
+                    Else
+                        NOMBRE_ENTIDAD = .Rows(0).Item("TG_DESCRI").ToString
+                        SetLabelTexto(formulario, "lblEntidad", NOMBRE_ENTIDAD)
+                    End If
+
+                End With
+
+                ds = Nothing
+
+                ''''' TRANSACCION '''''
+
+                sSQL = "SELECT    MU_TRANSA, MU_DESCRI " &
+            "FROM      MENUES " &
+            "WHERE     MU_CODTRA = " & nCodigoTransaccion
+                ds = oAdmlocal.AbrirDataset(sSQL)
+
+                With ds.Tables(0)
+
+
+                    If .Rows.Count = 0 Then
+                        Throw New Security.SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto")
+                    Else
+                        formulario.Text = CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA").ToString
+                        SetLabelTexto(formulario, "lblTransaccion", CType(.Rows(0).Item("MU_DESCRI"), String))
+                        SetLabelTexto(formulario, "lblTitulo", .Rows(0).Item("MU_TRANSA").ToString)
+                        SetLabelTexto(formulario, "lblSubtitulo", .Rows(0).Item("MU_DESCRI").ToString)
+                    End If
+
+                End With
+
+                ds = Nothing
+            Catch ex As Security.SecurityException
+                MensajeError(ex.Message)
+                formulario.Close()
+            End Try
+        Catch ex As Exception
+            TratarError(ex, "PresentarDatos")
+            formulario.Close()
+        End Try
+
+    End Sub
+
+    Private Sub SetLabelTexto(formulario As Form, labelName As String, texto As String)
+        Dim label As Control = formulario.Controls.Find(labelName, True).FirstOrDefault()
+        If label IsNot Nothing Then
+            If TryCast(label, Label) IsNot Nothing Then
+                CType(label, Label).Text = texto
+            End If
+        End If
+    End Sub
 
 End Module

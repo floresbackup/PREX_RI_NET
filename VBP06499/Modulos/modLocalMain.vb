@@ -27,7 +27,9 @@ Module modLocalMain
 
         Dim frmMain As New frmMain
         frmMain.AnalizarCommand()
-
+        If frmMain.ErrorPermiso Then
+            Exit Sub
+        End If
         'oAdmLocal.PasarConnString CONN_LOCAL
 
         Dim sSQL = "SELECT      *                               " & vbCrLf

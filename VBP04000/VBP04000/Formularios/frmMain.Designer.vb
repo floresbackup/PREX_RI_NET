@@ -19,6 +19,7 @@ Partial Class frmMain
    'No lo modifique con el editor de código.
    <System.Diagnostics.DebuggerStepThrough()> _
    Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Me.sbMain = New System.Windows.Forms.StatusStrip()
         Me.lblUsuario = New System.Windows.Forms.ToolStripStatusLabel()
@@ -37,7 +38,7 @@ Partial Class frmMain
         Me.picLogo = New DevExpress.XtraEditors.PictureEdit()
         Me.tabResultados = New DevExpress.XtraTab.XtraTabPage()
         Me.StandaloneBarDockControl1 = New DevExpress.XtraBars.StandaloneBarDockControl()
-        Me.BarManager1 = New DevExpress.XtraBars.BarManager()
+        Me.BarManager1 = New DevExpress.XtraBars.BarManager(Me.components)
         Me.barResultado = New DevExpress.XtraBars.Bar()
         Me.cmdNuevaConsultaResultado = New DevExpress.XtraBars.BarButtonItem()
         Me.cmdVistaPrevia = New DevExpress.XtraBars.BarButtonItem()
@@ -130,7 +131,7 @@ Partial Class frmMain
         Me.lblUsuario.Image = Global.VBP04000.My.Resources.Resources.Messenger_Information1
         Me.lblUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.lblUsuario.Name = "lblUsuario"
-        Me.lblUsuario.Size = New System.Drawing.Size(585, 20)
+        Me.lblUsuario.Size = New System.Drawing.Size(554, 20)
         Me.lblUsuario.Spring = True
         Me.lblUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -791,16 +792,15 @@ Partial Class frmMain
 
     End Sub
     Friend WithEvents sbMain As System.Windows.Forms.StatusStrip
-   Friend WithEvents lblUsuario As System.Windows.Forms.ToolStripStatusLabel
-   Friend WithEvents lblEntidad As System.Windows.Forms.ToolStripStatusLabel
-   Friend WithEvents toolMain As System.Windows.Forms.ToolStrip
-   Friend WithEvents lblTransaccion As System.Windows.Forms.ToolStripLabel
-   Friend WithEvents tsSep1 As System.Windows.Forms.ToolStripSeparator
-   Friend WithEvents btnAyuda As System.Windows.Forms.ToolStripButton
-   Friend WithEvents tsSep2 As System.Windows.Forms.ToolStripSeparator
-   Friend WithEvents btnSalir As System.Windows.Forms.ToolStripButton
-   Friend WithEvents lblVersion As System.Windows.Forms.ToolStripLabel
-   Friend WithEvents ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents lblEntidad As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents toolMain As System.Windows.Forms.ToolStrip
+    Friend WithEvents lblTransaccion As System.Windows.Forms.ToolStripLabel
+    Friend WithEvents tsSep1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents btnAyuda As System.Windows.Forms.ToolStripButton
+    Friend WithEvents tsSep2 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents btnSalir As System.Windows.Forms.ToolStripButton
+    Friend WithEvents lblVersion As System.Windows.Forms.ToolStripLabel
+    Friend WithEvents ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents PanTop As DevExpress.XtraEditors.PanelControl
     Friend WithEvents lblSubtitulo As DevExpress.XtraEditors.LabelControl
     Friend WithEvents lblTitulo As DevExpress.XtraEditors.LabelControl
@@ -855,4 +855,5 @@ Partial Class frmMain
     Friend WithEvents RepositoryItemTextEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemTextEdit
     Friend WithEvents cmdMostrarAgrupamiento As DevExpress.XtraBars.BarButtonItem
     Friend WithEvents BarToggleSwitchItem1 As DevExpress.XtraBars.BarToggleSwitchItem
+    Public WithEvents lblUsuario As ToolStripStatusLabel
 End Class

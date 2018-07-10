@@ -15,7 +15,7 @@ Module modLocalMain
 
 
         Dim frmMain As New frmMain
-        frmMain.ShowDialog()
+        If Not frmMain.ErrorPermiso Then frmMain.ShowDialog()
     End Sub
 
     Private Sub PrevInstance()

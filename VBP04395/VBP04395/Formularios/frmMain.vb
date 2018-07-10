@@ -1,14 +1,7 @@
-Imports DevExpress.XtraGrid.Views.Base
-Imports System.Data.SqlClient
-Imports System.Windows.Forms
-Imports DevExpress.Utils
-Imports DevExpress.XtraGrid
 Imports System.IO
-Imports DevExpress.XtraGrid.Views.Grid
-
 
 Public Class frmMain
-
+    Public ErrorPermiso As Boolean = False
     Private oAdmlocal As New AdmTablas
     Private oProcesando As frmProcesando
     Private bCancelProcAsinc As Boolean
@@ -75,91 +68,87 @@ Public Class frmMain
     End Sub
 
     Private Sub PresentarDatos(ByVal nCodigoTransaccion As Long, ByVal nCodigoUsuario As Long, ByVal nCodigoEntidad As Long)
-
         Try
+            Try
+                Dim sSQL As String
+                Dim ds As DataSet
 
-            Dim sSQL As String
-            Dim ds As DataSet
-            Dim sError As String = ""
+                ''''' USUARIO '''''
 
-            ''''' USUARIO '''''
-
-            sSQL = "SELECT    US_CODUSU, US_NOMBRE, US_DESCRI, US_ADMIN " &
+                sSQL = "SELECT    US_CODUSU, US_NOMBRE, US_DESCRI, US_ADMIN " &
                 "FROM      USUARI " &
                 "WHERE     US_CODUSU = " & nCodigoUsuario
-            ds = oAdmlocal.AbrirDataset(sSQL)
+                ds = oAdmlocal.AbrirDataset(sSQL)
 
-            With ds.Tables(0)
+                With ds.Tables(0)
 
-                If .Rows.Count = 0 Then
-                    sError = "Falla de seguridad"
-                Else
-                    UsuarioActual.Codigo = nCodigoUsuario
-                    UsuarioActual.Nombre = .Rows(0).Item("US_NOMBRE")
-                    UsuarioActual.Descripcion = .Rows(0).Item("US_DESCRI")
-                    UsuarioActual.Admin = .Rows(0).Item("US_ADMIN")
-                    UsuarioActual.SoloLectura = False
-                    lblUsuario.Text = UsuarioActual.Descripcion
-                End If
+                    If .Rows.Count = 0 Then
+                        Throw New Security.SecurityException("Falla de seguridad")
+                    Else
+                        UsuarioActual.Codigo = nCodigoUsuario
+                        UsuarioActual.Nombre = .Rows(0).Item("US_NOMBRE")
+                        UsuarioActual.Descripcion = .Rows(0).Item("US_DESCRI")
+                        UsuarioActual.Admin = .Rows(0).Item("US_ADMIN")
+                        UsuarioActual.SoloLectura = False
+                        lblUsuario.Text = UsuarioActual.Descripcion
+                    End If
 
-            End With
+                End With
 
-            ds = Nothing
+                ds = Nothing
 
-            ''''' ENTIDAD '''''
+                ''''' ENTIDAD '''''
 
-            sSQL = "SELECT    TG_CODCON, TG_DESCRI " &
+                sSQL = "SELECT    TG_CODCON, TG_DESCRI " &
                 "FROM      TABGEN " &
                 "WHERE     TG_CODTAB = 1 " &
                 "AND       TG_CODCON = " & nCodigoEntidad
-            ds = oAdmlocal.AbrirDataset(sSQL)
+                ds = oAdmlocal.AbrirDataset(sSQL)
 
-            With ds.Tables(0)
+                With ds.Tables(0)
 
-                If .Rows.Count = 0 Then
-                    sError = "Parámetro de entidad no válido"
-                Else
-                    NOMBRE_ENTIDAD = .Rows(0).Item("TG_DESCRI")
-                    lblEntidad.Text = NOMBRE_ENTIDAD
-                End If
+                    If .Rows.Count = 0 Then
+                        Throw New Security.SecurityException("Parámetro de entidad no válido")
+                    Else
+                        NOMBRE_ENTIDAD = .Rows(0).Item("TG_DESCRI")
+                        lblEntidad.Text = NOMBRE_ENTIDAD
+                    End If
 
-            End With
+                End With
 
-            ds = Nothing
+                ds = Nothing
 
-            ''''' TRANSACCION '''''
+                ''''' TRANSACCION '''''
 
-            sSQL = "SELECT    MU_TRANSA, MU_DESCRI " &
+                sSQL = "SELECT    MU_TRANSA, MU_DESCRI " &
                 "FROM      MENUES " &
                 "WHERE     MU_CODTRA = " & nCodigoTransaccion
-            ds = oAdmlocal.AbrirDataset(sSQL)
+                ds = oAdmlocal.AbrirDataset(sSQL)
 
-            With ds.Tables(0)
+                With ds.Tables(0)
 
 
-                If .Rows.Count = 0 Then
-                    sError = "Error en la línea de comandos. Parámetro de transacción incorrecto"
-                Else
-                    lblTransaccion.Text = .Rows(0).Item("MU_DESCRI")
-                    Me.Text = CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA")
-                End If
+                    If .Rows.Count = 0 Then
+                        Throw New Security.SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto")
+                    Else
+                        lblTransaccion.Text = .Rows(0).Item("MU_DESCRI")
+                        Me.Text = CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA")
+                    End If
 
-            End With
+                End With
 
-            ds = Nothing
+                ds = Nothing
 
-            lblVersion.Text = "Versión: " & Application.ProductVersion
+                lblVersion.Text = "Versión: " & Application.ProductVersion
 
-            If sError <> "" Then
-                MensajeError(sError)
-                Application.Exit()
-            End If
-
+            Catch ex As Security.SecurityException
+                MensajeError(ex.Message)
+                ErrorPermiso = True
+            End Try
         Catch ex As Exception
-            TratarError(ex, "AnalizarCommand")
-            Application.Exit()
+            TratarError(ex, "PresentarDatos")
+            ErrorPermiso = True
         End Try
-
     End Sub
 
     Public Sub New()

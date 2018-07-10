@@ -9,9 +9,10 @@ Module modLocalMain
 
       CulturaActual = System.Threading.Thread.CurrentThread.CurrentCulture
       CulturaCargarTextos(CulturaActual.ToString)
+        If Not frmMain.ErrorPermiso Then
+            frmMain.ShowDialog()
+        End If
 
-      frmMain.ShowDialog()
-
-   End Sub
+    End Sub
 
 End Module

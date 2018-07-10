@@ -7,9 +7,10 @@ Module modLocalMain
 
         CulturaActual = System.Threading.Thread.CurrentThread.CurrentCulture
         CulturaCargarTextos(CulturaActual.ToString)
-
-        frmMain.Cargar()
-        frmMain.ShowDialog()
+        If Not frmMain.ErrorPermiso Then
+            frmMain.Cargar()
+            frmMain.ShowDialog()
+        End If
 
     End Sub
 
