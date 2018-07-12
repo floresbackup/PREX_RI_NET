@@ -21,11 +21,10 @@ Public Class frmInicioSesion
       Get
          Return nModoAutenticacion
       End Get
-
-      Set(ByVal nModo As eModoAutenticacion)
-         nModoAutenticacion = nModo
-      End Set
-   End Property
+        Set(ByVal nModo As eModoAutenticacion)
+            nModoAutenticacion = nModo
+        End Set
+    End Property
 
    Private bAutenticadoOK As Boolean = False
 
@@ -138,8 +137,10 @@ Public Class frmInicioSesion
 
                bIntegraNT = CBool(.Rows(0).Item("DS_SEGUNT"))
                nDiasPreviosRenov = Val(.Rows(0).Item("DS_DIASRE"))
-
-            End If
+                    If bIntegraNT Then
+                        ModoAutenticacion = eModoAutenticacion.AutenticacionNT
+                    End If
+                End If
 
          End With
 

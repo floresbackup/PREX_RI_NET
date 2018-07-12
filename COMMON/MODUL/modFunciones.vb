@@ -839,7 +839,7 @@ Module modFunciones
                 With ds.Tables(0)
 
                     If .Rows.Count = 0 Then
-                        Throw New Security.SecurityException("Falla de seguridad")
+                        Throw New Security.SecurityException("Falla de seguridad - US_CODUSU: " & nCodigoUsuario)
                     Else
                         UsuarioActual.Codigo = nCodigoUsuario
                         UsuarioActual.Nombre = .Rows(0).Item("US_NOMBRE").ToString
@@ -864,7 +864,7 @@ Module modFunciones
                 With ds.Tables(0)
 
                     If .Rows.Count = 0 Then
-                        Throw New Security.SecurityException("Parámetro de entidad no válido")
+                        Throw New Security.SecurityException("Parámetro de entidad no válido - TG_CODCON: " & nCodigoEntidad)
                     Else
                         NOMBRE_ENTIDAD = .Rows(0).Item("TG_DESCRI").ToString
                         SetLabelTexto(formulario, "lblEntidad", NOMBRE_ENTIDAD)
@@ -885,7 +885,7 @@ Module modFunciones
 
 
                     If .Rows.Count = 0 Then
-                        Throw New Security.SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto")
+                        Throw New Security.SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto - MU_CODTRA: " & nCodigoTransaccion)
                     Else
                         formulario.Text = CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA").ToString
                         SetLabelTexto(formulario, "lblTransaccion", CType(.Rows(0).Item("MU_DESCRI"), String))

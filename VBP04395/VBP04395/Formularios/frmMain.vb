@@ -83,7 +83,7 @@ Public Class frmMain
                 With ds.Tables(0)
 
                     If .Rows.Count = 0 Then
-                        Throw New Security.SecurityException("Falla de seguridad")
+                        Throw New Security.SecurityException("Falla de seguridad - US_CODUSU: " & nCodigoUsuario)
                     Else
                         UsuarioActual.Codigo = nCodigoUsuario
                         UsuarioActual.Nombre = .Rows(0).Item("US_NOMBRE")
@@ -108,7 +108,7 @@ Public Class frmMain
                 With ds.Tables(0)
 
                     If .Rows.Count = 0 Then
-                        Throw New Security.SecurityException("Parámetro de entidad no válido")
+                        Throw New Security.SecurityException("Parámetro de entidad no válido - TG_CODCON: " & nCodigoEntidad)
                     Else
                         NOMBRE_ENTIDAD = .Rows(0).Item("TG_DESCRI")
                         lblEntidad.Text = NOMBRE_ENTIDAD
@@ -129,7 +129,7 @@ Public Class frmMain
 
 
                     If .Rows.Count = 0 Then
-                        Throw New Security.SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto")
+                        Throw New Security.SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto - MU_CODTRA: " & nCodigoTransaccion)
                     Else
                         lblTransaccion.Text = .Rows(0).Item("MU_DESCRI")
                         Me.Text = CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA")
