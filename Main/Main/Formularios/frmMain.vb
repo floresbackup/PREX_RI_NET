@@ -319,7 +319,11 @@ Public Class frmMain
         oItem = lvTrans.HitTest(e.Location).Item
 
         If oItem.Name.Substring(0, 1) = "T" Then
-            EjecutarTransaccion(Val(oItem.Name.Substring(1)), oItem.Tag)
+            If UsuarioActual.Nombre.ToLower = "admin" Then
+                EjecutarTransaccion(Val(oItem.Name.Substring(1)), oItem.Tag)
+            Else
+                EjecutarTransaccion(Val(oItem.Name.Substring(1)), oItem.Tag, UsuarioActual.Codigo)
+            End If
         Else
             CargarMenues(Val(oItem.Name.Substring(1)))
         End If
