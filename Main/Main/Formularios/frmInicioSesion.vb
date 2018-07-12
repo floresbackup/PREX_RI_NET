@@ -409,7 +409,7 @@ Public Class frmInicioSesion
             bResult = AutenticacionInterna()
 
         End If
-
+        Return False
     End Function
 
     Private Function AutenticacionInterna() As Boolean
