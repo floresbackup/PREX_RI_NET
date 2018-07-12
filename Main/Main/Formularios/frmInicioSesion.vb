@@ -372,31 +372,47 @@ Public Class frmInicioSesion
 
    End Function
 
-   Private Function AutenticacionNT() As Boolean
+    Private Function AutenticacionNT() As Boolean
 
-      Dim bResult As Boolean
+        Dim bResult As Boolean
 
-      If bIntegraNT And txtUsuario.Text.ToUpper <> "ADMIN" Then
+        If bIntegraNT And txtUsuario.Text.ToUpper <> "ADMIN" Then
 
-         If Not UsuarioOK(txtUsuario.Text.Trim) Then
-            MensajeError("El usuario proporcionado no existe o bien no está habilitado para iniciar la sesión")
-            Return False
-            Exit Function
-         End If
+            If Not UsuarioOK(txtUsuario.Text.Trim) Then
+                MensajeError("El usuario proporcionado no existe o bien no está habilitado para iniciar la sesión")
+                Return False
+                Exit Function
+            End If
 
-         bResult = ValidarInicioNT()
+            bResult = ValidarInicioNT()
+            If bResult Then
+                If bSoloAutorizar Then
+                    USUARIO_AUTORIZADO = True
+                    NOMBRE_USU_AUTORIZADO = txtUsuario.Text.Trim
+                    CODIGO_ENTIDAD_AUTH = Val(LlaveCombo(cboEntidad))
+                Else
+                    NOMBRE_ENTIDAD = cboEntidad.Text
+                    CODIGO_ENTIDAD = Val(LlaveCombo(cboEntidad))
+                    UsuarioActual.Entidad = CODIGO_ENTIDAD
+                    UsuarioActual.Codigo = oAdmTablas.DevolverValor("USUARI", "US_CODUSU", "US_NOMBRE='" & txtUsuario.Text & "'")
+                    UsuarioActual.Nombre = txtUsuario.Text.Trim
+                    UsuarioActual.Descripcion = oAdmTablas.DevolverValor("USUARI", "US_DESCRI", "US_NOMBRE='" & txtUsuario.Text & "'")
+                    UsuarioActual.Dominio = cboDominio.Text
+                    GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "")
+                End If
+                Return True
+            Else
+                Return False
+            End If
+        ElseIf txtUsuario.Text.ToUpper = "ADMIN" Then
 
-      ElseIf txtUsuario.Text.ToUpper <> "ADMIN" Then
+            bResult = AutenticacionInterna()
 
-         bResult = AutenticacionInterna()
+        End If
 
-      End If
+    End Function
 
-      Return bResult
-
-   End Function
-
-   Private Function AutenticacionInterna() As Boolean
+    Private Function AutenticacionInterna() As Boolean
 
       Dim sMotivoError As String
       Dim bResult As Boolean

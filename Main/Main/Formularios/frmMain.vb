@@ -218,8 +218,10 @@ Public Class frmMain
 
             If ds.Tables(0).Rows.Count = 0 Then
                 MensajeError("Transacción inexistente")
-            Else
+            ElseIf UsuarioActual.Nombre.ToLower() = "admin" Then
                 EjecutarTransaccion(Val(txtCodTra.Text), ds.Tables(0).Rows(0)("MU_COMAND").ToString)
+            Else
+                EjecutarTransaccion(Val(txtCodTra.Text), ds.Tables(0).Rows(0)("MU_COMAND").ToString, UsuarioActual.Codigo)
             End If
 
         End If
