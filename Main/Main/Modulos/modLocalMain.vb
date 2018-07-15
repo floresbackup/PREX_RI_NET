@@ -353,23 +353,23 @@ Maneja_Error:
                 sNombre = String.Empty
             End If
 
-            sPerfil = SGInterface.AccFunctions()
+            sPerfil = SGInterface.AccFunctions().Trim
 
             Dim oAdmTablas As New AdmTablas
 
             oAdmTablas.ConnectionString = CONN_LOCAL
 
-            NOMBRE_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_DESCRI", " TG_CODTAB=1 AND TG_NUME01=1")
-            CODIGO_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_CODCON", " TG_CODTAB=1 AND TG_NUME01=1")
+            NOMBRE_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_DESCRI", " TG_CODTAB=1 AND TG_NUME01=1").ToString()
+            CODIGO_ENTIDAD = Long.Parse(oAdmTablas.DevolverValor("TABGEN", "TG_CODCON", " TG_CODTAB=1 AND TG_NUME01=1").ToString())
             UsuarioActual.Nombre = sNombre
-            UsuarioActual.Codigo = oAdmTablas.DevolverValor("USUARI", "US_CODUSU", " US_NOMBRE = '" & sNombre & "'", "0")
-            UsuarioActual.Descripcion = oAdmTablas.DevolverValor("USUARI", "US_DESCRI", " US_NOMBRE = '" & sNombre & "'", sNombre)
+            UsuarioActual.Codigo = Long.Parse(oAdmTablas.DevolverValor("USUARI", "US_CODUSU", " US_NOMBRE = '" & sNombre & "'", "0").ToString())
+            UsuarioActual.Descripcion = oAdmTablas.DevolverValor("USUARI", "US_DESCRI", " US_NOMBRE = '" & sNombre & "'", sNombre).ToString
 
             oAdmTablas = Nothing
 
             GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "Perfil: " & sPerfil & " - SG Response: " & sgResponse)
 
-            frmMain.ActualizarSeguridad(sPerfil.Replace("[", String.Empty).Replace("]", String.Empty))
+            frmMain.ActualizarSeguridad(sPerfil.Replace("[", String.Empty).Replace("]", String.Empty).Trim)
             CITI_PERFIL = sPerfil
             Return True
         Else
