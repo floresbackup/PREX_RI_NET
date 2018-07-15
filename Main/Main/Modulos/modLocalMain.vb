@@ -338,17 +338,19 @@ Maneja_Error:
         '        Dim sPerfil2 = String.Empty
 
         sPerfil = Nothing
+        Dim sgResponse As String = String.Empty
 
         Dim SGInterface As SGInterface = FactorySGInstance.getInstanceInterface()
-        Dim returnValue = SGInterface.RsmsLogin(ID_SISTEMA, "Gestión RI", SG_CONFIG, sPerfil)
+        Dim returnValue As Integer = -1
+        returnValue = SGInterface.RsmsLogin(ID_SISTEMA.ToString(), "Gestión RI", SG_CONFIG, sgResponse)
         If (returnValue = 1) Then
 
             'MessageBox.Show(frmMain, "Perfil devuelto: " & sPerfil, "Login SGLibrary", MessageBoxButtons.OK)
-
-            If (sPerfil.Split("|").FirstOrDefault() Is Nothing) Then
-                sNombre = String.Empty
+            Dim responseSplit As String() = sgResponse.Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+            If (responseSplit.Where(Function(s) s.Any()).Any() AndAlso Not responseSplit.FirstOrDefault() Is Nothing) Then
+                sNombre = responseSplit.FirstOrDefault().Trim()
             Else
-                sNombre = sPerfil.Split("|").FirstOrDefault()
+                sNombre = String.Empty
             End If
 
             sPerfil = SGInterface.AccFunctions()
@@ -365,7 +367,7 @@ Maneja_Error:
 
             oAdmTablas = Nothing
 
-            GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "")
+            GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "Perfil: " & sPerfil & " - SG Response: " & sgResponse)
 
             frmMain.ActualizarSeguridad(sPerfil.Replace("[", String.Empty).Replace("]", String.Empty))
             CITI_PERFIL = sPerfil
