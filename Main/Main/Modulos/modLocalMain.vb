@@ -21,6 +21,19 @@ Module modLocalMain
     Public USUARIO_AUTORIZADO As Boolean
 
     Sub Main()
+        ''Prueba response SG
+        'Dim responseSplit As String() = "SG_ME66396_160771_3265|xT97sUaP83".Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+        'If (responseSplit.Where(Function(s) s.Any()).Any() AndAlso Not responseSplit.FirstOrDefault() Is Nothing) Then
+        '    Dim usuarioCiti As String() = responseSplit.FirstOrDefault(Function(s) s.ToLower.Contains("sg_")).Trim().Split(New String() {"_"}, StringSplitOptions.RemoveEmptyEntries)
+        '    If usuarioCiti.Any AndAlso usuarioCiti.FirstOrDefault().ToLower() = "sg" Then
+        '        sNombre = usuarioCiti(1)
+        '    Else
+        '        sNombre = String.Empty
+        '    End If
+        'Else
+        '    sNombre = String.Empty
+        'End If
+
 
         Dim bIniciar As Boolean = True
 
@@ -348,7 +361,12 @@ Maneja_Error:
             'MessageBox.Show(frmMain, "Perfil devuelto: " & sPerfil, "Login SGLibrary", MessageBoxButtons.OK)
             Dim responseSplit As String() = sgResponse.Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
             If (responseSplit.Where(Function(s) s.Any()).Any() AndAlso Not responseSplit.FirstOrDefault() Is Nothing) Then
-                sNombre = responseSplit.FirstOrDefault().Trim()
+                Dim usuarioCiti As String() = responseSplit.FirstOrDefault(Function(s) s.ToLower.Contains("sg_")).Trim().Split(New String() {"_"}, StringSplitOptions.RemoveEmptyEntries)
+                If usuarioCiti.Any AndAlso usuarioCiti.FirstOrDefault().ToLower() = "sg" Then
+                    sNombre = usuarioCiti(1)
+                Else
+                    sNombre = String.Empty
+                End If
             Else
                 sNombre = String.Empty
             End If
