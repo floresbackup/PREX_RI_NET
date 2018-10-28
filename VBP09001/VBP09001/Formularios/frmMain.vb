@@ -1,4 +1,5 @@
 Imports System
+Imports System.Linq
 Imports System.IO
 Imports System.Net
 Imports System.Text
@@ -863,14 +864,18 @@ Public Class frmMain
                 ds = oAdmLocal.AbrirDataset(sSQL)
                 cboArchivos.Items.Clear()
                 cboArchivos.Items.Add(New clsItem.Item("", "<Seleccionar ...>"))
+                Dim listNombres As New List(Of String)
                 With ds.Tables(0)
 
                     For Each row As DataRow In .Rows
+                        If listNombres.Contains(row("TN_NOMBRETXT").ToString) Then
+                            Continue For
+                        End If
                         Dim item As New clsItem.Item(row("TN_CODIGO"), row("TN_NOMBRETXT"))
                         If Not row("TN_PERIOD") Is DBNull.Value Then item.Periodo = row("TN_PERIOD").ToString
 
                         cboArchivos.Items.Add(item)
-
+                        listNombres.Add(item.Nombre)
                     Next
 
                 End With
@@ -961,12 +966,12 @@ Public Class frmMain
                     dFecPro = FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text))
                 End If
 
-                If (Val(Llave(cboArchivos)) >= 4300 And
-                    Val(Llave(cboArchivos)) <= 4399) Or
-                         (Val(Llave(cboArchivos)) >= 3901 And
-                    Val(Llave(cboArchivos)) <= 3903) Or
-                         (Val(Llave(cboArchivos)) >= 2900 And
-                    Val(Llave(cboArchivos)) <= 2910) Then
+                If (Val(LlaveCombo(cboArchivos)) >= 4300 And
+                    Val(LlaveCombo(cboArchivos)) <= 4399) Or
+                         (Val(LlaveCombo(cboArchivos)) >= 3901 And
+                    Val(LlaveCombo(cboArchivos)) <= 3903) Or
+                         (Val(LlaveCombo(cboArchivos)) >= 2900 And
+                    Val(LlaveCombo(cboArchivos)) <= 2910) Then
 
                     nCont = 1
 
@@ -1094,7 +1099,7 @@ Salir:
                 Dim sTabla = rstCuadros.Tables(0).Rows(0).Item("TR_TABLATRABAJO")
 
                 '-- Generar Tabla de Trabajo
-                If Not (PreparaTxt(dFechaReal, sTabla)) Then
+                If Not (PreparaTxt(dFechaReal, sTabla, nCod)) Then
                     cmdGenerar.Enabled = True
                     lblStatus.Text = ""
                     Me.Cursor = Cursors.Default
@@ -1173,7 +1178,7 @@ Salir:
                                                 sLine = sLine & Format(vDato * Val("1" & "".PadLeft(CType(Formato(nOrden), clsFormato).Decimales, "0")), CType(Formato(nOrden), clsFormato).FormatoCampo)
                                             Else
                                                 If vDato >= 0 Then
-                                                    sLine = sLine & Format(vDato, CType(Formato(nOrden), clsFormato).FormatoCampo)
+                                                    sLine = sLine & (IIf(vDato = 0 AndAlso CType(Formato(nOrden), clsFormato).FormatoCampo = String.Empty, String.Empty, Format(vDato, CType(Formato(nOrden), clsFormato).FormatoCampo)))
                                                 Else
                                                     sLine = sLine & Format(vDato, Strings.Right(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud - 1))
                                                 End If
@@ -1271,7 +1276,7 @@ Salir:
 
                     End If
 
-                    nGrabaSegTXT = IIf(oAdmLocal.DevolverValor("TABGEN", "ISNULL(TG_NUME02, 0)", " TG_CODTAB = 3 AND TG_CODCON = 60", "") = " inexistente", 0,
+                    nGrabaSegTXT = IIf(oAdmLocal.DevolverValor("TABGEN", "ISNULL(TG_NUME02, 0)", " TG_CODTAB = 3 AND TG_CODCON = 60", -9999) = -9999, 0,
                                    oAdmLocal.DevolverValor("TABGEN", "ISNULL(TG_NUME02, 0)", " TG_CODTAB = 3 AND TG_CODCON = 60", ""))
 
                     If nGrabaSegTXT = 1 Then
@@ -1678,7 +1683,7 @@ Salir:
                                     sLine = sLine & Format(vDato * Val("1" & "".PadLeft(CType(Formato(nOrden), clsFormato).Decimales, "0")), CType(Formato(nOrden), clsFormato).FormatoCampo)
                                 Else
                                     If vDato >= 0 Then
-                                        sLine = sLine & Format(vDato, CType(Formato(nOrden), clsFormato).FormatoCampo)
+                                        sLine = sLine & (IIf(vDato = 0 AndAlso CType(Formato(nOrden), clsFormato).FormatoCampo = String.Empty, String.Empty, Format(vDato, CType(Formato(nOrden), clsFormato).FormatoCampo)))
                                     Else
                                         sLine = sLine & Format(vDato, Microsoft.VisualBasic.Strings.Right(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud - 1))
                                     End If

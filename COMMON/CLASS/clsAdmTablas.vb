@@ -373,8 +373,8 @@ Public Class AdmTablas
 
          With ds.Tables(0)
             If .Rows.Count > 0 Then
-               Return .Rows(0).Item(0)
-            Else
+                    Return .Rows(0).Item(0)
+                Else
                Return sDescripcionInexistente
             End If
          End With

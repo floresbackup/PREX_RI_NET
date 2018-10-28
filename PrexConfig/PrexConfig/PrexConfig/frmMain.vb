@@ -218,7 +218,7 @@ Public Class frmMain
         Else
             con &= "Password=" & txtPassword.Text.Trim() & ";User ID=" & txtUsuario.Text.Trim()
         End If
-        con &= ";Initial Catalog=" & txtBaseDeDatos.Text.Trim() & ";DATA SOURCE=" & txtServidor.Text.Trim()
+        con &= ";Connect Timeout=0;Initial Catalog=" & txtBaseDeDatos.Text.Trim() & ";DATA SOURCE=" & txtServidor.Text.Trim()
         'Initial Catalog=GESTIONRI_PNP;Data Source=NTB-EMILSE\SQLEXPRESS
         Return con.Replace(";;", ";")
     End Function
@@ -336,17 +336,23 @@ Public Class frmMain
 
     Private Sub btnProbarConexion_Click(sender As Object, e As EventArgs) Handles btnProbarConexion.Click
         Try
-            Dim conn As New OleDb.OleDbConnection(GetFullConnectionString())
-            conn.Open()
-            If conn.State = ConnectionState.Open Then
-                MessageBox.Show("Conexión establecida exitosamente", "Probando conexión con SQL", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                conn.Close()
-            Else
-                MessageBox.Show("No se pudo establecer conexión, revise los datos ingresados", "Probando conexión con SQL", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            End If
-            conn = Nothing
-        Catch ex As Exception
-            MessageBox.Show(ex.Source & " - " & ex.Message, "Probando conexión con SQL", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Me.Cursor = Cursors.WaitCursor
+            Try
+
+                Dim conn As New OleDb.OleDbConnection(GetFullConnectionString())
+                conn.Open()
+                If conn.State = ConnectionState.Open Then
+                    MessageBox.Show(Me, "Conexión establecida exitosamente", "Probando conexión con SQL", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    conn.Close()
+                Else
+                    MessageBox.Show(Me, "No se pudo establecer conexión, revise los datos ingresados", "Probando conexión con SQL", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                End If
+                conn = Nothing
+            Catch ex As Exception
+                MessageBox.Show(Me, ex.Source & " - " & ex.Message, "Probando conexión con SQL", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        Finally
+            Me.Cursor = Cursors.Default
         End Try
     End Sub
 End Class

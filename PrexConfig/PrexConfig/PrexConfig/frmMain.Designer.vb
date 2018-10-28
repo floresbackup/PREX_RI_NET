@@ -341,6 +341,7 @@ Partial Class frmMain
         '
         Me.btnProbarConexion.Appearance.Image = CType(resources.GetObject("btnProbarConexion.Appearance.Image"), System.Drawing.Image)
         Me.btnProbarConexion.Appearance.Options.UseImage = True
+        Me.btnProbarConexion.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.Flat
         Me.btnProbarConexion.ImageOptions.Image = CType(resources.GetObject("btnProbarConexion.ImageOptions.Image"), System.Drawing.Image)
         Me.btnProbarConexion.Location = New System.Drawing.Point(520, 169)
         Me.btnProbarConexion.Name = "btnProbarConexion"
