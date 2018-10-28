@@ -1,58 +1,60 @@
 Imports System.Xml
 Imports System.IO
+Imports System.Data.SqlClient
+Imports System.Linq
 
 Public Class frmMain
 
-   Public ARCHIVO_CONFIG As String = Application.StartupPath & "\Prex.config"
+    Public ARCHIVO_CONFIG As String = Application.StartupPath & "\Prex.config"
 
-   Private oConfig As New dsConfig
-   Private oItemSel As ListViewItem
+    Private oConfig As New dsConfig
+    Private oItemSel As ListViewItem
 
-   Function CrearConnString(Optional ByVal parentForm As Form = Nothing) As String
+    Function CrearConnString(Optional ByVal parentForm As Form = Nothing) As String
 
-      Dim dataLink As Object = Microsoft.VisualBasic.Interaction.CreateObject("DataLinks")
+        Dim dataLink As Object = Microsoft.VisualBasic.Interaction.CreateObject("DataLinks")
 
-      If Not parentForm Is Nothing Then
-         dataLink.hWnd = parentForm.Handle.ToInt32()
-      End If
+        If Not parentForm Is Nothing Then
+            dataLink.hWnd = parentForm.Handle.ToInt32()
+        End If
 
-      Dim oForm As Object = dataLink.PromptNew()
+        Dim oForm As Object = dataLink.PromptNew()
 
-      If oForm Is Nothing Then
-         Return ""
-      Else
-         Return oForm.ConnectionString.ToString()
-      End If
+        If oForm Is Nothing Then
+            Return ""
+        Else
+            Return oForm.ConnectionString.ToString()
+        End If
 
-   End Function
+    End Function
 
-   Private Sub btnCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancelar.Click
-      Application.Exit()
-   End Sub
+    Private Sub btnCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancelar.Click
+        Application.Exit()
+    End Sub
 
-   Private Sub btnAceptar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAceptar.Click
-      Guardar()
-   End Sub
+    Private Sub btnAceptar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAceptar.Click
+        Guardar()
+    End Sub
 
-   Private Sub cmdCarpetaLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCarpetaLocal.Click
+    Private Sub cmdCarpetaLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCarpetaLocal.Click
 
-      CarpetaDialogo.SelectedPath = txtCarpetaLocal.Text
-      CarpetaDialogo.ShowDialog()
-      txtCarpetaLocal.Text = CarpetaDialogo.SelectedPath
+        CarpetaDialogo.SelectedPath = txtCarpetaLocal.Text
+        CarpetaDialogo.ShowDialog()
+        txtCarpetaLocal.Text = CarpetaDialogo.SelectedPath
 
-   End Sub
+    End Sub
 
-   Private Sub SimpleButton3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SimpleButton3.Click
+    Private Sub SimpleButton3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SimpleButton3.Click
 
-      GuardarDialogo.OverwritePrompt = False
-      GuardarDialogo.Title = "Especifique el archivo de configuración"
-      GuardarDialogo.Filter = "Archivos de configuración (*.config)|*.config"
-      GuardarDialogo.InitialDirectory = txtCarpetaLocal.Text
-      If GuardarDialogo.ShowDialog() = Windows.Forms.DialogResult.OK Then
-         txtArchivoConfig.Text = System.IO.Path.GetFileName(GuardarDialogo.FileName)
-      End If
+        GuardarDialogo.OverwritePrompt = False
+        GuardarDialogo.Title = "Especifique el archivo de configuración"
+        GuardarDialogo.Filter = "Archivos de configuración (*.config)|*.config"
+        GuardarDialogo.InitialDirectory = txtCarpetaLocal.Text
+        If GuardarDialogo.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            txtArchivoConfig.Text = System.IO.Path.GetFileName(GuardarDialogo.FileName)
+        End If
 
-   End Sub
+    End Sub
 
     Private Sub SimpleButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBuscarSgLibrary.Click
 
@@ -67,62 +69,62 @@ Public Class frmMain
     End Sub
 
     Private Sub btnConnString_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnConnString.Click
-      txtConnString.Text = CrearConnString(Me)
-   End Sub
+        txtConnString.Text = CrearConnString(Me)
+    End Sub
 
-   Private Sub btnAgregar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAgregar.Click
+    Private Sub btnAgregar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAgregar.Click
 
-      Dim frm As New frmDialog
-      Dim oResult As DialogResult = frm.ShowDialog()
+        Dim frm As New frmDialog
+        Dim oResult As DialogResult = frm.ShowDialog()
 
-      If oResult = Windows.Forms.DialogResult.OK Then
-         lvConfig.Refresh()
-      End If
+        If oResult = Windows.Forms.DialogResult.OK Then
+            lvConfig.Refresh()
+        End If
 
-      frm = Nothing
+        frm = Nothing
 
-   End Sub
+    End Sub
 
-   Private Sub lvConfig_ItemSelectionChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.ListViewItemSelectionChangedEventArgs) Handles lvConfig.ItemSelectionChanged
+    Private Sub lvConfig_ItemSelectionChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.ListViewItemSelectionChangedEventArgs) Handles lvConfig.ItemSelectionChanged
 
-      If lvConfig.Items.Count Then
-         oItemSel = e.Item
-      Else
-         oItemSel = Nothing
-      End If
+        If lvConfig.Items.Count Then
+            oItemSel = e.Item
+        Else
+            oItemSel = Nothing
+        End If
 
-   End Sub
+    End Sub
 
-   Private Sub lvConfig_MouseDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lvConfig.MouseDoubleClick
+    Private Sub lvConfig_MouseDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lvConfig.MouseDoubleClick
 
-      If Not (oItemSel Is Nothing) Then
-         Dim frm As New frmDialog
-         frm.PasarDatos(oItemSel.Text, oItemSel.SubItems.Item(1).Text)
-         frm.ShowDialog()
-         frm = Nothing
-      End If
+        If Not (oItemSel Is Nothing) Then
+            Dim frm As New frmDialog
+            frm.PasarDatos(oItemSel.Text, oItemSel.SubItems.Item(1).Text)
+            frm.ShowDialog()
+            frm = Nothing
+        End If
 
-   End Sub
+    End Sub
 
-   Friend Sub PasarDatos(ByVal sNombre As String, _
-                         ByVal sValor As String)
+    Friend Sub PasarDatos(ByVal sNombre As String,
+                          ByVal sValor As String)
 
-      Dim oItem As ListViewItem
-      Dim bAgrega As Boolean = True
+        Dim oItem As ListViewItem
+        Dim bAgrega As Boolean = True
 
-      For Each oItem In lvConfig.Items
-         If oItem.Text = sNombre Then
-            oItem.SubItems.Item(1).Text = sValor
-            bAgrega = False
-         End If
-      Next
+        For Each oItem In lvConfig.Items
+            If oItem.Text = sNombre Then
+                oItem.SubItems.Item(1).Text = sValor
+                bAgrega = False
+            End If
+        Next
 
-      If bAgrega Then
-         oItem = lvConfig.Items.Add(sNombre)
-         oItem.SubItems.Add(sValor)
-      End If
+        If bAgrega Then
+            oItem = lvConfig.Items.Add(sNombre)
+            oItem.SubItems.Add(sValor)
+        End If
 
-   End Sub
+    End Sub
 
     Private Sub CargarXML()
 
@@ -145,10 +147,10 @@ Public Class frmMain
 
                             txtConnString.Text = sTemp.Substring(0, sTemp.LastIndexOf(";"))
                             ' sTemp = sTemp.Substring(sTemp.LastIndexOf(";"))
-                            txtPassword.Text = GetPasswordFromConnection(sTemp) ' sTemp.Substring(sTemp.LastIndexOf("=") + 1)
-                            txtUsuario.Text = GetUserNameFromConnection(sTemp)
-                            txtBaseDeDatos.Text = GetDBNameFromConnection(sTemp)
-                            txtServidor.Text = GetServerFromConnection(sTemp)
+                            txtPassword.Text = GetStringFromConnection(sTemp, "Password=") ' sTemp.Substring(sTemp.LastIndexOf("=") + 1)
+                            txtUsuario.Text = GetStringFromConnection(sTemp, "User Id=")
+                            txtBaseDeDatos.Text = GetStringFromConnection(sTemp, "Initial Catalog=")
+                            txtServidor.Text = GetStringFromConnection(sTemp, "Data Source=")
                             ckSeguridadIntegrada.Checked = sTemp.Contains("Integrated Security=true")
                         Case "FFECHA"
                             txtFFecha.Text = sTemp
@@ -208,79 +210,58 @@ Public Class frmMain
     End Function
 
     Private Function GetFullConnectionString() As String
-        Dim con As String = GetConnectionStringWithOutLogin()
+        'Provider=SQLOLEDB.1;Persist Security Info=False;User ID=capmin;Password=capmin;User Id=;Initial Catalog=capitalesminimos;Data Source=LACARGBAAS196,2431
+        'Dim con As String = GetConnectionStringWithOutLogin()
+        Dim con As String = "Provider=SQLOLEDB.1;Persist Security Info=False;"
         If ckSeguridadIntegrada.Checked Then
-            con &= ";Integrated Security=true;"
+            con &= "Integrated Security=true;"
         Else
-            con &= "Integrated Security=SSPI;Password=" & txtPassword.Text.Trim() & ";User Id=" & txtUsuario.Text.Trim()
+            con &= "Password=" & txtPassword.Text.Trim() & ";User ID=" & txtUsuario.Text.Trim()
         End If
-        con &= ";Initial Catalog=" & txtBaseDeDatos.Text.Trim() & ";Data Source=" & txtServidor.Text.Trim()
+        con &= ";Initial Catalog=" & txtBaseDeDatos.Text.Trim() & ";DATA SOURCE=" & txtServidor.Text.Trim()
         'Initial Catalog=GESTIONRI_PNP;Data Source=NTB-EMILSE\SQLEXPRESS
         Return con.Replace(";;", ";")
     End Function
 
-    Private Function GetUserNameFromConnection(conexion As String) As String
+    Private Function GetStringFromConnection(conexion As String, clave As String) As String
         For Each item As String In conexion.Split(";")
-            If item.Contains("User Id=") Then
-                Return item.Replace(";", String.Empty).Replace("User Id=", String.Empty)
+            If item.ToUpper().Contains(clave.ToUpper) Then
+                Dim clavelst As List(Of String) = item.Replace(";", String.Empty).Split("=").ToList()
+                Return clavelst.LastOrDefault()
+                'Return item.Replace(";", String.Empty).Replace(clave.ToUpper, String.Empty)
             End If
         Next
-        Return String.Empty
-    End Function
-    Private Function GetDBNameFromConnection(conexion As String) As String
-        For Each item As String In conexion.Split(";")
-            If item.Contains("Initial Catalog=") Then
-                Return item.Replace(";", String.Empty).Replace("Initial Catalog=", String.Empty)
-            End If
-        Next
-        Return String.Empty
-    End Function
-    Private Function GetServerFromConnection(conexion As String) As String
-        For Each item As String In conexion.Split(";")
-            If item.Contains("Data Source=") Then
-                Return item.Replace(";", String.Empty).Replace("Data Source=", String.Empty)
-            End If
-        Next
-        Return String.Empty
-    End Function
-    Private Function GetPasswordFromConnection(conexion As String) As String
-        For Each item As String In conexion.Split(";")
-            If item.Contains("Password=") Then
-                Return item.Replace(";", String.Empty).Replace("Password=", String.Empty)
-            End If
-        Next
-
         Return String.Empty
     End Function
 
     Private Sub Guardar()
 
-      Try
+        Try
 
-         Dim ds As New dsConfig
-         Dim dr As DataRow
-         Dim dt As DataTable = ds.Tables("CONFIG")
+            Dim ds As New dsConfig
+            Dim dr As DataRow
+            Dim dt As DataTable = ds.Tables("CONFIG")
 
-         'Conexión Base de datos
-         dr = dt.NewRow()
-         dr("NOMBRE") = "CONN_LOCAL"
+            'Conexión Base de datos
+            dr = dt.NewRow()
+            dr("NOMBRE") = "CONN_LOCAL"
             dr("VALOR") = Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(GetFullConnectionString()))
             dt.Rows.Add(dr)
-         ds.AcceptChanges()
+            ds.AcceptChanges()
 
-         'Formato de Fecha del Servidor SQL
-         dr = dt.NewRow()
-         dr("NOMBRE") = "FFECHA"
-         dr("VALOR") = txtFFecha.Text
-         dt.Rows.Add(dr)
-         ds.AcceptChanges()
+            'Formato de Fecha del Servidor SQL
+            dr = dt.NewRow()
+            dr("NOMBRE") = "FFECHA"
+            dr("VALOR") = txtFFecha.Text
+            dt.Rows.Add(dr)
+            ds.AcceptChanges()
 
-         'Ruta a la carpeta local
-         dr = dt.NewRow()
-         dr("NOMBRE") = "CARPETA_LOCAL"
-         dr("VALOR") = txtCarpetaLocal.Text
-         dt.Rows.Add(dr)
-         ds.AcceptChanges()
+            'Ruta a la carpeta local
+            dr = dt.NewRow()
+            dr("NOMBRE") = "CARPETA_LOCAL"
+            dr("VALOR") = txtCarpetaLocal.Text
+            dt.Rows.Add(dr)
+            ds.AcceptChanges()
 
             'Ruta configuracion SG
             If txtSGLibrary.Visible Then
@@ -293,40 +274,40 @@ Public Class frmMain
 
             'Nombre de archivo de configuración local
             dr = dt.NewRow()
-         dr("NOMBRE") = "NOMBRE_INI_LOCAL"
-         dr("VALOR") = txtArchivoConfig.Text
-         dt.Rows.Add(dr)
-         ds.AcceptChanges()
-
-         'Configuraciones Variadas
-         For Each oItem As ListViewItem In lvConfig.Items
-            dr = dt.NewRow()
-            dr("NOMBRE") = oItem.Text
-            dr("VALOR") = oItem.SubItems.Item(1).Text
+            dr("NOMBRE") = "NOMBRE_INI_LOCAL"
+            dr("VALOR") = txtArchivoConfig.Text
             dt.Rows.Add(dr)
             ds.AcceptChanges()
 
+            'Configuraciones Variadas
+            For Each oItem As ListViewItem In lvConfig.Items
+                dr = dt.NewRow()
+                dr("NOMBRE") = oItem.Text
+                dr("VALOR") = oItem.SubItems.Item(1).Text
+                dt.Rows.Add(dr)
+                ds.AcceptChanges()
+
+                Application.DoEvents()
+            Next
+
+            ds.WriteXml(ARCHIVO_CONFIG)
+
             Application.DoEvents()
-         Next
+            Application.Exit()
 
-         ds.WriteXml(ARCHIVO_CONFIG)
+        Catch ex As Exception
+            MessageBox.Show(ex.Source & " - " & ex.Message, "Error")
+        End Try
 
-         Application.DoEvents()
-         Application.Exit()
-
-      Catch ex As Exception
-         MessageBox.Show(ex.Source & " - " & ex.Message, "Error")
-      End Try
-
-   End Sub
+    End Sub
 
     Private Sub MostrarRutaSG(mostrar As Boolean)
         If mostrar Then
-            lvConfig.Location = New Point(39, 314)
-            lvConfig.Height = 80
+            lvConfig.Location = New Point(39, 285)
+            lvConfig.Height = 108
         Else
-            lvConfig.Location = New Point(39, 290)
-            lvConfig.Height = 102
+            lvConfig.Location = New Point(39, 262)
+            lvConfig.Height = 130
         End If
         lblSgLibrary.Visible = mostrar
         btnBuscarSgLibrary.Visible = mostrar
@@ -341,15 +322,31 @@ Public Class frmMain
 
     Private Sub btnQuitar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnQuitar.Click
 
-      If Not (oItemSel Is Nothing) Then
-         lvConfig.Items.Remove(oItemSel)
-      End If
+        If Not (oItemSel Is Nothing) Then
+            lvConfig.Items.Remove(oItemSel)
+        End If
 
-   End Sub
+    End Sub
 
     Private Sub ckSeguridadIntegrada_CheckedChanged(sender As Object, e As EventArgs) Handles ckSeguridadIntegrada.CheckedChanged
         txtUsuario.Enabled = ckSeguridadIntegrada.CheckState = CheckState.Unchecked
         txtPassword.Enabled = ckSeguridadIntegrada.CheckState = CheckState.Unchecked
 
+    End Sub
+
+    Private Sub btnProbarConexion_Click(sender As Object, e As EventArgs) Handles btnProbarConexion.Click
+        Try
+            Dim conn As New OleDb.OleDbConnection(GetFullConnectionString())
+            conn.Open()
+            If conn.State = ConnectionState.Open Then
+                MessageBox.Show("Conexión establecida exitosamente", "Probando conexión con SQL", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                conn.Close()
+            Else
+                MessageBox.Show("No se pudo establecer conexión, revise los datos ingresados", "Probando conexión con SQL", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            End If
+            conn = Nothing
+        Catch ex As Exception
+            MessageBox.Show(ex.Source & " - " & ex.Message, "Probando conexión con SQL", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 End Class
