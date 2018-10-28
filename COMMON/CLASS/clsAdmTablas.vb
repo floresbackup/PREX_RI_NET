@@ -129,36 +129,36 @@ Public Class AdmTablas
 
    End Function
 
-   Public Function AbrirDataset(ByVal sSQL As String, _
-                                Optional ByRef oDa As OleDb.OleDbDataAdapter = Nothing, _
-                                Optional ByRef sErrorText As String = "") As System.Data.DataSet
+    Public Function AbrirDataset(ByVal sSQL As String,
+                                Optional ByRef oDa As OleDb.OleDbDataAdapter = Nothing,
+                                Optional ByRef sErrorText As String = "") As DataSet
 
         Dim oConn As OleDb.OleDbConnection
-      Dim da As OleDb.OleDbDataAdapter
-      Dim ds As System.Data.DataSet
+        Dim da As OleDb.OleDbDataAdapter
+        Dim ds As System.Data.DataSet
 
-      Try
+        Try
 
-         oConn = New OleDb.OleDbConnection
-         oConn.ConnectionString = ConnectionString
-         oConn.Open()
+            oConn = New OleDb.OleDbConnection
+            oConn.ConnectionString = ConnectionString
+            oConn.Open()
+            Dim cmd As New OleDb.OleDbCommand(sSQL, oConn)
+            da = New OleDb.OleDbDataAdapter(cmd)
 
-         da = New OleDb.OleDbDataAdapter(sSQL, oConn)
+            ds = New DataSet
 
-         ds = New DataSet
+            da.Fill(ds)
+            oDa = da
+            Return ds
 
-         da.Fill(ds)
-         oDa = da
-         Return ds
+        Catch ex As Exception
+            sErrorText = ex.Message
+            Return Nothing
+        End Try
 
-      Catch ex As Exception
-         sErrorText = ex.Message
-         Return Nothing
-      End Try
+    End Function
 
-   End Function
-
-   Public Function EjecutarComandoSQLNativo(ByVal sSQL As String) As Boolean
+    Public Function EjecutarComandoSQLNativo(ByVal sSQL As String) As Boolean
 
       Dim oConn As SqlConnection
       Dim oCommand As SqlCommand
@@ -272,9 +272,9 @@ Public Class AdmTablas
          oConn = New OleDb.OleDbConnection
          oConn.ConnectionString = ConnectionString
          oConn.Open()
-
-         da = New OleDb.OleDbDataAdapter(sSQL, oConn)
-         ds = New DataSet
+            Dim cmd As New OleDb.OleDbCommand(sSQL, oConn)
+            da = New OleDb.OleDbDataAdapter(cmd)
+            ds = New DataSet
 
          da.Fill(ds)
          Return True
