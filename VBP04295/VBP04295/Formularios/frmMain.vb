@@ -512,7 +512,7 @@ Public Class frmMain
             oColumna.Width = IIf(oFmt.Ancho = 0, 1000, oFmt.Ancho)
         End If
 
-        If Not (oFmt.Formato Is Nothing) Then
+        If Not (oFmt.Formato Is Nothing) AndAlso (oFmt.Formato.ToLower() <> "standard") Then
             oColumna.DisplayFormat.FormatType = FormatType.Custom
             oColumna.DisplayFormat.FormatString = oFmt.Formato
         End If
