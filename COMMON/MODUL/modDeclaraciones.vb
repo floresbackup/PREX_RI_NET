@@ -34,6 +34,9 @@ Module modDeclaraciones
         Alta_Perfil = 34
         Baja_Perfil = 35
         Copia_LOG = 36
+        EjecucionSubProceso = 41
+        FinSubProceso = 42
+        ErrorSubProceso = 43
     End Enum
 
    'DATASET DE CONFIGURACIÓN (COMO EL VIEJO INI)

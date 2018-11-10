@@ -271,8 +271,15 @@ Module modFunciones
 
     End Function
 
-    Public Function FechaSQL(ByVal dFecha As Date) As String
+    Public Function FechaYHoraSQL(ByVal dFecha As DateTime) As String
+        Return "'" & Format(dFecha, FORMATO_FECHA) & " " & Format(dFecha, "HH:mm:ss:fff") & "'"
+    End Function
 
+
+    Public Function FechaSQL(ByVal dFecha As Date) As String
+        If dFecha = Date.MinValue Then
+            Return "'" & Format(FechaCorrecta(1, 1901), FORMATO_FECHA) & "'"
+        End If
         Return "'" & Format(dFecha, FORMATO_FECHA) & "'"
 
     End Function

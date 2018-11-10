@@ -499,7 +499,44 @@ Public Class frmMain
 
     End Sub
 
-    Public Sub Ejecutar()
+    Private Function ObtenerFechaVigencia() As Date
+        Dim d = Date.MinValue
+        Dim paso = False
+        For Each control As Control In panControles.Controls
+            Select Case control.GetType.ToString.Substring(control.GetType.ToString.LastIndexOf(".") + 1)
+                Case "DateTimePicker"
+                    d = IIf(paso, DateTime.MinValue, FechaSQL(DirectCast(control, DateTimePicker).Value))
+                    paso = True
+                Case "DateEdit"
+                    d = IIf(paso, Date.MinValue, FechaSQL(DirectCast(control, DevExpress.XtraEditors.DateEdit).DateTime))
+                    paso = True
+                Case Else
+                    Continue For
+            End Select
+        Next
+        Return d
+    End Function
+
+    Private Sub GuardarControlSubProceso(ByVal subProceso As clsSubProcesosSistema, ByVal estado As Integer, ByVal observacion As String)
+        If oAdmlocal.ExisteTabla("CTLPRO") Then
+
+            Dim sSQL1 = "INSERT INTO CTLPRO " &
+                       "SELECT " & CODIGO_ENTIDAD & " AS CP_CODENT, " &
+                       FechaSQL(ObtenerFechaVigencia()) & " AS CP_FECVIG, " &
+                       subProceso.CodPro.ToString & " AS CP_PROCES, " &
+                       "'" & subProceso.Nombre.ToUpper & "' AS CP_SUBPRO, " &
+                       FechaSQL(Date.Now) & " AS CP_DIAPRO, " &
+                       FechaYHoraSQL(DateTime.Now) & " AS CP_HORAPRO, " &
+                       estado.ToString & " AS CP_ESTADO, " &
+                       "'" & observacion.ToUpper & "' AS CP_OBSERV "
+
+            oAdmlocal.EjecutarComandoSQL(sSQL1)
+
+        End If
+
+    End Sub
+
+    Private Sub Ejecutar()
 
         Dim sSQL As String
         Dim oItem As ListViewItem
@@ -522,6 +559,8 @@ Public Class frmMain
             Exit Sub
         End If
 
+
+
         For Each oItem In lvSel.Items
 
             oSubItem = oItem.SubItems(1)
@@ -532,8 +571,13 @@ Public Class frmMain
 
                 Application.DoEvents()
 
+                GuardarLOG(AccionesLOG.EjecucionSubProceso, "Sub Proceso: " + oSubProcesos(oItem.Tag).CodPro.ToString + " - " + oSubProcesos(oItem.Tag).Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+
+                'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
+                GuardarControlSubProceso(oSubProcesos(oItem.Tag), 1, "INICIADO")
+
                 sSQL = ReemplazarVariables(oSubProcesos(oItem.Tag).Query.ToString.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro)
-                sSQL = ProcesosEmbebidos(ReemplazarVariables(Replace(oProcesos.Query, Chr(0), ""), panControles.Controls, oProcesos.CodPro) & sSQL)
+                sSQL = ProcesosEmbebidos(ReemplazarVariables(oProcesos.Query.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro) & sSQL)
 
                 bResult = ProcesoAsincrono(sSQL)
 
@@ -546,10 +590,19 @@ Public Class frmMain
                         End If
                     Else
                         oSubItem.Text = "Finalizado"
+                        GuardarLOG(AccionesLOG.FinSubProceso, "Sub Proceso: " + oSubProcesos(oItem.Tag).CodPro.ToString + " - " + oSubProcesos(oItem.Tag).Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
 
+                        'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
+                        GuardarControlSubProceso(oSubProcesos(oItem.Tag), 2, "FINALIZADO")
                     End If
                 Else
                     oSubItem.Text = "Error"
+
+                    GuardarLOG(AccionesLOG.ErrorSubProceso, "Sub Proceso: " + oSubProcesos(oItem.Tag).CodPro.ToString + " - " + oSubProcesos(oItem.Tag).Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+
+                    'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
+                    GuardarControlSubProceso(oSubProcesos(oItem.Tag), 3, "ERROR")
+
                     Exit For
                 End If
 
