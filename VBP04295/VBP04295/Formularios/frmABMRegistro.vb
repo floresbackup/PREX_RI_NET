@@ -245,18 +245,20 @@ Salir:
 
    Private Sub Guardar()
 
-      Dim sSQL As String
-      Dim ds As DataSet
-      Dim oCol As clsColumnas
-      Dim oRow As DataRow
-      Dim da As OleDb.OleDbDataAdapter
-      Dim cb As OleDb.OleDbCommandBuilder
-      Dim bProcesa As Boolean
-      Dim sTabla As String
-      Dim sUpdate As String = ""
-      Dim sValor As String
+        Dim sSQL As String
+        Dim ds As DataSet
+        Dim oCol As clsColumnas
+        Dim oRow As DataRow
+        Dim da As OleDb.OleDbDataAdapter
+        Dim cb As OleDb.OleDbCommandBuilder
+        Dim bProcesa As Boolean
+        Dim sTabla As String
+        Dim sUpdate As String = ""
+        Dim sValor As String
+        Dim sVarLogAnt As String
+        Dim sVarLogAct As String
 
-      Cursor = Cursors.WaitCursor
+        Cursor = Cursors.WaitCursor
 
       sSQL = sSQL_Update
       sSQL = "SELECT * " & sSQL.Substring(sSQL.LastIndexOf("FROM", System.StringComparison.OrdinalIgnoreCase))
@@ -281,8 +283,14 @@ Salir:
          sSQL = sSQL.Substring(sSQL.LastIndexOf("FROM", System.StringComparison.OrdinalIgnoreCase))
 
          If MODO_APE = "B" Then
-            sUpdate = "DELETE " & sSQL
-            GoTo GuardaDataRow
+                sUpdate = "DELETE " & sSQL
+
+                If GENERAR_LOG_SQL And (TIPO_LOG_SQL = 1 Or TIPO_LOG_SQL = 2 Or TIPO_LOG_SQL = 3) Then
+                    sVarLogAnt = "Registro a Eliminar: " + sSQL_Update
+                    sVarLogAct = "Registro a Eliminado: " + sSQL_Update
+                End If
+
+                GoTo GuardaDataRow
          ElseIf MODO_APE = "A" Or MODO_APE = "N" Then
             oRow = ds.Tables(0).NewRow()
          Else
@@ -300,25 +308,42 @@ Salir:
                End If
             Next
 
-            If bProcesa Then
-               If MODO_APE = "A" Or MODO_APE = "N" Then
-                  oRow.Item(oCol.Campo) = oCol.Valor
-               Else
-                  Select Case TipoDatosADO(oCol.Tipo)
-                     Case "Numérico"
-                        sValor = FlotanteSQL(oCol.Valor)
-                     Case "Fecha/Hora"
-                        sValor = FechaSQL(oCol.Valor)
-                     Case Else
-                        sValor = "'" & oCol.Valor & "'"
-                  End Select
+                If bProcesa Then
 
-                  If oCol.VisibleABM And oCol.Habilitada Then
-                     sUpdate = sUpdate & " [" & oCol.Campo & "] = " & sValor & ","
-                  End If
-               End If
-            End If
-         Next
+
+
+
+                    If MODO_APE = "A" Or MODO_APE = "N" Then
+                        oRow.Item(oCol.Campo) = oCol.Valor
+                    Else
+                        Select Case TipoDatosADO(oCol.Tipo)
+                            Case "Numérico"
+                                sValor = FlotanteSQL(oCol.Valor)
+                            Case "Fecha/Hora"
+                                sValor = FechaSQL(oCol.Valor)
+
+                            Case Else
+                                sValor = "'" & oCol.Valor & "'"
+                        End Select
+
+
+                        If oCol.VisibleABM And oCol.Habilitada Then
+                            sUpdate = sUpdate & " [" & oCol.Campo & "] = " & sValor & ","
+
+                            'AGREGADO PARA QUE ESCRIBA LOG DE LAS MODIFICACIONES MANUALES
+                            'SI EXISTE LA VARIABLE "DEBUG" EN EL INI - 0 = NO / 1 = SI
+                            'SI EXISTE LA VARIABLE "TIPOLOG" EN EL INI - 1= Completo 2= Solo modificaciones no SELECT 3= No graba nada
+
+
+                            If GENERAR_LOG_SQL And (TIPO_LOG_SQL = 1 Or TIPO_LOG_SQL = 2 Or TIPO_LOG_SQL = 3) Then
+                                sVarLogAnt = sVarLogAnt +
+                                    oCol.Titulo + ": " +
+                                    sValor + ", "
+                            End If
+                        End If
+                    End If
+                End If
+            Next
 
 GuardaDataRow:
 
@@ -336,7 +361,20 @@ GuardaDataRow:
             'MessageBox.Show("Filas Afectadas: " & nFilas.ToString)
          End If
 
-         Cursor = Cursors.Default
+
+            'AGREGADO PARA QUE ESCRIBA LOG DE LAS MODIFICACIONES MANUALES
+            If GENERAR_LOG_SQL AndAlso (TIPO_LOG_SQL = 1 Or TIPO_LOG_SQL = 2 Or TIPO_LOG_SQL = 3) Then
+
+                If MODO_APE = "B" AndAlso cmdGuardar.Text = "Baja" Then
+                    GuardarLOG(AccionesLOG.EliminarDatosEnCuadros, "Ant.: " & sVarLogAnt, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+                    GuardarLOG(AccionesLOG.EliminarDatosEnCuadros, "Act.: " & sVarLogAct, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+                Else
+                    GuardarLOG(AccionesLOG.ModificacionDeDatos, "Ant.: " & sVarLogAnt, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+                    GuardarLOG(AccionesLOG.ModificacionDeDatos, "Act.: " & sVarLogAct, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+                End If
+            End If
+
+            Cursor = Cursors.Default
 
          frmMain.Ejecutar()
 

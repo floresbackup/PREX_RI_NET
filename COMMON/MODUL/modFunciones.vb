@@ -191,6 +191,10 @@ Module modFunciones
                         Case "DOMINIO_DEFAULT"
                         Case "DOMINIO"
                             DOMINIO_DEFAULT = sTemp
+                        Case "DEBUG" 'SI EXISTE LA VARIABLE EN EL INI - 0 = NO / 1 = SI
+                            GENERAR_LOG_SQL = IIf(Integer.Parse(sTemp) = 1, True, False)
+                        Case "" 'SI EXISTE LA VARIABLE EN EL INI - 1= Completo 2= Solo modificaciones no SELECT 3= Ninguna grabación
+                            TIPO_LOG_SQL = Integer.Parse(sTemp)
                     End Select
 
                 Next
@@ -278,7 +282,7 @@ Module modFunciones
 
     Public Function FechaSQL(ByVal dFecha As Date) As String
         If dFecha = Date.MinValue Then
-            Return "'" & Format(FechaCorrecta(1, 1901), FORMATO_FECHA) & "'"
+            Return "'" & Format(FechaCorrecta(1, 1900), FORMATO_FECHA) & "'"
         End If
         Return "'" & Format(dFecha, FORMATO_FECHA) & "'"
 
@@ -650,7 +654,7 @@ Module modFunciones
         sSQL = sSQL.Replace("@HORLOG", "'" & Format(DateTime.Now, "HH:mm:ss") & "'")
         sSQL = sSQL.Replace("@ACCION", nAccionLOG)
         sSQL = sSQL.Replace("@CODTRA", nCodigoTransaccion)
-        sSQL = sSQL.Replace("@EXTRA", "'" & sExtra & "'")
+        sSQL = sSQL.Replace("@EXTRA", "'" & sExtra.Replace("'", "") & "'")
         sSQL = sSQL.Replace("@WKSTAT", "'" & System.Environment.MachineName & "'")
 
         oAdmLOG.EjecutarComandoAsincrono(sSQL)
@@ -923,4 +927,30 @@ Module modFunciones
         End If
     End Sub
 
+
+    Public Function NombreUsuarioNT() As String
+        Return Environment.UserName
+        'Dim sBuffer As String * 255
+        'Dim lResult As Long
+        'Dim nLen As Long
+
+        'nLen = 255
+
+        'lResult = GetUserName(sBuffer, nLen)
+        'NombreUsuarioNT = Left(sBuffer, nLen - 1)
+
+    End Function
+
+    Public Function NombrePCLocal() As String
+        Return Environment.MachineName
+        'Dim sBuffer As String * 255
+        'Dim lResult As Long
+        'Dim nLen As Long
+
+        'nLen = 255
+
+        'lResult = GetComputerName(sBuffer, nLen)
+        'NombrePCLocal = Left(sBuffer, nLen - 1)
+
+    End Function
 End Module

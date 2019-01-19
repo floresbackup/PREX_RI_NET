@@ -34,9 +34,20 @@ Module modDeclaraciones
         Alta_Perfil = 34
         Baja_Perfil = 35
         Copia_LOG = 36
+        Intruccion_SQL_Automatica = 37
+        ModificacionDeDatos = 38
+        EliminarDatosEnCuadros = 39
+        ParametrosDeSeleccionProcesos = 40
         EjecucionSubProceso = 41
         FinSubProceso = 42
         ErrorSubProceso = 43
+        ParametrosSeleccionFormularios = 50
+        ImprimeDatosDeCuadro = 51
+        ExportacionDeDatos = 52
+        CopiaDeDatos = 53
+        GeneracionDeSalidaPDF = 54
+        ActualizacionDeComentarios = 55
+        ActualizacionDeArchivosAdjuntos = 56
     End Enum
 
    'DATASET DE CONFIGURACIÓN (COMO EL VIEJO INI)
@@ -52,28 +63,30 @@ Module modDeclaraciones
 
     Public RUTAENCR_RA As String = ""
     Public DOMINIO_DEFAULT As String = ""
+    Public GENERAR_LOG_SQL As Boolean
+    Public TIPO_LOG_SQL As Integer
     Public CONN_LOCAL As String = ""
     Public FORMATO_FECHA As String = ""
-   Public CARPETA_LOCAL As String = ""
-   Public RUTA_BIN As String = ""
-   Public RUTA_AYUDA As String = ""
-   Public NOMBRE_INI_LOCAL As String = ""
-   Public LAST_USER As String = ""
+    Public CARPETA_LOCAL As String = ""
+    Public RUTA_BIN As String = ""
+    Public RUTA_AYUDA As String = ""
+    Public NOMBRE_INI_LOCAL As String = ""
+    Public LAST_USER As String = ""
     Public INPUT_GENERAL As String = ""
     Public NOMBRE_EMPRESA As String = ""
     Public NOMBRE_ENTIDAD As String = ""
-   Public CODIGO_ENTIDAD As Long = 0
-   Public CODIGO_TRANSACCION As Long = 0
+    Public CODIGO_ENTIDAD As Long = 0
+    Public CODIGO_TRANSACCION As Long = 0
     Public SIMBOLO_DECIMAL As Char
     Public SG_CONFIG As String = ""
     Public CITI_PERFIL As String = ""
 
     Public CulturaActual As System.Globalization.CultureInfo   'Cultura
 
-   Public CONSULTA_CANCELADA As Boolean
+    Public CONSULTA_CANCELADA As Boolean
 
-   'GENERAL
-   Public AUTENTICACIONSQL As Boolean
+    'GENERAL
+    Public AUTENTICACIONSQL As Boolean
 
    ' BANCO DE CORDOBA
    Public SEGURIDAD_INTEGRADA As Boolean

@@ -14,7 +14,7 @@ Imports DevExpress.XtraReports.Localization
 Imports WebSupergoo
 
 Public Class frmMain
-
+    Private sExtra_log As String
     Public ps1 = New DevExpress.XtraPrinting.PrintingSystem
 
     Public Class DropDownGrid
@@ -198,18 +198,14 @@ Public Class frmMain
     End Sub
 
     Public Sub Ejecutar()
-        GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - EJECUTAR ", CODIGO_TRANSACCION)
         If ProcesosPrevios() Then
-            GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - PROCESOSPREVIOS OK ", CODIGO_TRANSACCION)
 
             Dim sSQL As String = ReemplazarVariables(oConsulta.Query, PanControles.Controls)
-            GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - ReemplazarVariables:  " & sSQL, CODIGO_TRANSACCION)
 
             Dim ad As OleDb.OleDbDataAdapter = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
             Dim dt As New DataTable
             ad.Fill(dt)
 
-            GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - Fill(dt)", CODIGO_TRANSACCION)
 
             If Not bFlagCargado Then
                 For Each oCol As clsColumnas In oColumnas
@@ -226,7 +222,6 @@ Public Class frmMain
             Grid.RefreshDataSource()
             Grid.Refresh()
         End If
-        GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - EJECUTAR FINAL", CODIGO_TRANSACCION)
     End Sub
 
     Private Sub Columnas()
@@ -314,7 +309,7 @@ Public Class frmMain
         dt = New DataTable
 
         ad.Fill(dt)
-        btnGrafico.Enabled = dt.Rows.Count > 0
+        'btnGrafico.Enabled = dt.Rows.Count > 0
 
         dt = Nothing
         ad = Nothing
@@ -327,7 +322,7 @@ Public Class frmMain
         dt = New DataTable
 
         ad.Fill(dt)
-        btnReporte.Enabled = dt.Rows.Count > 0
+        ' btnReporte.Enabled = dt.Rows.Count > 0
 
         lblTitulo.Text = oConsulta.Nombre
         lblSubtitulo.Text = oConsulta.Descripcion
@@ -618,6 +613,7 @@ Public Class frmMain
     End Sub
 
     Private Sub btnExportar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExportar.Click
+        GuardarLOG(AccionesLOG.ExportacionDeDatos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
 
         frmExportar.PasarViewResultados(Me.Text, Me.lblTitulo.Text, GridView1)
         frmExportar.ShowDialog()
@@ -649,7 +645,7 @@ Public Class frmMain
 
         If ValidaUpdate() Then
             If Not UsuarioActual.SoloLectura Then
-                Modificar("M")
+                Modificar("N")
             End If
         ElseIf ValidarDrillDown() Then
             DrillDown()
@@ -694,7 +690,7 @@ Public Class frmMain
 
     'End Function
 
-    Private Sub Modificar(Optional ByVal MODO_APE As String = "M")
+    Private Sub Modificar(Optional ByVal MODO_APE As String = "N")
 
         Dim sSQL As String
         Dim oCol As clsColumnas
@@ -766,7 +762,7 @@ Maneja_Error:
     End Sub
 
     Private Sub btnModif_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnModif.Click
-        Modificar("M")
+        Modificar("N")
     End Sub
 
     Private Sub btnAlta_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAlta.Click
@@ -798,10 +794,11 @@ Maneja_Error:
     End Sub
 
     Private Sub btnComent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnComent.Click
+        GuardarLOG(AccionesLOG.ActualizacionDeComentarios, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
         Comentarios()
     End Sub
 
-    Private Sub btnReporte_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnReporte.Click
+    Private Sub btnReporte_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         GenerarReporte()
     End Sub
 
@@ -948,11 +945,11 @@ Maneja_Error:
 
         'Creacion del PDF
 
-        If btnGrafico.Visible Then
-            frmGrafico.PasarDatos(Grid)
-            frmGrafico.Exportar(Application.StartupPath & "\Informes\" & CODIGO_TRANSACCION & ".jpg")
-            frmGrafico.Close()
-        End If
+        'If btnGrafico.Visible Then
+        '    frmGrafico.PasarDatos(Grid)
+        '    frmGrafico.Exportar(Application.StartupPath & "\Informes\" & CODIGO_TRANSACCION & ".jpg")
+        '    frmGrafico.Close()
+        'End If
 
         If sHTML.IndexOf("<detalle>", System.StringComparison.OrdinalIgnoreCase) > 0 Then
             GenerarDetalle(sHTML)
@@ -1485,7 +1482,7 @@ Reinicio:
     End Function
 
 
-    Private Sub btnGrafico_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGrafico.Click
+    Private Sub btnGrafico_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         frmGrafico.PasarDatos(Grid, False)
         frmGrafico.ShowDialog()
         frmGrafico.Close()
@@ -2306,10 +2303,14 @@ Reinicio:
     Private Function DatosOK() As Boolean
 
         Dim oVar As clsVariables
+        sExtra_log = String.Empty
 
         For Each oVar In oVariables
 
             If oVar.Help = 1 Then
+                sExtra_log = IIf(Len(sExtra_log) < 11,
+                   "Selección: " + oVar.Titulo + ": " + CType(Controles("_" & oVar.Nombre), ComboBox).Text,
+                   sExtra_log + ", " + oVar.Titulo + ": " + CType(Controles("_" & oVar.Nombre), ComboBox).Text)
 
                 If CType(Controles("_" & oVar.Nombre), ComboBox).SelectedItem Is Nothing Then
                     MensajeError("Debe especificar " & oVar.Titulo)
@@ -2319,7 +2320,23 @@ Reinicio:
 
             ElseIf oVar.Help = 0 Then
 
-                If oVar.Tipo = 0 Then
+                If oVar.Tipo = 2 Then
+
+                    sExtra_log = IIf(Len(sExtra_log) < 11,
+                           "Selección: " + oVar.Titulo + ": " + CType(Controles("_" & oVar.Nombre), DateTimePicker).Value.ToString(),
+                           sExtra_log + ", " + oVar.Titulo + ": " + CType(Controles("_" & oVar.Nombre), DateTimePicker).Value.ToString())
+
+                    If CType(Controles("_" & oVar.Nombre), DateTimePicker).Value = CType(Controles("_" & oVar.Nombre), DateTimePicker).MinDate Then
+                        MensajeError("Debe especificar " & oVar.Titulo)
+                        Controles("_" & oVar.Nombre).Focus()
+                        Exit Function
+                    End If
+
+                ElseIf oVar.Tipo = 0 Then
+
+                    sExtra_log = IIf(Len(sExtra_log) < 11,
+                                "Selección: " + oVar.Titulo + ": " + Controles("_" & oVar.Nombre).Text,
+                                sExtra_log + ", " + oVar.Titulo + ": " + Controles("_" & oVar.Nombre).Text)
 
                     If Not IsNumeric(Controles("_" & oVar.Nombre).Text) Then
                         MensajeError("Debe especificar " & oVar.Titulo)
@@ -2328,6 +2345,9 @@ Reinicio:
                     End If
 
                 Else
+                    sExtra_log = IIf(Len(sExtra_log) < 11,
+                               "Selección: " + oVar.Titulo + ": " + Controles("_" & oVar.Nombre).Text.Trim,
+                               sExtra_log + ", " + oVar.Titulo + ": " + Controles("_" & oVar.Nombre).Text.Trim)
 
                     If Controles("_" & oVar.Nombre).Text.Trim = "" Then
                         MensajeError("Debe especificar " & oVar.Titulo)
@@ -2340,6 +2360,9 @@ Reinicio:
             End If
 
         Next
+
+        sExtra_log = IIf(Len(sExtra_log) < 11, "Formulario sin parámetros de selección. ", sExtra_log)
+        GuardarLOG(AccionesLOG.ParametrosSeleccionFormularios, sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
 
         Return True
 
@@ -2363,7 +2386,6 @@ Reinicio:
     Private Function ProcesosPrevios() As Boolean
         Try
             Me.Cursor = Cursors.WaitCursor
-            GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - ProcesosPrevios INGRESO ", CODIGO_TRANSACCION)
 
             Dim oPro As clsProcesosPrevios
             Dim oVar As clsVariables
@@ -2375,21 +2397,18 @@ Reinicio:
                 For Each oVar In oVariables
                     sParam(1) = Replace(sParam(1), oVar.Nombre, ValorVariable(oVar))
                 Next
-                GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - ProcesosPrevios CallByName : " & sParam(0), CODIGO_TRANSACCION)
                 ProcesosPrevios = CallByName(Me, sParam(0), vbMethod, sParam(1))
                 If Not ProcesosPrevios Then
                     Exit For
                 End If
             Next
 
-            GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - ProcesosPrevios SALIDA ", CODIGO_TRANSACCION)
         Finally
             Me.Cursor = Cursors.Default
         End Try
     End Function
 
     Private Function ValorVariable(ByVal oVar As clsVariables) As Object
-        GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - ValorVariable: oVar.TIPO = " & oVar.Tipo.ToString() & " - oVar.Nombre: " & oVar.Nombre, CODIGO_TRANSACCION)
         Dim vReemplazo As Object = Nothing
         Dim oItem As clsItem.Item
 
@@ -2420,7 +2439,6 @@ Reinicio:
                 vReemplazo = CType(Controles("_" & oVar.Nombre), DateTimePicker).Value
 
         End Select
-        GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - ValorVariable: vReemplazo = " & vReemplazo, CODIGO_TRANSACCION)
         Return vReemplazo
 
     End Function
@@ -2442,7 +2460,7 @@ Reinicio:
 
                 oItem = New DropDownGrid
 
-                oItem.Oid = row(0)
+                If IsNumeric(row(0).ToString) Then oItem.Oid = row(0)
                 oItem.Codigo = row(0)
                 oItem.Descripcion = row(1)
 
@@ -2544,7 +2562,7 @@ Reinicio:
     End Sub
 
     Private Sub VistaPrevia(ByVal sTitulo As String)
-
+        GuardarLOG(AccionesLOG.ImprimeDatosDeCuadro, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
         Dim pl As New DevExpress.XtraPrinting.PrintableComponentLink
         Dim phf As DevExpress.XtraPrinting.PageHeaderFooter
         Dim Period As String
@@ -2577,5 +2595,16 @@ Reinicio:
         Return ReemplazarVariables(sConsulta, PanControles.Controls)
     End Function
 
+    Private Sub btnCopiar_Click(sender As Object, e As EventArgs) Handles btnCopiar.Click
+        GuardarLOG(AccionesLOG.CopiaDeDatos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+
+        GridView1.CopyToClipboard()
+    End Sub
+
+    Private Sub btnAdjuntarArchivo_Click(sender As Object, e As EventArgs) Handles btnAdjuntarArchivo.Click
+        GuardarLOG(AccionesLOG.ActualizacionDeArchivosAdjuntos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+        'Adjuntrar
+
+    End Sub
 End Class
 
