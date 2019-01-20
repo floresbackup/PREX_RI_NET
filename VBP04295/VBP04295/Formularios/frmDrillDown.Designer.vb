@@ -40,6 +40,7 @@ Partial Class frmDrillDown
         Me.GridView1 = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.Bar4 = New DevExpress.XtraBars.Bar()
         Me.lblSubtitulo = New DevExpress.XtraEditors.LabelControl()
+        Me.cmdGuardarLaoyut = New DevExpress.XtraBars.BarButtonItem()
         CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanTop.SuspendLayout()
         CType(Me.picLogo.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -88,8 +89,8 @@ Partial Class frmDrillDown
         '
         'PanelControl1
         '
-        Me.PanelControl1.Controls.Add(Me.StandaloneBarDockControl1)
         Me.PanelControl1.Controls.Add(Me.Grid)
+        Me.PanelControl1.Controls.Add(Me.StandaloneBarDockControl1)
         Me.PanelControl1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PanelControl1.Location = New System.Drawing.Point(0, 54)
         Me.PanelControl1.Name = "PanelControl1"
@@ -115,8 +116,8 @@ Partial Class frmDrillDown
         Me.BarManager1.DockControls.Add(Me.barDockControlRight)
         Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl1)
         Me.BarManager1.Form = Me
-        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.cmdImprimir, Me.cmdGuardar, Me.cmdCerrar})
-        Me.BarManager1.MaxItemId = 4
+        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.cmdImprimir, Me.cmdGuardar, Me.cmdCerrar, Me.cmdGuardarLaoyut})
+        Me.BarManager1.MaxItemId = 5
         Me.BarManager1.StatusBar = Me.Bar3
         '
         'Bar1
@@ -128,7 +129,7 @@ Partial Class frmDrillDown
         Me.Bar1.DockRow = 0
         Me.Bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Standalone
         Me.Bar1.FloatLocation = New System.Drawing.Point(209, 259)
-        Me.Bar1.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.cmdImprimir), New DevExpress.XtraBars.LinkPersistInfo(Me.cmdGuardar), New DevExpress.XtraBars.LinkPersistInfo(Me.cmdCerrar)})
+        Me.Bar1.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.cmdImprimir), New DevExpress.XtraBars.LinkPersistInfo(Me.cmdGuardar), New DevExpress.XtraBars.LinkPersistInfo(Me.cmdGuardarLaoyut), New DevExpress.XtraBars.LinkPersistInfo(Me.cmdCerrar)})
         Me.Bar1.OptionsBar.DrawBorder = False
         Me.Bar1.OptionsBar.DrawDragBorder = False
         Me.Bar1.StandaloneBarDockControl = Me.StandaloneBarDockControl1
@@ -219,12 +220,12 @@ Partial Class frmDrillDown
         Me.Grid.EmbeddedNavigator.Buttons.EndEdit.Visible = False
         Me.Grid.EmbeddedNavigator.Buttons.Remove.Visible = False
         Me.Grid.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Grid.Location = New System.Drawing.Point(2, 2)
+        Me.Grid.Location = New System.Drawing.Point(2, 37)
         Me.Grid.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat
         Me.Grid.LookAndFeel.UseWindowsXPTheme = True
         Me.Grid.MainView = Me.GridView1
         Me.Grid.Name = "Grid"
-        Me.Grid.Size = New System.Drawing.Size(594, 380)
+        Me.Grid.Size = New System.Drawing.Size(594, 345)
         Me.Grid.TabIndex = 7
         Me.Grid.UseEmbeddedNavigator = True
         Me.Grid.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.GridView1})
@@ -262,6 +263,16 @@ Partial Class frmDrillDown
         Me.lblSubtitulo.TabIndex = 2
         Me.lblSubtitulo.Text = "Drill Down"
         '
+        'cmdGuardarLaoyut
+        '
+        Me.cmdGuardarLaoyut.Border = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat
+        Me.cmdGuardarLaoyut.Caption = "Guardar Layout"
+        Me.cmdGuardarLaoyut.Id = 4
+        Me.cmdGuardarLaoyut.ImageOptions.Image = CType(resources.GetObject("cmdGuardarLaoyut.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdGuardarLaoyut.ImageOptions.LargeImage = CType(resources.GetObject("cmdGuardarLaoyut.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdGuardarLaoyut.Name = "cmdGuardarLaoyut"
+        Me.cmdGuardarLaoyut.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph
+        '
         'frmDrillDown
         '
         Me.AllowDrop = True
@@ -276,6 +287,7 @@ Partial Class frmDrillDown
         Me.Controls.Add(Me.barDockControlTop)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "frmDrillDown"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Drill Down"
         CType(Me.PanTop, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PanTop.ResumeLayout(False)
@@ -309,4 +321,5 @@ Partial Class frmDrillDown
     Friend WithEvents cmdGuardar As DevExpress.XtraBars.BarButtonItem
     Friend WithEvents cmdCerrar As DevExpress.XtraBars.BarButtonItem
     Friend WithEvents lblSubtitulo As DevExpress.XtraEditors.LabelControl
+    Friend WithEvents cmdGuardarLaoyut As DevExpress.XtraBars.BarButtonItem
 End Class

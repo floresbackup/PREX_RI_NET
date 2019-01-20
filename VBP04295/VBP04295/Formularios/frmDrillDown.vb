@@ -1,18 +1,11 @@
-Imports DevExpress.Utils
-Imports DevExpress.XtraGrid
-Imports WebSupergoo
 Imports DevExpress.XtraGrid.Views.Base
-Imports System.Data.SqlClient
-Imports System.Windows.Forms
-Imports DevExpress.XtraBars.Localization
-Imports DevExpress.XtraGrid.Localization
-Imports DevExpress.XtraPivotGrid.Localization
-Imports DevExpress.XtraCharts.Localization
-Imports DevExpress.XtraPrinting.Localization
-Imports DevExpress.XtraReports.Localization
-Imports DevExpress.XtraEditors.Controls
 
 Public Class frmDrillDown
+    Private ReadOnly Property NombreArchivoLatout
+        Get
+            Return IIf(CARPETA_LOCAL.EndsWith(System.IO.Path.DirectorySeparatorChar), CARPETA_LOCAL, CARPETA_LOCAL & IO.Path.DirectorySeparatorChar) & CODIGO_TRANSACCION & "_drilldown.xml"
+        End Get
+    End Property
 
     Private Sub cmdImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdImprimir.ItemClick
         Grid.ShowPrintPreview()
@@ -58,7 +51,9 @@ Public Class frmDrillDown
         Grid.RefreshDataSource()
         Grid.Refresh()
 
-        'GridView1.SaveLayoutToXml("C:\Test.xml")
+        If System.IO.File.Exists(NombreArchivoLatout) Then
+            GridView1.RestoreLayoutFromXml(NombreArchivoLatout)
+        End If
 
 
     End Sub
@@ -91,5 +86,11 @@ Public Class frmDrillDown
 
         End If
     End Sub
+
+    Private Sub cmdGuardarLaoyut_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdGuardarLaoyut.ItemClick
+        GridView1.SaveLayoutToXml(NombreArchivoLatout)
+    End Sub
+
+
 
 End Class
