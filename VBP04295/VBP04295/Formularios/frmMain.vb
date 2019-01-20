@@ -44,7 +44,7 @@ Public Class frmMain
     Private nLastRow As Long
     Private nPagInicial As Long
     Private bFlagCargado As Boolean
-
+    Private bHabilitado As Boolean
     Private Detalle() As tDetalle
 
     Private Declare Function OleTranslateColor Lib "OLEPRO32.DLL" (ByVal OLE_COLOR As Long, ByVal HPALETTE As Long, ByVal pccolorref As Long) As Long
@@ -472,11 +472,13 @@ Public Class frmMain
     Private Sub btnEjecutar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEjecutar.Click
         If DatosOK() Then
             Try
+                bHabilitado = False
                 Me.Cursor = Cursors.WaitCursor
                 Ejecutar()
                 RefreshCombosVariables()
             Finally
                 Me.Cursor = Cursors.Default
+                bHabilitado = True
             End Try
         End If
     End Sub
@@ -1490,6 +1492,50 @@ Reinicio:
     Private Sub btnDrillDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDrillDown.Click
         DrillDown()
     End Sub
+    Private Function ValidaNDesde() As Boolean
+        Try
+            If Not oConsulta.NuevoDesde Then
+                Return False
+            End If
+
+            Dim sSQL = oConsulta.NuevoDesdeQuery.Trim
+
+            If Trim(sSQL) = "" Then
+                Return True
+            End If
+
+            For Each oCol As clsColumnas In oColumnas
+                Dim vValor = GridView1.GetRowCellValue(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), oCol.Campo).ToString
+
+                If vValor IsNot Nothing Then
+                    If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
+                        vValor = FechaSQL(vValor)
+                    ElseIf TipoDatosADO(oCol.Tipo) = "Numérico" Then
+                        vValor = FlotanteSQL(Format(vValor, "Fixed"))
+                    Else
+                        vValor = "'" & vValor & "'"
+                    End If
+                Else
+                    vValor = "NULL"
+                End If
+
+                sSQL = Replace(sSQL, "@" & oCol.Campo, vValor)
+
+            Next
+
+            Dim dt As DataSet = oAdmTablas.AbrirDataset(sSQL)
+
+            If dt.Tables(0) IsNot Nothing Then
+                If dt.Tables(0).Rows.Count > 0 Then
+                    Return dt.Tables(0).Rows(0).Item(0)
+                End If
+            End If
+            Return False
+        Catch ex As Exception
+            GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "ValidarNDesde", CODIGO_TRANSACCION)
+            Return False
+        End Try
+    End Function
 
     Private Function ValidaUpdate() As Boolean
 
@@ -1588,15 +1634,46 @@ Reinicio:
 
     Private Sub GridView1_FocusedRowChanged(ByVal sender As Object, ByVal e As DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs) Handles GridView1.FocusedRowChanged
 
-        Dim sTemp As String = TieneComentarios()
 
-        If sTemp = "" Then
-            ToolTipText.SetToolTip(Me.Grid, "")
-            ToolTipText.Hide(Me.Grid)
-        Else
-            ToolTipText.Show(sTemp, Me.Grid)
+
+        If bHabilitado Then
+            If Not UsuarioActual.SoloLectura Then
+                If GridView1.RowCount > 0 Then
+                    btnBaja.Enabled = oConsulta.Baja
+                    If btnModif.Visible Then
+                        btnModif.Enabled = ValidaUpdate()
+                    End If
+
+                    If btnNDesde.Visible Then
+                        btnNDesde.Enabled = ValidaNDesde
+                    End If
+
+                Else
+                    btnBaja.Enabled = False
+                    btnModif.Enabled = False
+                End If
+            Else
+                btnModif.Enabled = False
+            End If
+
+            If btnModif.Enabled Then
+                btnDrillDown.Enabled = False
+            Else
+                btnDrillDown.Enabled = ValidarDrillDown()
+            End If
+
+            If btnComent.Enabled Then
+                Dim sTemp As String = TieneComentarios()
+
+                If sTemp = "" Then
+                    ToolTipText.SetToolTip(Me.Grid, "")
+                    ToolTipText.Hide(Me.Grid)
+                Else
+                    ToolTipText.Show(sTemp, Me.Grid)
+                End If
+
+            End If
         End If
-
     End Sub
 
     Private Sub DrillDown()
