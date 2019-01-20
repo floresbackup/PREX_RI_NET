@@ -898,7 +898,7 @@ Module modFunciones
                     If .Rows.Count = 0 Then
                         Throw New Security.SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto - MU_CODTRA: " & nCodigoTransaccion)
                     Else
-                        formulario.Text = CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA").ToString
+                        formulario.Text = "Transacción:" & CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA").ToString
                         SetLabelTexto(formulario, "lblTransaccion", CType(.Rows(0).Item("MU_DESCRI"), String))
                         SetLabelTexto(formulario, "lblTitulo", .Rows(0).Item("MU_TRANSA").ToString)
                         SetLabelTexto(formulario, "lblSubtitulo", .Rows(0).Item("MU_DESCRI").ToString)

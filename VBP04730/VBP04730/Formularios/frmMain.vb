@@ -152,7 +152,7 @@ Public Class frmMain
                         Throw New Security.SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto - MU_CODTRA: " & nCodigoTransaccion)
                     Else
                         lblTransaccion.Text = .Rows(0).Item("MU_DESCRI")
-                        Me.Text = CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA")
+                        Me.Text = "Transacción:" & CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA")
                     End If
 
                 End With
