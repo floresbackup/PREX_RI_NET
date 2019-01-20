@@ -214,6 +214,7 @@ Partial Class frmMain
         Me.ToolBarra.Name = "ToolBarra"
         Me.ToolBarra.Size = New System.Drawing.Size(635, 29)
         Me.ToolBarra.TabIndex = 0
+        Me.ToolBarra.TabStop = True
         Me.ToolBarra.Text = "ToolStrip1"
         '
         'btnAlta
