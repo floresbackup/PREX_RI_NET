@@ -645,7 +645,7 @@ Public Class frmMain
 
         If ValidaUpdate() Then
             If Not UsuarioActual.SoloLectura Then
-                Modificar("N")
+                Modificar()
             End If
         ElseIf ValidarDrillDown() Then
             DrillDown()
@@ -690,7 +690,7 @@ Public Class frmMain
 
     'End Function
 
-    Private Sub Modificar(Optional ByVal MODO_APE As String = "N")
+    Private Sub Modificar(Optional ByVal MODO_APE As String = "M")
 
         Dim sSQL As String
         Dim oCol As clsColumnas
@@ -736,7 +736,6 @@ Public Class frmMain
         Me.Enabled = True
 
         Dim oForm As New frmABMRegistro()
-
         oForm.PasarDatos(oConsulta.CodCon, sSQL, "Modificar registro", MODO_APE)
 
         If INPUT_GENERAL = "CERRAR_FORMULARIO_YAA" Then
@@ -762,7 +761,7 @@ Maneja_Error:
     End Sub
 
     Private Sub btnModif_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnModif.Click
-        Modificar("N")
+        Modificar()
     End Sub
 
     Private Sub btnAlta_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAlta.Click
@@ -2605,6 +2604,10 @@ Reinicio:
         GuardarLOG(AccionesLOG.ActualizacionDeArchivosAdjuntos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
         'Adjuntrar
 
+    End Sub
+
+    Private Sub btnNDesde_Click(sender As Object, e As EventArgs) Handles btnNDesde.Click
+        Modificar("N")
     End Sub
 End Class
 

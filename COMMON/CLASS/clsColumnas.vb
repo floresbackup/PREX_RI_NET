@@ -17,8 +17,9 @@ Public Class clsColumnas
    Public DrillDownQuery As String
    Public DrillDownProceso As String
    Public Reemplazar As Boolean
-   Public Valor As Object
-   Public VisibleABM As Boolean
+    Public Valor As Object
+    Public ValorAnterior As Object
+    Public VisibleABM As Boolean
    Public Key As String
 
 End Class

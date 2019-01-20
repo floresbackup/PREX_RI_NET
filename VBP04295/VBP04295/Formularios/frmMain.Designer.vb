@@ -19,15 +19,16 @@ Partial Class frmMain
    'Do not modify it using the code editor.
    <System.Diagnostics.DebuggerStepThrough()> _
    Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Me.Skin = New DevExpress.LookAndFeel.DefaultLookAndFeel()
+        Me.Skin = New DevExpress.LookAndFeel.DefaultLookAndFeel(Me.components)
         Me.PanControles = New DevExpress.XtraEditors.PanelControl()
         Me.PanTop = New DevExpress.XtraEditors.PanelControl()
         Me.lblSubtitulo = New DevExpress.XtraEditors.LabelControl()
         Me.lblTitulo = New DevExpress.XtraEditors.LabelControl()
         Me.picLogo = New DevExpress.XtraEditors.PictureEdit()
-        Me.PrintingSystem1 = New DevExpress.XtraPrinting.PrintingSystem()
-        Me.PrintableComponentLink1 = New DevExpress.XtraPrinting.PrintableComponentLink()
+        Me.PrintingSystem1 = New DevExpress.XtraPrinting.PrintingSystem(Me.components)
+        Me.PrintableComponentLink1 = New DevExpress.XtraPrinting.PrintableComponentLink(Me.components)
         Me.Grid = New DevExpress.XtraGrid.GridControl()
         Me.GridView1 = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.PanGrid = New DevExpress.XtraEditors.PanelControl()
@@ -41,15 +42,15 @@ Partial Class frmMain
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnImprimir = New System.Windows.Forms.ToolStripButton()
         Me.btnExportar = New System.Windows.Forms.ToolStripButton()
+        Me.btnCopiar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnDrillDown = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnComent = New System.Windows.Forms.ToolStripButton()
+        Me.btnAdjuntarArchivo = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnEjecutar = New System.Windows.Forms.ToolStripButton()
-        Me.ToolTipText = New System.Windows.Forms.ToolTip()
-        Me.btnCopiar = New System.Windows.Forms.ToolStripButton()
-        Me.btnAdjuntarArchivo = New System.Windows.Forms.ToolStripButton()
+        Me.ToolTipText = New System.Windows.Forms.ToolTip(Me.components)
         CType(Me.PanControles, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanControles.SuspendLayout()
         CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -273,6 +274,15 @@ Partial Class frmMain
         Me.btnExportar.Size = New System.Drawing.Size(23, 26)
         Me.btnExportar.ToolTipText = "Exportar a Excel"
         '
+        'btnCopiar
+        '
+        Me.btnCopiar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnCopiar.Image = Global.VBP04295.My.Resources.Resources.Copy
+        Me.btnCopiar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnCopiar.Name = "btnCopiar"
+        Me.btnCopiar.Size = New System.Drawing.Size(23, 26)
+        Me.btnCopiar.ToolTipText = "Copiar resultados"
+        '
         'ToolStripSeparator5
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
@@ -302,6 +312,15 @@ Partial Class frmMain
         Me.btnComent.Text = "Comentarios"
         Me.btnComent.ToolTipText = "Ver/Agregar comentarios"
         '
+        'btnAdjuntarArchivo
+        '
+        Me.btnAdjuntarArchivo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnAdjuntarArchivo.Image = CType(resources.GetObject("btnAdjuntarArchivo.Image"), System.Drawing.Image)
+        Me.btnAdjuntarArchivo.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnAdjuntarArchivo.Name = "btnAdjuntarArchivo"
+        Me.btnAdjuntarArchivo.Size = New System.Drawing.Size(23, 26)
+        Me.btnAdjuntarArchivo.ToolTipText = "Adjuntar un archivo"
+        '
         'ToolStripSeparator4
         '
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
@@ -314,24 +333,6 @@ Partial Class frmMain
         Me.btnEjecutar.Name = "btnEjecutar"
         Me.btnEjecutar.Size = New System.Drawing.Size(109, 26)
         Me.btnEjecutar.Text = "Presentar Datos"
-        '
-        'btnCopiar
-        '
-        Me.btnCopiar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.btnCopiar.Image = Global.VBP04295.My.Resources.Resources.Copy
-        Me.btnCopiar.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.btnCopiar.Name = "btnCopiar"
-        Me.btnCopiar.Size = New System.Drawing.Size(23, 26)
-        Me.btnCopiar.ToolTipText = "Copiar resultados"
-        '
-        'btnAdjuntarArchivo
-        '
-        Me.btnAdjuntarArchivo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.btnAdjuntarArchivo.Image = CType(resources.GetObject("btnAdjuntarArchivo.Image"), System.Drawing.Image)
-        Me.btnAdjuntarArchivo.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.btnAdjuntarArchivo.Name = "btnAdjuntarArchivo"
-        Me.btnAdjuntarArchivo.Size = New System.Drawing.Size(23, 26)
-        Me.btnAdjuntarArchivo.ToolTipText = "Adjuntar un archivo"
         '
         'frmMain
         '
