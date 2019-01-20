@@ -109,13 +109,16 @@ Public Class frmABMRegistro
                                 .Tag = oCol.Key
 
                                 If MODO_APE = "B" Then
-                                    .Enabled = False
+                                    .ReadOnly = True
                                 Else
-                                    .Enabled = oCol.Habilitada
-                                    If .Enabled And (Not bPrimero) Then
+                                    .ReadOnly = Not oCol.Habilitada
+                                    If Not .ReadOnly And (Not bPrimero) Then
                                         .TabIndex = 0
                                         bPrimero = True
                                     End If
+                                End If
+                                If .ReadOnly Then
+                                    .ForeColor = Color.Gray
                                 End If
                             End With
 
@@ -139,13 +142,16 @@ Public Class frmABMRegistro
                                 .Tag = oCol.Key
 
                                 If MODO_APE = "B" Then
-                                    .Enabled = False
+                                    .ReadOnly = True
                                 Else
-                                    .Enabled = oCol.Habilitada
-                                    If .Enabled And (Not bPrimero) Then
+                                    .ReadOnly = Not oCol.Habilitada
+                                    If Not .ReadOnly And (Not bPrimero) Then
                                         .TabIndex = 0
                                         bPrimero = True
                                     End If
+                                End If
+                                If .ReadOnly Then
+                                    .ForeColor = Color.Gray
                                 End If
                             End With
 
@@ -169,13 +175,16 @@ Public Class frmABMRegistro
                             .Tag = oCol.Key
 
                             If MODO_APE = "B" Then
-                                .Enabled = False
+                                .ReadOnly = True
                             Else
-                                .Enabled = oCol.Habilitada
-                                If .Enabled And (Not bPrimero) Then
+                                .ReadOnly = Not oCol.Habilitada
+                                If Not .ReadOnly And (Not bPrimero) Then
                                     .TabIndex = 0
                                     bPrimero = True
                                 End If
+                            End If
+                            If .ReadOnly Then
+                                .ForeColor = Color.Gray
                             End If
                         End With
 
