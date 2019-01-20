@@ -222,6 +222,12 @@ Public Class frmMain
             Grid.RefreshDataSource()
             Grid.Refresh()
 
+            If GridView1.RowCount > 0 Then
+                btnMostrarBuscador.Enabled = True
+                btnImprimir.Enabled = True
+                btnExportar.Enabled = True
+                btnCopiar.Enabled = True
+            End If
 
             btnAdjuntarArchivo.Enabled = oAdmTablas.ExisteTabla("ADJUNT")
         End If
@@ -255,9 +261,7 @@ Public Class frmMain
     End Sub
 
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
         CargarConsulta(CODIGO_TRANSACCION)
-
     End Sub
 
     Private Sub frmMain_ResizeEnd(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.ResizeEnd
@@ -2728,6 +2732,16 @@ Reinicio:
 
     Private Sub btnNDesde_Click(sender As Object, e As EventArgs) Handles btnNDesde.Click
         Modificar("N")
+    End Sub
+
+    Private Sub btnMostrarBuscador_Click(sender As Object, e As EventArgs) Handles btnMostrarBuscador.Click
+        If Not GridView1.IsFindPanelVisible Then
+            btnMostrarBuscador.BackColor = SystemColors.ActiveCaption
+            GridView1.ShowFindPanel()
+        Else
+            btnMostrarBuscador.BackColor = SystemColors.Control
+            GridView1.HideFindPanel()
+        End If
     End Sub
 End Class
 
