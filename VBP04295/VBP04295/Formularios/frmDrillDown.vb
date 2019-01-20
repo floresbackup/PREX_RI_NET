@@ -52,9 +52,9 @@ Public Class frmDrillDown
          Column.VisibleIndex = oCol.Ordinal
          Column.Visible = True
          Column.Caption = oCol.Caption
-            Column.OptionsColumn.FixedWidth = True
+            'Column.OptionsColumn.FixedWidth = True
 
-      Next
+        Next
 
         'GridView1.RestoreLayoutFromXml("C:\Test.xml")
 
