@@ -315,6 +315,7 @@ Partial Class frmMain
         'btnAdjuntarArchivo
         '
         Me.btnAdjuntarArchivo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnAdjuntarArchivo.Enabled = False
         Me.btnAdjuntarArchivo.Image = CType(resources.GetObject("btnAdjuntarArchivo.Image"), System.Drawing.Image)
         Me.btnAdjuntarArchivo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnAdjuntarArchivo.Name = "btnAdjuntarArchivo"

@@ -221,6 +221,9 @@ Public Class frmMain
             Grid.DataSource = dt
             Grid.RefreshDataSource()
             Grid.Refresh()
+
+
+            btnAdjuntarArchivo.Enabled = oAdmTablas.ExisteTabla("ADJUNT")
         End If
     End Sub
 
@@ -691,6 +694,42 @@ Public Class frmMain
     '    Return sSQL
 
     'End Function
+
+
+    Private Sub Adjuntar()
+
+        Try
+            Dim sClave As String = String.Empty
+
+            Dim sSQL = "SELECT DS_ORDEN " &
+              "FROM   DETSYS " &
+              "WHERE  DS_CODCON = " & oConsulta.CodCon.ToString & " " &
+              "AND    DS_LLAVE  = 1 " &
+              "ORDER  BY DS_ORDEN "
+            Dim RS As DataSet = oAdmTablas.AbrirDataset(sSQL)
+
+            sSQL = "SELECT "
+
+            With RS
+                If (.Tables.Count > 0) Then
+                    For Each oRow As DataRow In RS.Tables(0).Rows
+                        Dim vValor = GridView1.GetRowCellValue(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), GridView1.Columns.Item("K" & oRow("DS_ORDEN").ToString())).ToString
+                        sClave = sClave & vValor & ";"
+
+                    Next
+                End If
+
+            End With
+
+            'Load frmAdjuntar
+            'frmAdjuntar.PasarDatos sClave
+            'frmAdjuntar.Show vbModal, Me
+
+        Catch ex As Exception
+            TratarError(ex, "Adjuntar")
+        End Try
+    End Sub
+
 
     Private Sub Modificar(Optional ByVal MODO_APE As String = "M")
 
@@ -1747,6 +1786,10 @@ Reinicio:
         End If
 
         If sSQL <> "" Then
+            Dim seleccion As String = GridView1.FocusedColumn.GetTextCaption()
+            Dim valor As String = GridView1.GetRowCellDisplayText(GridView1.GetSelectedRows(0), GridView1.FocusedColumn).ToString
+
+            frmDrillDown.lblSubtitulo.Text = seleccion & ": " & valor
             frmDrillDown.PasarDatos(sSQL)
             frmDrillDown.ShowDialog()
             frmDrillDown.Close()
@@ -2679,7 +2722,7 @@ Reinicio:
 
     Private Sub btnAdjuntarArchivo_Click(sender As Object, e As EventArgs) Handles btnAdjuntarArchivo.Click
         GuardarLOG(AccionesLOG.ActualizacionDeArchivosAdjuntos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
-        'Adjuntrar
+        Adjuntar()
 
     End Sub
 

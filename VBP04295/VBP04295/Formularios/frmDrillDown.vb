@@ -14,53 +14,49 @@ Imports DevExpress.XtraEditors.Controls
 
 Public Class frmDrillDown
 
-    Private Sub cmdImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdImprimir.Click
-
+    Private Sub cmdImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdImprimir.ItemClick
         Grid.ShowPrintPreview()
-
     End Sub
 
-   Private Sub cmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdGuardar.Click
+    Private Sub cmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdGuardar.ItemClick
+        frmExportar.PasarViewResultados(frmMain.Text, frmMain.lblTitulo.Text, GridView1)
+        frmExportar.ShowDialog()
+    End Sub
 
-      frmExportar.PasarViewResultados(frmMain.Text, frmMain.lblTitulo.Text, GridView1)
-      frmExportar.ShowDialog()
+    Private Sub cmdCerrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCerrar.ItemClick
+        Me.Close()
+    End Sub
 
-   End Sub
+    Public Sub PasarDatos(ByVal sSQL As String)
 
-   Private Sub cmdCerrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCerrar.Click
-      Me.Close()
-   End Sub
+        Dim ad As OleDb.OleDbDataAdapter
+        Dim dt As DataTable
+        Dim View As ColumnView = Grid.MainView
+        Dim Column As DevExpress.XtraGrid.Columns.GridColumn
 
-   Public Sub PasarDatos(ByVal sSQL As String)
+        ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
+        dt = New DataTable
 
-      Dim ad As OleDb.OleDbDataAdapter
-      Dim dt As DataTable
-      Dim View As ColumnView = Grid.MainView
-      Dim Column As DevExpress.XtraGrid.Columns.GridColumn
-
-      ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
-      dt = New DataTable
-
-      ad.Fill(dt)
+        ad.Fill(dt)
 
         View.Columns.Clear()
 
-      For Each oCol As DataColumn In dt.Columns
+        For Each oCol As DataColumn In dt.Columns
 
             Column = View.Columns.AddField(oCol.ColumnName)
-         Column.Width = 100
-         Column.VisibleIndex = oCol.Ordinal
-         Column.Visible = True
-         Column.Caption = oCol.Caption
+            Column.Width = 100
+            Column.VisibleIndex = oCol.Ordinal
+            Column.Visible = True
+            Column.Caption = oCol.Caption
             'Column.OptionsColumn.FixedWidth = True
 
         Next
 
         'GridView1.RestoreLayoutFromXml("C:\Test.xml")
 
-      Grid.DataSource = dt
-      Grid.RefreshDataSource()
-      Grid.Refresh()
+        Grid.DataSource = dt
+        Grid.RefreshDataSource()
+        Grid.Refresh()
 
         'GridView1.SaveLayoutToXml("C:\Test.xml")
 
@@ -95,4 +91,5 @@ Public Class frmDrillDown
 
         End If
     End Sub
+
 End Class
