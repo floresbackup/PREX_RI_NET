@@ -2744,5 +2744,178 @@ Reinicio:
         End If
     End Sub
 
+    'Parametros sParam(0)=Cuadro|sParam(1)=Periodo|sParam(2)=CodCons|sParam(3)=Entidad|
+    '           sParam(4)=Columnas|sParam(5)=MesDesde|sParam(6)=MostrarSoloConSaldo|
+    '           sParam(7)=TablaDatos|sParam(8)=PrefijoTablaDatos|sParam(9)=Escenario
+    Public Function ConsActualizar_PNP(ByVal sParametros As String) As Boolean
+        Try
+            Me.Cursor = Cursors.WaitCursor
+            Dim sSQL As String
+            Dim dFechaVig As Date
+            Dim nCont As Long
+            Dim sParam() As String
+            Dim sIndice As String
+            Dim nEscena As Integer
+            Dim sTabla As String
+            Dim nMaxNivel As Long
+            Try
+
+                sParam = Split(sParametros, "|")
+                sTabla = sParam(7)
+                sIndice = sParam(8)
+                nEscena = sParam(9)
+
+                sSQL = "SELECT  MAX(TK_FECVIG) AS MAX_FECHA " &
+                   "FROM    PNP_TABPAR " &
+                   "WHERE   TK_FECVIG <= " & FechaSQL(sParam(1))
+
+                Dim rs As DataSet = oAdmTablas.AbrirDataset(sSQL)
+                If rs.Tables(0) Is Nothing OrElse rs.Tables(0).Rows.Count() = 0 Then
+                    MensajeInformacion("No existen relaciones con vigencia igual o anterior al período seleccionado. Por favor verifique el Mapa de Relaciones!")
+                    Return False
+                End If
+
+
+                dFechaVig = rs.Tables(0).Rows(0).Item("MAX_FECHA")
+
+
+                nMaxNivel = ConsTotalizar_PNP(sParam(0), CDate(sParam(1)), dFechaVig, sParam(2), sParam(3), sParam(4), sParam(5), sTabla, sIndice, nEscena)
+
+                sSQL = ""
+
+                If CBool(Val(sParam(6))) Then
+
+                    For nCont = 0 To Val(sParam(4))
+                        sSQL = sSQL & sIndice & "_MES" & nCont & " + "
+                    Next
+
+                    sSQL = Strings.Left(sSQL, Len(sSQL) - 2)
+                    sSQL = "AND (" & sSQL & ") <> 0 "
+                End If
+
+                sSQL = "SELECT    * " &
+                   "FROM      " & sTabla & " " &
+                   "WHERE     " & sIndice & "_CUADRO = " & sParam(0) & " " &
+                   "AND       " & sIndice & "_FECVIG = " & FechaSQL(sParam(1)) & " " &
+                   "AND       " & sIndice & "_CODENT = " & sParam(3) & " " &
+                   "AND       " & sIndice & "_CODCON = '" & sParam(2) & "' " &
+                   "AND       " & sIndice & "_ESCENA = " & nEscena & " " &
+                   "AND       " & sIndice & "_ACTIVA = 1 " &
+                    IIf(CBool(Val(sParam(6))), "AND (" & sIndice & "_MES" & Val(sParam(4)) & " <> 0 OR " & sIndice & "_MES" & Val(sParam(4)) - 1 & " <> 0) ", " ") &
+                   "ORDER BY  " & sIndice & "_ORDEN, " & sIndice & "_CODPAR, " & sIndice & "_CAMPO8 ASC"
+
+                nMaxNivel = 17
+                ConsFormatoCondicional(nMaxNivel)
+
+                Return True
+
+            Catch ex As Exception
+                If Err.Number <> 0 Then
+                    TratarError(ex, "ConsActualizar_PNP")
+                End If
+            End Try
+        Finally
+            Cursor = Cursors.Default
+        End Try
+
+    End Function
+
+
+    Public Function ConsTotalizar_PNP(ByVal sCuadro As String, ByVal dFecha As Date,
+                              ByVal dFechaVig As Date, ByVal sConsolidacion As String,
+                              ByVal nEmpresa As Long, ByVal nCol As Long,
+                              ByVal nDesdeMes As Integer, ByVal sTabla As String,
+                              ByVal sIndice As String, ByVal nEscena As Integer) As Long
+
+        Dim sSQL As String
+        Dim nMax As Long
+        Dim nCont As Long
+        Dim nCont1 As Long
+
+        sConsolidacion = Format(Val(sConsolidacion), "000")
+
+        sSQL = "SELECT      MAX(" & sIndice & "_NIVEL) AS MAXNIVEL " &
+          "FROM        " & sTabla & " " &
+          "WHERE       " & sIndice & "_FECVIG=" & FechaSQL(dFecha) & " " &
+          "AND         " & sIndice & "_CODENT = " & nEmpresa & " " &
+          "AND         " & sIndice & "_CUADRO = " & sCuadro & " " &
+          "AND         " & sIndice & "_ESCENA = " & nEscena
+
+        Dim RS As DataSet = oAdmTablas.AbrirDataset(sSQL)
+        If RS.Tables(0) Is Nothing OrElse RS.Tables(0).Rows.Count() = 0 Then
+            Throw New Exception("No hay registros en MAX de tabla " & sTabla)
+        End If
+
+        If RS.Tables(0).Rows.Item(0)("MAXNIVEL") Is Nothing OrElse IsDBNull(RS.Tables(0).Rows.Item(0)("MAXNIVEL")) Then
+            nMax = 0
+        Else
+            nMax = RS.Tables(0).Rows.Item(0)("MAXNIVEL")
+        End If
+        RS = Nothing
+
+        For nCont = 1 To nMax
+
+            If oAdmTablas.ExisteTabla("SUMTEMP") Then
+                Call oAdmTablas.EjecutarComandoSQL("DROP TABLE SUMTEMP")
+            End If
+
+            sSQL = "SELECT " & sTabla & "." & sIndice & "_NIVEL, " & sTabla & "." & sIndice & "_ESQUEMA, " &
+              "       " & sTabla & "." & sIndice & "_CODENT, " & sTabla & "." & sIndice & "_FECVIG, "
+
+            For nCont1 = 0 To nCol - 1
+
+                sSQL = sSQL & "Sum(" & sTabla & "." & sIndice & "_MES" & nDesdeMes + nCont1 & ") AS Tot_MES" & nDesdeMes + nCont1 & ", "
+
+            Next nCont1
+
+            sSQL = Strings.Left(sSQL, Len(sSQL) - 2)
+
+            sSQL = sSQL & " " &
+              "INTO   SUMTEMP " &
+              "FROM   " & sTabla & " " &
+              "WHERE  " & sTabla & "." & sIndice & "_CODENT = " & nEmpresa & " " &
+              "AND    " & sTabla & "." & sIndice & "_ACTIVA = 1 " &
+              "AND    " & sTabla & "." & sIndice & "_FECVIG = " & FechaSQL(dFecha) & " " &
+              "AND    " & sTabla & "." & sIndice & "_CUADRO = " & sCuadro & " " &
+              "AND    " & sTabla & "." & sIndice & "_ESCENA = " & nEscena & " " &
+              "AND    " & sTabla & "." & sIndice & "_CODCON = '" & sConsolidacion & "' " &
+              "GROUP BY " & sTabla & "." & sIndice & "_NIVEL, " & sTabla & "." & sIndice & "_ESQUEMA, " &
+              "         " & sTabla & "." & sIndice & "_CODENT, " & sTabla & "." & sIndice & "_FECVIG " &
+              "HAVING (((" & sTabla & "." & sIndice & "_NIVEL)=" & (nMax - (nCont - 1)) & "));"
+
+            Call oAdmTablas.EjecutarComandoSQL(sSQL)
+
+            sSQL = "UPDATE        " & sTabla & " " &
+              "INNER JOIN    SUMTEMP " &
+              "ON            (" & sTabla & "." & sIndice & "_INDEX = SUMTEMP." & sIndice & "_ESQUEMA) " &
+              "AND           (" & sTabla & "." & sIndice & "_CODENT = SUMTEMP." & sIndice & "_CODENT) " &
+              "AND           (" & sTabla & "." & sIndice & "_FECVIG = SUMTEMP." & sIndice & "_FECVIG) SET "
+
+            For nCont1 = 0 To nCol - 1
+                sSQL = sSQL & "" & sTabla & "." & sIndice & "_MES" & nDesdeMes + nCont1 & " = SUMTEMP.TOT_MES" & nDesdeMes + nCont1 & ", "
+            Next nCont1
+
+            sSQL = Strings.Left(sSQL, Len(sSQL) - 2)
+
+            sSQL = sSQL & " " &
+              "WHERE         " & sTabla & "." & sIndice & "_CODENT = " & nEmpresa & " " &
+              "AND           " & sTabla & "." & sIndice & "_FECVIG = " & FechaSQL(dFecha) & " " &
+              "AND           " & sTabla & "." & sIndice & "_CUADRO = " & sCuadro & " " &
+              "AND           " & sTabla & "." & sIndice & "_ESCENA = " & nEscena & " " &
+              "AND           " & sTabla & "." & sIndice & "_INDEX > 1 " &
+              "AND           " & sTabla & "." & sIndice & "_CODCON = '" & sConsolidacion & "' "
+
+            ' Filtro por DC_index agregado para que no cometa el error de actualizar partidas de mas
+
+            Call oAdmTablas.EjecutarComandoSQL(sSQL)
+
+        Next nCont
+
+        Return nMax
+
+    End Function
+
+
+
 End Class
 
