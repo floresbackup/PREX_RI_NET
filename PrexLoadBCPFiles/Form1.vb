@@ -34,8 +34,10 @@ Public Class Form1
 
 	Private ReadOnly Property GetFullConnectionString As String
 		Get
-			Dim con = "Integrated Security=SSPI;Password=" & txtUserPass.Text.Trim() & ";User Id=" & txtSQLUser.Text.Trim()
-			con &= ";Initial Catalog=" & txtDataBase.Text.Trim() & ";Data Source=" & txtSQLServer.Text.Trim()
+            'Dim con As String = "Provider=SQLOLEDB.1;Persist Security Info=False;"
+            'con &= "Integrated Security=SSPI;"
+            Dim con = "Password=" & txtUserPass.Text.Trim() & ";User Id=" & txtSQLUser.Text.Trim()
+            con &= ";Initial Catalog=" & txtDataBase.Text.Trim() & ";Data Source=" & txtSQLServer.Text.Trim()
 			Return con.Replace(";;", ";")
 		End Get
 	End Property
@@ -110,19 +112,25 @@ Public Class Form1
 				lblProgress.Text = "Leyendo archivo BCP..."
 				Dim lines = File.ReadLines(txtPathBCP.Text)
 
-				progressBar.Maximum = lines.Count()
-				lblProgress.Text = "Insertando registros..."
-				If lines.Count() > 200800 Then
+                Dim count = lines.Count()
+                progressBar.Maximum = count
+                lblProgress.Text = "Insertando registros..."
+                If count > 200800 Then
+                    For Each items As List(Of String) In lines.Partir(150000)
+                        If Not dropTable Then
+                            Dim terminos = items.Select(Function(i) PartirTerminos(i).ToList()).ToList()
+                            dropTable = DropearYCrearTabla(conn, tran, terminos)
+                        End If
 
-					For Each items As List(Of String) In lines.Partir(150000)
-						If Not dropTable Then
-							Dim terminos = items.Select(Function(i) PartirTerminos(i).ToList()).ToList()
-							dropTable = DropearYCrearTabla(conn, tran, terminos)
-						End If
-						BulkCopy(conn, items, False)
-					Next
-				Else
-					BulkCopy(conn, lines)
+                        If Not isTransaccion Then
+                            tran = conn.BeginTransaction
+                            isTransaccion = True
+                        End If
+
+                        BulkCopy(conn, items, False)
+                    Next
+                Else
+                    BulkCopy(conn, lines)
 				End If
 
 				''For Each LineBCP As String In lines
@@ -259,10 +267,15 @@ Public Class Form1
 	Private Function PartirTerminos(linea As String) As List(Of String)
 		Dim l As New List(Of String)
 		If linea.Count < _dicFormato.Max(Function(f) f.Inicio) Then Return l
-		_dicFormato.ForEach(Sub(f)
-								l.Add(linea.Substring(f.Inicio, f.Tamanio))
-							End Sub)
-			Return l
+        _dicFormato.ForEach(Sub(f)
+                                Try
+                                    l.Add(linea.Substring(f.Inicio, f.Tamanio))
+
+                                Catch ex As Exception
+                                    Throw ex
+                                End Try
+                            End Sub)
+        Return l
 	End Function
 
 	Private Sub GuardarConfiguracion()
