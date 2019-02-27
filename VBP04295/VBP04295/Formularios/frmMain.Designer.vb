@@ -38,18 +38,17 @@ Partial Class frmMain
         Me.btnAlta = New System.Windows.Forms.ToolStripButton()
         Me.btnModif = New System.Windows.Forms.ToolStripButton()
         Me.btnBaja = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnNDesde = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.btnMostrarBuscador = New System.Windows.Forms.ToolStripButton()
         Me.btnImprimir = New System.Windows.Forms.ToolStripButton()
         Me.btnExportar = New System.Windows.Forms.ToolStripButton()
+        Me.btnCopiar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
-        Me.btnReporte = New System.Windows.Forms.ToolStripButton()
-        Me.btnGrafico = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnDrillDown = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnComent = New System.Windows.Forms.ToolStripButton()
+        Me.btnAdjuntarArchivo = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnEjecutar = New System.Windows.Forms.ToolStripButton()
         Me.ToolTipText = New System.Windows.Forms.ToolTip(Me.components)
@@ -210,11 +209,12 @@ Partial Class frmMain
         'ToolBarra
         '
         Me.ToolBarra.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ToolBarra.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnAlta, Me.btnModif, Me.btnBaja, Me.ToolStripSeparator3, Me.btnNDesde, Me.ToolStripSeparator2, Me.btnImprimir, Me.btnExportar, Me.ToolStripSeparator5, Me.btnReporte, Me.btnGrafico, Me.ToolStripSeparator1, Me.btnDrillDown, Me.ToolStripSeparator6, Me.btnComent, Me.ToolStripSeparator4, Me.btnEjecutar})
+        Me.ToolBarra.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnAlta, Me.btnModif, Me.btnBaja, Me.btnNDesde, Me.ToolStripSeparator2, Me.btnMostrarBuscador, Me.btnImprimir, Me.btnExportar, Me.btnCopiar, Me.ToolStripSeparator5, Me.btnDrillDown, Me.ToolStripSeparator6, Me.btnComent, Me.btnAdjuntarArchivo, Me.ToolStripSeparator4, Me.btnEjecutar})
         Me.ToolBarra.Location = New System.Drawing.Point(0, 0)
         Me.ToolBarra.Name = "ToolBarra"
         Me.ToolBarra.Size = New System.Drawing.Size(635, 29)
         Me.ToolBarra.TabIndex = 0
+        Me.ToolBarra.TabStop = True
         Me.ToolBarra.Text = "ToolStrip1"
         '
         'btnAlta
@@ -244,11 +244,6 @@ Partial Class frmMain
         Me.btnBaja.Size = New System.Drawing.Size(23, 26)
         Me.btnBaja.Text = "Baja"
         '
-        'ToolStripSeparator3
-        '
-        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 29)
-        '
         'btnNDesde
         '
         Me.btnNDesde.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
@@ -263,9 +258,21 @@ Partial Class frmMain
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
         Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 29)
         '
+        'btnMostrarBuscador
+        '
+        Me.btnMostrarBuscador.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnMostrarBuscador.Enabled = False
+        Me.btnMostrarBuscador.Image = CType(resources.GetObject("btnMostrarBuscador.Image"), System.Drawing.Image)
+        Me.btnMostrarBuscador.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnMostrarBuscador.Name = "btnMostrarBuscador"
+        Me.btnMostrarBuscador.Size = New System.Drawing.Size(23, 26)
+        Me.btnMostrarBuscador.Text = "Mostrar/Ocultar buscador en grilla"
+        Me.btnMostrarBuscador.ToolTipText = "Mostrar/Ocultar buscador"
+        '
         'btnImprimir
         '
         Me.btnImprimir.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnImprimir.Enabled = False
         Me.btnImprimir.Image = CType(resources.GetObject("btnImprimir.Image"), System.Drawing.Image)
         Me.btnImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnImprimir.Name = "btnImprimir"
@@ -275,39 +282,27 @@ Partial Class frmMain
         '
         'btnExportar
         '
+        Me.btnExportar.Enabled = False
         Me.btnExportar.Image = CType(resources.GetObject("btnExportar.Image"), System.Drawing.Image)
         Me.btnExportar.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnExportar.Name = "btnExportar"
-        Me.btnExportar.Size = New System.Drawing.Size(70, 26)
-        Me.btnExportar.Text = "Exportar"
+        Me.btnExportar.Size = New System.Drawing.Size(23, 26)
+        Me.btnExportar.ToolTipText = "Exportar a Excel"
+        '
+        'btnCopiar
+        '
+        Me.btnCopiar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnCopiar.Enabled = False
+        Me.btnCopiar.Image = Global.VBP04295.My.Resources.Resources.Copy
+        Me.btnCopiar.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnCopiar.Name = "btnCopiar"
+        Me.btnCopiar.Size = New System.Drawing.Size(23, 26)
+        Me.btnCopiar.ToolTipText = "Copiar resultados"
         '
         'ToolStripSeparator5
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
         Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 29)
-        '
-        'btnReporte
-        '
-        Me.btnReporte.Image = Global.VBP04295.My.Resources.Resources.Report_2
-        Me.btnReporte.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.btnReporte.Name = "btnReporte"
-        Me.btnReporte.Size = New System.Drawing.Size(68, 26)
-        Me.btnReporte.Text = "Reporte"
-        Me.btnReporte.ToolTipText = "Generar Reporte"
-        '
-        'btnGrafico
-        '
-        Me.btnGrafico.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.btnGrafico.Image = Global.VBP04295.My.Resources.Resources.Chart1
-        Me.btnGrafico.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.btnGrafico.Name = "btnGrafico"
-        Me.btnGrafico.Size = New System.Drawing.Size(23, 26)
-        Me.btnGrafico.Text = "Grafico"
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 29)
         '
         'btnDrillDown
         '
@@ -332,6 +327,16 @@ Partial Class frmMain
         Me.btnComent.Size = New System.Drawing.Size(23, 26)
         Me.btnComent.Text = "Comentarios"
         Me.btnComent.ToolTipText = "Ver/Agregar comentarios"
+        '
+        'btnAdjuntarArchivo
+        '
+        Me.btnAdjuntarArchivo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnAdjuntarArchivo.Enabled = False
+        Me.btnAdjuntarArchivo.Image = CType(resources.GetObject("btnAdjuntarArchivo.Image"), System.Drawing.Image)
+        Me.btnAdjuntarArchivo.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnAdjuntarArchivo.Name = "btnAdjuntarArchivo"
+        Me.btnAdjuntarArchivo.Size = New System.Drawing.Size(23, 26)
+        Me.btnAdjuntarArchivo.ToolTipText = "Adjuntar un archivo"
         '
         'ToolStripSeparator4
         '
@@ -393,22 +398,20 @@ Partial Class frmMain
    Friend WithEvents lblTitulo As DevExpress.XtraEditors.LabelControl
    Friend WithEvents btnExportar As System.Windows.Forms.ToolStripButton
    Friend WithEvents btnImprimir As System.Windows.Forms.ToolStripButton
-   Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-   Friend WithEvents PrintingSystem1 As DevExpress.XtraPrinting.PrintingSystem
-   Friend WithEvents PrintableComponentLink1 As DevExpress.XtraPrinting.PrintableComponentLink
-   Friend WithEvents btnAlta As System.Windows.Forms.ToolStripButton
-   Friend WithEvents btnModif As System.Windows.Forms.ToolStripButton
-   Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
-   Friend WithEvents btnBaja As System.Windows.Forms.ToolStripButton
-   Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
-   Friend WithEvents btnNDesde As System.Windows.Forms.ToolStripButton
-   Friend WithEvents btnComent As System.Windows.Forms.ToolStripButton
-   Friend WithEvents btnReporte As System.Windows.Forms.ToolStripButton
-   Friend WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
-   Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
-   Friend WithEvents btnGrafico As System.Windows.Forms.ToolStripButton
-   Friend WithEvents btnDrillDown As System.Windows.Forms.ToolStripButton
-   Friend WithEvents ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
-   Friend WithEvents ToolTipText As System.Windows.Forms.ToolTip
-
+    Friend WithEvents PrintingSystem1 As DevExpress.XtraPrinting.PrintingSystem
+    Friend WithEvents PrintableComponentLink1 As DevExpress.XtraPrinting.PrintableComponentLink
+    Friend WithEvents btnAlta As System.Windows.Forms.ToolStripButton
+    Friend WithEvents btnModif As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents btnBaja As System.Windows.Forms.ToolStripButton
+    Friend WithEvents btnNDesde As System.Windows.Forms.ToolStripButton
+    Friend WithEvents btnComent As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents btnDrillDown As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents ToolTipText As System.Windows.Forms.ToolTip
+    Friend WithEvents btnCopiar As ToolStripButton
+    Friend WithEvents btnAdjuntarArchivo As ToolStripButton
+    Friend WithEvents btnMostrarBuscador As ToolStripButton
 End Class

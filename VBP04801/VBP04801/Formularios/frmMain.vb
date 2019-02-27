@@ -155,7 +155,7 @@ Public Class frmMain
                         Throw New Security.SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto - MU_CODTRA: " & nCodigoTransaccion)
                     Else
                         lblTransaccion.Text = .Rows(0).Item("MU_DESCRI")
-                        Me.Text = CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA")
+                        Me.Text = "Transacción:" & CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA")
                     End If
 
                 End With
@@ -572,6 +572,7 @@ Public Class frmMain
 
             End If
 
+            CargarRutasFijas(Llave(cboTabla1))
         End If
 
     End Sub
@@ -2520,4 +2521,72 @@ GrabarCampo:
 
 
     End Sub
+
+    Private Sub CargarRutasFijas(ByVal sTabla As String)
+        Try
+
+            Dim sSQL As String
+            Dim sSoloArch As String = String.Empty
+            Dim sArchFij As String = String.Empty
+
+
+            Dim nTablas As Integer = Integer.Parse(oAdmlocal.DevolverValor("TABGEN", "ISNULL(COUNT(*), 0)", "TG_CODTAB = 10 AND TG_CODCON BETWEEN 500 AND 600 ").ToString())
+
+
+            If nTablas > 0 Then
+
+                sArchFij = oAdmlocal.DevolverValor("TABGEN", "TG_ALFA01 + '\' + TG_ALFA02",
+                       "TG_CODTAB = 10 AND TG_CODCON BETWEEN 500 AND 600 AND TG_DESCRI = '" & sTabla & "'").ToString()
+
+                sSoloArch = oAdmlocal.DevolverValor("TABGEN", "TG_ALFA02",
+                        "TG_CODTAB = 10 AND TG_CODCON BETWEEN 500 AND 600 AND TG_DESCRI = '" & sTabla & "'").ToString()
+
+                If Len(sArchFij) < 5 Or sArchFij = " inexistente" Then
+                    MensajeInformacion("No existen archivos parametrizados para la tabla seleccionada")
+                    CargarTablas()
+                Else
+                    txtOrigen.Text = sArchFij
+                    txtOrigen.Enabled = False
+                    cmdExaminar.Visible = False
+                End If
+
+            End If
+
+            If CODIGO_ENTIDAD = 16 And sArchFij.Length() > 0 Then
+
+                If sArchFij.ToLower().Contains(NombreUsuarioNT.ToLower()) Then
+
+                    MensajeError("El usuario que creo el arhivo es el mismo que intenta incorporar " &
+                             "la información. El Proceso NO CONTINUARÁ!")
+                    TabDiseno.SelectedTab = tabDatos
+                    Cargar()
+
+                    Exit Sub
+
+                End If
+
+                If CBool(oAdmlocal.ExisteTabla("LOG_CAPTURA")) Then
+
+                    sSQL = "INSERT INTO LOG_CAPTURA (CT_CODENT, CT_FECLOG, CT_RUTA, CT_ARCHIVO, CT_FECCRE, CT_FECMOD, CT_USUARI) " &
+                       "VALUES (" &
+                       "" & CODIGO_ENTIDAD & ", " &
+                       " " & FechaSQL(Date.Now) & ", " &
+                       "'" & sArchFij & "', " &
+                       "'" & sSoloArch & "', " &
+                       " " & FechaSQL(File.GetCreationTime(sArchFij)) & ", " &
+                       " " & FechaSQL(File.GetLastWriteTime(sArchFij)) & ", " &
+                       "'" & NombreUsuarioNT() & "') "
+
+                    oAdmlocal.EjecutarComandoSQL(sSQL)
+
+                End If
+
+            End If
+
+
+        Catch ex As Exception
+            TratarError(ex, "CargarRutasFijas")
+        End Try
+    End Sub
+
 End Class

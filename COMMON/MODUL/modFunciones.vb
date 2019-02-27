@@ -191,6 +191,10 @@ Module modFunciones
                         Case "DOMINIO_DEFAULT"
                         Case "DOMINIO"
                             DOMINIO_DEFAULT = sTemp
+                        Case "DEBUG" 'SI EXISTE LA VARIABLE EN EL INI - 0 = NO / 1 = SI
+                            GENERAR_LOG_SQL = IIf(Integer.Parse(sTemp) = 1, True, False)
+                        Case "" 'SI EXISTE LA VARIABLE EN EL INI - 1= Completo 2= Solo modificaciones no SELECT 3= Ninguna grabación
+                            TIPO_LOG_SQL = Integer.Parse(sTemp)
                     End Select
 
                 Next
@@ -271,8 +275,15 @@ Module modFunciones
 
     End Function
 
-    Public Function FechaSQL(ByVal dFecha As Date) As String
+    Public Function FechaYHoraSQL(ByVal dFecha As DateTime) As String
+        Return "'" & Format(dFecha, FORMATO_FECHA) & " " & Format(dFecha, "HH:mm:ss:fff") & "'"
+    End Function
 
+
+    Public Function FechaSQL(ByVal dFecha As Date) As String
+        If dFecha = Date.MinValue Then
+            Return "'" & Format(FechaCorrecta(1, 1900), FORMATO_FECHA) & "'"
+        End If
         Return "'" & Format(dFecha, FORMATO_FECHA) & "'"
 
     End Function
@@ -643,7 +654,7 @@ Module modFunciones
         sSQL = sSQL.Replace("@HORLOG", "'" & Format(DateTime.Now, "HH:mm:ss") & "'")
         sSQL = sSQL.Replace("@ACCION", nAccionLOG)
         sSQL = sSQL.Replace("@CODTRA", nCodigoTransaccion)
-        sSQL = sSQL.Replace("@EXTRA", "'" & sExtra & "'")
+        sSQL = sSQL.Replace("@EXTRA", "'" & sExtra.Replace("'", "") & "'")
         sSQL = sSQL.Replace("@WKSTAT", "'" & System.Environment.MachineName & "'")
 
         oAdmLOG.EjecutarComandoAsincrono(sSQL)
@@ -887,7 +898,7 @@ Module modFunciones
                     If .Rows.Count = 0 Then
                         Throw New Security.SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto - MU_CODTRA: " & nCodigoTransaccion)
                     Else
-                        formulario.Text = CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA").ToString
+                        formulario.Text = "Transacción:" & CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA").ToString
                         SetLabelTexto(formulario, "lblTransaccion", CType(.Rows(0).Item("MU_DESCRI"), String))
                         SetLabelTexto(formulario, "lblTitulo", .Rows(0).Item("MU_TRANSA").ToString)
                         SetLabelTexto(formulario, "lblSubtitulo", .Rows(0).Item("MU_DESCRI").ToString)
@@ -916,4 +927,30 @@ Module modFunciones
         End If
     End Sub
 
+
+    Public Function NombreUsuarioNT() As String
+        Return Environment.UserName
+        'Dim sBuffer As String * 255
+        'Dim lResult As Long
+        'Dim nLen As Long
+
+        'nLen = 255
+
+        'lResult = GetUserName(sBuffer, nLen)
+        'NombreUsuarioNT = Left(sBuffer, nLen - 1)
+
+    End Function
+
+    Public Function NombrePCLocal() As String
+        Return Environment.MachineName
+        'Dim sBuffer As String * 255
+        'Dim lResult As Long
+        'Dim nLen As Long
+
+        'nLen = 255
+
+        'lResult = GetComputerName(sBuffer, nLen)
+        'NombrePCLocal = Left(sBuffer, nLen - 1)
+
+    End Function
 End Module

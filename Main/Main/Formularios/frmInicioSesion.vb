@@ -407,7 +407,7 @@ Public Class frmInicioSesion
         ElseIf txtUsuario.Text.ToUpper = "ADMIN" Then
 
             bResult = AutenticacionInterna()
-
+            Return bResult
         End If
         Return False
     End Function

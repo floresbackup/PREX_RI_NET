@@ -681,6 +681,11 @@ Err_Trap:
         End Try
     End Sub
 
+    Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        GuardarLOG(AccionesLOG.AL_SALIDA_SISTEMA, "Salida del sistema", CODIGO_TRANSACCION)
+    End Sub
+
+
     'resize de menu
     'Private Function GetMaxNodeWidth(ByVal nodes As TreeNodeCollection, ByVal width As Integer) As Integer
     '    For Each node As TreeNode In nodes

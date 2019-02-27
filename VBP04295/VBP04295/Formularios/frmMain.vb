@@ -14,7 +14,7 @@ Imports DevExpress.XtraReports.Localization
 Imports WebSupergoo
 
 Public Class frmMain
-
+    Private sExtra_log As String
     Public ps1 = New DevExpress.XtraPrinting.PrintingSystem
 
     Public Class DropDownGrid
@@ -44,7 +44,7 @@ Public Class frmMain
     Private nLastRow As Long
     Private nPagInicial As Long
     Private bFlagCargado As Boolean
-
+    Private bHabilitado As Boolean
     Private Detalle() As tDetalle
 
     Private Declare Function OleTranslateColor Lib "OLEPRO32.DLL" (ByVal OLE_COLOR As Long, ByVal HPALETTE As Long, ByVal pccolorref As Long) As Long
@@ -176,7 +176,7 @@ Public Class frmMain
                         Throw New Security.SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto - MU_CODTRA: " & nCodigoTransaccion)
                     Else
                         'lblTransaccion.Text = nCodigoTransaccion.ToString & " - " & .Rows(0).Item("MU_TRANSA")
-                        Me.Text = nCodigoTransaccion.ToString & " - " & .Rows(0).Item("MU_TRANSA")
+                        Me.Text = "Transacción:" & nCodigoTransaccion.ToString & " - " & .Rows(0).Item("MU_TRANSA")
                     End If
 
                 End With
@@ -198,18 +198,14 @@ Public Class frmMain
     End Sub
 
     Public Sub Ejecutar()
-        GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - EJECUTAR ", CODIGO_TRANSACCION)
         If ProcesosPrevios() Then
-            GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - PROCESOSPREVIOS OK ", CODIGO_TRANSACCION)
 
             Dim sSQL As String = ReemplazarVariables(oConsulta.Query, PanControles.Controls)
-            GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - ReemplazarVariables:  " & sSQL, CODIGO_TRANSACCION)
 
             Dim ad As OleDb.OleDbDataAdapter = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
             Dim dt As New DataTable
             ad.Fill(dt)
 
-            GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - Fill(dt)", CODIGO_TRANSACCION)
 
             If Not bFlagCargado Then
                 For Each oCol As clsColumnas In oColumnas
@@ -225,8 +221,16 @@ Public Class frmMain
             Grid.DataSource = dt
             Grid.RefreshDataSource()
             Grid.Refresh()
+
+            If GridView1.RowCount > 0 Then
+                btnMostrarBuscador.Enabled = True
+                btnImprimir.Enabled = True
+                btnExportar.Enabled = True
+                btnCopiar.Enabled = True
+            End If
+
+            btnAdjuntarArchivo.Enabled = oAdmTablas.ExisteTabla("ADJUNT")
         End If
-        GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - EJECUTAR FINAL", CODIGO_TRANSACCION)
     End Sub
 
     Private Sub Columnas()
@@ -257,9 +261,7 @@ Public Class frmMain
     End Sub
 
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
         CargarConsulta(CODIGO_TRANSACCION)
-
     End Sub
 
     Private Sub frmMain_ResizeEnd(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.ResizeEnd
@@ -314,7 +316,7 @@ Public Class frmMain
         dt = New DataTable
 
         ad.Fill(dt)
-        btnGrafico.Enabled = dt.Rows.Count > 0
+        'btnGrafico.Enabled = dt.Rows.Count > 0
 
         dt = Nothing
         ad = Nothing
@@ -327,7 +329,7 @@ Public Class frmMain
         dt = New DataTable
 
         ad.Fill(dt)
-        btnReporte.Enabled = dt.Rows.Count > 0
+        ' btnReporte.Enabled = dt.Rows.Count > 0
 
         lblTitulo.Text = oConsulta.Nombre
         lblSubtitulo.Text = oConsulta.Descripcion
@@ -477,11 +479,13 @@ Public Class frmMain
     Private Sub btnEjecutar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEjecutar.Click
         If DatosOK() Then
             Try
+                bHabilitado = False
                 Me.Cursor = Cursors.WaitCursor
                 Ejecutar()
                 RefreshCombosVariables()
             Finally
                 Me.Cursor = Cursors.Default
+                bHabilitado = True
             End Try
         End If
     End Sub
@@ -512,7 +516,7 @@ Public Class frmMain
             oColumna.Width = IIf(oFmt.Ancho = 0, 1000, oFmt.Ancho)
         End If
 
-        If Not (oFmt.Formato Is Nothing) Then
+        If Not (oFmt.Formato Is Nothing) AndAlso (oFmt.Formato.ToLower() <> "standard") Then
             oColumna.DisplayFormat.FormatType = FormatType.Custom
             oColumna.DisplayFormat.FormatString = oFmt.Formato
         End If
@@ -618,6 +622,7 @@ Public Class frmMain
     End Sub
 
     Private Sub btnExportar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExportar.Click
+        GuardarLOG(AccionesLOG.ExportacionDeDatos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
 
         frmExportar.PasarViewResultados(Me.Text, Me.lblTitulo.Text, GridView1)
         frmExportar.ShowDialog()
@@ -649,7 +654,7 @@ Public Class frmMain
 
         If ValidaUpdate() Then
             If Not UsuarioActual.SoloLectura Then
-                Modificar("M")
+                Modificar()
             End If
         ElseIf ValidarDrillDown() Then
             DrillDown()
@@ -693,6 +698,42 @@ Public Class frmMain
     '    Return sSQL
 
     'End Function
+
+
+    Private Sub Adjuntar()
+
+        Try
+            Dim sClave As String = String.Empty
+
+            Dim sSQL = "SELECT DS_ORDEN " &
+              "FROM   DETSYS " &
+              "WHERE  DS_CODCON = " & oConsulta.CodCon.ToString & " " &
+              "AND    DS_LLAVE  = 1 " &
+              "ORDER  BY DS_ORDEN "
+            Dim RS As DataSet = oAdmTablas.AbrirDataset(sSQL)
+
+            sSQL = "SELECT "
+
+            With RS
+                If (.Tables.Count > 0) Then
+                    For Each oRow As DataRow In RS.Tables(0).Rows
+                        Dim vValor = GridView1.GetRowCellValue(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), GridView1.Columns.Item("K" & oRow("DS_ORDEN").ToString())).ToString
+                        sClave = sClave & vValor & ";"
+
+                    Next
+                End If
+
+            End With
+
+            'Load frmAdjuntar
+            'frmAdjuntar.PasarDatos sClave
+            'frmAdjuntar.Show vbModal, Me
+
+        Catch ex As Exception
+            TratarError(ex, "Adjuntar")
+        End Try
+    End Sub
+
 
     Private Sub Modificar(Optional ByVal MODO_APE As String = "M")
 
@@ -740,7 +781,6 @@ Public Class frmMain
         Me.Enabled = True
 
         Dim oForm As New frmABMRegistro()
-
         oForm.PasarDatos(oConsulta.CodCon, sSQL, "Modificar registro", MODO_APE)
 
         If INPUT_GENERAL = "CERRAR_FORMULARIO_YAA" Then
@@ -766,7 +806,7 @@ Maneja_Error:
     End Sub
 
     Private Sub btnModif_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnModif.Click
-        Modificar("M")
+        Modificar()
     End Sub
 
     Private Sub btnAlta_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAlta.Click
@@ -798,10 +838,11 @@ Maneja_Error:
     End Sub
 
     Private Sub btnComent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnComent.Click
+        GuardarLOG(AccionesLOG.ActualizacionDeComentarios, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
         Comentarios()
     End Sub
 
-    Private Sub btnReporte_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnReporte.Click
+    Private Sub btnReporte_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         GenerarReporte()
     End Sub
 
@@ -948,11 +989,11 @@ Maneja_Error:
 
         'Creacion del PDF
 
-        If btnGrafico.Visible Then
-            frmGrafico.PasarDatos(Grid)
-            frmGrafico.Exportar(Application.StartupPath & "\Informes\" & CODIGO_TRANSACCION & ".jpg")
-            frmGrafico.Close()
-        End If
+        'If btnGrafico.Visible Then
+        '    frmGrafico.PasarDatos(Grid)
+        '    frmGrafico.Exportar(Application.StartupPath & "\Informes\" & CODIGO_TRANSACCION & ".jpg")
+        '    frmGrafico.Close()
+        'End If
 
         If sHTML.IndexOf("<detalle>", System.StringComparison.OrdinalIgnoreCase) > 0 Then
             GenerarDetalle(sHTML)
@@ -1485,7 +1526,7 @@ Reinicio:
     End Function
 
 
-    Private Sub btnGrafico_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGrafico.Click
+    Private Sub btnGrafico_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         frmGrafico.PasarDatos(Grid, False)
         frmGrafico.ShowDialog()
         frmGrafico.Close()
@@ -1494,6 +1535,50 @@ Reinicio:
     Private Sub btnDrillDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDrillDown.Click
         DrillDown()
     End Sub
+    Private Function ValidaNDesde() As Boolean
+        Try
+            If Not oConsulta.NuevoDesde Then
+                Return False
+            End If
+
+            Dim sSQL = oConsulta.NuevoDesdeQuery.Trim
+
+            If Trim(sSQL) = "" Then
+                Return True
+            End If
+
+            For Each oCol As clsColumnas In oColumnas
+                Dim vValor = GridView1.GetRowCellValue(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), oCol.Campo).ToString
+
+                If vValor IsNot Nothing Then
+                    If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
+                        vValor = FechaSQL(vValor)
+                    ElseIf TipoDatosADO(oCol.Tipo) = "Numérico" Then
+                        vValor = FlotanteSQL(Format(vValor, "Fixed"))
+                    Else
+                        vValor = "'" & vValor & "'"
+                    End If
+                Else
+                    vValor = "NULL"
+                End If
+
+                sSQL = Replace(sSQL, "@" & oCol.Campo, vValor)
+
+            Next
+
+            Dim dt As DataSet = oAdmTablas.AbrirDataset(sSQL)
+
+            If dt.Tables(0) IsNot Nothing Then
+                If dt.Tables(0).Rows.Count > 0 Then
+                    Return dt.Tables(0).Rows(0).Item(0)
+                End If
+            End If
+            Return False
+        Catch ex As Exception
+            GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "ValidarNDesde", CODIGO_TRANSACCION)
+            Return False
+        End Try
+    End Function
 
     Private Function ValidaUpdate() As Boolean
 
@@ -1592,15 +1677,46 @@ Reinicio:
 
     Private Sub GridView1_FocusedRowChanged(ByVal sender As Object, ByVal e As DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs) Handles GridView1.FocusedRowChanged
 
-        Dim sTemp As String = TieneComentarios()
 
-        If sTemp = "" Then
-            ToolTipText.SetToolTip(Me.Grid, "")
-            ToolTipText.Hide(Me.Grid)
-        Else
-            ToolTipText.Show(sTemp, Me.Grid)
+
+        If bHabilitado Then
+            If Not UsuarioActual.SoloLectura Then
+                If GridView1.RowCount > 0 Then
+                    btnBaja.Enabled = oConsulta.Baja
+                    If btnModif.Visible Then
+                        btnModif.Enabled = ValidaUpdate()
+                    End If
+
+                    If btnNDesde.Visible Then
+                        btnNDesde.Enabled = ValidaNDesde
+                    End If
+
+                Else
+                    btnBaja.Enabled = False
+                    btnModif.Enabled = False
+                End If
+            Else
+                btnModif.Enabled = False
+            End If
+
+            If btnModif.Enabled Then
+                btnDrillDown.Enabled = False
+            Else
+                btnDrillDown.Enabled = ValidarDrillDown()
+            End If
+
+            If btnComent.Enabled Then
+                Dim sTemp As String = TieneComentarios()
+
+                If sTemp = "" Then
+                    ToolTipText.SetToolTip(Me.Grid, "")
+                    ToolTipText.Hide(Me.Grid)
+                Else
+                    ToolTipText.Show(sTemp, Me.Grid)
+                End If
+
+            End If
         End If
-
     End Sub
 
     Private Sub DrillDown()
@@ -1674,6 +1790,10 @@ Reinicio:
         End If
 
         If sSQL <> "" Then
+            Dim seleccion As String = GridView1.FocusedColumn.GetTextCaption()
+            Dim valor As String = GridView1.GetRowCellDisplayText(GridView1.GetSelectedRows(0), GridView1.FocusedColumn).ToString
+
+            frmDrillDown.lblSubtitulo.Text = seleccion & ": " & valor
             frmDrillDown.PasarDatos(sSQL)
             frmDrillDown.ShowDialog()
             frmDrillDown.Close()
@@ -2306,10 +2426,14 @@ Reinicio:
     Private Function DatosOK() As Boolean
 
         Dim oVar As clsVariables
+        sExtra_log = String.Empty
 
         For Each oVar In oVariables
 
             If oVar.Help = 1 Then
+                sExtra_log = IIf(Len(sExtra_log) < 11,
+                   "Selección: " + oVar.Titulo + ": " + CType(Controles("_" & oVar.Nombre), ComboBox).Text,
+                   sExtra_log + ", " + oVar.Titulo + ": " + CType(Controles("_" & oVar.Nombre), ComboBox).Text)
 
                 If CType(Controles("_" & oVar.Nombre), ComboBox).SelectedItem Is Nothing Then
                     MensajeError("Debe especificar " & oVar.Titulo)
@@ -2319,7 +2443,23 @@ Reinicio:
 
             ElseIf oVar.Help = 0 Then
 
-                If oVar.Tipo = 0 Then
+                If oVar.Tipo = 2 Then
+
+                    sExtra_log = IIf(Len(sExtra_log) < 11,
+                           "Selección: " + oVar.Titulo + ": " + CType(Controles("_" & oVar.Nombre), DateTimePicker).Value.ToString(),
+                           sExtra_log + ", " + oVar.Titulo + ": " + CType(Controles("_" & oVar.Nombre), DateTimePicker).Value.ToString())
+
+                    If CType(Controles("_" & oVar.Nombre), DateTimePicker).Value = CType(Controles("_" & oVar.Nombre), DateTimePicker).MinDate Then
+                        MensajeError("Debe especificar " & oVar.Titulo)
+                        Controles("_" & oVar.Nombre).Focus()
+                        Exit Function
+                    End If
+
+                ElseIf oVar.Tipo = 0 Then
+
+                    sExtra_log = IIf(Len(sExtra_log) < 11,
+                                "Selección: " + oVar.Titulo + ": " + Controles("_" & oVar.Nombre).Text,
+                                sExtra_log + ", " + oVar.Titulo + ": " + Controles("_" & oVar.Nombre).Text)
 
                     If Not IsNumeric(Controles("_" & oVar.Nombre).Text) Then
                         MensajeError("Debe especificar " & oVar.Titulo)
@@ -2328,6 +2468,9 @@ Reinicio:
                     End If
 
                 Else
+                    sExtra_log = IIf(Len(sExtra_log) < 11,
+                               "Selección: " + oVar.Titulo + ": " + Controles("_" & oVar.Nombre).Text.Trim,
+                               sExtra_log + ", " + oVar.Titulo + ": " + Controles("_" & oVar.Nombre).Text.Trim)
 
                     If Controles("_" & oVar.Nombre).Text.Trim = "" Then
                         MensajeError("Debe especificar " & oVar.Titulo)
@@ -2340,6 +2483,9 @@ Reinicio:
             End If
 
         Next
+
+        sExtra_log = IIf(Len(sExtra_log) < 11, "Formulario sin parámetros de selección. ", sExtra_log)
+        GuardarLOG(AccionesLOG.ParametrosSeleccionFormularios, sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
 
         Return True
 
@@ -2363,7 +2509,6 @@ Reinicio:
     Private Function ProcesosPrevios() As Boolean
         Try
             Me.Cursor = Cursors.WaitCursor
-            GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - ProcesosPrevios INGRESO ", CODIGO_TRANSACCION)
 
             Dim oPro As clsProcesosPrevios
             Dim oVar As clsVariables
@@ -2375,21 +2520,18 @@ Reinicio:
                 For Each oVar In oVariables
                     sParam(1) = Replace(sParam(1), oVar.Nombre, ValorVariable(oVar))
                 Next
-                GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - ProcesosPrevios CallByName : " & sParam(0), CODIGO_TRANSACCION)
                 ProcesosPrevios = CallByName(Me, sParam(0), vbMethod, sParam(1))
                 If Not ProcesosPrevios Then
                     Exit For
                 End If
             Next
 
-            GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - ProcesosPrevios SALIDA ", CODIGO_TRANSACCION)
         Finally
             Me.Cursor = Cursors.Default
         End Try
     End Function
 
     Private Function ValorVariable(ByVal oVar As clsVariables) As Object
-        GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - ValorVariable: oVar.TIPO = " & oVar.Tipo.ToString() & " - oVar.Nombre: " & oVar.Nombre, CODIGO_TRANSACCION)
         Dim vReemplazo As Object = Nothing
         Dim oItem As clsItem.Item
 
@@ -2420,7 +2562,6 @@ Reinicio:
                 vReemplazo = CType(Controles("_" & oVar.Nombre), DateTimePicker).Value
 
         End Select
-        GuardarLOG(AccionesLOG.AL_INGRESO_TRANSACCION, "DEBUG - ValorVariable: vReemplazo = " & vReemplazo, CODIGO_TRANSACCION)
         Return vReemplazo
 
     End Function
@@ -2442,7 +2583,7 @@ Reinicio:
 
                 oItem = New DropDownGrid
 
-                oItem.Oid = row(0)
+                If IsNumeric(row(0).ToString) Then oItem.Oid = row(0)
                 oItem.Codigo = row(0)
                 oItem.Descripcion = row(1)
 
@@ -2544,7 +2685,7 @@ Reinicio:
     End Sub
 
     Private Sub VistaPrevia(ByVal sTitulo As String)
-
+        GuardarLOG(AccionesLOG.ImprimeDatosDeCuadro, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
         Dim pl As New DevExpress.XtraPrinting.PrintableComponentLink
         Dim phf As DevExpress.XtraPrinting.PageHeaderFooter
         Dim Period As String
@@ -2576,6 +2717,205 @@ Reinicio:
     Public Function ReemplazarVariablesExt(ByVal sConsulta As String) As String
         Return ReemplazarVariables(sConsulta, PanControles.Controls)
     End Function
+
+    Private Sub btnCopiar_Click(sender As Object, e As EventArgs) Handles btnCopiar.Click
+        GuardarLOG(AccionesLOG.CopiaDeDatos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+
+        GridView1.CopyToClipboard()
+    End Sub
+
+    Private Sub btnAdjuntarArchivo_Click(sender As Object, e As EventArgs) Handles btnAdjuntarArchivo.Click
+        GuardarLOG(AccionesLOG.ActualizacionDeArchivosAdjuntos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+        Adjuntar()
+
+    End Sub
+
+    Private Sub btnNDesde_Click(sender As Object, e As EventArgs) Handles btnNDesde.Click
+        Modificar("N")
+    End Sub
+
+    Private Sub btnMostrarBuscador_Click(sender As Object, e As EventArgs) Handles btnMostrarBuscador.Click
+        If Not GridView1.IsFindPanelVisible Then
+            btnMostrarBuscador.BackColor = SystemColors.ActiveCaption
+            GridView1.ShowFindPanel()
+        Else
+            btnMostrarBuscador.BackColor = SystemColors.Control
+            GridView1.HideFindPanel()
+        End If
+    End Sub
+
+    'Parametros sParam(0)=Cuadro|sParam(1)=Periodo|sParam(2)=CodCons|sParam(3)=Entidad|
+    '           sParam(4)=Columnas|sParam(5)=MesDesde|sParam(6)=MostrarSoloConSaldo|
+    '           sParam(7)=TablaDatos|sParam(8)=PrefijoTablaDatos|sParam(9)=Escenario
+    Public Function ConsActualizar_PNP(ByVal sParametros As String) As Boolean
+        Try
+            Me.Cursor = Cursors.WaitCursor
+            Dim sSQL As String
+            Dim dFechaVig As Date
+            Dim nCont As Long
+            Dim sParam() As String
+            Dim sIndice As String
+            Dim nEscena As Integer
+            Dim sTabla As String
+            Dim nMaxNivel As Long
+            Try
+
+                sParam = Split(sParametros, "|")
+                sTabla = sParam(7)
+                sIndice = sParam(8)
+                nEscena = sParam(9)
+
+                sSQL = "SELECT  MAX(TK_FECVIG) AS MAX_FECHA " &
+                   "FROM    PNP_TABPAR " &
+                   "WHERE   TK_FECVIG <= " & FechaSQL(sParam(1))
+
+                Dim rs As DataSet = oAdmTablas.AbrirDataset(sSQL)
+                If rs.Tables(0) Is Nothing OrElse rs.Tables(0).Rows.Count() = 0 Then
+                    MensajeInformacion("No existen relaciones con vigencia igual o anterior al período seleccionado. Por favor verifique el Mapa de Relaciones!")
+                    Return False
+                End If
+
+
+                dFechaVig = rs.Tables(0).Rows(0).Item("MAX_FECHA")
+
+
+                nMaxNivel = ConsTotalizar_PNP(sParam(0), CDate(sParam(1)), dFechaVig, sParam(2), sParam(3), sParam(4), sParam(5), sTabla, sIndice, nEscena)
+
+                sSQL = ""
+
+                If CBool(Val(sParam(6))) Then
+
+                    For nCont = 0 To Val(sParam(4))
+                        sSQL = sSQL & sIndice & "_MES" & nCont & " + "
+                    Next
+
+                    sSQL = Strings.Left(sSQL, Len(sSQL) - 2)
+                    sSQL = "AND (" & sSQL & ") <> 0 "
+                End If
+
+                sSQL = "SELECT    * " &
+                   "FROM      " & sTabla & " " &
+                   "WHERE     " & sIndice & "_CUADRO = " & sParam(0) & " " &
+                   "AND       " & sIndice & "_FECVIG = " & FechaSQL(sParam(1)) & " " &
+                   "AND       " & sIndice & "_CODENT = " & sParam(3) & " " &
+                   "AND       " & sIndice & "_CODCON = '" & sParam(2) & "' " &
+                   "AND       " & sIndice & "_ESCENA = " & nEscena & " " &
+                   "AND       " & sIndice & "_ACTIVA = 1 " &
+                    IIf(CBool(Val(sParam(6))), "AND (" & sIndice & "_MES" & Val(sParam(4)) & " <> 0 OR " & sIndice & "_MES" & Val(sParam(4)) - 1 & " <> 0) ", " ") &
+                   "ORDER BY  " & sIndice & "_ORDEN, " & sIndice & "_CODPAR, " & sIndice & "_CAMPO8 ASC"
+
+                nMaxNivel = 17
+                ConsFormatoCondicional(nMaxNivel)
+
+                Return True
+
+            Catch ex As Exception
+                If Err.Number <> 0 Then
+                    TratarError(ex, "ConsActualizar_PNP")
+                End If
+            End Try
+        Finally
+            Cursor = Cursors.Default
+        End Try
+
+    End Function
+
+
+    Public Function ConsTotalizar_PNP(ByVal sCuadro As String, ByVal dFecha As Date,
+                              ByVal dFechaVig As Date, ByVal sConsolidacion As String,
+                              ByVal nEmpresa As Long, ByVal nCol As Long,
+                              ByVal nDesdeMes As Integer, ByVal sTabla As String,
+                              ByVal sIndice As String, ByVal nEscena As Integer) As Long
+
+        Dim sSQL As String
+        Dim nMax As Long
+        Dim nCont As Long
+        Dim nCont1 As Long
+
+        sConsolidacion = Format(Val(sConsolidacion), "000")
+
+        sSQL = "SELECT      MAX(" & sIndice & "_NIVEL) AS MAXNIVEL " &
+          "FROM        " & sTabla & " " &
+          "WHERE       " & sIndice & "_FECVIG=" & FechaSQL(dFecha) & " " &
+          "AND         " & sIndice & "_CODENT = " & nEmpresa & " " &
+          "AND         " & sIndice & "_CUADRO = " & sCuadro & " " &
+          "AND         " & sIndice & "_ESCENA = " & nEscena
+
+        Dim RS As DataSet = oAdmTablas.AbrirDataset(sSQL)
+        If RS.Tables(0) Is Nothing OrElse RS.Tables(0).Rows.Count() = 0 Then
+            Throw New Exception("No hay registros en MAX de tabla " & sTabla)
+        End If
+
+        If RS.Tables(0).Rows.Item(0)("MAXNIVEL") Is Nothing OrElse IsDBNull(RS.Tables(0).Rows.Item(0)("MAXNIVEL")) Then
+            nMax = 0
+        Else
+            nMax = RS.Tables(0).Rows.Item(0)("MAXNIVEL")
+        End If
+        RS = Nothing
+
+        For nCont = 1 To nMax
+
+            If oAdmTablas.ExisteTabla("SUMTEMP") Then
+                Call oAdmTablas.EjecutarComandoSQL("DROP TABLE SUMTEMP")
+            End If
+
+            sSQL = "SELECT " & sTabla & "." & sIndice & "_NIVEL, " & sTabla & "." & sIndice & "_ESQUEMA, " &
+              "       " & sTabla & "." & sIndice & "_CODENT, " & sTabla & "." & sIndice & "_FECVIG, "
+
+            For nCont1 = 0 To nCol - 1
+
+                sSQL = sSQL & "Sum(" & sTabla & "." & sIndice & "_MES" & nDesdeMes + nCont1 & ") AS Tot_MES" & nDesdeMes + nCont1 & ", "
+
+            Next nCont1
+
+            sSQL = Strings.Left(sSQL, Len(sSQL) - 2)
+
+            sSQL = sSQL & " " &
+              "INTO   SUMTEMP " &
+              "FROM   " & sTabla & " " &
+              "WHERE  " & sTabla & "." & sIndice & "_CODENT = " & nEmpresa & " " &
+              "AND    " & sTabla & "." & sIndice & "_ACTIVA = 1 " &
+              "AND    " & sTabla & "." & sIndice & "_FECVIG = " & FechaSQL(dFecha) & " " &
+              "AND    " & sTabla & "." & sIndice & "_CUADRO = " & sCuadro & " " &
+              "AND    " & sTabla & "." & sIndice & "_ESCENA = " & nEscena & " " &
+              "AND    " & sTabla & "." & sIndice & "_CODCON = '" & sConsolidacion & "' " &
+              "GROUP BY " & sTabla & "." & sIndice & "_NIVEL, " & sTabla & "." & sIndice & "_ESQUEMA, " &
+              "         " & sTabla & "." & sIndice & "_CODENT, " & sTabla & "." & sIndice & "_FECVIG " &
+              "HAVING (((" & sTabla & "." & sIndice & "_NIVEL)=" & (nMax - (nCont - 1)) & "));"
+
+            Call oAdmTablas.EjecutarComandoSQL(sSQL)
+
+            sSQL = "UPDATE        " & sTabla & " " &
+              "INNER JOIN    SUMTEMP " &
+              "ON            (" & sTabla & "." & sIndice & "_INDEX = SUMTEMP." & sIndice & "_ESQUEMA) " &
+              "AND           (" & sTabla & "." & sIndice & "_CODENT = SUMTEMP." & sIndice & "_CODENT) " &
+              "AND           (" & sTabla & "." & sIndice & "_FECVIG = SUMTEMP." & sIndice & "_FECVIG) SET "
+
+            For nCont1 = 0 To nCol - 1
+                sSQL = sSQL & "" & sTabla & "." & sIndice & "_MES" & nDesdeMes + nCont1 & " = SUMTEMP.TOT_MES" & nDesdeMes + nCont1 & ", "
+            Next nCont1
+
+            sSQL = Strings.Left(sSQL, Len(sSQL) - 2)
+
+            sSQL = sSQL & " " &
+              "WHERE         " & sTabla & "." & sIndice & "_CODENT = " & nEmpresa & " " &
+              "AND           " & sTabla & "." & sIndice & "_FECVIG = " & FechaSQL(dFecha) & " " &
+              "AND           " & sTabla & "." & sIndice & "_CUADRO = " & sCuadro & " " &
+              "AND           " & sTabla & "." & sIndice & "_ESCENA = " & nEscena & " " &
+              "AND           " & sTabla & "." & sIndice & "_INDEX > 1 " &
+              "AND           " & sTabla & "." & sIndice & "_CODCON = '" & sConsolidacion & "' "
+
+            ' Filtro por DC_index agregado para que no cometa el error de actualizar partidas de mas
+
+            Call oAdmTablas.EjecutarComandoSQL(sSQL)
+
+        Next nCont
+
+        Return nMax
+
+    End Function
+
+
 
 End Class
 

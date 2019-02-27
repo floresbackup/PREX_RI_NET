@@ -17,217 +17,219 @@ Public Class AdmTablas
       End Set
    End Property
 
-   Public Function AbrirDatasetNativo(ByVal sSQL As String, _
-                                      Optional ByVal bAsincrono As Boolean = True, _
-                                      Optional ByRef sErrorText As String = "") As System.Data.DataSet
+    'Public Function AbrirDatasetNativo(ByVal sSQL As String, _
+    '                                   Optional ByVal bAsincrono As Boolean = True, _
+    '                                   Optional ByRef sErrorText As String = "") As System.Data.DataSet
 
-      Dim oConn As SqlConnection
-      Dim oResult As IAsyncResult
-      Dim oAdapter As SqlDataAdapter
+    '   Dim oConn As SqlConnection
+    '   Dim oResult As IAsyncResult
+    '   Dim oAdapter As SqlDataAdapter
 
-      CONSULTA_CANCELADA = False
+    '   CONSULTA_CANCELADA = False
 
-      Dim ds As DataSet
+    '   Dim ds As DataSet
 
-      Try
+    '   Try
 
-         oConn = New SqlConnection
-         oAdapter = New SqlDataAdapter(sSQL, oConn)
+    '      oConn = New SqlConnection
+    '      oAdapter = New SqlDataAdapter(sSQL, oConn)
 
-         oConn.ConnectionString = ConnectionString
-         oConn.Open()
+    '      oConn.ConnectionString = ConnectionString
+    '      oConn.Open()
 
-         oResult = oAdapter.SelectCommand.BeginExecuteReader
+    '      oResult = oAdapter.SelectCommand.BeginExecuteReader
 
-         While Not oResult.IsCompleted
-            Application.DoEvents()
+    '      While Not oResult.IsCompleted
+    '         Application.DoEvents()
 
-            If CONSULTA_CANCELADA Then
-               oAdapter.SelectCommand.Cancel()
-            End If
-         End While
+    '         If CONSULTA_CANCELADA Then
+    '            oAdapter.SelectCommand.Cancel()
+    '         End If
+    '      End While
 
-         oAdapter.SelectCommand.EndExecuteReader(oResult).Close()
+    '      oAdapter.SelectCommand.EndExecuteReader(oResult).Close()
 
-         If CONSULTA_CANCELADA Then
-            ds = Nothing
-         Else
-            ds = New DataSet
-            oAdapter.Fill(ds)
-         End If
+    '      If CONSULTA_CANCELADA Then
+    '         ds = Nothing
+    '      Else
+    '         ds = New DataSet
+    '         oAdapter.Fill(ds)
+    '      End If
 
-         Return ds
+    '      Return ds
 
-      Catch ex As Exception
-         TratarError(ex)
-         sErrorText = ex.Message
-         Return Nothing
+    '   Catch ex As Exception
+    '      TratarError(ex)
+    '      sErrorText = ex.Message
+    '      Return Nothing
 
-      End Try
+    '   End Try
 
-   End Function
+    'End Function
 
-   Public Function AbrirDatasetOracleNativo(ByVal sSQL As String, _
-                                            Optional ByRef sErrorText As String = "") As System.Data.DataSet
+    'Public Function AbrirDatasetOracleNativo(ByVal sSQL As String, _
+    '                                         Optional ByRef sErrorText As String = "") As System.Data.DataSet
 
-      Dim oConn As OracleConnection
-      Dim oAdapter As OracleDataAdapter
-      Dim ds As DataSet
+    '   Dim oConn As OracleConnection
+    '   Dim oAdapter As OracleDataAdapter
+    '   Dim ds As DataSet
 
-      Try
+    '   Try
 
-         oConn = New OracleConnection
-         oAdapter = New OracleDataAdapter(sSQL, oConn)
+    '      oConn = New OracleConnection
+    '      oAdapter = New OracleDataAdapter(sSQL, oConn)
 
-         oConn.ConnectionString = ConnectionString
-         oConn.Open()
+    '      oConn.ConnectionString = ConnectionString
+    '      oConn.Open()
 
-         oAdapter.SelectCommand.ExecuteReader()
+    '      oAdapter.SelectCommand.ExecuteReader()
 
-         ds = New DataSet
-         oAdapter.Fill(ds)
+    '      ds = New DataSet
+    '      oAdapter.Fill(ds)
 
-         Return ds
+    '      Return ds
 
-      Catch ex As Exception
-         TratarError(ex)
-         sErrorText = ex.Message
-         Return Nothing
+    '   Catch ex As Exception
+    '      TratarError(ex)
+    '      sErrorText = ex.Message
+    '      Return Nothing
 
-      End Try
+    '   End Try
 
-   End Function
+    'End Function
 
-   Public Function AbrirDatasetODBCNativo(ByVal sSQL As String, _
-                                          Optional ByRef sErrorText As String = "") As System.Data.DataSet
+    'Public Function AbrirDatasetODBCNativo(ByVal sSQL As String, _
+    '                                       Optional ByRef sErrorText As String = "") As System.Data.DataSet
 
-      Dim oConn As Odbc.OdbcConnection
-      Dim oAdapter As Odbc.OdbcDataAdapter
-      Dim ds As DataSet
+    '   Dim oConn As Odbc.OdbcConnection
+    '   Dim oAdapter As Odbc.OdbcDataAdapter
+    '   Dim ds As DataSet
 
-      Try
+    '   Try
 
-         oConn = New Odbc.OdbcConnection
-         oAdapter = New Odbc.OdbcDataAdapter(sSQL, oConn)
+    '      oConn = New Odbc.OdbcConnection
+    '      oAdapter = New Odbc.OdbcDataAdapter(sSQL, oConn)
 
-         oConn.ConnectionString = ConnectionString
-         oConn.Open()
+    '      oConn.ConnectionString = ConnectionString
+    '      oConn.Open()
 
-         oAdapter.SelectCommand.ExecuteReader()
+    '      oAdapter.SelectCommand.ExecuteReader()
 
-         ds = New DataSet
-         oAdapter.Fill(ds)
+    '      ds = New DataSet
+    '      oAdapter.Fill(ds)
 
-         Return ds
+    '      Return ds
 
-      Catch ex As Exception
-         TratarError(ex)
-         sErrorText = ex.Message
-         Return Nothing
+    '   Catch ex As Exception
+    '      TratarError(ex)
+    '      sErrorText = ex.Message
+    '      Return Nothing
 
-      End Try
+    '   End Try
 
-   End Function
+    'End Function
 
-   Public Function AbrirDataset(ByVal sSQL As String, _
-                                Optional ByRef oDa As OleDb.OleDbDataAdapter = Nothing, _
-                                Optional ByRef sErrorText As String = "") As System.Data.DataSet
+    Public Function AbrirDataset(ByVal sSQL As String,
+                                Optional ByRef oDa As OleDb.OleDbDataAdapter = Nothing,
+                                Optional ByRef sErrorText As String = "") As DataSet
 
         Dim oConn As OleDb.OleDbConnection
-      Dim da As OleDb.OleDbDataAdapter
-      Dim ds As System.Data.DataSet
+        Dim da As OleDb.OleDbDataAdapter
+        Dim ds As System.Data.DataSet
 
-      Try
+        Try
 
-         oConn = New OleDb.OleDbConnection
-         oConn.ConnectionString = ConnectionString
-         oConn.Open()
+            oConn = New OleDb.OleDbConnection
+            oConn.ConnectionString = ConnectionString
+            oConn.Open()
+            Dim cmd As New OleDb.OleDbCommand(sSQL, oConn)
+            da = New OleDb.OleDbDataAdapter(cmd)
 
-         da = New OleDb.OleDbDataAdapter(sSQL, oConn)
+            ds = New DataSet
 
-         ds = New DataSet
+            da.Fill(ds)
+            oDa = da
+            Return ds
 
-         da.Fill(ds)
-         oDa = da
-         Return ds
+        Catch ex As Exception
+            sErrorText = ex.Message
+            GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "ERROR: AbrirDataSet - " & ex.Message, CODIGO_TRANSACCION)
 
-      Catch ex As Exception
-         sErrorText = ex.Message
-         Return Nothing
-      End Try
+            Return Nothing
+        End Try
 
-   End Function
+    End Function
 
-   Public Function EjecutarComandoSQLNativo(ByVal sSQL As String) As Boolean
+    ' Public Function EjecutarComandoSQLNativo(ByVal sSQL As String) As Boolean
 
-      Dim oConn As SqlConnection
-      Dim oCommand As SqlCommand
-      'Dim oResult As IAsyncResult
-      Dim iRows As Integer
+    '   Dim oConn As SqlConnection
+    '   Dim oCommand As SqlCommand
+    '   'Dim oResult As IAsyncResult
+    '   Dim iRows As Integer
 
-      Try
+    '   Try
 
-         oConn = New SqlConnection
-         oCommand = New SqlCommand(sSQL, oConn)
+    '      oConn = New SqlConnection
+    '      oCommand = New SqlCommand(sSQL, oConn)
 
-         oConn.ConnectionString = ConnectionString
-         oConn.Open()
+    '      oConn.ConnectionString = ConnectionString
+    '      oConn.Open()
 
-         'oResult = oCommand.BeginExecuteNonQuery
+    '      'oResult = oCommand.BeginExecuteNonQuery
 
-         'While Not oResult.IsCompleted
-         'Application.DoEvents()
-         'End While
+    '      'While Not oResult.IsCompleted
+    '      'Application.DoEvents()
+    '      'End While
 
-         'oCommand.EndExecuteNonQuery(oResult)
+    '      'oCommand.EndExecuteNonQuery(oResult)
 
-         iRows = oCommand.ExecuteNonQuery
+    '      iRows = oCommand.ExecuteNonQuery
 
-         Return iRows
+    '      Return iRows
 
-      Catch ex As Exception
+    '   Catch ex As Exception
 
-         TratarError(ex)
+    '      TratarError(ex)
 
-      End Try
+    '   End Try
 
-   End Function
+    'End Function
 
-   Public Function EjecutarComandoOracleNativo(ByVal sSQL As String) As Boolean
+    'Public Function EjecutarComandoOracleNativo(ByVal sSQL As String) As Boolean
 
-      Dim oConn As OracleConnection
-      Dim oCommand As OracleCommand
-      Dim iRows As Integer
+    '   Dim oConn As OracleConnection
+    '   Dim oCommand As OracleCommand
+    '   Dim iRows As Integer
 
-      Try
+    '   Try
 
-         oConn = New OracleConnection
-         oCommand = New OracleCommand(sSQL, oConn)
+    '      oConn = New OracleConnection
+    '      oCommand = New OracleCommand(sSQL, oConn)
 
-         oConn.ConnectionString = ConnectionString
-         oConn.Open()
+    '      oConn.ConnectionString = ConnectionString
+    '      oConn.Open()
 
-         'oResult = oCommand.BeginExecuteNonQuery
+    '      'oResult = oCommand.BeginExecuteNonQuery
 
-         'While Not oResult.IsCompleted
-         'Application.DoEvents()
-         'End While
+    '      'While Not oResult.IsCompleted
+    '      'Application.DoEvents()
+    '      'End While
 
-         'oCommand.EndExecuteNonQuery(oResult)
+    '      'oCommand.EndExecuteNonQuery(oResult)
 
-         iRows = oCommand.ExecuteNonQuery
+    '      iRows = oCommand.ExecuteNonQuery
 
-         Return iRows
+    '      Return iRows
 
-      Catch ex As Exception
+    '   Catch ex As Exception
 
-         TratarError(ex)
+    '      TratarError(ex)
 
-      End Try
+    '   End Try
 
-   End Function
+    'End Function
 
-   Public Function EjecutarComandoODBCNativo(ByVal sSQL As String) As Boolean
+    Public Function EjecutarComandoODBCNativo(ByVal sSQL As String) As Boolean
 
       Dim oConn As Odbc.OdbcConnection
       Dim oCommand As Odbc.OdbcCommand
@@ -235,27 +237,32 @@ Public Class AdmTablas
 
       Try
 
-         oConn = New Odbc.OdbcConnection
-         oCommand = New Odbc.OdbcCommand(sSQL, oConn)
+            oConn = New Odbc.OdbcConnection
+            oCommand = New Odbc.OdbcCommand(sSQL, oConn)
 
-         oConn.ConnectionString = ConnectionString
-         oConn.Open()
+            oConn.ConnectionString = ConnectionString
+            oConn.Open()
 
-         'oResult = oCommand.BeginExecuteNonQuery
+            'oResult = oCommand.BeginExecuteNonQuery
 
-         'While Not oResult.IsCompleted
-         'Application.DoEvents()
-         'End While
+            'While Not oResult.IsCompleted
+            'Application.DoEvents()
+            'End While
 
-         'oCommand.EndExecuteNonQuery(oResult)
+            'oCommand.EndExecuteNonQuery(oResult)
 
-         iRows = oCommand.ExecuteNonQuery
+            iRows = oCommand.ExecuteNonQuery
 
-         Return iRows
+            If GENERAR_LOG_SQL Then
+                GuardarLOG(AccionesLOG.Intruccion_SQL_Automatica, sSQL, CODIGO_TRANSACCION)
+            End If
+
+            Return iRows
 
       Catch ex As Exception
+            GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "Error: EjecutarComandoODBCNativo - " & ex.Message, CODIGO_TRANSACCION)
 
-         TratarError(ex)
+            TratarError(ex)
 
       End Try
 
@@ -267,20 +274,29 @@ Public Class AdmTablas
       Dim da As OleDb.OleDbDataAdapter
       Dim ds As System.Data.DataSet
 
-      Try
+        Try
 
-         oConn = New OleDb.OleDbConnection
-         oConn.ConnectionString = ConnectionString
-         oConn.Open()
+            oConn = New OleDb.OleDbConnection
+            oConn.ConnectionString = ConnectionString
+            oConn.Open()
+            Dim cmd As New OleDb.OleDbCommand(sSQL, oConn)
+            da = New OleDb.OleDbDataAdapter(cmd)
+            ds = New DataSet
 
-         da = New OleDb.OleDbDataAdapter(sSQL, oConn)
-         ds = New DataSet
+            da.Fill(ds)
 
-         da.Fill(ds)
-         Return True
+            'Agregado para que genere LOG detallado
+            If GENERAR_LOG_SQL Then
+                GuardarLOG(AccionesLOG.Intruccion_SQL_Automatica, sSQL, CODIGO_TRANSACCION)
+            End If
 
-      Catch ex As Exception
-         Return False
+
+            Return True
+
+        Catch ex As Exception
+            GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "EROR: EjecutarComandoSQL - " & ex.Message, CODIGO_TRANSACCION)
+
+            Return False
       End Try
 
    End Function
@@ -296,27 +312,35 @@ Public Class AdmTablas
 
       Try
 
-         oConn = New OleDb.OleDbConnection
-         oConn.ConnectionString = ConnectionString
-         oConn.Open()
+            oConn = New OleDb.OleDbConnection
+            oConn.ConnectionString = ConnectionString
+            oConn.Open()
 
-         cmd.CommandText = sSQL
-         cmd.Connection = oConn
-         cmd.CommandTimeout = 0
+            cmd.CommandText = sSQL
+            cmd.Connection = oConn
+            cmd.CommandTimeout = 0
 
-         If Not (ds Is Nothing) Then
-            Dim oRead As OleDb.OleDbDataReader = cmd.ExecuteReader()
-            ds = DataReaderToDataSet(oRead)
-            nFilas = ds.Tables(0).Rows.Count
-         Else
-            nFilas = cmd.ExecuteNonQuery()
-         End If
+            If Not (ds Is Nothing) Then
+                Dim oRead As OleDb.OleDbDataReader = cmd.ExecuteReader()
+                ds = DataReaderToDataSet(oRead)
+                nFilas = ds.Tables(0).Rows.Count
+            Else
+                nFilas = cmd.ExecuteNonQuery()
+            End If
 
-         Return True
+
+            'Agregado para que genere LOG detallado
+            If GENERAR_LOG_SQL Then
+                GuardarLOG(AccionesLOG.Intruccion_SQL_Automatica, sSQL, CODIGO_TRANSACCION)
+            End If
+
+            Return True
 
       Catch ex As Exception
-         sError = ex.Message
-         Return False
+            sError = ex.Message
+            GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "Error: EjecutarComandoAsincrono - " & sError, CODIGO_TRANSACCION)
+
+            Return False
       End Try
 
    End Function
@@ -333,24 +357,26 @@ Public Class AdmTablas
          sSQL = sSQL & "WHERE " & sFiltroWhere
       End If
 
-      Try
+        Try
 
-         ds = AbrirDataset(sSQL)
+            ds = AbrirDataset(sSQL)
 
-         With ds.Tables(0)
-            If .Rows.Count > 0 Then
-               If .Rows(0).Item(0) Is DBNull.Value Then
-                  Return 1
-               Else
-                  Return .Rows(0).Item(0) + 1
-               End If
-            Else
-               Return 1
-            End If
-         End With
+            With ds.Tables(0)
+                If .Rows.Count > 0 Then
+                    If .Rows(0).Item(0) Is DBNull.Value Then
+                        Return 1
+                    Else
+                        Return .Rows(0).Item(0) + 1
+                    End If
+                Else
+                    Return 1
+                End If
+            End With
 
-      Catch ex As Exception
-         Return 0
+        Catch ex As Exception
+            GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "Error: ProximoID - " & ex.Message, CODIGO_TRANSACCION)
+
+            Return 0
       End Try
 
    End Function
@@ -367,20 +393,27 @@ Public Class AdmTablas
          sSQL = sSQL & "WHERE " & sCondicion
       End If
 
-      Try
+        Try
 
-         ds = AbrirDataset(sSQL)
+            ds = AbrirDataset(sSQL)
 
-         With ds.Tables(0)
-            If .Rows.Count > 0 Then
-               Return .Rows(0).Item(0)
-            Else
-               Return sDescripcionInexistente
+            With ds.Tables(0)
+                If .Rows.Count > 0 Then
+                    Return .Rows(0).Item(0)
+                Else
+                    Return sDescripcionInexistente
+                End If
+            End With
+
+            'Agregado para que genere LOG detallado
+            If GENERAR_LOG_SQL Then
+                GuardarLOG(AccionesLOG.Intruccion_SQL_Automatica, sSQL, CODIGO_TRANSACCION)
             End If
-         End With
 
-      Catch ex As Exception
-         Return 0
+        Catch ex As Exception
+            GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "Error: DevolverValor - " & ex.Message, CODIGO_TRANSACCION)
+
+            Return 0
       End Try
 
    End Function
@@ -429,6 +462,8 @@ Public Class AdmTablas
             Return True
 
         Catch ex As Exception
+            GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "ERROR: ExisteCampo - " & ex.Message, CODIGO_TRANSACCION)
+
             Return False
       End Try
 
@@ -446,6 +481,8 @@ Public Class AdmTablas
             Return True
 
         Catch ex As Exception
+            GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "ERROR: ExisteTabla - " & ex.Message, CODIGO_TRANSACCION)
+
             Return False
       End Try
 

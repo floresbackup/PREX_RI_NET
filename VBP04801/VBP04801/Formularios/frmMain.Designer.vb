@@ -172,7 +172,7 @@ Partial Class frmMain
         Me.lblTransaccion.Image = Global.VBP04801.My.Resources.Resources.About
         Me.lblTransaccion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.lblTransaccion.Name = "lblTransaccion"
-        Me.lblTransaccion.Size = New System.Drawing.Size(86, 22)
+        Me.lblTransaccion.Size = New System.Drawing.Size(87, 22)
         Me.lblTransaccion.Text = "Transacción"
         Me.lblTransaccion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -210,7 +210,7 @@ Partial Class frmMain
         '
         Me.lblVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.lblVersion.Name = "lblVersion"
-        Me.lblVersion.Size = New System.Drawing.Size(75, 22)
+        Me.lblVersion.Size = New System.Drawing.Size(76, 22)
         Me.lblVersion.Text = "Versión: 1.0.0"
         '
         'ToolStripSeparator6
@@ -731,7 +731,7 @@ Partial Class frmMain
         'lblRegistros
         '
         Me.lblRegistros.Name = "lblRegistros"
-        Me.lblRegistros.Size = New System.Drawing.Size(242, 22)
+        Me.lblRegistros.Size = New System.Drawing.Size(243, 22)
         Me.lblRegistros.Text = "Cantidad de registros a visualizar (0=Todos): "
         '
         'txtCantidad

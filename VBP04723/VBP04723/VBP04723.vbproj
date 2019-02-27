@@ -12,7 +12,7 @@
     <AssemblyName>VBP04723</AssemblyName>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
     <ApplicationIcon>window-cascade.ico</ApplicationIcon>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
