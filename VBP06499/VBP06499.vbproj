@@ -65,7 +65,7 @@
     <OptionInfer>Off</OptionInfer>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
     <DefineDebug>true</DefineDebug>
@@ -179,10 +179,18 @@
     <Compile Include="Formularios\frmPeriodoActual.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modulos\modDeclaraciones.vb" />
-    <Compile Include="Modulos\modFunciones.vb" />
-    <Compile Include="Modulos\modGlobalBase64.vb" />
-    <Compile Include="Modulos\modLocalMain.vb" />
+    <Compile Include="..\COMMON\MODUL\modDeclaraciones.vb">
+      <Link>Modulos\modDeclaraciones.vb</Link>
+    </Compile>
+    <Compile Include="..\COMMON\MODUL\modFunciones.vb">
+      <Link>Modulos\modFunciones.vb</Link>
+    </Compile>
+    <Compile Include="..\COMMON\MODUL\modGlobalBase64.vb">
+      <Link>Modulos\modGlobalBase64.vb</Link>
+    </Compile>
+    <Compile Include="..\COMMON\MODUL\modLocalMain.vb">
+      <Link>Modulos\modLocalMain.vb</Link>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

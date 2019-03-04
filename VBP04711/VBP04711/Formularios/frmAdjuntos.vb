@@ -62,29 +62,43 @@
         lblSubtitulo.Text = "Agregar, ver o eliminar archivos adjuntos"
     End Sub
 
+
+    'Public Function RutaTemp() As String
+
+    '    Dim sDirWin As String '* 255
+    '    Dim nTemp As Long
+
+    '    nTemp = GetTempPath(255, sDirWin)
+    '    RutaTemp = Strings.Left(sDirWin, nTemp)
+    '    RutaTemp = NormalizarRuta(Trim(RutaTemp))
+
+    'End Function
+
     Private Sub cmdVer_Click()
-        '     Dim nRenglon As Long
+        If GridView1.SelectedRowsCount = 0 Then
+            MensajeInformacion("Noy hay documentos para visualizar")
+            Exit Sub
+        End If
+        Try
 
-        '     If Grid.RowCount > 0 Then
-        '         If ArchivoExiste(RutaTemp() & Grid.Value(Grid.Columns("AD_NOMBRE").Index)) Then
-        '             Kill RutaTemp() & Grid.Value(Grid.Columns("AD_NOMBRE").Index)
-        '   End If
+            Dim nRenglon As Long
+            Dim r = GridView1.GetRowHandle(GridView1.GetSelectedRows(0))
+            Dim nombreArchivo = GridView1.GetRowCellValue(r, GridView1.Columns.Item("AD_NOMBRE")).ToString()
+            Dim pathArchivo = IO.Path.GetTempPath() & nombreArchivo
 
-        '         GetFileFromField Grid.ADORecordset.Fields("AD_ARCHIV"),
-        '                    RutaTemp() & Grid.Value(Grid.Columns("AD_NOMBRE").Index)
+            If ArchivoExiste(pathArchivo) Then Kill(pathArchivo)
 
-        '   ShellEx RutaTemp() & Grid.Value(Grid.Columns("AD_NOMBRE").Index)
+            GetFileFromField(GridView1.GetRowCellValue(r, GridView1.Columns.Item("AD_ARCHIV")), pathArchivo)
 
-        '   nRenglon = Grid.Row
-        '         Grid.Refetch True
-        '   Grid.Row = nRenglon
-        '     Else
-        '         MensajeInformacion "Noy hay documentos para visualizar"
-        'End If
+            Process.Start(pathArchivo)
+        Catch ex As Exception
+            TratarError(ex, sCustomError:="Ocurrió un error al intentar mostrar archivo TXT")
+        End Try
+
 
     End Sub
 
-    Private Sub GridView1_Click(sender As Object, e As EventArgs) Handles GridView1.Click
+    Private Sub GridView1_Click(sender As Object, e As EventArgs) Handles GridView1.DoubleClick
         cmdVer_Click()
     End Sub
 

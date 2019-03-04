@@ -1,4 +1,6 @@
+Imports System.ComponentModel
 Imports System.IO
+Imports System.Linq
 Imports System.Runtime.InteropServices
 
 Module Impersonation
@@ -63,26 +65,49 @@ Module Impersonation
 #End Region
 
     Public Sub RunProgram(ByVal UserName As String, ByVal Password As String, ByVal Domain As String, ByVal Application As String, ByVal CommandLine As String)
-
+        Dim ruta = Directory.GetCurrentDirectory()
+        Dim fullpath As String = Application + " " + CommandLine
         Dim siStartup As STARTUPINFO
         Dim piProcess As PROCESS_INFORMATION
         Dim intReturn As Integer
 
-        If CommandLine Is Nothing OrElse CommandLine = "" Then CommandLine = String.Empty
+        Try
 
-        siStartup.cb = Marshal.SizeOf(siStartup)
-        siStartup.dwFlags = 0
+            If CommandLine Is Nothing OrElse CommandLine = "" Then CommandLine = String.Empty
 
-        intReturn = CreateProcessWithLogon(UserName, Domain, Password, LOGON_WITH_PROFILE, Application, CommandLine,
-        NORMAL_PRIORITY_CLASS Or CREATE_DEFAULT_ERROR_MODE Or CREATE_NEW_CONSOLE Or CREATE_NEW_PROCESS_GROUP,
-        IntPtr.Zero, IntPtr.Zero, siStartup, piProcess)
+            siStartup.cb = Marshal.SizeOf(siStartup)
+            siStartup.dwFlags = 0
 
-        If intReturn = 0 Then
-            Throw New System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error())
-        End If
+            If Application.Contains(ruta) Then
+                fullpath = fullpath.Replace(ruta + "\", String.Empty)
+            Else
+                fullpath = ruta + "\" + Application + " " + CommandLine
+            End If
 
-        CloseHandle(piProcess.hProcess)
-        CloseHandle(piProcess.hThread)
+            'MessageBox.Show(fullpath)
+            intReturn = CreateProcessWithLogon(UserName, Domain, Password, LOGON_WITH_PROFILE, Application, fullpath,
+                        NORMAL_PRIORITY_CLASS Or CREATE_DEFAULT_ERROR_MODE Or CREATE_NEW_CONSOLE Or CREATE_NEW_PROCESS_GROUP,
+                        IntPtr.Zero, IntPtr.Zero, siStartup, piProcess)
+
+            If intReturn = 0 Then
+                Throw New System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error())
+            End If
+
+            CloseHandle(piProcess.hProcess)
+            CloseHandle(piProcess.hThread)
+            'Catch ex As Exception
+            '    Throw ex
+            'End Try
+
+        Catch ex As Win32Exception
+            If ex.NativeErrorCode = 1783 Then
+                TratarError(New Exception("Datos de usuario RA inválidos (ERROR=1783) [Path: " & fullpath & " - Dominio: " & Domain & " - Usuario: " & UserName + "]", ex), "RunProgram")
+            ElseIf ex.NativeErrorCode = 5 Then
+                TratarError(New Exception("Credenciales inválidas (ERROR=5) [Path: " & fullpath & " - Dominio: " & Domain & " - Usuario: " & UserName + "]", ex), "RunProgram")
+            Else
+                TratarError(ex, "Error RunProgram", ex.Message & vbCrLf & "[Path: " & fullpath & " - Dominio: " & Domain & " - Usuario: " & UserName + "]")
+            End If
+        End Try
 
     End Sub
 
@@ -117,9 +142,6 @@ Module modFunciones
 
                         Case "CONN_LOCAL"
                             CONN_LOCAL = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
-
-                        Case "CONN_SIB"
-                            CONN_SIB = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
 
                         Case "FFECHA"
                             FORMATO_FECHA = sTemp
@@ -167,15 +189,16 @@ Module modFunciones
                         Case "RUTAENCR_RA"
                             RUTAENCR_RA = sTemp
                         Case "DOMINIO_DEFAULT"
+                        Case "DOMINIO"
                             DOMINIO_DEFAULT = sTemp
+                        Case "DEBUG" 'SI EXISTE LA VARIABLE EN EL INI - 0 = NO / 1 = SI
+                            GENERAR_LOG_SQL = IIf(Integer.Parse(sTemp) = 1, True, False)
+                        Case "" 'SI EXISTE LA VARIABLE EN EL INI - 1= Completo 2= Solo modificaciones no SELECT 3= Ninguna grabación
+                            TIPO_LOG_SQL = Integer.Parse(sTemp)
                     End Select
 
                 Next
 
-            End If
-
-            If CONN_SIB = "" Then
-                CONN_SIB = CONN_LOCAL
             End If
 
             If AUTENTICACIONSQL Then
@@ -215,7 +238,9 @@ Module modFunciones
         Dim frm As New frmError
 
         frm.txtCodigo.Text = ex.GetHashCode.ToString
-        frm.txtOrigen.Text = ex.Source & " - " & ex.TargetSite.Name
+        If Not ex.Source Is Nothing AndAlso Not ex.TargetSite Is Nothing Then
+            frm.txtOrigen.Text = ex.Source & " - " & ex.TargetSite.Name
+        End If
         frm.txtFuncion.Text = IIf(sFuncion = "", "", sFuncion)
         frm.txtFecha.Text = System.DateTime.Today.ToShortDateString
         frm.txtHora.Text = System.DateTime.Now.ToShortTimeString
@@ -228,7 +253,7 @@ Module modFunciones
 
         frm.txtDescripcion.Text = frm.txtDescripcion.Text & vbCrLf & vbCrLf & "TRAZA:" & vbCrLf & ex.StackTrace
         If bGuardaLog Then
-            '        GuardarLOG(AL_ERROR_SISTEMA, .Description & vbCrLf & vbCrLf & "Función/Proc.: " & sFuncion, CODIGO_TRANSACCION)
+            GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, frm.txtDescripcion.Text & vbCrLf & vbCrLf & "Función/Proc.: " & sFuncion, CODIGO_TRANSACCION)
         End If
 
         frm.ShowDialog()
@@ -250,8 +275,15 @@ Module modFunciones
 
     End Function
 
-    Public Function FechaSQL(ByVal dFecha As Date) As String
+    Public Function FechaYHoraSQL(ByVal dFecha As DateTime) As String
+        Return "'" & Format(dFecha, FORMATO_FECHA) & " " & Format(dFecha, "HH:mm:ss:fff") & "'"
+    End Function
 
+
+    Public Function FechaSQL(ByVal dFecha As Date) As String
+        If dFecha = Date.MinValue Then
+            Return "'" & Format(FechaCorrecta(1, 1900), FORMATO_FECHA) & "'"
+        End If
         Return "'" & Format(dFecha, FORMATO_FECHA) & "'"
 
     End Function
@@ -483,7 +515,7 @@ Module modFunciones
     'Alias creado para compatibilidad con la versión anterior del sistema
     Public Function sBase64Decode(ByVal sCadena As String) As String
         'Return System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(sCadena))
-        Return VB6Base64Decode(sCadena)
+        Return VB6Base64Decode(sCadena).Replace(vbNullChar, String.Empty)
     End Function
 
     Public Function sBase64Encode(ByVal sCadena As String) As String
@@ -573,8 +605,8 @@ Module modFunciones
         Dim oText As StreamReader
 
         oText = IO.File.OpenText(sNombreArchivo)
-        sNombreUsuario = sBase64Decode(oText.ReadLine)
-        sPassword = sBase64Decode(oText.ReadLine)
+        sNombreUsuario = sBase64Decode(oText.ReadLine).Replace(vbNullChar, String.Empty)
+        sPassword = sBase64Decode(oText.ReadLine).Replace(vbNullChar, String.Empty)
         oText.Close()
 
         oText = Nothing
@@ -622,7 +654,7 @@ Module modFunciones
         sSQL = sSQL.Replace("@HORLOG", "'" & Format(DateTime.Now, "HH:mm:ss") & "'")
         sSQL = sSQL.Replace("@ACCION", nAccionLOG)
         sSQL = sSQL.Replace("@CODTRA", nCodigoTransaccion)
-        sSQL = sSQL.Replace("@EXTRA", "'" & sExtra & "'")
+        sSQL = sSQL.Replace("@EXTRA", "'" & sExtra.Replace("'", "") & "'")
         sSQL = sSQL.Replace("@WKSTAT", "'" & System.Environment.MachineName & "'")
 
         oAdmLOG.EjecutarComandoAsincrono(sSQL)
@@ -796,4 +828,129 @@ Module modFunciones
 
     End Function
 
+    Public Sub PresentarDatos(ByVal formulario As Form, ByVal nCodigoTransaccion As Long, ByVal nCodigoUsuario As Long, ByVal nCodigoEntidad As Long)
+
+        Try
+            Try
+
+                Dim oAdmlocal As New AdmTablas
+                oAdmlocal.ConnectionString = CONN_LOCAL
+
+                Dim sSQL As String
+                Dim ds As DataSet
+                Dim sError As String = ""
+
+                ''''' USUARIO '''''
+
+                sSQL = "SELECT    US_CODUSU, US_NOMBRE, US_DESCRI, US_ADMIN " &
+            "FROM      USUARI " &
+            "WHERE     US_CODUSU = " & nCodigoUsuario
+                ds = oAdmlocal.AbrirDataset(sSQL)
+
+                With ds.Tables(0)
+
+                    If .Rows.Count = 0 Then
+                        Throw New Security.SecurityException("Falla de seguridad - US_CODUSU: " & nCodigoUsuario)
+                    Else
+                        UsuarioActual.Codigo = nCodigoUsuario
+                        UsuarioActual.Nombre = .Rows(0).Item("US_NOMBRE").ToString
+                        UsuarioActual.Descripcion = .Rows(0).Item("US_DESCRI").ToString
+                        UsuarioActual.Admin = CBool(.Rows(0).Item("US_ADMIN"))
+                        UsuarioActual.SoloLectura = False
+                        SetLabelTexto(formulario, "lblUsuario", UsuarioActual.Descripcion)
+                    End If
+
+                End With
+
+                ds = Nothing
+
+                ''''' ENTIDAD '''''
+
+                sSQL = "SELECT    TG_CODCON, TG_DESCRI " &
+            "FROM      TABGEN " &
+            "WHERE     TG_CODTAB = 1 " &
+            "AND       TG_CODCON = " & nCodigoEntidad
+                ds = oAdmlocal.AbrirDataset(sSQL)
+
+                With ds.Tables(0)
+
+                    If .Rows.Count = 0 Then
+                        Throw New Security.SecurityException("Parámetro de entidad no válido - TG_CODCON: " & nCodigoEntidad)
+                    Else
+                        NOMBRE_ENTIDAD = .Rows(0).Item("TG_DESCRI").ToString
+                        SetLabelTexto(formulario, "lblEntidad", NOMBRE_ENTIDAD)
+                    End If
+
+                End With
+
+                ds = Nothing
+
+                ''''' TRANSACCION '''''
+
+                sSQL = "SELECT    MU_TRANSA, MU_DESCRI " &
+            "FROM      MENUES " &
+            "WHERE     MU_CODTRA = " & nCodigoTransaccion
+                ds = oAdmlocal.AbrirDataset(sSQL)
+
+                With ds.Tables(0)
+
+
+                    If .Rows.Count = 0 Then
+                        Throw New Security.SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto - MU_CODTRA: " & nCodigoTransaccion)
+                    Else
+                        formulario.Text = "Transacción:" & CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA").ToString
+                        SetLabelTexto(formulario, "lblTransaccion", CType(.Rows(0).Item("MU_DESCRI"), String))
+                        SetLabelTexto(formulario, "lblTitulo", .Rows(0).Item("MU_TRANSA").ToString)
+                        SetLabelTexto(formulario, "lblSubtitulo", .Rows(0).Item("MU_DESCRI").ToString)
+                    End If
+
+                End With
+
+                ds = Nothing
+            Catch ex As Security.SecurityException
+                MensajeError(ex.Message)
+                formulario.Close()
+            End Try
+        Catch ex As Exception
+            TratarError(ex, "PresentarDatos")
+            formulario.Close()
+        End Try
+
+    End Sub
+
+    Private Sub SetLabelTexto(formulario As Form, labelName As String, texto As String)
+        Dim label As Control = formulario.Controls.Find(labelName, True).FirstOrDefault()
+        If label IsNot Nothing Then
+            If TryCast(label, Label) IsNot Nothing Then
+                CType(label, Label).Text = texto
+            End If
+        End If
+    End Sub
+
+
+    Public Function NombreUsuarioNT() As String
+        Return Environment.UserName
+        'Dim sBuffer As String * 255
+        'Dim lResult As Long
+        'Dim nLen As Long
+
+        'nLen = 255
+
+        'lResult = GetUserName(sBuffer, nLen)
+        'NombreUsuarioNT = Left(sBuffer, nLen - 1)
+
+    End Function
+
+    Public Function NombrePCLocal() As String
+        Return Environment.MachineName
+        'Dim sBuffer As String * 255
+        'Dim lResult As Long
+        'Dim nLen As Long
+
+        'nLen = 255
+
+        'lResult = GetComputerName(sBuffer, nLen)
+        'NombrePCLocal = Left(sBuffer, nLen - 1)
+
+    End Function
 End Module

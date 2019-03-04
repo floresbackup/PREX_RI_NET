@@ -613,6 +613,26 @@ Module modFunciones
 
     End Sub
 
+    Public Sub ValidarCamposNuevosLogSis(oAdmTablas As AdmTablas)
+        Try
+            Dim sql1 = "select ISNULL(COL_LENGTH('dbo.LogSis', 'LS_SECUEN') , 0)"
+            Dim sql2 = "select ISNULL(COL_LENGTH('dbo.LogSis', 'LS_WKSTAT') , 0)"
+
+            Dim ds As DataSet = oAdmTablas.AbrirDataset(sql1)
+            If ds.Tables(0).Rows.Count > 0 AndAlso ds.Tables(0).Rows(0).Item(0) = 0 Then
+                oAdmTablas.EjecutarComandoAsincrono("ALTER TABLE dbo.LOGSIS ADD	LS_SECUEN int NOT NULL IDENTITY (1, 1)")
+            End If
+
+            ds = oAdmTablas.AbrirDataset(sql2)
+            If ds.Tables(0).Rows.Count > 0 AndAlso ds.Tables(0).Rows(0).Item(0) = 0 Then
+                oAdmTablas.EjecutarComandoAsincrono("ALTER TABLE dbo.LOGSIS ADD LS_WKSTAT varchar(240) NULL")
+            End If
+
+        Catch ex As Exception
+            Throw New Exception("Ocurrió un error ValidarCamposNuevosLogSis", ex)
+        End Try
+    End Sub
+
     Public Sub GuardarLOG(ByVal nAccionLOG As AccionesLOG,
                           ByVal sExtra As String,
                           Optional ByVal nCodigoTransaccion As Long = -1,
@@ -624,7 +644,7 @@ Module modFunciones
         Dim sSQL As String
 
         oAdmLOG.ConnectionString = CONN_LOCAL
-
+        ValidarCamposNuevosLogSis(oAdmLOG)
         If nCodigoUsuario = -1 Then nCodigoUsuario = UsuarioActual.Codigo
         If nCodigoTransaccion = 0 Then nCodigoTransaccion = -1
 

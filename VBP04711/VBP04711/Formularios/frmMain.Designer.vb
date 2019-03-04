@@ -19,11 +19,11 @@ Partial Class frmMain
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Me.Skin = New DevExpress.LookAndFeel.DefaultLookAndFeel(Me.components)
+        Me.Skin = New DevExpress.LookAndFeel.DefaultLookAndFeel()
         Me.PanControles = New DevExpress.XtraEditors.PanelControl()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.txtAcciones = New DevExpress.XtraEditors.TextEdit()
         Me.txtUsuario = New DevExpress.XtraEditors.TextEdit()
         Me.txtDescripcion = New DevExpress.XtraEditors.TextEdit()
         Me.txtCodigosTransaccion = New DevExpress.XtraEditors.TextEdit()
@@ -41,8 +41,8 @@ Partial Class frmMain
         Me.lblSubtitulo = New DevExpress.XtraEditors.LabelControl()
         Me.lblTitulo = New DevExpress.XtraEditors.LabelControl()
         Me.picLogo = New DevExpress.XtraEditors.PictureEdit()
-        Me.PrintingSystem1 = New DevExpress.XtraPrinting.PrintingSystem(Me.components)
-        Me.PrintableComponentLink1 = New DevExpress.XtraPrinting.PrintableComponentLink(Me.components)
+        Me.PrintingSystem1 = New DevExpress.XtraPrinting.PrintingSystem()
+        Me.PrintableComponentLink1 = New DevExpress.XtraPrinting.PrintableComponentLink()
         Me.GridDiseno = New DevExpress.XtraGrid.GridControl()
         Me.gDiseno = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.colUsuario = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -64,13 +64,14 @@ Partial Class frmMain
         Me.btnImprimir = New System.Windows.Forms.ToolStripButton()
         Me.btnExportar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolTipText = New System.Windows.Forms.ToolTip(Me.components)
+        Me.ToolTipText = New System.Windows.Forms.ToolTip()
         Me.colExtra = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn1 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.txtAcciones = New DevExpress.XtraEditors.TextEdit()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         CType(Me.PanControles, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanControles.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.txtAcciones.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtUsuario.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtDescripcion.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtCodigosTransaccion.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -94,7 +95,6 @@ Partial Class frmMain
         CType(Me.PanTool, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanTool.SuspendLayout()
         Me.ToolBarra.SuspendLayout()
-        CType(Me.txtAcciones.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Skin
@@ -136,6 +136,13 @@ Partial Class frmMain
         Me.GroupBox1.TabIndex = 7
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Filtros de la consulta"
+        '
+        'txtAcciones
+        '
+        Me.txtAcciones.Location = New System.Drawing.Point(92, 68)
+        Me.txtAcciones.Name = "txtAcciones"
+        Me.txtAcciones.Size = New System.Drawing.Size(71, 20)
+        Me.txtAcciones.TabIndex = 7
         '
         'txtUsuario
         '
@@ -457,7 +464,7 @@ Partial Class frmMain
         'ToolBarra
         '
         Me.ToolBarra.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ToolBarra.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnNuevaConsulta, Me.ToolStripSeparator5, Me.btnVerAdjunto, Me.btnImprimir, Me.btnExportar, Me.ToolStripButton2})
+        Me.ToolBarra.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnNuevaConsulta, Me.ToolStripSeparator5, Me.btnImprimir, Me.btnExportar, Me.ToolStripButton2, Me.ToolStripSeparator1, Me.btnVerAdjunto})
         Me.ToolBarra.Location = New System.Drawing.Point(0, 0)
         Me.ToolBarra.Name = "ToolBarra"
         Me.ToolBarra.Size = New System.Drawing.Size(635, 29)
@@ -482,7 +489,7 @@ Partial Class frmMain
         Me.btnVerAdjunto.Image = Global.VBP04711.My.Resources.Resources.page_attach
         Me.btnVerAdjunto.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnVerAdjunto.Name = "btnVerAdjunto"
-        Me.btnVerAdjunto.Size = New System.Drawing.Size(66, 26)
+        Me.btnVerAdjunto.Size = New System.Drawing.Size(68, 26)
         Me.btnVerAdjunto.Text = "Ver Txts"
         '
         'btnImprimir
@@ -525,12 +532,10 @@ Partial Class frmMain
         Me.GridColumn1.Visible = True
         Me.GridColumn1.VisibleIndex = 0
         '
-        'txtAcciones
+        'ToolStripSeparator1
         '
-        Me.txtAcciones.Location = New System.Drawing.Point(92, 68)
-        Me.txtAcciones.Name = "txtAcciones"
-        Me.txtAcciones.Size = New System.Drawing.Size(71, 20)
-        Me.txtAcciones.TabIndex = 7
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 29)
         '
         'frmMain
         '
@@ -547,6 +552,7 @@ Partial Class frmMain
         Me.PanControles.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.txtAcciones.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtUsuario.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtDescripcion.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtCodigosTransaccion.Properties, System.ComponentModel.ISupportInitialize).EndInit()
@@ -573,7 +579,6 @@ Partial Class frmMain
         Me.PanTool.PerformLayout()
         Me.ToolBarra.ResumeLayout(False)
         Me.ToolBarra.PerformLayout()
-        CType(Me.txtAcciones.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -625,4 +630,5 @@ Partial Class frmMain
     Friend WithEvents RepositoryItemSpinEdit3 As DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit
     Friend WithEvents GridColumn1 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents txtAcciones As DevExpress.XtraEditors.TextEdit
+    Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
 End Class

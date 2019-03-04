@@ -34,6 +34,7 @@ Partial Class frmAdjuntos
         Me.GridControl1 = New DevExpress.XtraGrid.GridControl()
         Me.GridView1 = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.colNombre = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colArchivo = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanTop.SuspendLayout()
@@ -142,7 +143,7 @@ Partial Class frmAdjuntos
         '
         'GridView1
         '
-        Me.GridView1.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colNombre})
+        Me.GridView1.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colNombre, Me.colArchivo})
         Me.GridView1.GridControl = Me.GridControl1
         Me.GridView1.Name = "GridView1"
         Me.GridView1.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.[False]
@@ -151,6 +152,7 @@ Partial Class frmAdjuntos
         Me.GridView1.OptionsBehavior.AllowValidationErrors = False
         Me.GridView1.OptionsBehavior.Editable = False
         Me.GridView1.OptionsBehavior.ReadOnly = True
+        Me.GridView1.OptionsSelection.InvertSelection = True
         Me.GridView1.OptionsView.ShowGroupExpandCollapseButtons = False
         Me.GridView1.OptionsView.ShowGroupPanel = False
         '
@@ -161,6 +163,12 @@ Partial Class frmAdjuntos
         Me.colNombre.Name = "colNombre"
         Me.colNombre.Visible = True
         Me.colNombre.VisibleIndex = 0
+        '
+        'colArchivo
+        '
+        Me.colArchivo.Caption = "colArchivo"
+        Me.colArchivo.FieldName = "AD_ARCHIV"
+        Me.colArchivo.Name = "colArchivo"
         '
         'frmAdjuntos
         '
@@ -173,6 +181,7 @@ Partial Class frmAdjuntos
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmAdjuntos"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Adjuntos"
         Me.TableLayoutPanel1.ResumeLayout(False)
         CType(Me.PanTop, System.ComponentModel.ISupportInitialize).EndInit()
@@ -198,4 +207,5 @@ Partial Class frmAdjuntos
     Friend WithEvents picLogo As DevExpress.XtraEditors.PictureEdit
     Friend WithEvents colNombre As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents cmdCerrar As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents colArchivo As DevExpress.XtraGrid.Columns.GridColumn
 End Class

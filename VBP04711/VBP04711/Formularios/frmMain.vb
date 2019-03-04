@@ -205,7 +205,7 @@ Public Class frmMain
 
         ToolBarra.Enabled = bHab
 
-        If oAdmTablas.ExisteTabla("TXTADJ") AndAlso False Then
+        If oAdmTablas.ExisteTabla("TXTADJ") Then
             btnVerAdjunto.Visible = bHab
             btnVerAdjunto.Enabled = bHab
         Else
@@ -248,7 +248,7 @@ Public Class frmMain
         '       "AND       TG_CODTAB = 301 " & _
         '       "AND       LS_FECLOG BETWEEN " & FechaSQL(CDate(txtDesde)) & " AND " & FechaSQL(CDate(txtHasta)) & " "
 
-        Dim sSQL = "SELECT     LS_SECUEN, US_DESCRI, LS_WKSTAT, LS_FECLOG, LS_HORLOG, CASE WHEN LS_CODTRA < 0 THEN 0 ELSE LS_CODTRA END AS LS_CODTRA, MU_TRANSA, TG_DESCRI, LS_EXTRA " &
+        Dim sSQL = "SELECT     LS_SECUEN, LS_WKSTAT, US_DESCRI, LS_FECLOG, LS_HORLOG, CASE WHEN LS_CODTRA < 0 THEN 0 ELSE LS_CODTRA END AS LS_CODTRA, MU_TRANSA, TG_DESCRI, LS_EXTRA " &
           "FROM       LOGSIS " &
           "INNER JOIN USUARI " &
           "ON         LS_CODUSU = US_CODUSU " &
@@ -311,7 +311,7 @@ Public Class frmMain
         Try
             Me.Cursor = Cursors.WaitCursor
             Try
-
+                ValidarCamposNuevosLogSis(oAdmTablas)
                 Dim sSQL = ConformarSQL()
 
 
