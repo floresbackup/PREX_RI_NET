@@ -66,6 +66,7 @@ Module modDeclaraciones
     Public GENERAR_LOG_SQL As Boolean
     Public TIPO_LOG_SQL As Integer
     Public CONN_LOCAL As String = ""
+    Public CONN_SIB As String = ""
     Public FORMATO_FECHA As String = ""
     Public CARPETA_LOCAL As String = ""
     Public RUTA_BIN As String = ""

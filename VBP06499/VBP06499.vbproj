@@ -185,11 +185,13 @@
     <Compile Include="..\COMMON\MODUL\modFunciones.vb">
       <Link>Modulos\modFunciones.vb</Link>
     </Compile>
+    <Compile Include="..\COMMON\MODUL\modCultura.vb">
+      <Link>Modulos\modCultura.vb</Link>
+    </Compile>
     <Compile Include="..\COMMON\MODUL\modGlobalBase64.vb">
       <Link>Modulos\modGlobalBase64.vb</Link>
     </Compile>
-    <Compile Include="..\COMMON\MODUL\modLocalMain.vb">
-      <Link>Modulos\modLocalMain.vb</Link>
+    <Compile Include="MODULOS\modLocalMain.vb">
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

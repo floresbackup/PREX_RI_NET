@@ -123,17 +123,17 @@ Module modCultura
 
    End Function
 
-   Public Sub EstablecerLenguaje()
+    'Public Sub EstablecerLenguaje()
 
-      BarLocalizer.Active = New cBarsLocalizer()
-      GridLocalizer.Active = New cGridLocalizer()
-      PivotGridLocalizer.Active = New cPivotGridLocalizer()
-      ChartLocalizer.Active = New cChartLocalizer()
-      PreviewLocalizer.Active = New cPrintingLocalizer()
-      BarLocalizer.Active = New cBarsLocalizer()
-      Localizer.Active = New cEditorsLocalizer()
-      ReportLocalizer.Active = New cReportsLocalizer()
+    '   BarLocalizer.Active = New cBarsLocalizer()
+    '   GridLocalizer.Active = New cGridLocalizer()
+    '   PivotGridLocalizer.Active = New cPivotGridLocalizer()
+    '   ChartLocalizer.Active = New cChartLocalizer()
+    '   PreviewLocalizer.Active = New cPrintingLocalizer()
+    '   BarLocalizer.Active = New cBarsLocalizer()
+    '   Localizer.Active = New cEditorsLocalizer()
+    '   ReportLocalizer.Active = New cReportsLocalizer()
 
-   End Sub
+    'End Sub
 
 End Module

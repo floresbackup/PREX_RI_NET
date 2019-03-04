@@ -146,6 +146,9 @@ Module modFunciones
                         Case "FFECHA"
                             FORMATO_FECHA = sTemp
 
+                        Case "CONN_SIB"
+                            CONN_SIB = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
+
                         Case "CARPETA_LOCAL"
                             CARPETA_LOCAL = NormalizarRuta(sTemp)
 
