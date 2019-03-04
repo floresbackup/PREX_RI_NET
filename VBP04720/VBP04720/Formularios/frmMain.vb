@@ -416,8 +416,9 @@ Public Class frmMain
                nodo = tvMenu.Nodes.Find(row("MU_NROMEN"), True)
 
                If nodo.Length <> 0 Then
-                  nodo(0).Checked = True
-               End If
+                        nodo(0).Checked = True
+                        CheckedParent(nodo(0))
+                    End If
 
                nodo = Nothing
 
@@ -441,7 +442,12 @@ Public Class frmMain
 
    End Sub
 
-   Private Sub tvMenu_AfterCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvMenu.AfterCheck
+    Private Sub CheckedParent(nodo As TreeNode)
+        If nodo.Parent IsNot Nothing Then CheckedParent(nodo.Parent)
+        nodo.Checked = True
+    End Sub
+
+    Private Sub tvMenu_AfterCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvMenu.AfterCheck
 
       If Not bProcCheck Then
          If e.Node.Nodes.Count > 0 Then
@@ -492,16 +498,23 @@ Public Class frmMain
    End Sub
 
    Private Sub btnPresentarPerfil_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPresentarPerfil.Click
+        Try
+            Cursor = Cursors.WaitCursor
 
-      Dim item As clsItem.Item
+            SuspendLayout()
+            Dim item As clsItem.Item
 
-      item = cboPerfilPerfiles.SelectedItem
+            item = cboPerfilPerfiles.SelectedItem
 
-      cargarPerfil(item.Valor)
+            cargarPerfil(item.Valor)
 
-      item = Nothing
+            item = Nothing
+        Finally
+            Cursor = Cursors.Default
+            ResumeLayout()
+        End Try
 
-   End Sub
+    End Sub
 
    Private Sub btnLimpiarPerfil_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLimpiarPerfil.Click
 
@@ -522,64 +535,66 @@ Public Class frmMain
 
    End Sub
 
-   Private Sub guardarPerfil()
+    Private Sub guardarPerfil()
+        Dim sSQL As String
+        Dim ds As DataSet
+        Dim cb As OleDb.OleDbCommandBuilder = Nothing
+        Dim da As OleDb.OleDbDataAdapter = Nothing
 
-      Dim sSQL As String
-      Dim ds As DataSet
-      Dim cb As OleDb.OleDbCommandBuilder = Nothing
-      Dim da As OleDb.OleDbDataAdapter = Nothing
+        Try
+            Cursor = Cursors.WaitCursor
+            SuspendLayout()
+            Try
+                sSQL = "DELETE " &
+                        "FROM         DETPER " &
+                        "WHERE        DP_CODPER = " & LlaveCombo(cboPerfilPerfiles).ToString
+                oAdmLocal.EjecutarComandoAsincrono(sSQL)
 
-      Try
+                guardarNodos(tvMenu.Nodes("0"))
 
-         Me.Enabled = False
+                MensajeInformacion("Perfil guardado exitosamente")
+            Catch ex As Exception
+                TratarError(ex, "guardarPerfil")
+            End Try
+        Finally
+            ds = Nothing
+            cb = Nothing
+            da = Nothing
+            ResumeLayout()
+            Cursor = Cursors.Default
+        End Try
+    End Sub
 
-         sSQL = "DELETE " & _
-                "FROM         DETPER " & _
-                "WHERE        DP_CODPER = " & LlaveCombo(cboPerfilPerfiles).ToString
-         oAdmLocal.EjecutarComandoAsincrono(sSQL)
+    Private Sub btnNuevoPerfil_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNuevoPerfil.Click
 
-         guardarNodos(tvMenu.Nodes("0"))
+        Dim oInput As New frmInputGeneral
 
-         Me.Enabled = True
+        oInput.PasarInfoVentana("Nuevo Perfil", "Ingrese el nombre del nuevo perfil:")
 
-         MensajeInformacion("Perfil guardado exitosamente")
+        If oInput.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+            If guardarNuevoPerfil(oInput.ResultadoInput) Then
 
-      Catch ex As Exception
-         TratarError(ex, "guardarPerfil")
-      End Try
+                MensajeInformacion("Perfil creado exitosamente")
 
-   End Sub
+                btnLimpiarPerfil_Click(sender, e)
+                Application.DoEvents()
 
-   Private Sub btnNuevoPerfil_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNuevoPerfil.Click
+                cargarPerfiles()
+                Application.DoEvents()
 
-      Dim oInput As New frmInputGeneral
+                SelCombo(cboPerfilPerfiles, oInput.ResultadoInput)
+                Application.DoEvents()
 
-      oInput.PasarInfoVentana("Nuevo Perfil", "Ingrese el nombre del nuevo perfil:")
+                btnPresentarPerfil_Click(sender, e)
 
-      If oInput.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-         If guardarNuevoPerfil(oInput.ResultadoInput) Then
+            End If
+        End If
 
-            MensajeInformacion("Perfil creado exitosamente")
+        oInput = Nothing
 
-            btnLimpiarPerfil_Click(sender, e)
-            Application.DoEvents()
+    End Sub
 
-            cargarPerfiles()
-            Application.DoEvents()
-
-            SelCombo(cboPerfilPerfiles, oInput.ResultadoInput)
-            Application.DoEvents()
-
-            btnPresentarPerfil_Click(sender, e)
-
-         End If
-      End If
-
-      oInput = Nothing
-
-   End Sub
-
-   Private Function guardarNuevoPerfil(ByVal sNombre As String) As Boolean
+    Private Function guardarNuevoPerfil(ByVal sNombre As String) As Boolean
 
       Dim sSQL As String
       Dim ds As DataSet
