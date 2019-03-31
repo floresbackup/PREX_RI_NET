@@ -1,5 +1,15 @@
+Imports System.IO
+
 Module modFileToDB
     Private Const nBUFFER As Long = 1024
+
+
+    Public Function PutFileInField(documentPath As String) As String
+        Dim data As Byte()
+        data = System.IO.File.ReadAllBytes(documentPath)
+        Dim s = Convert.ToChar(data).ToString()
+        Return s ' System.Text.Encoding.Unicode.GetString(data)
+    End Function
 
     '//LARGE IMAGES
     '    Public Sub PutFileInField(
@@ -76,6 +86,8 @@ Module modFileToDB
         File = Environment.CurrentDirectory & "\Temp\INFORME_" & nID & "." & sExtension
 
     End Sub
+
+
 
     '    Sub AddFile(f As Field, ByVal FileName As String)
     '        Dim stm As ADODB.Stream

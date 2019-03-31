@@ -725,10 +725,11 @@ Public Class frmMain
 
             End With
 
-            'Load frmAdjuntar
-            'frmAdjuntar.PasarDatos sClave
-            'frmAdjuntar.Show vbModal, Me
+            Dim frmAdjuntar As New frmAdjuntos()
+            frmAdjuntar.PasarDatos(sClave)
+            frmAdjuntar.ShowDialog(Me)
 
+            frmAdjuntar.Dispose()
         Catch ex As Exception
             TratarError(ex, "Adjuntar")
         End Try

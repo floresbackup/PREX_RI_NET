@@ -127,10 +127,10 @@ Public Class Form1
                             isTransaccion = True
                         End If
 
-                        BulkCopy(conn, items, False)
+                        BulkCopy(conn, items, False, tran)
                     Next
                 Else
-                    BulkCopy(conn, lines)
+                    BulkCopy(conn, lines.ToList())
 				End If
 
 				''For Each LineBCP As String In lines
@@ -222,20 +222,20 @@ Public Class Form1
 			cmdCreateTable.CommandText = "CREATE TABLE " & TableName & vbCrLf & " (" & vbCrLf
 			_dicFormato.ForEach(Sub(l)
 									Dim o = Nothing
-									If terminos.All(Function(t) IsNumeric(t(l.Index).Trim)) Then
-										Dim valor = terminos.OrderByDescending(Function(t) t(l.Index).Trim.Count()).FirstOrDefault()(l.Index).Trim()
-										If valor.Contains(txtDecimalSeparator.Text) AndAlso IsNumeric(valor.Replace(txtDecimalSeparator.Text, String.Empty)) Then
-											cmdCreateTable.CommandText += l.NombreColumna & " DECIMAL(16,4) NULL"
-											l.SQLType = SqlDbType.Decimal
-											'ElseIf IsNumeric(valor.Trim) AndAlso Integer.TryParse(valor, o) Then
-											'	cmdCreateTable.CommandText += l.NombreColumna & " INT NULL"
-											'	l.SQLType = SqlDbType.Int
-										ElseIf IsNumeric(valor.Trim) AndAlso Int64.TryParse(valor, o) Then
-											cmdCreateTable.CommandText += l.NombreColumna & " BIGINT NULL"
-											l.SQLType = SqlDbType.BigInt
-										End If
-									Else
-										cmdCreateTable.CommandText += l.NombreColumna & " VARCHAR(" & l.Tamanio + 5 & ") NULL"
+                                    If terminos.All(Function(t) t.Any() AndAlso t.Count() >= l.Index AndAlso IsNumeric(t(l.Index).Trim)) Then
+                                        Dim valor = terminos.OrderByDescending(Function(t) t(l.Index).Trim.Count()).FirstOrDefault()(l.Index).Trim()
+                                        If valor.Contains(txtDecimalSeparator.Text) AndAlso IsNumeric(valor.Replace(txtDecimalSeparator.Text, String.Empty)) Then
+                                            cmdCreateTable.CommandText += l.NombreColumna & " DECIMAL(16,4) NULL"
+                                            l.SQLType = SqlDbType.Decimal
+                                            'ElseIf IsNumeric(valor.Trim) AndAlso Integer.TryParse(valor, o) Then
+                                            '	cmdCreateTable.CommandText += l.NombreColumna & " INT NULL"
+                                            '	l.SQLType = SqlDbType.Int
+                                        ElseIf IsNumeric(valor.Trim) AndAlso Int64.TryParse(valor, o) Then
+                                            cmdCreateTable.CommandText += l.NombreColumna & " BIGINT NULL"
+                                            l.SQLType = SqlDbType.BigInt
+                                        End If
+                                    Else
+                                        cmdCreateTable.CommandText += l.NombreColumna & " VARCHAR(" & l.Tamanio + 5 & ") NULL"
 										l.SQLType = SqlDbType.VarChar
 									End If
 
@@ -272,7 +272,8 @@ Public Class Form1
                                     l.Add(linea.Substring(f.Inicio, f.Tamanio))
 
                                 Catch ex As Exception
-                                    Throw ex
+                                    'Throw ex
+                                    Exit Sub
                                 End Try
                             End Sub)
         Return l
@@ -318,24 +319,30 @@ Public Class Form1
 		' Create a new DataTable named NewProducts.
 
 		Dim tablaSQL As DataTable = New DataTable(TableName)
-		_dicFormato.ForEach(Sub(f)
-								Dim col As DataColumn = New DataColumn()
-								Select Case f.SQLType
-									Case SqlDbType.BigInt
-										col.DataType = System.Type.GetType("System.Int64")
-									Case SqlDbType.Int
-										col.DataType = System.Type.GetType("System.Int32")
-									Case SqlDbType.VarChar
-										col.DataType = System.Type.GetType("System.String")
-									Case SqlDbType.Decimal
-										col.DataType = System.Type.GetType("System.Decimal")
-									Case Else
-										col.DataType = System.Type.GetType("System.String")
-								End Select
-								col.ColumnName = f.NombreColumna
-								tablaSQL.Columns.Add(col)
-							End Sub)
-		lines.ForEach(Sub(l)
+        _dicFormato.ForEach(Function(f)
+                                Try
+
+                                    Dim col As DataColumn = New DataColumn()
+                                    Select Case f.SQLType
+                                        Case SqlDbType.BigInt
+                                            col.DataType = System.Type.GetType("System.Int64")
+                                        Case SqlDbType.Int
+                                            col.DataType = System.Type.GetType("System.Int32")
+                                        Case SqlDbType.VarChar
+                                            col.DataType = System.Type.GetType("System.String")
+                                        Case SqlDbType.Decimal
+                                            col.DataType = System.Type.GetType("System.Decimal")
+                                        Case Else
+                                            col.DataType = System.Type.GetType("System.String")
+                                    End Select
+                                    col.ColumnName = f.NombreColumna
+                                    tablaSQL.Columns.Add(col)
+                                    Return True
+                                Catch ex As Exception
+                                    Return False
+                                End Try
+                            End Function)
+        lines.ForEach(Sub(l)
 						  Dim terminos = PartirTerminos(l)
 						  If terminos.Count() > 0 Then
 
@@ -360,8 +367,9 @@ Public Class Form1
 															  End Select
 														  End If
 													  Catch ex As Exception
-														  Throw ex
-													  End Try
+                                                          'Throw ex
+                                                          Exit Sub
+                                                      End Try
 												  End Sub)
 							  tablaSQL.Rows.Add(row)
 						  End If
@@ -369,28 +377,28 @@ Public Class Form1
 		Return tablaSQL
 	End Function
 
-	Private Sub BulkCopy(conn As SqlConnection, lineas As List(Of String))
-		BulkCopy(conn, lineas, True)
-	End Sub
-	Private Sub BulkCopy(conn As SqlConnection, lineas As List(Of String), dropYCrear As Boolean)
-		Dim terminos = lineas.Select(Function(l) PartirTerminos(l)).ToList()
-		Dim usarDataTable = Not dropYCrear
-		If dropYCrear Then usarDataTable = DropearYCrearTabla(conn, Nothing, terminos)
-		If Not usarDataTable Then Exit Sub
+    Private Sub BulkCopy(conn As SqlConnection, lineas As List(Of String))
+        BulkCopy(conn, lineas, True, Nothing)
+    End Sub
+    Private Sub BulkCopy(conn As SqlConnection, lineas As List(Of String), dropYCrear As Boolean, tran As SqlTransaction)
+        Dim terminos = lineas.Select(Function(l) PartirTerminos(l)).ToList()
+        Dim usarDataTable = Not dropYCrear
+        If dropYCrear Then usarDataTable = DropearYCrearTabla(conn, Nothing, terminos)
+        If Not usarDataTable Then Exit Sub
 
-		Dim newProducts As DataTable = MakeTable(lineas)
-		Using bulkCopy As SqlBulkCopy = New SqlBulkCopy(conn)
-			bulkCopy.DestinationTableName = "dbo." & TableName
+        Dim newProducts As DataTable = MakeTable(lineas)
+        Using bulkCopy As SqlBulkCopy = New SqlBulkCopy(conn, SqlBulkCopyOptions.Default, tran)
+            bulkCopy.DestinationTableName = "dbo." & TableName
 
-			Try
-				' Write from the source to the destination.
-				bulkCopy.WriteToServer(newProducts)
+            Try
+                ' Write from the source to the destination.
+                bulkCopy.WriteToServer(newProducts)
 
-			Catch ex As Exception
-				Console.WriteLine(ex.Message)
-			End Try
-		End Using
-	End Sub
+            Catch ex As Exception
+                Console.WriteLine(ex.Message)
+            End Try
+        End Using
+    End Sub
 
 
 End Class
