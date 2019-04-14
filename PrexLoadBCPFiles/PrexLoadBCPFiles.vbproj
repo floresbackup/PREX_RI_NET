@@ -156,5 +156,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Prex.Satelite.Utils\Prex.Satelite.Utils.csproj">
+      <Project>{a58b5d85-b7d2-4f5d-8f40-4c41031fdc9f}</Project>
+      <Name>Prex.Satelite.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

@@ -1,12 +1,13 @@
 ﻿Imports System.Data.SqlClient
 Imports System.IO
 Imports System.Runtime.CompilerServices
+Imports Prex.Satelite.Utils.Extensions
 
 Public Class Form1
 
 #Region "Variables"
-	Private _configuracion As Configuracion
-	Private _dicFormato As New List(Of Formato)
+    Private _configuracion As Prex.Satelite.Utils.Configuracion
+    Private _dicFormato As New List(Of Formato)
 	Private objMyLock As New Object
 #End Region
 
@@ -17,22 +18,22 @@ Public Class Form1
 		End Get
 	End Property
 
-	Private ReadOnly Property ConfiguracionProceso As Configuracion
-		Get
-			If _configuracion Is Nothing Then _configuracion = New Configuracion()
-			_configuracion.DB = txtDataBase.Text.Trim()
-			_configuracion.Usuario = txtSQLUser.Text.Trim()
-			_configuracion.Servidor = txtSQLServer.Text.Trim()
-			_configuracion.Pass = txtUserPass.Text.Trim()
-			_configuracion.DecimalSeparator = txtDecimalSeparator.Text.Trim()
-			_configuracion.PathBCP = txtPathBCP.Text.Trim()
-			_configuracion.PathFMT = txtPathFMT.Text.Trim()
+    Private ReadOnly Property ConfiguracionProceso As Prex.Satelite.Utils.Configuracion
+        Get
+            If _configuracion Is Nothing Then _configuracion = New Prex.Satelite.Utils.Configuracion()
+            _configuracion.DB = txtDataBase.Text.Trim()
+            _configuracion.Usuario = txtSQLUser.Text.Trim()
+            _configuracion.Servidor = txtSQLServer.Text.Trim()
+            _configuracion.Pass = txtUserPass.Text.Trim()
+            _configuracion.DecimalSeparator = txtDecimalSeparator.Text.Trim()
+            _configuracion.PathBCP = txtPathBCP.Text.Trim()
+            _configuracion.PathFMT = txtPathFMT.Text.Trim()
 
-			Return _configuracion
-		End Get
-	End Property
+            Return _configuracion
+        End Get
+    End Property
 
-	Private ReadOnly Property GetFullConnectionString As String
+    Private ReadOnly Property GetFullConnectionString As String
 		Get
             'Dim con As String = "Provider=SQLOLEDB.1;Persist Security Info=False;"
             'con &= "Integrated Security=SSPI;"
@@ -83,8 +84,8 @@ Public Class Form1
 		lblProgress.Visible = True
 		progressBar.Visible = True
 		lblProgress.Text = "Guardando configuracion..."
-		GuardarConfiguracion()
-		progressBar.Value = 30
+        Prex.Satelite.Utils.ConfigFile.GuardarConfiguracion(ConfigFilePath, ConfiguracionProceso)
+        progressBar.Value = 30
 		BloquearControles(True)
 		Dim conn = New SqlConnection(Me.GetFullConnectionString())
 		Dim tran As SqlTransaction = Nothing
@@ -212,16 +213,16 @@ Public Class Form1
 		Return cmd
 	End Function
 
-	Private Function DropearYCrearTabla(conn As SqlConnection, tran As SqlTransaction, terminos As List(Of List(Of String))) As Boolean
-		SyncLock objMyLock
-			Dim cmdCreateTable As New SqlCommand("IF OBJECT_ID('dbo." & TableName & "', 'U') IS NOT NULL " & vbCrLf _
-																 & "DROP TABLE " & TableName & vbCrLf _
-																 , conn)
-			cmdCreateTable.Transaction = tran
-			cmdCreateTable.ExecuteNonQuery()
-			cmdCreateTable.CommandText = "CREATE TABLE " & TableName & vbCrLf & " (" & vbCrLf
-			_dicFormato.ForEach(Sub(l)
-									Dim o = Nothing
+    Private Function DropearYCrearTabla(conn As SqlConnection, tran As SqlTransaction, terminos As List(Of List(Of String))) As Boolean
+        SyncLock objMyLock
+            Dim cmdCreateTable As New SqlCommand("IF OBJECT_ID('dbo." & TableName & "', 'U') IS NOT NULL " & vbCrLf _
+                                                                 & "DROP TABLE " & TableName & vbCrLf _
+                                                                 , conn)
+            cmdCreateTable.Transaction = tran
+            cmdCreateTable.ExecuteNonQuery()
+            cmdCreateTable.CommandText = "CREATE TABLE " & TableName & vbCrLf & " (" & vbCrLf
+            _dicFormato.ForEach(Sub(l)
+                                    Dim o = Nothing
                                     If terminos.All(Function(t) t.Any() AndAlso t.Count() >= l.Index AndAlso IsNumeric(t(l.Index).Trim)) Then
                                         Dim valor = terminos.OrderByDescending(Function(t) t(l.Index).Trim.Count()).FirstOrDefault()(l.Index).Trim()
                                         If valor.Contains(txtDecimalSeparator.Text) AndAlso IsNumeric(valor.Replace(txtDecimalSeparator.Text, String.Empty)) Then
@@ -236,21 +237,21 @@ Public Class Form1
                                         End If
                                     Else
                                         cmdCreateTable.CommandText += l.NombreColumna & " VARCHAR(" & l.Tamanio + 5 & ") NULL"
-										l.SQLType = SqlDbType.VarChar
-									End If
+                                        l.SQLType = SqlDbType.VarChar
+                                    End If
 
-									If _dicFormato.IndexOf(l) < _dicFormato.Count() - 1 Then
-										cmdCreateTable.CommandText += "," & vbCrLf
-									End If
-								End Sub)
-			cmdCreateTable.CommandText += ")"
+                                    If _dicFormato.IndexOf(l) < _dicFormato.Count() - 1 Then
+                                        cmdCreateTable.CommandText += "," & vbCrLf
+                                    End If
+                                End Sub)
+            cmdCreateTable.CommandText += ")"
 
-			cmdCreateTable.ExecuteNonQuery()
-		End SyncLock
-		Return True
-	End Function
+            cmdCreateTable.ExecuteNonQuery()
+        End SyncLock
+        Return True
+    End Function
 
-	Private Sub ObtenerDiccionarioFormato()
+    Private Sub ObtenerDiccionarioFormato()
 		_dicFormato.Clear()
 		For Each LineFMT As String In File.ReadLines(txtPathFMT.Text)
 			Dim terminos = LineFMT.Split(vbTab)
@@ -279,31 +280,9 @@ Public Class Form1
         Return l
 	End Function
 
-	Private Sub GuardarConfiguracion()
-		If System.IO.File.Exists(ConfigFilePath) Then System.IO.File.Delete(ConfigFilePath)
-		Dim objWriter As New System.IO.StreamWriter(ConfigFilePath)
 
-		objWriter.Write(Newtonsoft.Json.JsonConvert.SerializeObject(ConfiguracionProceso))
-		objWriter.Close()
-	End Sub
 
-	Private Function CargarConfiguracion() As Boolean
-		If Not System.IO.File.Exists(ConfigFilePath) Then Return False
-
-		_configuracion = Newtonsoft.Json.JsonConvert.DeserializeObject(Of Configuracion)(System.IO.File.ReadAllText(ConfigFilePath))
-
-		txtDataBase.Text = _configuracion.DB
-		txtDecimalSeparator.Text = _configuracion.DecimalSeparator
-		txtPathBCP.Text = _configuracion.PathBCP
-		txtPathFMT.Text = _configuracion.PathFMT
-		txtSQLServer.Text = _configuracion.Servidor
-		txtSQLUser.Text = _configuracion.Usuario
-		txtUserPass.Text = _configuracion.Pass
-		Return True
-
-	End Function
-
-	Private Sub BloquearControles(bloquear As Boolean)
+    Private Sub BloquearControles(bloquear As Boolean)
 		txtDataBase.Enabled = Not bloquear
 		txtDecimalSeparator.Enabled = Not bloquear
 		txtSQLServer.Enabled = Not bloquear
@@ -401,50 +380,33 @@ Public Class Form1
     End Sub
 
 
+    Private Function CargarConfiguracion() As Boolean
+        _configuracion = Prex.Satelite.Utils.ConfigFile.GetConfiguracion(ConfigFilePath)
+        If _configuracion Is Nothing Then Return False
+
+        txtDataBase.Text = _configuracion.DB
+        txtDecimalSeparator.Text = _configuracion.DecimalSeparator
+        txtPathBCP.Text = _configuracion.PathBCP
+
+        txtPathFMT.Text = _configuracion.PathFMT
+
+        txtSQLServer.Text = _configuracion.Servidor
+
+        txtSQLUser.Text = _configuracion.Usuario
+
+        txtUserPass.Text = _configuracion.Pass
+
+        Return True
+
+    End Function
+
 End Class
 
 Public Module Extensiones
-	<Extension>
-	Public Function Clone(Of Tipo)(ByVal list As IEnumerable(Of Tipo)) As IList(Of Tipo)
-		Return list.ToList.Clone
-	End Function
 
-	<Extension()>
-	Public Function Clone(Of Tipo)(ByVal list As IList(Of Tipo)) As IList(Of Tipo)
-		Dim NewList As New List(Of Tipo)
-		NewList.AddRange(list)
-		Return NewList
-	End Function
-
-	<Extension>
-	Public Iterator Function Partir(Of TipoObjeto)(Lista As IEnumerable(Of TipoObjeto), Cantidad As Integer) As IEnumerable(Of IEnumerable(Of TipoObjeto))
-		Dim newList As New List(Of TipoObjeto)
-		'Dim newListaSpliteada As New List(Of IEnumerable(Of TipoObjeto))
-
-		Dim Cnt As Integer = 1
-		For Each item In Lista
-			newList.Add(item)
-			Cnt += 1
-			If Cnt > Cantidad Then
-				Yield newList.Clone
-				newList.Clear()
-				Cnt = 1
-			End If
-		Next
-		If newList.Count > 0 Then Yield newList.Clone
-		'Return newListaSpliteada
-	End Function
 End Module
 
-Public Class Configuracion
-	Public Property Servidor As String
-	Public Property DB As String
-	Public Property Usuario As String
-	Public Property Pass As String
-	Public Property PathBCP As String
-	Public Property PathFMT As String
-	Public Property DecimalSeparator As String
-End Class
+
 
 Public Class Formato
 	Public ReadOnly Property NombreColumna As String
