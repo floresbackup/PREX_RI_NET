@@ -50,6 +50,21 @@ Public Class frmMain
     Private Declare Function OleTranslateColor Lib "OLEPRO32.DLL" (ByVal OLE_COLOR As Long, ByVal HPALETTE As Long, ByVal pccolorref As Long) As Long
     Public ErrorPermiso As Boolean = False
 
+    Private ReadOnly Property ClaveFormulario(separador As String) As String
+        Get
+            Dim sClave = String.Empty
+            If GridView1.RowCount > 0 AndAlso GridView1.SelectedRowsCount > 0 Then
+
+                For Each oCol As clsColumnas In oColumnas
+                    If oCol.Clave Then
+                        sClave = sClave & GridView1.GetRowCellDisplayText(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), oCol.Campo).ToString & separador
+                    End If
+                Next
+            End If
+            Return sClave
+        End Get
+    End Property
+
     Public Sub AnalizarCommand()
 
         Try
@@ -703,33 +718,37 @@ Public Class frmMain
     Private Sub Adjuntar()
 
         Try
-            Dim sClave As String = String.Empty
+            'Dim sClave As String = String.Empty
 
-            Dim sSQL = "SELECT DS_ORDEN " &
-              "FROM   DETSYS " &
-              "WHERE  DS_CODCON = " & oConsulta.CodCon.ToString & " " &
-              "AND    DS_LLAVE  = 1 " &
-              "ORDER  BY DS_ORDEN "
-            Dim RS As DataSet = oAdmTablas.AbrirDataset(sSQL)
+            'Dim sSQL = "SELECT DS_ORDEN " &
+            '  "FROM   DETSYS " &
+            '  "WHERE  DS_CODCON = " & oConsulta.CodCon.ToString & " " &
+            '  "AND    DS_LLAVE  = 1 " &
+            '  "ORDER  BY DS_ORDEN "
+            'Dim RS As DataSet = oAdmTablas.AbrirDataset(sSQL)
 
-            sSQL = "SELECT "
+            'sSQL = "SELECT "
 
-            With RS
-                If (.Tables.Count > 0) Then
-                    For Each oRow As DataRow In RS.Tables(0).Rows
-                        Dim vValor = GridView1.GetRowCellValue(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), GridView1.Columns.Item("K" & oRow("DS_ORDEN").ToString())).ToString
-                        sClave = sClave & vValor & ";"
+            'With RS
+            '    If (.Tables.Count > 0) Then
+            '        For Each oRow As DataRow In RS.Tables(0).Rows
+            '            Dim vValor = GridView1.GetRowCellValue(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), GridView1.Columns.Item("K" & oRow("DS_ORDEN").ToString())).ToString
+            '            sClave = sClave & vValor & ";"
 
-                    Next
-                End If
+            '        Next
+            '    End If
 
-            End With
+            'End With
+            If GridView1.SelectedRowsCount > 0 Then
 
-            Dim frmAdjuntar As New frmAdjuntos()
-            frmAdjuntar.PasarDatos(sClave)
-            frmAdjuntar.ShowDialog(Me)
+                Dim frmAdjuntar As New frmAdjuntos()
+                frmAdjuntar.PasarDatos(ClaveFormulario(";"))
+                frmAdjuntar.ShowDialog(Me)
 
-            frmAdjuntar.Dispose()
+                frmAdjuntar.Dispose()
+            Else
+                MensajeInformacion("No hay registros seleccionados")
+            End If
         Catch ex As Exception
             TratarError(ex, "Adjuntar")
         End Try
@@ -820,20 +839,20 @@ Maneja_Error:
 
     Private Sub Comentarios()
 
-        Dim oCol As clsColumnas
-        Dim sClave As String = ""
+        ' Dim oCol As clsColumnas
+        ' Dim sClave As String = ""
 
-        If Grid.MainView.RowCount Then
-            For Each oCol In oColumnas
-                If oCol.Clave Then
-                    sClave = sClave & GridView1.GetRowCellDisplayText(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), oCol.Campo).ToString
-                End If
-            Next
+        If GridView1.SelectedRowsCount > 0 Then
+            'For Each oCol In oColumnas
+            '    If oCol.Clave Then
+            '        sClave = sClave & GridView1.GetRowCellDisplayText(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), oCol.Campo).ToString
+            '    End If
+            'Next
 
-            frmNotas.PasarDatos(sClave)
+            frmNotas.PasarDatos(ClaveFormulario("|"))
             frmNotas.ShowDialog()
         Else
-            MensajeInformacion("No hay registros en la grilla")
+            MensajeInformacion("No hay registros seleccionados")
         End If
 
     End Sub
@@ -2617,25 +2636,19 @@ Reinicio:
 
     Private Function TieneComentarios() As String
 
-        Dim oCol As clsColumnas
-        Dim sClave As String = ""
         Dim ds As DataSet
         Dim sTemp As String = ""
         Dim sSQL As String
 
-        If Grid.MainView.RowCount Then
+        If Grid.MainView.RowCount > 0 Then
 
             Dim oNotas As New frmNotas
 
-            For Each oCol In oColumnas
-                If oCol.Clave Then
-                    sClave = sClave & GridView1.GetRowCellDisplayText(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), oCol.Campo).ToString & "|"
-                End If
-            Next
+
 
             sSQL = "SELECT    * " &
                    "FROM      COMENT " &
-                   "WHERE     CM_CLAVE = '" & sClave & "'"
+                   "WHERE     CM_CLAVE = '" & ClaveFormulario("|") & "'"
             ds = oAdmTablas.AbrirDataset(sSQL)
 
             With ds.Tables(0)
