@@ -3,3 +3,9 @@ C:\Users\Administrador\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\
 C:\Users\Administrador\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.csproj.CoreCompileInputs.cache
 C:\Users\Administrador\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.dll
 C:\Users\Administrador\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.pdb
+C:\Users\Ricardo\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Prex.Utils.dll
+C:\Users\Ricardo\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Prex.Utils.pdb
+C:\Users\Ricardo\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.csprojResolveAssemblyReference.cache
+C:\Users\Ricardo\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.csproj.CoreCompileInputs.cache
+C:\Users\Ricardo\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.dll
+C:\Users\Ricardo\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.pdb

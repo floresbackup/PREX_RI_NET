@@ -117,7 +117,7 @@ namespace Prex.Utils
                 else
                 {
                     var propertyInfo = this.GetType().GetProperty(nombre);
-                    if (propertyInfo != null) propertyInfo.SetValue(this, Convert.ChangeType(valor, propertyInfo.PropertyType));
+                    if (propertyInfo != null) propertyInfo.SetValue(this, Convert.ChangeType((propertyInfo.PropertyType.FullName == "System.Boolean" ? (valor.ToString() == "0" ? "false" : "true") : valor), propertyInfo.PropertyType));
                 }
             }
             if (!CARPETA_LOCAL.EndsWith("\\")) CARPETA_LOCAL += "\\";
@@ -135,8 +135,12 @@ namespace Prex.Utils
         {
             get
             {
-                string assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                return Path.Combine(assemblyFolder, "Prex.config");
+
+#if DEBUG
+				return @"C:\Prex\DebugLocal\Prex.config";
+#else
+				return Application.StartupPath + @"\Prex.config";
+#endif
             }
         }
 
