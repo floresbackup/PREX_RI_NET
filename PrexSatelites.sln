@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrexLoadTxtFiles", "PrexLoa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prex.Satelite.Utils", "Prex.Satelite.Utils\Prex.Satelite.Utils.csproj", "{A58B5D85-B7D2-4F5D-8F40-4C41031FDC9F}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PrexQueryExecute", "PrexQueryExecute\PrexQueryExecute.vbproj", "{C649369C-846F-4CC1-823E-0BA612610851}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VBPSQL", "PrexQueryExecute\VBPSQL.vbproj", "{C649369C-846F-4CC1-823E-0BA612610851}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prex.Utils", "Prex.Utils\Prex.Utils\Prex.Utils.csproj", "{2EEEDB12-2EE1-4D8C-A5C5-1E99954AA4AE}"
 EndProject
