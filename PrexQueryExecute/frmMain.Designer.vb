@@ -25,8 +25,10 @@ Partial Class frmMain
 		Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
 		Me.tabControl = New DevExpress.XtraTab.XtraTabControl()
 		Me.tabQuery = New DevExpress.XtraTab.XtraTabPage()
+		Me.pnlQuery = New System.Windows.Forms.Panel()
 		Me.txtQuery = New System.Windows.Forms.RichTextBox()
 		Me.tabResults = New DevExpress.XtraTab.XtraTabPage()
+		Me.pnlResult = New System.Windows.Forms.Panel()
 		Me.txtResultsError = New System.Windows.Forms.RichTextBox()
 		Me.grdResults = New DevExpress.XtraGrid.GridControl()
 		Me.gridViewResults = New DevExpress.XtraGrid.Views.Grid.GridView()
@@ -38,19 +40,19 @@ Partial Class frmMain
 		Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
 		Me.mnuExecuteQuery = New System.Windows.Forms.ToolStripButton()
 		Me.mnuClearConsulta = New System.Windows.Forms.ToolStripButton()
-		Me.pnlQuery = New System.Windows.Forms.Panel()
-		Me.pnlResult = New System.Windows.Forms.Panel()
+		Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+		Me.mnuExportToExcel = New System.Windows.Forms.ToolStripButton()
 		Me.openFileDialog = New System.Windows.Forms.OpenFileDialog()
 		CType(Me.tabControl, System.ComponentModel.ISupportInitialize).BeginInit()
 		Me.tabControl.SuspendLayout()
 		Me.tabQuery.SuspendLayout()
+		Me.pnlQuery.SuspendLayout()
 		Me.tabResults.SuspendLayout()
+		Me.pnlResult.SuspendLayout()
 		CType(Me.grdResults, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.gridViewResults, System.ComponentModel.ISupportInitialize).BeginInit()
 		Me.TableLayoutPanel1.SuspendLayout()
 		Me.toolBarMain.SuspendLayout()
-		Me.pnlQuery.SuspendLayout()
-		Me.pnlResult.SuspendLayout()
 		Me.SuspendLayout()
 		'
 		'tabControl
@@ -69,6 +71,17 @@ Partial Class frmMain
 		Me.tabQuery.Name = "tabQuery"
 		Me.tabQuery.Size = New System.Drawing.Size(788, 390)
 		Me.tabQuery.Text = "&Consulta"
+		'
+		'pnlQuery
+		'
+		Me.pnlQuery.BackColor = System.Drawing.Color.White
+		Me.pnlQuery.Controls.Add(Me.txtQuery)
+		Me.pnlQuery.Dock = System.Windows.Forms.DockStyle.Fill
+		Me.pnlQuery.Location = New System.Drawing.Point(0, 0)
+		Me.pnlQuery.Name = "pnlQuery"
+		Me.pnlQuery.Padding = New System.Windows.Forms.Padding(10, 10, 0, 0)
+		Me.pnlQuery.Size = New System.Drawing.Size(788, 390)
+		Me.pnlQuery.TabIndex = 1
 		'
 		'txtQuery
 		'
@@ -89,6 +102,17 @@ Partial Class frmMain
 		Me.tabResults.PageEnabled = False
 		Me.tabResults.Size = New System.Drawing.Size(788, 390)
 		Me.tabResults.Text = "&Resultados"
+		'
+		'pnlResult
+		'
+		Me.pnlResult.BackColor = System.Drawing.Color.White
+		Me.pnlResult.Controls.Add(Me.txtResultsError)
+		Me.pnlResult.Controls.Add(Me.grdResults)
+		Me.pnlResult.Dock = System.Windows.Forms.DockStyle.Fill
+		Me.pnlResult.Location = New System.Drawing.Point(0, 0)
+		Me.pnlResult.Name = "pnlResult"
+		Me.pnlResult.Size = New System.Drawing.Size(788, 390)
+		Me.pnlResult.TabIndex = 2
 		'
 		'txtResultsError
 		'
@@ -117,13 +141,20 @@ Partial Class frmMain
 		'gridViewResults
 		'
 		Me.gridViewResults.GridControl = Me.grdResults
+		Me.gridViewResults.HorzScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Always
 		Me.gridViewResults.Name = "gridViewResults"
 		Me.gridViewResults.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.[False]
 		Me.gridViewResults.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.[False]
 		Me.gridViewResults.OptionsBehavior.AllowFixedGroups = DevExpress.Utils.DefaultBoolean.[False]
 		Me.gridViewResults.OptionsBehavior.AllowGroupExpandAnimation = DevExpress.Utils.DefaultBoolean.[False]
+		Me.gridViewResults.OptionsBehavior.Editable = False
 		Me.gridViewResults.OptionsBehavior.ReadOnly = True
 		Me.gridViewResults.OptionsCustomization.AllowColumnMoving = False
+		Me.gridViewResults.OptionsLayout.Columns.AddNewColumns = False
+		Me.gridViewResults.OptionsLayout.Columns.RemoveOldColumns = False
+		Me.gridViewResults.OptionsLayout.Columns.StoreLayout = False
+		Me.gridViewResults.OptionsView.AutoCalcPreviewLineCount = True
+		Me.gridViewResults.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.[True]
 		'
 		'TableLayoutPanel1
 		'
@@ -143,7 +174,7 @@ Partial Class frmMain
 		'
 		'toolBarMain
 		'
-		Me.toolBarMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFile, Me.ToolStripSeparator1, Me.mnuExecuteQuery, Me.mnuClearConsulta})
+		Me.toolBarMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFile, Me.ToolStripSeparator1, Me.mnuExecuteQuery, Me.mnuClearConsulta, Me.ToolStripSeparator2, Me.mnuExportToExcel})
 		Me.toolBarMain.Location = New System.Drawing.Point(0, 0)
 		Me.toolBarMain.Name = "toolBarMain"
 		Me.toolBarMain.Size = New System.Drawing.Size(800, 25)
@@ -164,7 +195,7 @@ Partial Class frmMain
 		'
 		Me.subMnuOpenQuery.Image = CType(resources.GetObject("subMnuOpenQuery.Image"), System.Drawing.Image)
 		Me.subMnuOpenQuery.Name = "subMnuOpenQuery"
-		Me.subMnuOpenQuery.Size = New System.Drawing.Size(180, 22)
+		Me.subMnuOpenQuery.Size = New System.Drawing.Size(173, 22)
 		Me.subMnuOpenQuery.Text = "A&brir consulta..."
 		'
 		'subMnuSaveQuery
@@ -172,7 +203,7 @@ Partial Class frmMain
 		Me.subMnuSaveQuery.Enabled = False
 		Me.subMnuSaveQuery.Image = CType(resources.GetObject("subMnuSaveQuery.Image"), System.Drawing.Image)
 		Me.subMnuSaveQuery.Name = "subMnuSaveQuery"
-		Me.subMnuSaveQuery.Size = New System.Drawing.Size(180, 22)
+		Me.subMnuSaveQuery.Size = New System.Drawing.Size(173, 22)
 		Me.subMnuSaveQuery.Text = "&Guardar consulta..."
 		'
 		'ToolStripSeparator1
@@ -196,27 +227,19 @@ Partial Class frmMain
 		Me.mnuClearConsulta.Size = New System.Drawing.Size(161, 22)
 		Me.mnuClearConsulta.Text = "&Limpiar consulta (Ctrl+C)"
 		'
-		'pnlQuery
+		'ToolStripSeparator2
 		'
-		Me.pnlQuery.BackColor = System.Drawing.Color.White
-		Me.pnlQuery.Controls.Add(Me.txtQuery)
-		Me.pnlQuery.Dock = System.Windows.Forms.DockStyle.Fill
-		Me.pnlQuery.Location = New System.Drawing.Point(0, 0)
-		Me.pnlQuery.Name = "pnlQuery"
-		Me.pnlQuery.Padding = New System.Windows.Forms.Padding(10, 10, 0, 0)
-		Me.pnlQuery.Size = New System.Drawing.Size(788, 390)
-		Me.pnlQuery.TabIndex = 1
+		Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+		Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 25)
 		'
-		'pnlResult
+		'mnuExportToExcel
 		'
-		Me.pnlResult.BackColor = System.Drawing.Color.White
-		Me.pnlResult.Controls.Add(Me.txtResultsError)
-		Me.pnlResult.Controls.Add(Me.grdResults)
-		Me.pnlResult.Dock = System.Windows.Forms.DockStyle.Fill
-		Me.pnlResult.Location = New System.Drawing.Point(0, 0)
-		Me.pnlResult.Name = "pnlResult"
-		Me.pnlResult.Size = New System.Drawing.Size(788, 390)
-		Me.pnlResult.TabIndex = 2
+		Me.mnuExportToExcel.Enabled = False
+		Me.mnuExportToExcel.Image = CType(resources.GetObject("mnuExportToExcel.Image"), System.Drawing.Image)
+		Me.mnuExportToExcel.ImageTransparentColor = System.Drawing.Color.Magenta
+		Me.mnuExportToExcel.Name = "mnuExportToExcel"
+		Me.mnuExportToExcel.Size = New System.Drawing.Size(108, 22)
+		Me.mnuExportToExcel.Text = "E&xportar a Excel"
 		'
 		'openFileDialog
 		'
@@ -236,15 +259,15 @@ Partial Class frmMain
 		CType(Me.tabControl, System.ComponentModel.ISupportInitialize).EndInit()
 		Me.tabControl.ResumeLayout(False)
 		Me.tabQuery.ResumeLayout(False)
+		Me.pnlQuery.ResumeLayout(False)
 		Me.tabResults.ResumeLayout(False)
+		Me.pnlResult.ResumeLayout(False)
 		CType(Me.grdResults, System.ComponentModel.ISupportInitialize).EndInit()
 		CType(Me.gridViewResults, System.ComponentModel.ISupportInitialize).EndInit()
 		Me.TableLayoutPanel1.ResumeLayout(False)
 		Me.TableLayoutPanel1.PerformLayout()
 		Me.toolBarMain.ResumeLayout(False)
 		Me.toolBarMain.PerformLayout()
-		Me.pnlQuery.ResumeLayout(False)
-		Me.pnlResult.ResumeLayout(False)
 		Me.ResumeLayout(False)
 
 	End Sub
@@ -267,4 +290,6 @@ Partial Class frmMain
 	Friend WithEvents pnlQuery As Panel
 	Friend WithEvents pnlResult As Panel
 	Friend WithEvents openFileDialog As OpenFileDialog
+	Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
+	Friend WithEvents mnuExportToExcel As ToolStripButton
 End Class

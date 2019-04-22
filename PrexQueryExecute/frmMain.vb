@@ -48,7 +48,39 @@ Public Class frmMain
 	Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 		EnabledMenu()
 	End Sub
+
+	Private Sub tabControl_SelectedPageChanged(sender As Object, e As DevExpress.XtraTab.TabPageChangedEventArgs) Handles tabControl.SelectedPageChanged
+		If tabControl.SelectedTabPageIndex = 0 Then
+			txtQuery.Focus()
+		ElseIf grdResults.Visible Then
+			gridViewResults.Focus()
+		Else
+			txtResultsError.Focus()
+		End If
+	End Sub
+
+	Private Sub subMnuSaveQuery_Click(sender As Object, e As EventArgs) Handles subMnuSaveQuery.Click
+		Dim fileName = GetSaveFile("Guardar consulta...", "SQL (*.sql)|*sql", ".sql", False)
+		If fileName.Any() Then
+			IO.File.WriteAllLines(fileName, txtQuery.Lines)
+		End If
+	End Sub
+
+	Private Sub mnuExportToExcel_Click(sender As Object, e As EventArgs) Handles mnuExportToExcel.Click
+		Try
+
+			Dim fileName = GetSaveFile("Exportara Excel", "Excel (*.xlsx)|*.xlsx", ".xlsx", False)
+			If fileName.Any() Then
+				gridViewResults.ExportToXlsx(fileName)
+				If MessageBox.Show("Se exportó consulta a Excel." & vbCrLf & "¿Desea abrirlo?", "Exportar a Excel", MessageBoxButtons.YesNo, MessageBoxIcon.Information) Then Process.Start(fileName)
+			End If
+		Catch ex As Exception
+			MessageBox.Show("Ocurrió un error al exportar a Excel", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+		End Try
+	End Sub
+
 #End Region
+
 
 #Region "Metodos"
 
@@ -138,14 +170,19 @@ Public Class frmMain
 		txtResultsError.Dock = DockStyle.Bottom
 		txtResultsError.Visible = False
 
-		gridViewResults.AutoFillColumn = True
+		grdResults.Dock = DockStyle.Fill
+		grdResults.Visible = True
+		gridViewResults.OptionsView.ColumnAutoWidth = False
+		gridViewResults.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.Default
+
 		grdResults.DataSource = data
 		grdResults.RefreshDataSource()
 		grdResults.Refresh()
-		grdResults.Dock = DockStyle.Fill
-		grdResults.Visible = True
+
+		gridViewResults.BestFitColumns()
 
 		If data Is Nothing Then ShowMessageResult("Error: No fue posible obtener DataTable (ISNULL)", True)
+		mnuExportToExcel.Enabled = gridViewResults.RowCount > 0
 
 		ActiveResultPage()
 		gridViewResults.Focus()
@@ -157,10 +194,12 @@ Public Class frmMain
 		grdResults.DataSource = Nothing
 		grdResults.Dock = DockStyle.Bottom
 
+		mnuExportToExcel.Enabled = False
+
 		If isError Then
 			txtResultsError.ForeColor = Color.Red
 		Else
-			txtResultsError.ForeColor = Color.Black
+			txtResultsError.ForeColor = Color.Blue
 		End If
 
 		pnlResult.Padding = New Padding(10, 10, 0, 0)
@@ -193,11 +232,29 @@ Public Class frmMain
 		openFileDialog.DefaultExt = ".sql"
 		openFileDialog.CheckFileExists = True
 		openFileDialog.FileName = "*.sql"
+		openFileDialog.Filter = "SQL (*.sql)|*.sql"
 		If openFileDialog.ShowDialog() = DialogResult.OK Then
 			Dim fileName = openFileDialog.FileName
 			txtQuery.Lines = System.IO.File.ReadAllLines(fileName)
 		End If
 	End Sub
+
+	Private Function GetSaveFile(title As String, filter As String, ext As String) As String
+		Return GetSaveFile(title, filter, ext, True)
+	End Function
+
+	Private Function GetSaveFile(title As String, filter As String, ext As String, checkExistFile As Boolean) As String
+		Dim saveControl As New SaveFileDialog()
+		saveControl.Title = title
+		saveControl.DefaultExt = ext
+		saveControl.CheckPathExists = True
+		saveControl.CheckFileExists = checkExistFile
+		saveControl.Filter = filter
+		If saveControl.ShowDialog(Me) = DialogResult.OK Then
+			Return saveControl.FileName
+		End If
+		Return String.Empty
+	End Function
 #End Region
 
 End Class
