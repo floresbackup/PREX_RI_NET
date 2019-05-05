@@ -344,88 +344,66 @@ Maneja_Error:
 
     End Sub
 
-    Public Function InicioCITI() As Boolean
-        GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "InicioCITI")
-        Dim sNombre As String
-        Dim sPerfil As String
-        '        Dim sPerfil2 = String.Empty
+	Public Function InicioCITI() As Boolean
+		GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "InicioCITI")
+		Dim sNombre As String = String.Empty
+		Dim sPerfil As String
+		'        Dim sPerfil2 = String.Empty
+		Try
 
-        sPerfil = Nothing
-        Dim sgResponse As String = String.Empty
+			sPerfil = Nothing
+			Dim sgResponse As String = String.Empty
 
-        Dim SGInterface As SGInterface = FactorySGInstance.getInstanceInterface()
-        Dim returnValue As Integer = -1
-        returnValue = SGInterface.RsmsLogin(ID_SISTEMA.ToString(), "Gestión RI", SG_CONFIG, sgResponse)
-        If (returnValue = 1) Then
+			Dim SGInterface As SGInterface = FactorySGInstance.getInstanceInterface()
+			Dim returnValue As Integer = -1
+			returnValue = SGInterface.RsmsLogin(ID_SISTEMA.ToString(), "Gestión RI", SG_CONFIG, sgResponse)
+			If (returnValue = 1) Then
 
-            'MessageBox.Show(frmMain, "Perfil devuelto: " & sPerfil, "Login SGLibrary", MessageBoxButtons.OK)
-            Dim responseSplit As String() = sgResponse.Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
-            If (responseSplit.Where(Function(s) s.Any()).Any() AndAlso Not responseSplit.FirstOrDefault() Is Nothing) Then
-                Dim usuarioCiti As String() = responseSplit.FirstOrDefault(Function(s) s.ToLower.Contains("sg_")).Trim().Split(New String() {"_"}, StringSplitOptions.RemoveEmptyEntries)
-                If usuarioCiti.Any AndAlso usuarioCiti.FirstOrDefault().ToLower() = "sg" Then
-                    sNombre = usuarioCiti(1)
-                Else
-                    sNombre = String.Empty
-                End If
-            Else
-                sNombre = String.Empty
-            End If
+				MessageBox.Show(frmMain, "Login devuelve: " & sgResponse, "Login SGLibrary", MessageBoxButtons.OK)
+				Dim responseSplit As String() = sgResponse.Replace("[", String.Empty).Replace("]", String.Empty).Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+				If (responseSplit.Where(Function(s) s.Any()).Any() AndAlso Not responseSplit.FirstOrDefault() Is Nothing) Then
+					If responseSplit.Any(Function(s) s.ToLower.Contains("sg_")) Then
+						Dim usuarioCiti As String() = responseSplit.FirstOrDefault(Function(s) s.ToLower.Contains("sg_")).Trim().Split(New String() {"_"}, StringSplitOptions.RemoveEmptyEntries)
+						If usuarioCiti.Any AndAlso usuarioCiti.FirstOrDefault().ToLower() = "sg" Then
+							sNombre = usuarioCiti(1)
+						End If
+					End If
+					If sNombre = String.Empty AndAlso responseSplit.Count() > 1 Then
+						sNaombre = responseSplit.FirstOrDefault()
+					End If
+				Else
+					sNombre = String.Empty
+				End If
 
-            sPerfil = SGInterface.AccFunctions().Trim
+				sPerfil = SGInterface.AccFunctions().Replace("[", String.Empty).Replace("]", String.Empty).Trim
+				MessageBox.Show(frmMain, "Functions: " & sPerfil, "Login SGLibrary", MessageBoxButtons.OK)
 
-            Dim oAdmTablas As New AdmTablas
+				Dim oAdmTablas As New AdmTablas
 
-            oAdmTablas.ConnectionString = CONN_LOCAL
+				oAdmTablas.ConnectionString = CONN_LOCAL
 
-            NOMBRE_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_DESCRI", " TG_CODTAB=1 AND TG_NUME01=1").ToString()
-            CODIGO_ENTIDAD = Long.Parse(oAdmTablas.DevolverValor("TABGEN", "TG_CODCON", " TG_CODTAB=1 AND TG_NUME01=1").ToString())
-            UsuarioActual.Nombre = sNombre
-            UsuarioActual.Codigo = Long.Parse(oAdmTablas.DevolverValor("USUARI", "US_CODUSU", " US_NOMBRE = '" & sNombre & "'", "0").ToString())
-            UsuarioActual.Descripcion = oAdmTablas.DevolverValor("USUARI", "US_DESCRI", " US_NOMBRE = '" & sNombre & "'", sNombre).ToString
+				NOMBRE_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_DESCRI", " TG_CODTAB=1 AND TG_NUME01=1").ToString()
+				CODIGO_ENTIDAD = Long.Parse(oAdmTablas.DevolverValor("TABGEN", "TG_CODCON", " TG_CODTAB=1 AND TG_NUME01=1").ToString())
+				UsuarioActual.Nombre = sNombre
+				UsuarioActual.Codigo = Long.Parse(oAdmTablas.DevolverValor("USUARI", "US_CODUSU", " US_NOMBRE = '" & sNombre & "'", "0").ToString())
+				UsuarioActual.Descripcion = oAdmTablas.DevolverValor("USUARI", "US_DESCRI", " US_NOMBRE = '" & sNombre & "'", sNombre).ToString
 
-            oAdmTablas = Nothing
+				oAdmTablas = Nothing
 
-            GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "Perfil: " & sPerfil & " - SG Response: " & sgResponse)
+				GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "Perfil: " & sPerfil & " - SG Response: " & sgResponse)
 
-            frmMain.ActualizarSeguridad(sPerfil.Replace("[", String.Empty).Replace("]", String.Empty).Trim)
-            CITI_PERFIL = sPerfil
-            Return True
-        Else
-            Return False
-        End If
-        '        Dim r2 = SGInterface.noGuiLogin(1, "Gestion RI", "C:\Program Files (x86)\Citi\SGLibraryNET_5.8.004_net2.0\resources\config.xml", "pepe", "lala", sPerfil2)
+				frmMain.ActualizarSeguridad(sPerfil.Replace("[", String.Empty).Replace("]", String.Empty).Trim)
+				CITI_PERFIL = sPerfil
+				Return True
+			Else
+				Return False
+			End If
 
-        'If Andromeda.Framework.Windows.Security.Login.PerformLogin(False) Then
+		Catch ex As Exception
+			TratarError(ex, "InicioCiti")
+			Return False
+		End Try
 
-        '    sNombre = Andromeda.Framework.Security.AndromedaPrincipal.User.Identity.Name
-        '    sPerfil = Andromeda.Framework.Security.AndromedaPrincipal.User.Functions(0)
-
-        '    Dim oAdmTablas As New AdmTablas
-
-        '    oAdmTablas.ConnectionString = CONN_LOCAL
-
-        '    NOMBRE_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_DESCRI", " TG_CODTAB=1 AND TG_NUME01=1")
-        '    CODIGO_ENTIDAD = oAdmTablas.DevolverValor("TABGEN", "TG_CODCON", " TG_CODTAB=1 AND TG_NUME01=1")
-        '    UsuarioActual.Nombre = sNombre
-        '    UsuarioActual.Codigo = oAdmTablas.DevolverValor("USUARI", "US_CODUSU", " US_NOMBRE = '" & sNombre & "'", "0")
-        '    UsuarioActual.Descripcion = oAdmTablas.DevolverValor("USUARI", "US_DESCRI", " US_NOMBRE = '" & sNombre & "'", sNombre)
-
-        '    oAdmTablas = Nothing
-
-        '    GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "")
-
-        '    frmMain.ActualizarSeguridad(sPerfil)
-
-        '    InicioCITI = True
-
-        'Else
-
-        '    InicioCITI = False
-
-        'End If
-
-
-
-    End Function
+	End Function
 
 End Module
