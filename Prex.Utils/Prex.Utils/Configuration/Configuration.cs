@@ -139,7 +139,7 @@ namespace Prex.Utils
 #if DEBUG
 				return @"C:\Prex\DebugLocal\Prex.config";
 #else
-				return Application.StartupPath + @"\Prex.config";
+				return Environment.CurrentDirectory + @"\Prex.config";
 #endif
             }
         }
