@@ -375,7 +375,7 @@ Public Class frmMain
     End Function
 
     Private Function ProcesosPrevios() As Boolean
-
+        If oProcesosInt Is Nothing OrElse oProcesosInt.Count() = 0 Then Return True
         Dim sParam(1) As String
 
         For Each oPro As clsProcesosPrevios In oProcesosInt

@@ -2529,7 +2529,7 @@ Reinicio:
     Private Function ProcesosPrevios() As Boolean
         Try
             Me.Cursor = Cursors.WaitCursor
-
+            If oProcesosPrevios Is Nothing OrElse oProcesosPrevios.Count() = 0 Then Return True
             Dim oPro As clsProcesosPrevios
             Dim oVar As clsVariables
             Dim sParam(1) As String
