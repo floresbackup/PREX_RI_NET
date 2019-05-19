@@ -380,7 +380,7 @@ Public Class frmMain
 
     End Sub
 
-    Public Sub ActualizarSeguridad(Optional ByVal sPerfil As String = "")
+    Public Function ActualizarSeguridad(Optional ByVal sPerfil As String = "") As Boolean
 
         Dim oAdmUsuarios As New AdmUsuarios
 
@@ -403,8 +403,12 @@ Public Class frmMain
         End If
 
         oAdmUsuarios = Nothing
-
-    End Sub
+        If HABILITACIONES_ESPECIALES.Trim().Replace(" ", String.Empty) = String.Empty Then
+            Return False
+        Else
+            Return True
+        End If
+    End Function
 
     Private Function TransaccionHabilitada(ByVal nCodTransaccion As Long) As Boolean
 

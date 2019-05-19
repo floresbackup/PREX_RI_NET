@@ -213,6 +213,12 @@ Public Class frmMain
     End Sub
 
     Public Sub Ejecutar()
+
+        'FORMAT,FONDO,FRENTE,FUENTE,BOLD,UNDERLN,ITALIC,TACHADO,SIZE,ANCHO COL
+        'yyyy-mm-dd;-2147483643;-2147483630;Tahoma;0;0;0;8;1200;
+
+
+
         If ProcesosPrevios() Then
 
             Dim sSQL As String = ReemplazarVariables(oConsulta.Query, PanControles.Controls)
@@ -220,6 +226,7 @@ Public Class frmMain
             Dim ad As OleDb.OleDbDataAdapter = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
             Dim dt As New DataTable
             ad.Fill(dt)
+
 
 
             If Not bFlagCargado Then
@@ -245,25 +252,36 @@ Public Class frmMain
             End If
 
             btnAdjuntarArchivo.Enabled = oAdmTablas.ExisteTabla("ADJUNT")
+            Columnas(False)
         End If
     End Sub
 
     Private Sub Columnas()
+        Columnas(True)
+    End Sub
+
+    Private Sub Columnas(isNew As Boolean)
 
         Dim View As ColumnView = Grid.MainView
         Dim Column As DevExpress.XtraGrid.Columns.GridColumn
         Dim oCol As clsColumnas
 
-        View.Columns.Clear()
+        If isNew Then
+            View.Columns.Clear()
+        End If
 
         For Each oCol In oColumnas
+            If isNew Then
 
-            Column = View.Columns.AddField(oCol.Campo)
+                Column = View.Columns.AddField(oCol.Campo)
 
-            Column.Width = 100
-            Column.VisibleIndex = oCol.Orden
-            Column.Visible = oCol.Visible
-            Column.Caption = oCol.Titulo
+                Column.Width = 100
+                Column.VisibleIndex = oCol.Orden
+                Column.Visible = oCol.Visible
+                Column.Caption = oCol.Titulo
+            Else
+                Column = View.Columns.Item(oCol.Campo)
+            End If
 
             If oCol.Formato.IndexOf(";") <> -1 Then
                 If Not FormatearColumna(Column) Then
@@ -532,8 +550,10 @@ Public Class frmMain
         End If
 
         If Not (oFmt.Formato Is Nothing) AndAlso (oFmt.Formato.ToLower() <> "standard") Then
-            oColumna.DisplayFormat.FormatType = FormatType.Custom
-            oColumna.DisplayFormat.FormatString = oFmt.Formato
+            oColumna.DisplayFormat.FormatString = oFmt.Formato.Replace("mm", "MM")
+            If oFmt.Formato.ToLower.Contains("yyyy") OrElse oFmt.Formato.ToLower.Contains("mm") Then
+                oColumna.DisplayFormat.FormatType = FormatType.DateTime
+            End If
         End If
 
         If Not bFmtEmb Then
@@ -544,16 +564,20 @@ Public Class frmMain
 
                 If oFmt.Fuente <> "" Then
                     oFont = New Font(oFmt.Fuente, oFmt.Tamano, oEstiloFuente)
-                    oColumna.AppearanceCell.Font = oFont
+                Else
+                    oFont = New Font(oColumna.AppearanceCell.Font, oEstiloFuente)
                 End If
+                oColumna.AppearanceCell.Font = oFont
 
                 If oFmt.Frente <> 0 Then oColumna.AppearanceCell.ForeColor = System.Drawing.ColorTranslator.FromWin32(oFmt.Frente)
                 If oFmt.Fondo <> 0 Then oColumna.AppearanceCell.BackColor = System.Drawing.ColorTranslator.FromWin32(oFmt.Fondo)
 
                 Return True
+            Else
+                Return False
             End If
         Else
-            Return True
+            Return False
         End If
 
     End Function
@@ -777,7 +801,7 @@ Public Class frmMain
 
             For Each oCol In oColumnas
 
-                vValor = GridView1.GetRowCellDisplayText(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), oCol.Campo).ToString
+                vValor = GridView1.GetRowCellValue(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), oCol.Campo).ToString
 
                 If Not String.IsNullOrEmpty(vValor.ToString) Then
                     If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then

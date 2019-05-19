@@ -392,8 +392,10 @@ Maneja_Error:
 
 				GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "Perfil: " & sPerfil & " - SG Response: " & sgResponse)
 
-				frmMain.ActualizarSeguridad(sPerfil.Replace("[", String.Empty).Replace("]", String.Empty).Trim)
-				CITI_PERFIL = sPerfil
+                If Not frmMain.ActualizarSeguridad(sPerfil.Replace("[", String.Empty).Replace("]", String.Empty).Trim) Then
+                    Throw New Exception("No se encontró [DP_CODTRA] para el perfil " & sPerfil)
+                End If
+                CITI_PERFIL = sPerfil
 				Return True
 			Else
 				Return False

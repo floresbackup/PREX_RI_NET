@@ -102,19 +102,19 @@ Module modConsultasSistema
          oFmt = New clsFormatosColumnas
 
          Dim sFormat() As String = dr("DS_FORMAT").ToString.Split(";")
-
-         If sFormat.Length > 1 Then
+            'FORMAT,FONDO,FRENTE,FUENTE,BOLD,UNDERLN,ITALIC,TACHADO,SIZE,ANCHO COL
+            If sFormat.Length > 1 Then
 
             If sFormat(0).Trim <> "" Then oFmt.Formato = sFormat(0).Trim
             If Val(sFormat(1)) <> -2147483643 Then oFmt.Fondo = Val(sFormat(1))
             If Val(sFormat(2)) <> -2147483630 Then oFmt.Frente = Val(sFormat(2))
-            If sFormat(3).Trim <> "Tahoma" Then oFmt.Fuente = sFormat(3).Trim
+                If sFormat(3).Trim.Length > 0 Then oFmt.Fuente = sFormat(3).Trim
 
-            If CBool(Val(sFormat(4))) Then oFmt.Negrita = CBool(Val(sFormat(4)))
+                If CBool(Val(sFormat(4))) Then oFmt.Negrita = CBool(Val(sFormat(4)))
             If CBool(Val(sFormat(5))) Then oFmt.Subrayado = CBool(Val(sFormat(5)))
             If CBool(Val(sFormat(6))) Then oFmt.Tachado = CBool(Val(sFormat(6)))
-            If Val(sFormat(7)) <> 8 Then oFmt.Tamano = Val(sFormat(7))
-            If Val(sFormat(8)) <> 0 Then oFmt.Ancho = Convert.ToInt32(Val(sFormat(8)) / 15)
+                If sFormat(7).Trim <> "" Then oFmt.Tamano = Val(sFormat(7))
+                If Val(sFormat(8)) <> 0 Then oFmt.Ancho = Convert.ToInt32(Val(sFormat(8)) / 15)
 
             oFmt.Columna = dr("DS_CAMPO").ToString
             oFmt.Key = oFmt.Columna
