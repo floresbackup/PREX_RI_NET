@@ -358,8 +358,9 @@ Maneja_Error:
 			Dim returnValue As Integer = -1
 			returnValue = SGInterface.RsmsLogin(ID_SISTEMA.ToString(), "Gestión RI", SG_CONFIG, sgResponse)
 			If (returnValue = 1) Then
-
-				MessageBox.Show(frmMain, "Login devuelve: " & sgResponse, "Login SGLibrary", MessageBoxButtons.OK)
+                'SC08822|SC08822
+                'SG_ME66396_160771_3265|#######
+                MessageBox.Show(frmMain, "Login devuelve: " & sgResponse, "Login SGLibrary", MessageBoxButtons.OK)
 				Dim responseSplit As String() = sgResponse.Replace("[", String.Empty).Replace("]", String.Empty).Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
 				If (responseSplit.Where(Function(s) s.Any()).Any() AndAlso Not responseSplit.FirstOrDefault() Is Nothing) Then
 					If responseSplit.Any(Function(s) s.ToLower.Contains("sg_")) Then
@@ -369,8 +370,8 @@ Maneja_Error:
 						End If
 					End If
 					If sNombre = String.Empty AndAlso responseSplit.Count() > 1 Then
-						sNaombre = responseSplit.FirstOrDefault()
-					End If
+                        sNombre = responseSplit.FirstOrDefault()
+                    End If
 				Else
 					sNombre = String.Empty
 				End If

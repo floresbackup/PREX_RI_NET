@@ -39,12 +39,16 @@ Public Class frmABMRegistro
         Else
             ds = oAdmTablas.AbrirDataset(sSQL_Update)
         End If
-
+        If (ds.Tables.Count = 0 OrElse ds.Tables(0).Rows.Count = 0) AndAlso MODO_APE = "M" Then
+            INPUT_GENERAL = "CERRAR_FORMULARIO_YAA"
+            cmdGuardar.Enabled = False
+            Return
+        End If
         If MODO_APE = "B" AndAlso (ds.Tables(0).Rows.Count = 0) Then
             MensajeError("El registro actual no se puede eliminar")
             cmdGuardar.Enabled = False
             INPUT_GENERAL = "CERRAR_FORMULARIO_YAA"
-            GoTo Salir
+            Return
         End If
 
         For Each oCol In oColumnas
@@ -218,11 +222,7 @@ Public Class frmABMRegistro
                 End If
 
             End If
-
         Next
-
-Salir:
-
     End Sub
 
     Public Sub New()

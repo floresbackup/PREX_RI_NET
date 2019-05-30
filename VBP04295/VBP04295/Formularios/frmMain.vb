@@ -57,7 +57,7 @@ Public Class frmMain
 
                 For Each oCol As clsColumnas In oColumnas
                     If oCol.Clave Then
-                        sClave = sClave & GridView1.GetRowCellDisplayText(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), oCol.Campo).ToString & separador
+                        sClave = sClave & GridView1.GetRowCellDisplayText(GridView1.FocusedRowHandle, oCol.Campo).ToString & separador
                     End If
                 Next
             End If
@@ -801,9 +801,9 @@ Public Class frmMain
 
             For Each oCol In oColumnas
 
-                vValor = GridView1.GetRowCellValue(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), oCol.Campo).ToString
+                vValor = GetValorSeleccionado(oCol.Campo)
 
-                If Not String.IsNullOrEmpty(vValor.ToString) Then
+                If Not String.IsNullOrEmpty(vValor) Then
                     If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
                         vValor = FechaSQL(vValor)
                     ElseIf TipoDatosADO(oCol.Tipo) = "Numérico" Then
@@ -1592,7 +1592,7 @@ Reinicio:
             End If
 
             For Each oCol As clsColumnas In oColumnas
-                Dim vValor = GridView1.GetRowCellValue(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), oCol.Campo).ToString
+                Dim vValor = GridView1.GetRowCellValue(GridView1.FocusedRowHandle, oCol.Campo).ToString
 
                 If vValor IsNot Nothing Then
                     If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
@@ -1624,11 +1624,24 @@ Reinicio:
         End Try
     End Function
 
+    Private Function GetValorSeleccionado(campo As String) As Object
+        Dim rowHand = GridView1.FocusedRowHandle
+        Dim rowValue = GridView1.GetRowCellValue(rowHand, campo)
+        If rowHand Is Nothing OrElse rowValue Is Nothing Then
+            Return Nothing
+        Else
+            Return rowValue?.ToString
+        End If
+    End Function
+
     Private Function ValidaUpdate() As Boolean
 
-        If Grid.MainView.RowCount = 0 Then
+        If Grid.MainView.RowCount = 0 OrElse GridView1.GetFocusedDataRow() Is Nothing Then
             Return False
-            Exit Function
+        End If
+
+        If GridView1.IsGroupRow(GridView1.FocusedRowHandle) Then
+            Return False
         End If
 
         Try
@@ -1647,10 +1660,9 @@ Reinicio:
 
             For Each oCol In oColumnas
 
-                'vValor = GridView1.GetRowCellDisplayText(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), oCol.Campo).ToString
-                vValor = GridView1.GetRowCellValue(GridView1.GetRowHandle(GridView1.GetSelectedRows(0)), oCol.Campo).ToString
+                vValor = GetValorSeleccionado(oCol.Campo)
 
-                If Not String.IsNullOrEmpty(vValor.ToString) Then
+                If Not String.IsNullOrEmpty(vValor) Then
                     If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
                         vValor = FechaSQL(vValor)
                     ElseIf TipoDatosADO(oCol.Tipo) = "Numérico" Then

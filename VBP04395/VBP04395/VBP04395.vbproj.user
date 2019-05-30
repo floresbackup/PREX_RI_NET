@@ -21,7 +21,7 @@
     <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <StartArguments>/u:1/t:27201/e:94</StartArguments>
+    <StartArguments>/u:1/t:80006/e:16</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <StartArguments>/u:1/t:70099/e:94</StartArguments>
