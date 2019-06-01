@@ -22,6 +22,7 @@ Partial Class frmMain
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Me.txtMonedas = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
@@ -38,6 +39,7 @@ Partial Class frmMain
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(696, 418)
         Me.Controls.Add(Me.txtMonedas)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "frmMain"
         Me.Text = "frmMain"
         Me.ResumeLayout(False)

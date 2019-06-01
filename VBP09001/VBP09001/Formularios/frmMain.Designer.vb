@@ -19,6 +19,7 @@ Partial Class frmMain
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Me.frDiv = New System.Windows.Forms.GroupBox()
         Me.cmdGenerar = New System.Windows.Forms.Button()
         Me.chkOpen = New System.Windows.Forms.CheckBox()
@@ -199,7 +200,7 @@ Partial Class frmMain
         '
         Me.lblVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.lblVersion.Name = "lblVersion"
-        Me.lblVersion.Size = New System.Drawing.Size(75, 22)
+        Me.lblVersion.Size = New System.Drawing.Size(76, 22)
         Me.lblVersion.Text = "Versión: 1.0.0"
         '
         'ToolStripSeparator6
@@ -245,7 +246,6 @@ Partial Class frmMain
         Me.lblUsuario.Name = "lblUsuario"
         Me.lblUsuario.Size = New System.Drawing.Size(372, 20)
         Me.lblUsuario.Spring = True
-        Me.lblUsuario.Text = ""
         Me.lblUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblEntidad
@@ -300,6 +300,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.Label1)
         Me.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.KeyPreview = True
         Me.MaximizeBox = False
         Me.Name = "frmMain"

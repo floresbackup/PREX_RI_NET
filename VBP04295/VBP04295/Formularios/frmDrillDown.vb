@@ -53,7 +53,6 @@ Public Class frmDrillDown
         Next
 
         'GridView1.RestoreLayoutFromXml("C:\Test.xml")
-
         Grid.DataSource = dt
         Grid.RefreshDataSource()
         Grid.Refresh()
@@ -67,6 +66,16 @@ Public Class frmDrillDown
 
 
     End Sub
+
+    'Private Sub advBandedGridView1_MouseDown(sender As Object, e As MouseEventArgs)
+    '    Dim hitInfo = advBandedGridView1.CalcHitInfo(e.Location)
+    '    If hitInfo.InRow Then
+    '        If hitInfo.RowHandle < 0 Then
+    '            MessageBox.Show("GroupRow click")
+    '            'your code
+    '        End If
+    '    End If
+    'End Sub
 
     Private Sub GridView1_GridMenuItemClick(ByVal sender As Object, ByVal e As DevExpress.XtraGrid.Views.Grid.GridMenuItemClickEventArgs) Handles GridView1.GridMenuItemClick
 
@@ -103,12 +112,26 @@ Public Class frmDrillDown
     End Sub
 
     Private Sub GridView1_PopupMenuShowing(sender As Object, e As DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventArgs) Handles GridView1.PopupMenuShowing
+        For Each item As DevExpress.Utils.Menu.DXMenuItem In e.Menu.Items
+            item.Visible = True
+        Next
         If e.HitInfo.InColumnPanel Then
             columnMenu = e.HitInfo.Column
             InicializarMenuTotalizadores(e.Menu)
             e.Allow = True
+        ElseIf e.HitInfo.InGroupColumn Then
+            columnMenu = e.HitInfo.Column
+            e.Allow = True
+
+            For Each item As DevExpress.Utils.Menu.DXMenuItem In e.Menu.Items
+
+                If item.Caption = "agrupas" Then
+
+                End If
+            Next
+
         Else
-            e.Allow = False
+                e.Allow = False
             columnMenu = Nothing
         End If
     End Sub

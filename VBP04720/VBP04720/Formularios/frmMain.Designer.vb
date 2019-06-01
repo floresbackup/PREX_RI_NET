@@ -19,7 +19,6 @@ Partial Class frmMain
    'No lo modifique con el editor de código.
    <System.Diagnostics.DebuggerStepThrough()> _
    Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Dim StyleFormatCondition1 As DevExpress.XtraGrid.StyleFormatCondition = New DevExpress.XtraGrid.StyleFormatCondition()
         Dim StyleFormatCondition2 As DevExpress.XtraGrid.StyleFormatCondition = New DevExpress.XtraGrid.StyleFormatCondition()
@@ -41,7 +40,7 @@ Partial Class frmMain
         Me.tabPerfiles = New System.Windows.Forms.TabPage()
         Me.panTreeView = New System.Windows.Forms.Panel()
         Me.tvMenu = New System.Windows.Forms.TreeView()
-        Me.ilMain = New System.Windows.Forms.ImageList(Me.components)
+        Me.ilMain = New System.Windows.Forms.ImageList()
         Me.panBotones = New System.Windows.Forms.Panel()
         Me.cmdCancelarPerfil = New System.Windows.Forms.Button()
         Me.cmdGuardarPerfil = New System.Windows.Forms.Button()

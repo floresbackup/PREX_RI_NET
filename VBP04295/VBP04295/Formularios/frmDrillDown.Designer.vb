@@ -19,7 +19,6 @@ Partial Class frmDrillDown
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmDrillDown))
         Me.PanTop = New DevExpress.XtraEditors.PanelControl()
         Me.lblSubtitulo = New DevExpress.XtraEditors.LabelControl()
@@ -29,11 +28,12 @@ Partial Class frmDrillDown
         Me.Grid = New DevExpress.XtraGrid.GridControl()
         Me.GridView1 = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.StandaloneBarDockControl1 = New DevExpress.XtraBars.StandaloneBarDockControl()
-        Me.BarManager1 = New DevExpress.XtraBars.BarManager(Me.components)
+        Me.BarManager1 = New DevExpress.XtraBars.BarManager()
         Me.Bar1 = New DevExpress.XtraBars.Bar()
         Me.cmdImprimir = New DevExpress.XtraBars.BarButtonItem()
         Me.cmdGuardar = New DevExpress.XtraBars.BarButtonItem()
         Me.cmdGuardarLaoyut = New DevExpress.XtraBars.BarButtonItem()
+        Me.cmdResetLaoyut = New DevExpress.XtraBars.BarButtonItem()
         Me.cmdCerrar = New DevExpress.XtraBars.BarButtonItem()
         Me.Bar3 = New DevExpress.XtraBars.Bar()
         Me.barDockControlTop = New DevExpress.XtraBars.BarDockControl()
@@ -41,14 +41,13 @@ Partial Class frmDrillDown
         Me.barDockControlLeft = New DevExpress.XtraBars.BarDockControl()
         Me.barDockControlRight = New DevExpress.XtraBars.BarDockControl()
         Me.Bar4 = New DevExpress.XtraBars.Bar()
-        Me.popMnuTotalizador = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.popMnuTotalizador = New System.Windows.Forms.ContextMenuStrip()
         Me.mnuRecuento = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuSuma = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuPromedio = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMinimo = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMaximo = New System.Windows.Forms.ToolStripMenuItem()
         Me.BarButtonItem1 = New DevExpress.XtraBars.BarButtonItem()
-        Me.cmdResetLaoyut = New DevExpress.XtraBars.BarButtonItem()
         CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanTop.SuspendLayout()
         CType(Me.picLogo.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -146,6 +145,8 @@ Partial Class frmDrillDown
         Me.GridView1.OptionsLayout.StoreAllOptions = True
         Me.GridView1.OptionsLayout.StoreAppearance = True
         Me.GridView1.OptionsMenu.ShowFooterItem = True
+        Me.GridView1.OptionsMenu.ShowGroupSummaryEditorItem = True
+        Me.GridView1.OptionsView.ColumnAutoWidth = False
         Me.GridView1.OptionsView.GroupFooterShowMode = DevExpress.XtraGrid.Views.Grid.GroupFooterShowMode.VisibleAlways
         Me.GridView1.OptionsView.ShowFooter = True
         Me.GridView1.OptionsView.ShowGroupedColumns = True
@@ -172,7 +173,7 @@ Partial Class frmDrillDown
         Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl1)
         Me.BarManager1.Form = Me
         Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.cmdImprimir, Me.cmdGuardar, Me.cmdCerrar, Me.cmdGuardarLaoyut, Me.cmdResetLaoyut})
-        Me.BarManager1.MaxItemId = 6
+        Me.BarManager1.MaxItemId = 7
         Me.BarManager1.StatusBar = Me.Bar3
         '
         'Bar1
@@ -219,6 +220,16 @@ Partial Class frmDrillDown
         Me.cmdGuardarLaoyut.ImageOptions.LargeImage = CType(resources.GetObject("cmdGuardarLaoyut.ImageOptions.LargeImage"), System.Drawing.Image)
         Me.cmdGuardarLaoyut.Name = "cmdGuardarLaoyut"
         Me.cmdGuardarLaoyut.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph
+        '
+        'cmdResetLaoyut
+        '
+        Me.cmdResetLaoyut.Border = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat
+        Me.cmdResetLaoyut.Caption = "Reset Layout"
+        Me.cmdResetLaoyut.Id = 5
+        Me.cmdResetLaoyut.ImageOptions.Image = CType(resources.GetObject("cmdResetLaoyut.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdResetLaoyut.ImageOptions.LargeImage = CType(resources.GetObject("cmdResetLaoyut.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdResetLaoyut.Name = "cmdResetLaoyut"
+        Me.cmdResetLaoyut.Visibility = DevExpress.XtraBars.BarItemVisibility.Never
         '
         'cmdCerrar
         '
@@ -334,16 +345,6 @@ Partial Class frmDrillDown
         Me.BarButtonItem1.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage"), System.Drawing.Image)
         Me.BarButtonItem1.Name = "BarButtonItem1"
         Me.BarButtonItem1.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph
-        '
-        'cmdResetLaoyut
-        '
-        Me.cmdResetLaoyut.Border = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat
-        Me.cmdResetLaoyut.Caption = "Reset Layout"
-        Me.cmdResetLaoyut.Id = 5
-        Me.cmdResetLaoyut.ImageOptions.Image = CType(resources.GetObject("cmdResetLaoyut.ImageOptions.Image"), System.Drawing.Image)
-        Me.cmdResetLaoyut.ImageOptions.LargeImage = CType(resources.GetObject("cmdResetLaoyut.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.cmdResetLaoyut.Name = "cmdResetLaoyut"
-        Me.cmdResetLaoyut.Visibility = DevExpress.XtraBars.BarItemVisibility.Never
         '
         'frmDrillDown
         '

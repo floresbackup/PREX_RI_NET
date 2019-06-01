@@ -19,7 +19,6 @@ Partial Class frmMain
    'No lo modifique con el editor de código.
    <System.Diagnostics.DebuggerStepThrough()> _
    Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Me.sbMain = New System.Windows.Forms.StatusStrip()
         Me.lblUsuario = New System.Windows.Forms.ToolStripStatusLabel()
@@ -38,7 +37,7 @@ Partial Class frmMain
         Me.picLogo = New DevExpress.XtraEditors.PictureEdit()
         Me.tabResultados = New DevExpress.XtraTab.XtraTabPage()
         Me.StandaloneBarDockControl1 = New DevExpress.XtraBars.StandaloneBarDockControl()
-        Me.BarManager1 = New DevExpress.XtraBars.BarManager(Me.components)
+        Me.BarManager1 = New DevExpress.XtraBars.BarManager()
         Me.barResultado = New DevExpress.XtraBars.Bar()
         Me.cmdNuevaConsultaResultado = New DevExpress.XtraBars.BarButtonItem()
         Me.cmdVistaPrevia = New DevExpress.XtraBars.BarButtonItem()
@@ -131,7 +130,7 @@ Partial Class frmMain
         Me.lblUsuario.Image = Global.VBP04000.My.Resources.Resources.Messenger_Information1
         Me.lblUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.lblUsuario.Name = "lblUsuario"
-        Me.lblUsuario.Size = New System.Drawing.Size(554, 20)
+        Me.lblUsuario.Size = New System.Drawing.Size(585, 20)
         Me.lblUsuario.Spring = True
         Me.lblUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -198,7 +197,7 @@ Partial Class frmMain
         '
         Me.lblVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.lblVersion.Name = "lblVersion"
-        Me.lblVersion.Size = New System.Drawing.Size(75, 22)
+        Me.lblVersion.Size = New System.Drawing.Size(76, 22)
         Me.lblVersion.Text = "Versión: 1.0.0"
         '
         'ToolStripSeparator6
@@ -751,6 +750,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.barDockControlTop)
         Me.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "frmMain"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

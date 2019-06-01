@@ -19,7 +19,6 @@ Partial Class frmMain
    'No lo modifique con el editor de código.
    <System.Diagnostics.DebuggerStepThrough()> _
    Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Me.sbMain = New System.Windows.Forms.StatusStrip()
         Me.lblUsuario = New System.Windows.Forms.ToolStripStatusLabel()
@@ -48,7 +47,7 @@ Partial Class frmMain
         Me.btnNuevoReg = New System.Windows.Forms.ToolStripButton()
         Me.btnEditarReg = New System.Windows.Forms.ToolStripButton()
         Me.btnEliminarReg = New System.Windows.Forms.ToolStripButton()
-        Me.ilMain = New System.Windows.Forms.ImageList(Me.components)
+        Me.ilMain = New System.Windows.Forms.ImageList()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.ListView1 = New System.Windows.Forms.ListView()
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -146,7 +145,7 @@ Partial Class frmMain
         '
         Me.lblVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.lblVersion.Name = "lblVersion"
-        Me.lblVersion.Size = New System.Drawing.Size(75, 22)
+        Me.lblVersion.Size = New System.Drawing.Size(76, 22)
         Me.lblVersion.Text = "Versión: 1.0.0"
         '
         'ToolStripSeparator6
@@ -169,7 +168,7 @@ Partial Class frmMain
         Me.lblTransaccion.Image = CType(resources.GetObject("lblTransaccion.Image"), System.Drawing.Image)
         Me.lblTransaccion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.lblTransaccion.Name = "lblTransaccion"
-        Me.lblTransaccion.Size = New System.Drawing.Size(86, 22)
+        Me.lblTransaccion.Size = New System.Drawing.Size(87, 22)
         Me.lblTransaccion.Text = "Transacción"
         Me.lblTransaccion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -245,7 +244,7 @@ Partial Class frmMain
         'ToolStripLabel1
         '
         Me.ToolStripLabel1.Name = "ToolStripLabel1"
-        Me.ToolStripLabel1.Size = New System.Drawing.Size(86, 22)
+        Me.ToolStripLabel1.Size = New System.Drawing.Size(87, 22)
         Me.ToolStripLabel1.Text = "  Tabla general:"
         '
         'cboTabla
@@ -692,6 +691,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.ToolMain)
         Me.Controls.Add(Me.sbMain)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "frmMain"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "frmMain"

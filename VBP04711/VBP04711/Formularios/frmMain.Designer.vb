@@ -60,14 +60,14 @@ Partial Class frmMain
         Me.ToolBarra = New System.Windows.Forms.ToolStrip()
         Me.btnNuevaConsulta = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
-        Me.btnVerAdjunto = New System.Windows.Forms.ToolStripButton()
         Me.btnImprimir = New System.Windows.Forms.ToolStripButton()
         Me.btnExportar = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.btnVerAdjunto = New System.Windows.Forms.ToolStripButton()
         Me.ToolTipText = New System.Windows.Forms.ToolTip()
         Me.colExtra = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn1 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         CType(Me.PanControles, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanControles.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -484,14 +484,6 @@ Partial Class frmMain
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
         Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 29)
         '
-        'btnVerAdjunto
-        '
-        Me.btnVerAdjunto.Image = Global.VBP04711.My.Resources.Resources.page_attach
-        Me.btnVerAdjunto.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.btnVerAdjunto.Name = "btnVerAdjunto"
-        Me.btnVerAdjunto.Size = New System.Drawing.Size(68, 26)
-        Me.btnVerAdjunto.Text = "Ver Txts"
-        '
         'btnImprimir
         '
         Me.btnImprimir.Image = CType(resources.GetObject("btnImprimir.Image"), System.Drawing.Image)
@@ -517,6 +509,19 @@ Partial Class frmMain
         Me.ToolStripButton2.Size = New System.Drawing.Size(62, 26)
         Me.ToolStripButton2.Text = "Copiar"
         '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 29)
+        '
+        'btnVerAdjunto
+        '
+        Me.btnVerAdjunto.Image = Global.VBP04711.My.Resources.Resources.page_attach
+        Me.btnVerAdjunto.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnVerAdjunto.Name = "btnVerAdjunto"
+        Me.btnVerAdjunto.Size = New System.Drawing.Size(68, 26)
+        Me.btnVerAdjunto.Text = "Ver Txts"
+        '
         'colExtra
         '
         Me.colExtra.Caption = "Extra"
@@ -531,11 +536,6 @@ Partial Class frmMain
         Me.GridColumn1.Name = "GridColumn1"
         Me.GridColumn1.Visible = True
         Me.GridColumn1.VisibleIndex = 0
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 29)
         '
         'frmMain
         '
