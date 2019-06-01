@@ -7,14 +7,50 @@ Public Class frmExportar
    Private sFiltro As String
 
    Public Sub PasarViewResultados(ByVal sDefaultFileName As String, ByVal sNombreConsulta As String, ByRef oGvw As Grid.GridView)
+        oGvwResults = oGvw
+        txtPageTitle.Text = sNombreConsulta
+        txtFileName.Text = sDefaultFileName
+        OpcionesDefault(sDefaultFileName)
+        tabExportar.TabPages.Remove(tpOpciones)
+    End Sub
 
-      oGvwResults = oGvw
-      txtPageTitle.Text = sNombreConsulta
-      txtFileName.Text = sDefaultFileName
+    Private Sub OpcionesDefault(ByVal defaultFileName As String)
+        Dim fileName = defaultFileName
+        If fileName = "" Then
+            fileName = "Form_" & CODIGO_TRANSACCION.ToString() & ".xls"
+        End If
+        If RUTA_PREFERIDA <> "" Then
+            txtFileName.Text = RUTA_PREFERIDA & IIf(Strings.Right(RUTA_PREFERIDA, 1) = "\", "", "\") & fileName
+        Else
+            txtFileName.Text = CARPETA_LOCAL & "SPOOL\" & fileName
+        End If
 
-   End Sub
+        'txtDelimiter = DELIMITADOR
+        'txtCualificador = CUALIFICADOR
+        '
+        'chkExportarSoloVisibles.Value = Abs(COLUMNAS_VISIBLES)
+        '
+        'If METODO_PREFERIDO = 0 Then
+        '    optRecordset.Value = True
+        '    optRecordset_Click
+        'Else
+        '    optRegistro.Value = True
+        '    optRegistro_Click
+        'End If
+        '
+        '
+        'If oGrid.Groups.Count > 0 Then
+        '
+        '    optRecordset.Value = False
+        '    optRecordset.Enabled = False
+        '
+        '    optRegistro.Value = True
+        '
+        'End If
 
-   Private Sub cmdAceptar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAceptar.Click
+    End Sub
+
+    Private Sub cmdAceptar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAceptar.Click
 
       If DatosOK() Then
          Exportar()
@@ -33,10 +69,9 @@ Public Class frmExportar
 
                oOptions.ShowGridLines = True
                     'oOptions.UseNativeFormat = True
-
                     oGvwResults.ExportToXls(txtFileName.Text.Trim, oOptions)
 
-            Case 1 'Archivo PDF
+                Case 1 'Archivo PDF
 
                Dim oOptions As New PdfExportOptions
 
@@ -66,11 +101,12 @@ Public Class frmExportar
                Dim oOptions As New TextExportOptions
 
                oOptions.Separator = txtSep.Text.Trim
-               oOptions.QuoteStringsWithSeparators = chkTexto.Checked
+                    oOptions.QuoteStringsWithSeparators = chkTexto.Checked
+                    oOptions.
+                    oOptions.TextExportMode = TextExportMode.Value
+                    oGvwResults.ExportToText(txtFileName.Text.Trim, oOptions)
 
-               oGvwResults.ExportToText(txtFileName.Text.Trim, oOptions)
-
-            Case 5 'Texto enriquecido
+                Case 5 'Texto enriquecido
                Dim oOptions As New RtfExportOptions
 
                oGvwResults.ExportToRtf(txtFileName.Text.Trim)
@@ -170,13 +206,13 @@ Public Class frmExportar
       oDlg = New SaveFileDialog
       oDlg.FileName = txtFileName.Text.Trim
       oDlg.ValidateNames = True
-      oDlg.OverwritePrompt = False
-      oDlg.Filter = sFiltro
+        oDlg.OverwritePrompt = True
+        oDlg.InitialDirectory = System.IO.Path.GetDirectoryName(txtFileName.Text.Trim)
+        oDlg.Filter = sFiltro
       oDlg.ShowDialog(Me)
+        If oDlg.FileName.Trim <> vbNullString Then
+            txtFileName.Text = oDlg.FileName.Trim
+        End If
 
-      If oDlg.FileName.Trim <> vbNullString Then
-         txtFileName.Text = oDlg.FileName.Trim
-      End If
-
-   End Sub
+    End Sub
 End Class

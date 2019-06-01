@@ -60,7 +60,7 @@ Module modDeclaraciones
     'Public ARCHIVO_CONFIG_DEV As String = "D:\Develop\Proyectos.NET\Prex.config"
     ' Public ARCHIVO_CONFIG_DEV As String = "\\10.0.0.100\e$\Develop\PREX_RI (Versión NET)\BIN\Prex.config"
     '28-11-2014 AGREGADO PARA RUN AS
-
+    Public RUTA_PREFERIDA As String = ""
     Public RUTAENCR_RA As String = ""
     Public DOMINIO_DEFAULT As String = ""
     Public GENERAR_LOG_SQL As Boolean

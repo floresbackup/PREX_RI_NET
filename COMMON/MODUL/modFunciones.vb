@@ -191,6 +191,8 @@ Module modFunciones
                         '28-11-2014 SE AGREGA PARA USUARIO ENCRIPTADO DE RUN AS
                         Case "RUTAENCR_RA"
                             RUTAENCR_RA = sTemp
+                        Case "RUTA_PREFERIDA"
+                            RUTA_PREFERIDA = sTemp
                         Case "DOMINIO_DEFAULT"
                         Case "DOMINIO"
                             DOMINIO_DEFAULT = sTemp

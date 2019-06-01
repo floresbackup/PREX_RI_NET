@@ -20,7 +20,7 @@ Public Class frmDrillDown
     End Sub
 
     Private Sub cmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdGuardar.ItemClick
-        frmExportar.PasarViewResultados(frmMain.Text, frmMain.lblTitulo.Text, GridView1)
+        frmExportar.PasarViewResultados("", frmMain.lblTitulo.Text, GridView1)
         frmExportar.ShowDialog()
     End Sub
 
@@ -48,6 +48,7 @@ Public Class frmDrillDown
             Column.VisibleIndex = oCol.Ordinal
             Column.Visible = True
             Column.Caption = oCol.Caption
+
             'Column.OptionsColumn.FixedWidth = True
 
         Next
@@ -66,16 +67,6 @@ Public Class frmDrillDown
 
 
     End Sub
-
-    'Private Sub advBandedGridView1_MouseDown(sender As Object, e As MouseEventArgs)
-    '    Dim hitInfo = advBandedGridView1.CalcHitInfo(e.Location)
-    '    If hitInfo.InRow Then
-    '        If hitInfo.RowHandle < 0 Then
-    '            MessageBox.Show("GroupRow click")
-    '            'your code
-    '        End If
-    '    End If
-    'End Sub
 
     Private Sub GridView1_GridMenuItemClick(ByVal sender As Object, ByVal e As DevExpress.XtraGrid.Views.Grid.GridMenuItemClickEventArgs) Handles GridView1.GridMenuItemClick
 
