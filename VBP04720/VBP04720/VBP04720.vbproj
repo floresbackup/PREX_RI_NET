@@ -11,7 +11,7 @@
     <RootNamespace>VBP04720</RootNamespace>
     <AssemblyName>VBP04720</AssemblyName>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
-    <ApplicationIcon>kgpg_key3.ico</ApplicationIcon>
+    <ApplicationIcon>Prex.ico</ApplicationIcon>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -506,6 +506,7 @@
   <ItemGroup>
     <None Include="Resources\kgpg_key3.png" />
     <Content Include="kgpg_key3.ico" />
+    <Content Include="Prex.ico" />
     <Content Include="Resources\Usuario16x16.ico" />
     <Content Include="Resources\UsuarioAgregar16x16.ico" />
     <Content Include="Resources\UsuarioBaja16x16.ico" />

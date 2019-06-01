@@ -19,16 +19,15 @@ Partial Class frmMain
    'Do not modify it using the code editor.
    <System.Diagnostics.DebuggerStepThrough()> _
    Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Me.Skin = New DevExpress.LookAndFeel.DefaultLookAndFeel(Me.components)
+        Me.Skin = New DevExpress.LookAndFeel.DefaultLookAndFeel()
         Me.PanControles = New DevExpress.XtraEditors.PanelControl()
         Me.PanTop = New DevExpress.XtraEditors.PanelControl()
         Me.lblSubtitulo = New DevExpress.XtraEditors.LabelControl()
         Me.lblTitulo = New DevExpress.XtraEditors.LabelControl()
         Me.picLogo = New DevExpress.XtraEditors.PictureEdit()
-        Me.PrintingSystem1 = New DevExpress.XtraPrinting.PrintingSystem(Me.components)
-        Me.PrintableComponentLink1 = New DevExpress.XtraPrinting.PrintableComponentLink(Me.components)
+        Me.PrintingSystem1 = New DevExpress.XtraPrinting.PrintingSystem()
+        Me.PrintableComponentLink1 = New DevExpress.XtraPrinting.PrintableComponentLink()
         Me.Grid = New DevExpress.XtraGrid.GridControl()
         Me.GridView1 = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.PanGrid = New DevExpress.XtraEditors.PanelControl()
@@ -51,7 +50,7 @@ Partial Class frmMain
         Me.btnAdjuntarArchivo = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnEjecutar = New System.Windows.Forms.ToolStripButton()
-        Me.ToolTipText = New System.Windows.Forms.ToolTip(Me.components)
+        Me.ToolTipText = New System.Windows.Forms.ToolTip()
         CType(Me.PanControles, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanControles.SuspendLayout()
         CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -358,6 +357,7 @@ Partial Class frmMain
         Me.ClientSize = New System.Drawing.Size(635, 430)
         Me.Controls.Add(Me.PanGrid)
         Me.Controls.Add(Me.PanControles)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "frmMain"
         Me.Text = " VBP04295"
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized

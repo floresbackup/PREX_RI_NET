@@ -11,7 +11,7 @@
     <RootNamespace>VBP04000</RootNamespace>
     <AssemblyName>VBP04000</AssemblyName>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
-    <ApplicationIcon>window-cascade.ico</ApplicationIcon>
+    <ApplicationIcon>Prex.ico</ApplicationIcon>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -267,6 +267,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\page-excel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Prex.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -76,7 +76,7 @@
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>apps.ico</ApplicationIcon>
+    <ApplicationIcon>Prex.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -267,6 +267,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="apps.ico" />
+    <Content Include="Prex.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

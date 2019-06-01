@@ -11,7 +11,7 @@
     <RootNamespace>VBP04721</RootNamespace>
     <AssemblyName>VBP04721</AssemblyName>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
-    <ApplicationIcon>window-cascade.ico</ApplicationIcon>
+    <ApplicationIcon>Prex.ico</ApplicationIcon>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -479,6 +479,7 @@
     <None Include="Resources\Window-Delete.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Prex.ico" />
     <Content Include="window-cascade.ico" />
   </ItemGroup>
   <ItemGroup>

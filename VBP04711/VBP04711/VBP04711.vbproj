@@ -16,7 +16,7 @@
     <GenerateManifests>false</GenerateManifests>
     <SignManifests>true</SignManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ApplicationIcon>apps.ico</ApplicationIcon>
+    <ApplicationIcon>Prex.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -230,7 +230,6 @@
     <Compile Include="..\..\COMMON\MODUL\modGlobalBase64.vb">
       <Link>Modulos\modGlobalBase64.vb</Link>
     </Compile>
-
     <Compile Include="MODULOS\modLocalMain.vb">
     </Compile>
     <Compile Include="..\..\COMMON\MODUL\modArchivos.vb">
@@ -239,7 +238,6 @@
     <Compile Include="..\..\COMMON\MODUL\modGlobalFileToDB.vb">
       <Link>Modulos\modGlobalFileToDB.vb</Link>
     </Compile>
-
     <Compile Include="Clases\clsItem.vb" />
     <Compile Include="Formularios\frmAdjuntos.Designer.vb">
       <DependentUpon>frmAdjuntos.vb</DependentUpon>
@@ -455,6 +453,7 @@
   <ItemGroup>
     <Content Include="apps.ico" />
     <Content Include="news.ico" />
+    <Content Include="Prex.ico" />
     <None Include="Resources\edit-find-3.png" />
     <None Include="Resources\document-new-5.png" />
     <None Include="Resources\document-new-4.png" />

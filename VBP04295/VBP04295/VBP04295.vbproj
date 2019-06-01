@@ -16,7 +16,7 @@
     <GenerateManifests>false</GenerateManifests>
     <SignManifests>true</SignManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ApplicationIcon>apps.ico</ApplicationIcon>
+    <ApplicationIcon>Prex.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -521,6 +521,7 @@
   <ItemGroup>
     <Content Include="apps.ico" />
     <Content Include="news.ico" />
+    <Content Include="Prex.ico" />
     <None Include="Resources\logo prex1.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

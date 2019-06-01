@@ -11,7 +11,7 @@
     <RootNamespace>VBP04395</RootNamespace>
     <AssemblyName>VBP04395</AssemblyName>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
-    <ApplicationIcon>applications_32.ico</ApplicationIcon>
+    <ApplicationIcon>Prex.ico</ApplicationIcon>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -484,6 +484,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="applications_32.ico" />
+    <Content Include="Prex.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
