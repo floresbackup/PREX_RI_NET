@@ -279,6 +279,9 @@ Module modFunciones
     End Function
 
     Public Function FechaYHoraSQL(ByVal dFecha As DateTime) As String
+        If dFecha = Date.MinValue Then
+            Return "'" & Format(FechaCorrecta(1, 1900), FORMATO_FECHA) & " 00:00:00:000'"
+        End If
         Return "'" & Format(dFecha, FORMATO_FECHA) & " " & Format(dFecha, "HH:mm:ss:fff") & "'"
     End Function
 

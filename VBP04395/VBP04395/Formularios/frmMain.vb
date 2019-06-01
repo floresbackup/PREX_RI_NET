@@ -1,4 +1,5 @@
 Imports System.IO
+Imports System.Linq
 
 Public Class frmMain
     Public ErrorPermiso As Boolean = False
@@ -505,10 +506,10 @@ Public Class frmMain
         For Each control As Control In panControles.Controls
             Select Case control.GetType.ToString.Substring(control.GetType.ToString.LastIndexOf(".") + 1)
                 Case "DateTimePicker"
-                    d = IIf(paso, DateTime.MinValue, FechaSQL(DirectCast(control, DateTimePicker).Value))
+                    d = IIf(paso, DateTime.MinValue, DateTime.Parse(FechaSQL(DirectCast(control, DateTimePicker).Value).Replace("'", String.Empty)))
                     paso = True
                 Case "DateEdit"
-                    d = IIf(paso, Date.MinValue, FechaSQL(DirectCast(control, DevExpress.XtraEditors.DateEdit).DateTime))
+                    d = IIf(paso, Date.MinValue, Date.Parse(FechaSQL(DirectCast(control, DevExpress.XtraEditors.DateEdit).DateTime).Replace("'", String.Empty)))
                     paso = True
                 Case Else
                     Continue For
@@ -559,14 +560,14 @@ Public Class frmMain
             Exit Sub
         End If
 
-
+        Dim uncheckAll = True
 
         For Each oItem In lvSel.Items
 
             oSubItem = oItem.SubItems(1)
 
             If oItem.Checked Then
-
+                uncheckAll = False
                 oSubItem.Text = "Procesando..."
 
                 Application.DoEvents()
@@ -614,11 +615,14 @@ Public Class frmMain
         Next
 
         ProcesoEnEjecucion(True)
-
-        If bResult Then
-            MensajeInformacion("Proceso Finalizado")
+        If uncheckAll Then
+            MensajeInformacion("ATENCION! Proceso Finalizado sin tareas selecciondas.")
         Else
-            MensajeError("Se produjo un error durante el proceso y el mismo fué abortado.")
+            If bResult Then
+                MensajeInformacion("Proceso Finalizado")
+            Else
+                MensajeError("Se produjo un error durante el proceso y el mismo fué abortado.")
+            End If
         End If
 
     End Sub
