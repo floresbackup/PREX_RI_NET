@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿Imports System.Data.SqlClient
+Imports System.IO
 
 Public Class frmAdjuntos
     Private oAdmTablas As New AdmTablas
@@ -136,11 +137,20 @@ Public Class frmAdjuntos
 
             nProx = oAdmTablas.ProximoID("ADJUNT", "AD_CODADJ")
 
-            sSQL = "INSERT INTO ADJUNT (AD_CODADJ,AD_TIPREG,AD_NROREG,AD_DESCRI,AD_CLAVE ,AD_ARCHIV,AD_NOMBRE)" &
-                " VALUES (" & nProx & ", 1, 0, '" & INPUT_GENERAL & "', '" & CLAVE_ADJUNT &
-                "', '" & PutFileInField(sArchivo) & "', '" & Path.GetFileName(sArchivo) & "')"
+            '      sSQL = "INSERT INTO ADJUNT (AD_CODADJ,AD_TIPREG,AD_NROREG,AD_DESCRI,AD_CLAVE ,AD_ARCHIV,AD_NOMBRE)" &
+            '          " VALUES (" & nProx & ", 1, 0, '" & INPUT_GENERAL & "', '" & CLAVE_ADJUNT &
+            '          "', '" & PutFileInField(sArchivo) & "', '" & Path.GetFileName(sArchivo) & "')"
+            '
+            Dim cmd As New SqlCommand("INSERT INTO ADJUNT (AD_CODADJ,AD_TIPREG,AD_NROREG,AD_DESCRI,AD_CLAVE ,AD_ARCHIV,AD_NOMBRE) " &
+                                      "values (@AD_CODADJ,1,0,@AD_DESCRI,@AD_CLAVE ,@AD_ARCHIV,@AD_NOMBRE)")
+            cmd.Parameters.Add("AD_CODADJ", SqlDbType.Int).Value = nProx
+            cmd.Parameters.Add("AD_DESCRI", SqlDbType.VarChar, 255).Value = INPUT_GENERAL
+            cmd.Parameters.Add("AD_CLAVE", SqlDbType.VarChar, 1000).Value = CLAVE_ADJUNT
+            cmd.Parameters.Add("AD_ARCHIV", SqlDbType.Image).Value = System.IO.File.ReadAllBytes(sArchivo)
+            cmd.Parameters.Add("AD_NOMBRE", SqlDbType.VarChar, 255).Value = Path.GetFileName(sArchivo)
 
-            oAdmTablas.EjecutarComandoSQL(sSQL)
+
+            oAdmTablas.EjecutarComandoSQL(cmd)
             PasarDatos(CLAVE_ADJUNT)
             Me.Cursor = Cursors.Default
 
@@ -160,8 +170,8 @@ Public Class frmAdjuntos
             Dim pathArchivo = IO.Path.GetTempPath() & NombreArchivoSeleccionado
 
             If ArchivoExiste(pathArchivo) Then Kill(pathArchivo)
-
-            GetFileFromField(GridView1.GetRowCellValue(RowHandleArchivoSeleccionado, GridView1.Columns.Item("AD_ARCHIV")), pathArchivo)
+            Dim f As Byte() = GridView1.GetRowCellValue(RowHandleArchivoSeleccionado, GridView1.Columns.Item("AD_ARCHIV"))
+            GetFileFromField(f, pathArchivo)
 
             Process.Start(pathArchivo)
         Catch ex As Exception

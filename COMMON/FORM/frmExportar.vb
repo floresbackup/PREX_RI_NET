@@ -67,13 +67,22 @@ Public Class frmExportar
             Case 0 'Planilla Excel
                Dim oOptions As New XlsExportOptions
 
-               oOptions.ShowGridLines = True
-                    'oOptions.UseNativeFormat = True
-                    oGvwResults.ExportToXls(txtFileName.Text.Trim, oOptions)
+                    oOptions.ShowGridLines = False
+                    oOptions.Suppress65536RowsWarning = False
+                    oOptions.Suppress256ColumnsWarning = False
+                    oOptions.RawDataMode = True
 
+                    'Dim s = oGvwResults.OptionsSelection.MultiSelect
+                    'oGvwResults.OptionsSelection.MultiSelect = True
+                    'oGvwResults.OptionsPrint.PrintSelectedRowsOnly = True
+                    'oGvwResults.OptionsPrint.UsePrintStyles = False
+                    'oGvwResults.SelectAll()
+                    oGvwResults.ExportToXls(txtFileName.Text.Trim, oOptions)
+                    'oGvwResults.ClearSelection()
+                    'oGvwResults.OptionsSelection.MultiSelect = s
                 Case 1 'Archivo PDF
 
-               Dim oOptions As New PdfExportOptions
+                    Dim oOptions As New PdfExportOptions
 
                oOptions.Compressed = True
                oOptions.ImageQuality = PdfJpegImageQuality.Highest
@@ -98,13 +107,15 @@ Public Class frmExportar
                oGvwResults.ExportToText(txtFileName.Text.Trim)
 
             Case 4 'Archivo delimitado
-               Dim oOptions As New TextExportOptions
-
-               oOptions.Separator = txtSep.Text.Trim
+                    Dim oOptions As New CsvExportOptions
+                    oOptions.SkipEmptyColumns = False
+                    oOptions.SkipEmptyRows = True
+                    oOptions.TextExportMode = TextExportMode.Text
+                    oOptions.Separator = txtSep.Text.Trim
                     oOptions.QuoteStringsWithSeparators = chkTexto.Checked
-                    oOptions.
-                    oOptions.TextExportMode = TextExportMode.Value
-                    oGvwResults.ExportToText(txtFileName.Text.Trim, oOptions)
+
+                    oGvwResults.ExportToCsv(txtFileName.Text.Trim, oOptions)
+                    'oGvwResults.ExportToText(txtFileName.Text.Trim, oOptions)
 
                 Case 5 'Texto enriquecido
                Dim oOptions As New RtfExportOptions

@@ -57,6 +57,7 @@ Public Class frmDrillDown
         Grid.DataSource = dt
         Grid.RefreshDataSource()
         Grid.Refresh()
+
         Query = sSQL
 
         If System.IO.File.Exists(NombreArchivoLatout) Then

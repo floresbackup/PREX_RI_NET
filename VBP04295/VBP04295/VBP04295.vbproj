@@ -522,6 +522,7 @@
     <Content Include="apps.ico" />
     <Content Include="news.ico" />
     <Content Include="Prex.ico" />
+    <None Include="Resources\edit-delete-2.png" />
     <None Include="Resources\logo prex1.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

@@ -33,27 +33,27 @@ Module modConsultasSistema
          oConsulta.Transaccion = dr("CS_CODTRA")
          oConsulta.Nombre = dr("CS_NOMBRE")
          oConsulta.Descripcion = dr("CS_DESCRI")
-         oConsulta.Query = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("CS_QUERY").ToString))
-         oConsulta.FechaProceso = dr("CS_FECPRO")
+            oConsulta.Query = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("CS_QUERY").ToString))
+            oConsulta.FechaProceso = dr("CS_FECPRO")
          oConsulta.LayOut = dr("CS_LAYOUT")
          oConsulta.Reporte = dr("CS_REPORT")
          oConsulta.Entidad = dr("CS_CODENT")
          oConsulta.Actualiza = dr("CS_UPDATE")
          oConsulta.DrillDown = dr("CS_DRILLD")
          oConsulta.GroupBy = dr("CS_GROUPB")
-         oConsulta.DrillDownQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("CS_DRIQUE").ToString))
-         oConsulta.ActualizaQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("CS_TABLA").ToString))
-         oConsulta.ActualizaValida = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("CS_UPDQUE").ToString))
-         oConsulta.Alta = dr("CS_ALTA")
+            oConsulta.DrillDownQuery = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("CS_DRIQUE").ToString))
+            oConsulta.ActualizaQuery = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("CS_TABLA").ToString))
+            oConsulta.ActualizaValida = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("CS_UPDQUE").ToString))
+            oConsulta.Alta = dr("CS_ALTA")
          oConsulta.Baja = dr("CS_BAJA")
-         oConsulta.AltaQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("CS_ALTQUE").ToString))
-         oConsulta.BajaQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("CS_BAJQUE").ToString))
-         oConsulta.NuevoDesdeQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("CS_NDESDE").ToString))
-         oConsulta.NuevoDesdeValida = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("CS_NDEVAL").ToString))
-         oConsulta.NuevoDesde = dr("CS_HABNDE")
-         oConsulta.DrillDownProceso = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("CS_DRIPRE").ToString))
+            oConsulta.AltaQuery = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("CS_ALTQUE").ToString))
+            oConsulta.BajaQuery = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("CS_BAJQUE").ToString))
+            oConsulta.NuevoDesdeQuery = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("CS_NDESDE").ToString))
+            oConsulta.NuevoDesdeValida = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("CS_NDEVAL").ToString))
+            oConsulta.NuevoDesde = dr("CS_HABNDE")
+            oConsulta.DrillDownProceso = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("CS_DRIPRE").ToString))
 
-      Next
+        Next
 
       ad = Nothing
       dt = Nothing
@@ -82,17 +82,21 @@ Module modConsultasSistema
          oCol.Formato = dr("DS_FORMAT").ToString
          oCol.Titulo = dr("DS_TITULO").ToString
          oCol.Help = Convert.ToInt16(dr("DS_HELP").ToString)
-         oCol.HelpQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_HELQUE").ToString))
-         oCol.Formula = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_FORMUL").ToString))
-         oCol.Habilitada = Convert.ToBoolean(Convert.ToInt32(dr("DS_HABILI")))
+            'oCol.HelpQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_HELQUE").ToString))
+            'oCol.Formula = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_FORMUL").ToString))
+            oCol.HelpQuery = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("DS_HELQUE").ToString))
+            oCol.Formula = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("DS_FORMUL").ToString))
+            oCol.Habilitada = Convert.ToBoolean(Convert.ToInt32(dr("DS_HABILI")))
          oCol.Visible = Convert.ToBoolean(Convert.ToInt32(dr("DS_VISIBL")))
          oCol.Clave = Convert.ToBoolean(Convert.ToInt32(dr("DS_LLAVE")))
          oCol.DrillDown = Convert.ToBoolean(Convert.ToInt32(dr("DS_DRILLD")))
-         oCol.DrillDownQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_DRIQUE").ToString))
-         oCol.Reemplazar = Convert.ToBoolean(Convert.ToInt32(dr("DS_REEMPL")))
-         oCol.VisibleABM = Convert.ToBoolean(Convert.ToInt32(dr("DS_VISABM")))
-         oCol.DrillDownProceso = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_DRIPRE").ToString))
-         oCol.Key = oCol.Campo
+            'oCol.DrillDownQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_DRIQUE").ToString))
+            oCol.DrillDownQuery = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("DS_DRIQUE").ToString))
+            oCol.Reemplazar = Convert.ToBoolean(Convert.ToInt32(dr("DS_REEMPL")))
+            oCol.VisibleABM = Convert.ToBoolean(Convert.ToInt32(dr("DS_VISABM")))
+            'oCol.DrillDownProceso = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_DRIPRE").ToString))
+            oCol.DrillDownProceso = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("DS_DRIPRE").ToString))
+            oCol.Key = oCol.Campo
 
          oColumnas.Add(oCol, oCol.Key)
 
@@ -157,8 +161,8 @@ Module modConsultasSistema
          oVar.Tipo = dr("VS_TIPO").ToString
          oVar.Titulo = dr("VS_TITULO").ToString
          oVar.Help = dr("VS_HELP").ToString
-         oVar.HelpQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("VS_HELQUE").ToString))
-         oVar.Key = oVar.Nombre
+            oVar.HelpQuery = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("VS_HELQUE").ToString))
+            oVar.Key = oVar.Nombre
             oVariables.Add(oVar, oVar.Key)
 
             oVar = Nothing

@@ -267,8 +267,28 @@ Public Class AdmTablas
       End Try
 
    End Function
+    Public Function EjecutarComandoSQL(cmd As SqlCommand) As Boolean
+        Dim oConn As New SqlConnection
+        Try
+            Dim ss As String = ConnectionString
+            oConn.ConnectionString = ss.Replace("Provider=SQLOLEDB;", String.Empty)
+            oConn.Open()
 
-   Public Function EjecutarComandoSQL(ByVal sSQL As String) As Boolean
+            cmd.Connection = oConn
+            cmd.ExecuteNonQuery()
+            oConn.Close()
+            'Agregado para que genere LOG detallado
+            If GENERAR_LOG_SQL Then
+                GuardarLOG(AccionesLOG.Intruccion_SQL_Automatica, cmd.CommandText, CODIGO_TRANSACCION)
+            End If
+            Return True
+        Catch ex As Exception
+            GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "EROR: EjecutarComandoSQL - " & ex.Message, CODIGO_TRANSACCION)
+
+            Return False
+        End Try
+    End Function
+    Public Function EjecutarComandoSQL(ByVal sSQL As String) As Boolean
 
       Dim oConn As OleDb.OleDbConnection
       Dim da As OleDb.OleDbDataAdapter

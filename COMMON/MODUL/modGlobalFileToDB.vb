@@ -7,8 +7,10 @@ Module modFileToDB
     Public Function PutFileInField(documentPath As String) As String
         Dim data As Byte()
         data = System.IO.File.ReadAllBytes(documentPath)
-        Dim s = Convert.ToChar(data).ToString()
-        Return s ' System.Text.Encoding.Unicode.GetString(data)
+        'Dim s = Convert.ToChar(data).ToString()
+        'System.Text.Encoding.Unicode.GetString(data)
+
+        Return Convert.ToBase64String(data) 'System.Text.Encoding.GetEncoding(1252).GetString(data)
     End Function
 
     '//LARGE IMAGES

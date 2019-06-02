@@ -108,7 +108,26 @@ Public Class frmNotas
 
    End Sub
 
-   Private Sub Guardar()
+    Private Sub Eliminar()
+        ' If CLAVE_COMENT.Trim = "" Then
+        Exit Sub
+        'End If
+        Cursor = Cursors.WaitCursor
+        Dim sSQL = "delete COMENT " &
+               "WHERE     CM_CLAVE = '" & CLAVE_COMENT & "' and CM_COMENT = '" & rtfNota.Rtf & "'"
+        Try
+            oAdmTablas.EjecutarComandoSQL(sSQL)
+            rtfNota.Rtf = String.Empty
+        Catch ex As Exception
+            TratarError(ex, "Eliminar")
+        End Try
+
+        PasarDatos(CLAVE_COMENT)
+
+        Cursor = Cursors.Default
+    End Sub
+
+    Private Sub Guardar()
 
       Dim sSQL As String
       Dim ds As DataSet
@@ -285,4 +304,7 @@ Public Class frmNotas
       rtfNota.Paste()
    End Sub
 
+    Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
+        Eliminar()
+    End Sub
 End Class
