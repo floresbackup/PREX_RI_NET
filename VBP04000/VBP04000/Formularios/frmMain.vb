@@ -783,6 +783,15 @@ Public Class frmMain
     End Sub
 
     Private Sub GridView1_CustomRowCellEdit(sender As Object, e As CustomRowCellEditEventArgs) Handles GridViewParametros.CustomRowCellEdit
+        If sender Is Nothing _
+            OrElse GridParametros Is Nothing _
+            OrElse GridParametros.RepositoryItems Is Nothing _
+            OrElse colEditorParametro Is Nothing _
+            OrElse e Is Nothing _
+            OrElse e.Column Is Nothing Then
+            Exit Sub
+        End If
+
         Dim view As GridView = CType(sender, GridView)
         If GridParametros.RepositoryItems.Count > 0 AndAlso e.Column.Name = colEditorParametro.Name Then
             'colEditorParametro.ColumnEdit 

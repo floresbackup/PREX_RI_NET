@@ -418,6 +418,8 @@ Partial Class frmMain
         Me.GridResultado.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.[False]
         Me.GridResultado.OptionsBehavior.Editable = False
         Me.GridResultado.OptionsBehavior.ReadOnly = True
+        Me.GridResultado.OptionsView.BestFitMode = DevExpress.XtraGrid.Views.Grid.GridBestFitMode.Full
+        Me.GridResultado.OptionsView.ColumnAutoWidth = False
         '
         'tabParametros
         '
