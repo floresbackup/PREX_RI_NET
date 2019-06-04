@@ -12,7 +12,7 @@
     <AssemblyName>Prex_RI</AssemblyName>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ApplicationIcon>Prex.ico</ApplicationIcon>
+    <ApplicationIcon>APP.ico</ApplicationIcon>
     <ManifestCertificateThumbprint>4DEFD0CC4746A9C5E54D73D8C9AE21EB87F2B871</ManifestCertificateThumbprint>
     <ManifestKeyFile>Main_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>false</GenerateManifests>
