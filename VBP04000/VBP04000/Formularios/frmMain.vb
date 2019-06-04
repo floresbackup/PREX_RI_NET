@@ -795,9 +795,13 @@ Public Class frmMain
         Dim view As GridView = CType(sender, GridView)
         If GridParametros.RepositoryItems.Count > 0 AndAlso e.Column.Name = colEditorParametro.Name Then
             'colEditorParametro.ColumnEdit 
-            e.RepositoryItem = currentRepositoryItems(GridViewParametros.GetDataRow(e.RowHandle).Item(7))
+            If currentRepositoryItems IsNot Nothing AndAlso
+                    GridViewParametros.GetDataRow(e.RowHandle) IsNot Nothing AndAlso
+                    GridViewParametros.GetDataRow(e.RowHandle).ItemArray.Count > 7 AndAlso
+                    currentRepositoryItems.ContainsKey(GridViewParametros.GetDataRow(e.RowHandle).Item(7)) Then
+                e.RepositoryItem = currentRepositoryItems(GridViewParametros.GetDataRow(e.RowHandle).Item(7))
+            End If
         End If
-
     End Sub
 
     Private Sub GridViewParametros_CellValueChanged(sender As Object, e As CellValueChangedEventArgs) Handles GridViewParametros.CellValueChanged
