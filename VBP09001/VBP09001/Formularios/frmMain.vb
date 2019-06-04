@@ -18,6 +18,12 @@ Public Class frmMain
         End Get
     End Property
 
+    Private ReadOnly Property MesSeleccionado As Integer
+        Get
+            Return CType(cboMes.SelectedItem, clsItem.Item).Valor
+        End Get
+    End Property
+
     Public Sub AnalizarCommand()
 
         Try
@@ -961,9 +967,9 @@ Public Class frmMain
                 Dim dFecPro As Date
 
                 If IsArchivoPorDia Then
-                    dFecPro = New Date(cboDia.Text, cboMes.SelectedIndex + 1, cboDia.Text)
+                    dFecPro = New Date(cboDia.Text, MesSeleccionado, cboDia.Text)
                 Else
-                    dFecPro = FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text))
+                    dFecPro = FechaCorrecta(MesSeleccionado, Val(cboAno.Text))
                 End If
 
                 If (Val(LlaveCombo(cboArchivos)) >= 4300 And
@@ -994,7 +1000,7 @@ Public Class frmMain
                     rstAux = Nothing
                 Else
                     oItem = cboArchivos.SelectedItem
-                    GenerarTXT(Long.Parse(oItem.Valor.ToString()), FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text)))
+                    GenerarTXT(Long.Parse(oItem.Valor.ToString()), dFecPro)
                 End If
 
             End If
@@ -1105,6 +1111,8 @@ Salir:
                     Me.Cursor = Cursors.Default
                     Exit Sub
                 End If
+                lblStatus.Text = "Procesando..."
+                lblStatus.Visible = True
 
                 Dim sCuadro As String
                 Dim sLine As String = ""
@@ -1228,7 +1236,10 @@ Salir:
                             oText.WriteLine(sLine)
                             sLine = ""
                             lblStatus.Text = "Procesados: " & j.ToString & " ..."
+
                             Application.DoEvents()
+                            Threading.Thread.Sleep(10)
+
                         Next
                         rstTrabajo = Nothing
                     End If
@@ -1302,7 +1313,7 @@ Salir:
                     ' FIN AGREGADO para que genere LOG
 
                     MensajeInformacion("Proceso finalizado")
-                    Me.lblStatus.Visible = True
+                    'Me.lblStatus.Visible = True
 
                     If chkOpen.Checked Then
                         Process.Start(sFile)
@@ -1434,7 +1445,7 @@ Salir:
         If IsArchivoPorDia Then
             Dim d As Date
             Try
-                d = New Date(cboAno.Text, cboMes.SelectedIndex + 1, cboDia.Text)
+                d = New Date(cboAno.Text, MesSeleccionado, cboDia.Text)
             Catch ex As System.ArgumentOutOfRangeException
                 MensajeError("La fecha es invalida")
                 cboDia.SelectAll()
@@ -1458,9 +1469,9 @@ Salir:
             Dim dFecPro As Date
 
             If IsArchivoPorDia Then
-                dFecPro = New Date(cboAno.Text, cboMes.SelectedIndex + 1, cboDia.Text)
+                dFecPro = New Date(cboAno.Text, MesSeleccionado, cboDia.Text)
             Else
-                dFecPro = FechaCorrecta(cboMes.SelectedIndex + 1, Val(cboAno.Text)) 'FechaCorrecta(DatoItemCombo(cboMes), Val(cboAnio.Text))
+                dFecPro = FechaCorrecta(MesSeleccionado, Val(cboAno.Text)) 'FechaCorrecta(DatoItemCombo(cboMes), Val(cboAnio.Text))
             End If
 
             nGenerado = Val(oAdmLocal.DevolverValor("TXTADJ (NOLOCK)", "ISNULL(COUNT(*), 0)",
@@ -1599,6 +1610,8 @@ Salir:
             Me.Cursor = Cursors.Default
             Exit Sub
         End If
+        lblStatus.Text = "Procesando..."
+        lblStatus.Visible = True
 
         For Each row As DataRow In rstCuadros.Tables(0).Rows
 
@@ -1759,7 +1772,7 @@ Salir:
                 sLine = ""
                 lblStatus.Text = "Procesados: " & j.ToString & " ..."
                 Application.DoEvents()
-
+                Threading.Thread.Sleep(10)
             Next
 
             rstTrabajo = Nothing
@@ -1866,10 +1879,12 @@ Salir:
 
             If Not oAdmLocal.EjecutarComandoAsincrono(sSQL, sError) Then
                 MensajeError(sError)
+                Return False
             End If
-
+            Return True
         Catch ex As Exception
             TratarError(ex, "PreparaTXT_Anticipos")
+            Return False
         End Try
 
         RS = Nothing
@@ -1937,6 +1952,7 @@ Salir:
             cboMes.Size = New Size(184, cboMes.Size.Height)
             cboMes.Location = New Point(223, cboMes.Location.Y)
         Else
+            cboDia.Visible = False
             cboMes.Size = New Size(265, cboMes.Size.Height)
             cboMes.Location = New Point(142, cboMes.Location.Y)
         End If
