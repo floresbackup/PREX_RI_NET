@@ -37,12 +37,9 @@ Public Class frmDrillDown
         ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
         dt = New DataTable
 
-        ad.Fill(dt)
-
         View.Columns.Clear()
-
+        ad.Fill(dt)
         For Each oCol As DataColumn In dt.Columns
-
             Column = View.Columns.AddField(oCol.ColumnName)
             Column.Width = 100
             Column.VisibleIndex = oCol.Ordinal
@@ -50,7 +47,6 @@ Public Class frmDrillDown
             Column.Caption = oCol.Caption
 
             'Column.OptionsColumn.FixedWidth = True
-
         Next
 
         'GridView1.RestoreLayoutFromXml("C:\Test.xml")
@@ -114,13 +110,6 @@ Public Class frmDrillDown
         ElseIf e.HitInfo.InGroupColumn Then
             columnMenu = e.HitInfo.Column
             e.Allow = True
-
-            For Each item As DevExpress.Utils.Menu.DXMenuItem In e.Menu.Items
-
-                If item.Caption = "agrupas" Then
-
-                End If
-            Next
 
         Else
                 e.Allow = False

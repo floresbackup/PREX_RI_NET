@@ -1781,80 +1781,84 @@ Reinicio:
         Dim oCol As clsColumnas
         Dim vValor As Object
         Dim bCol As Boolean
+        Try
 
-        oCol = oColumnas(GridView1.FocusedColumn.FieldName)
+            oCol = oColumnas(GridView1.FocusedColumn.FieldName)
 
-        'SI NO SE ESPECIFICO NADA VERIFICA SI HAY DRILL DOWN POR CELDA
-        If oCol.Campo = GridView1.FocusedColumn.FieldName Then
-            If oCol.DrillDown And oCol.DrillDownQuery.Trim <> "" Then
-                bCol = True
-                If oCol.DrillDownProceso.Trim <> "" Then
-                    CorrerProcesoSQL(oCol.DrillDownProceso, oCol.Campo, oCol.Titulo)
+            'SI NO SE ESPECIFICO NADA VERIFICA SI HAY DRILL DOWN POR CELDA
+            If oCol.Campo = GridView1.FocusedColumn.FieldName Then
+                If oCol.DrillDown And oCol.DrillDownQuery.Trim <> "" Then
+                    bCol = True
+                    If oCol.DrillDownProceso.Trim <> "" Then
+                        CorrerProcesoSQL(oCol.DrillDownProceso, oCol.Campo, oCol.Titulo)
+                    End If
+
+                    sSQL = oCol.DrillDownQuery.Trim
+
+                    For Each oGridCol As DevExpress.XtraGrid.Columns.GridColumn In GridView1.Columns
+
+                        Debug.Print("RowHandle: " & GridView1.GetSelectedRows(0))
+
+                        vValor = GetValorSeleccionado(oGridCol.FieldName) ' GridView1.GetRowCellDisplayText(GridView1.GetSelectedRows(0), oGridCol.FieldName).ToString
+
+                        If IsDate(vValor) Then
+                            vValor = FechaSQL(vValor)
+                        ElseIf IsNumeric(vValor) Then
+                            vValor = FlotanteSQL(Format(vValor, "Fixed"))
+                        Else
+                            vValor = "'" & vValor & "'"
+                        End If
+
+                        sSQL = Replace(sSQL, "@" & oGridCol.FieldName, vValor)
+                    Next
+
+                    sSQL = Replace(sSQL, "@NOMBRE_COLUMNA", GridView1.FocusedColumn.FieldName)
+                    sSQL = Replace(sSQL, "@TITULO_COLUMNA", GridView1.FocusedColumn.Caption)
+
+                    sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
                 End If
-
-                sSQL = oCol.DrillDownQuery.Trim
-
-                For Each oGridCol As DevExpress.XtraGrid.Columns.GridColumn In GridView1.Columns
-
-                    Debug.Print("RowHandle: " & GridView1.GetSelectedRows(0))
-
-                    vValor = GridView1.GetRowCellDisplayText(GridView1.GetSelectedRows(0), oGridCol.FieldName).ToString
-
-                    If IsDate(vValor) Then
-                        vValor = FechaSQL(vValor)
-                    ElseIf IsNumeric(vValor) Then
-                        vValor = FlotanteSQL(Format(vValor, "Fixed"))
-                    Else
-                        vValor = "'" & vValor & "'"
-                    End If
-
-                    sSQL = Replace(sSQL, "@" & oGridCol.FieldName, vValor)
-                Next
-
-                sSQL = Replace(sSQL, "@NOMBRE_COLUMNA", GridView1.FocusedColumn.FieldName)
-                sSQL = Replace(sSQL, "@TITULO_COLUMNA", GridView1.FocusedColumn.Caption)
-
-                sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
             End If
-        End If
 
-        'SI SE PARAMETRIZA QUE UTILICE DRILL DOWN POR RENGLON
-        If Not bCol Then
-            If oConsulta.DrillDown And oConsulta.DrillDownQuery.Trim <> "" Then
+            'SI SE PARAMETRIZA QUE UTILICE DRILL DOWN POR RENGLON
+            If Not bCol Then
+                If oConsulta.DrillDown And oConsulta.DrillDownQuery.Trim <> "" Then
 
-                sSQL = oConsulta.DrillDownQuery.Trim
+                    sSQL = oConsulta.DrillDownQuery.Trim
 
-                For Each oGridCol As DevExpress.XtraGrid.Columns.GridColumn In GridView1.Columns
-                    vValor = GridView1.GetRowCellDisplayText(GridView1.GetSelectedRows(0), oGridCol.FieldName).ToString
+                    For Each oGridCol As DevExpress.XtraGrid.Columns.GridColumn In GridView1.Columns
+                        vValor = GridView1.GetRowCellDisplayText(GridView1.GetSelectedRows(0), oGridCol.FieldName).ToString
 
-                    If IsDate(vValor) Then
-                        vValor = FechaSQL(vValor)
-                    ElseIf IsNumeric(vValor) Then
-                        vValor = FlotanteSQL(Format(vValor, "Fixed"))
-                    Else
-                        vValor = "'" & vValor & "'"
-                    End If
+                        If IsDate(vValor) Then
+                            vValor = FechaSQL(vValor)
+                        ElseIf IsNumeric(vValor) Then
+                            vValor = FlotanteSQL(Format(vValor, "Fixed"))
+                        Else
+                            vValor = "'" & vValor & "'"
+                        End If
 
-                    sSQL = Replace(sSQL, "@" & oGridCol.FieldName, vValor)
-                Next
+                        sSQL = Replace(sSQL, "@" & oGridCol.FieldName, vValor)
+                    Next
 
-                sSQL = Replace(sSQL, "@NOMBRE_COLUMNA", GridView1.FocusedColumn.FieldName)
-                sSQL = Replace(sSQL, "@TITULO_COLUMNA", GridView1.FocusedColumn.Caption)
+                    sSQL = Replace(sSQL, "@NOMBRE_COLUMNA", GridView1.FocusedColumn.FieldName)
+                    sSQL = Replace(sSQL, "@TITULO_COLUMNA", GridView1.FocusedColumn.Caption)
 
-                sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
+                    sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
+                End If
             End If
-        End If
 
-        If sSQL <> "" Then
-            Dim seleccion As String = GridView1.FocusedColumn.GetTextCaption()
-            Dim valor As String = GridView1.GetRowCellDisplayText(GridView1.GetSelectedRows(0), GridView1.FocusedColumn).ToString
+            If sSQL <> "" Then
+                Dim seleccion As String = GridView1.FocusedColumn.GetTextCaption()
+                Dim valor As String = GetValorSeleccionado(GridView1.FocusedColumn.FieldName)' GridView1.GetRowCellDisplayText(GridView1.GetSelectedRows(0), GridView1.FocusedColumn).ToString
 
-            frmDrillDown.lblSubtitulo.Text = seleccion & ": " & valor
-            frmDrillDown.PasarDatos(sSQL)
-            frmDrillDown.ShowDialog()
-            frmDrillDown.Close()
-        End If
+                frmDrillDown.lblSubtitulo.Text = seleccion & ": " & valor
+                frmDrillDown.PasarDatos(sSQL)
+                frmDrillDown.ShowDialog()
+                frmDrillDown.Close()
+            End If
 
+        Catch ex As Exception
+            TratarError(ex, "Drill Down")
+        End Try
     End Sub
 
     Private Sub CorrerProcesoSQL(ByVal sSQL As String,
