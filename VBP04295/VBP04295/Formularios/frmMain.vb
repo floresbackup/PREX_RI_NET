@@ -2642,8 +2642,8 @@ Reinicio:
             For Each row As DataRow In .Rows
 
                 oItem = New DropDownGrid
-
-                If IsNumeric(row(0).ToString) Then oItem.Oid = row(0)
+                Dim oi
+                If IsNumeric(row(0).ToString) AndAlso Integer.TryParse(row(0).ToString, oi) Then oItem.Oid = oi
                 oItem.Codigo = row(0)
                 oItem.Descripcion = row(1)
 

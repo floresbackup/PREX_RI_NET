@@ -108,7 +108,7 @@ Public Class frmABMRegistro
                                 .TabIndex = nTabOrden
                                 .TabStop = oCol.Habilitada
                                 .Top = TOP_CONTROLES + (25 * (nCont - 1))
-                                .Left = 150
+                                .Left = 165
                                 .Width = Cont.Width - .Left - 10 - Cont.Left
                                 .Tag = oCol.Key
 
@@ -140,7 +140,7 @@ Public Class frmABMRegistro
                                 .TabIndex = nTabOrden
                                 .TabStop = oCol.Habilitada
                                 .Top = TOP_CONTROLES + (25 * (nCont - 1))
-                                .Left = 150
+                                .Left = 165
                                 .Width = Cont.Width - .Left - 10 - Cont.Left
                                 .DateTime = Date.Today
                                 .Tag = oCol.Key
@@ -173,7 +173,7 @@ Public Class frmABMRegistro
                             .TabIndex = nTabOrden
                             .TabStop = oCol.Habilitada
                             .Top = TOP_CONTROLES + (25 * (nCont - 1))
-                            .Left = 150
+                            .Left = 165
                             .Width = Cont.Width - .Left - 10 - Cont.Left
                             .Text = "<Seleccione...>"
                             .Tag = oCol.Key
@@ -215,10 +215,13 @@ Public Class frmABMRegistro
 
                 If oCol.VisibleABM Then
                     nTabOrden = nTabOrden + 1
-                    Cont.Height = Cont.Height + 25
-                    Me.Height = Me.Height + 25
-                    cmdGuardar.Top = cmdGuardar.Top + 25
-                    cmdCancelar.Top = cmdGuardar.Top
+                    If nCont < 12 Then
+
+                        Cont.Height = Cont.Height + 25
+                        Me.Height = Me.Height + 25
+                        cmdGuardar.Top = cmdGuardar.Top + 25
+                        cmdCancelar.Top = cmdGuardar.Top
+                    End If
                 End If
 
             End If

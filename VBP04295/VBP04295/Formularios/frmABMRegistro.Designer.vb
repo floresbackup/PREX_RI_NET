@@ -95,6 +95,8 @@ Partial Class frmABMRegistro
         '
         'Cont
         '
+        Me.Cont.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Cont.Location = New System.Drawing.Point(12, 60)
         Me.Cont.Name = "Cont"
         Me.Cont.Size = New System.Drawing.Size(549, 28)
