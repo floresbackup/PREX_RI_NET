@@ -360,8 +360,8 @@ Maneja_Error:
 			If (returnValue = 1) Then
                 'SC08822|SC08822
                 'SG_ME66396_160771_3265|#######
-                MessageBox.Show(frmMain, "Login devuelve: " & sgResponse, "Login SGLibrary", MessageBoxButtons.OK)
-				Dim responseSplit As String() = sgResponse.Replace("[", String.Empty).Replace("]", String.Empty).Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+                'MessageBox.Show(frmMain, "Login devuelve: " & sgResponse, "Login SGLibrary", MessageBoxButtons.OK)
+                Dim responseSplit As String() = sgResponse.Replace("[", String.Empty).Replace("]", String.Empty).Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
 				If (responseSplit.Where(Function(s) s.Any()).Any() AndAlso Not responseSplit.FirstOrDefault() Is Nothing) Then
 					If responseSplit.Any(Function(s) s.ToLower.Contains("sg_")) Then
 						Dim usuarioCiti As String() = responseSplit.FirstOrDefault(Function(s) s.ToLower.Contains("sg_")).Trim().Split(New String() {"_"}, StringSplitOptions.RemoveEmptyEntries)
@@ -377,9 +377,9 @@ Maneja_Error:
 				End If
 
 				sPerfil = SGInterface.AccFunctions().Replace("[", String.Empty).Replace("]", String.Empty).Trim
-				MessageBox.Show(frmMain, "Functions: " & sPerfil, "Login SGLibrary", MessageBoxButtons.OK)
+                'MessageBox.Show(frmMain, "Functions: " & sPerfil, "Login SGLibrary", MessageBoxButtons.OK)
 
-				Dim oAdmTablas As New AdmTablas
+                Dim oAdmTablas As New AdmTablas
 
 				oAdmTablas.ConnectionString = CONN_LOCAL
 
