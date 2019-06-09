@@ -51,131 +51,68 @@ Public Class frmABMRegistro
             Return
         End If
 
+        bExiste = False
+        Dim withLabel = 165
+        Dim listColumnasExistentes As New List(Of clsColumnas)
         For Each oCol In oColumnas
-
-            Dim lblInput As New Label()
-
-            bExiste = False
-
             For Each oField In ds.Tables(0).Columns
 
                 If oCol.Campo.ToUpper = oField.ColumnName.ToUpper Then
-                    bExiste = True
+                    listColumnasExistentes.Add(oCol)
+                    Dim t As String = IIf(oCol.Titulo.Substring(oCol.Titulo.Length - 1, 1) <> ":", oCol.Titulo & ":", oCol.Titulo)
+                    If t.Length > 30 Then
+                        withLabel = 165 + ((t.Length - 30) * 5)
+                    End If
                     Exit For
                 End If
-
             Next
+        Next
 
-            'VERIFICO EL TIPO DE DATOS Y COMPLETO
-            If bExiste Then
+        For Each oCol In listColumnasExistentes
 
-                'Obtengo el valor del campo
-                oCol.Valor = ds.Tables(0).Rows(0)(oCol.Campo)
-                oCol.ValorAnterior = oCol.Valor
+            Dim lblInput As New Label()
 
-                If oCol.VisibleABM Or oCol.Clave Then
+            'Obtengo el valor del campo
+            oCol.Valor = ds.Tables(0).Rows(0)(oCol.Campo)
+            oCol.ValorAnterior = oCol.Valor
 
-                    If oCol.VisibleABM Then
-                        nCont = nCont + 1
-                    End If
+            If oCol.VisibleABM Or oCol.Clave Then
 
-                    'LABEL DE CAMPO
-                    With lblInput
-                        .Name = "_lblInput" & oCol.Orden
-                        .AutoSize = True
-                        .Visible = oCol.VisibleABM
-                        .Top = TOP_CONTROLES + 5 + (25 * (nCont - 1))
-                        .Left = 5
-                        .Text = IIf(oCol.Titulo.Substring(oCol.Titulo.Length - 1, 1) <> ":", oCol.Titulo & ":", oCol.Titulo)
-                        If MODO_APE = "B" Then
-                            .Enabled = False
-                        Else
-                            .Enabled = oCol.Habilitada
-                        End If
-                        Cont.Controls.Add(lblInput)
-                    End With
+                If oCol.VisibleABM Then
+                    nCont = nCont + 1
+                End If
 
-                    'SI NO LLEVA UN COMBO DE HELP PONGO UN TEXBOX O DATEPICKER
-                    If oCol.Help = 0 Then
-                        If TipoDatosADO(oCol.Tipo) <> "Fecha/Hora" Then
-
-                            Dim txtInput As New DevExpress.XtraEditors.TextEdit
-
-                            With txtInput
-                                .Name = "_txtInput" & oCol.Orden
-                                .Visible = oCol.VisibleABM
-                                .Properties.MaxLength = oCol.Largo
-                                .TabIndex = nTabOrden
-                                .TabStop = oCol.Habilitada
-                                .Top = TOP_CONTROLES + (25 * (nCont - 1))
-                                .Left = 165
-                                .Width = Cont.Width - .Left - 10 - Cont.Left
-                                .Tag = oCol.Key
-
-                                If MODO_APE = "B" Then
-                                    .ReadOnly = True
-                                Else
-                                    .ReadOnly = Not oCol.Habilitada
-                                    If Not .ReadOnly And (Not bPrimero) Then
-                                        .TabIndex = 0
-                                        bPrimero = True
-                                    End If
-                                End If
-                                If .ReadOnly Then
-                                    .ForeColor = Color.Gray
-                                End If
-                            End With
-
-                            AddHandler txtInput.EditValueChanged, AddressOf txtInput_EditValueChanged
-                            Cont.Controls.Add(txtInput)
-
-                        Else
-
-                            Dim fecInput As New DevExpress.XtraEditors.DateEdit
-
-                            With fecInput
-                                .Name = "_fecInput" & oCol.Orden
-                                .Properties.DisplayFormat.FormatString = "dd/MM/yyyy"
-                                .Visible = oCol.VisibleABM
-                                .TabIndex = nTabOrden
-                                .TabStop = oCol.Habilitada
-                                .Top = TOP_CONTROLES + (25 * (nCont - 1))
-                                .Left = 165
-                                .Width = Cont.Width - .Left - 10 - Cont.Left
-                                .DateTime = Date.Today
-                                .Tag = oCol.Key
-
-                                If MODO_APE = "B" Then
-                                    .ReadOnly = True
-                                Else
-                                    .ReadOnly = Not oCol.Habilitada
-                                    If Not .ReadOnly And (Not bPrimero) Then
-                                        .TabIndex = 0
-                                        bPrimero = True
-                                    End If
-                                End If
-                                If .ReadOnly Then
-                                    .ForeColor = Color.Gray
-                                End If
-                            End With
-
-                            AddHandler fecInput.EditValueChanged, AddressOf fecInput_EditValueChanged
-                            Cont.Controls.Add(fecInput)
-
-                        End If
+                'LABEL DE CAMPO
+                With lblInput
+                    .Name = "_lblInput" & oCol.Orden
+                    .AutoSize = True
+                    .Visible = oCol.VisibleABM
+                    .Top = TOP_CONTROLES + 5 + (25 * (nCont - 1))
+                    .Left = 5
+                    .Text = IIf(oCol.Titulo.Substring(oCol.Titulo.Length - 1, 1) <> ":", oCol.Titulo & ":", oCol.Titulo)
+                    If MODO_APE = "B" Then
+                        .Enabled = False
                     Else
+                        .Enabled = oCol.Habilitada
+                    End If
+                    Cont.Controls.Add(lblInput)
+                End With
 
-                        Dim cboInput As New DevExpress.XtraEditors.ComboBoxEdit
+                'SI NO LLEVA UN COMBO DE HELP PONGO UN TEXBOX O DATEPICKER
+                If oCol.Help = 0 Then
+                    If TipoDatosADO(oCol.Tipo) <> "Fecha/Hora" Then
 
-                        With cboInput
-                            .Name = "_cboInput" & oCol.Orden
+                        Dim txtInput As New DevExpress.XtraEditors.TextEdit
+
+                        With txtInput
+                            .Name = "_txtInput" & oCol.Orden
                             .Visible = oCol.VisibleABM
+                            .Properties.MaxLength = oCol.Largo
                             .TabIndex = nTabOrden
                             .TabStop = oCol.Habilitada
                             .Top = TOP_CONTROLES + (25 * (nCont - 1))
-                            .Left = 165
+                            .Left = withLabel
                             .Width = Cont.Width - .Left - 10 - Cont.Left
-                            .Text = "<Seleccione...>"
                             .Tag = oCol.Key
 
                             If MODO_APE = "B" Then
@@ -192,38 +129,102 @@ Public Class frmABMRegistro
                             End If
                         End With
 
-                        AddHandler cboInput.SelectedIndexChanged, AddressOf cboInput_SelectedIndexChanged
-                        Cont.Controls.Add(cboInput)
+                        AddHandler txtInput.EditValueChanged, AddressOf txtInput_EditValueChanged
+                        Cont.Controls.Add(txtInput)
 
-                        CargarComboDevExpress(cboInput, frmMain.ReemplazarVariablesExt(oCol.HelpQuery))
+                    Else
 
-                    End If
+                        Dim fecInput As New DevExpress.XtraEditors.DateEdit
 
-                    If oCol.Valor.ToString.Trim <> "" Then
-                        If oCol.Help = 0 Then
-                            If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
-                                CType(Cont.Controls("_fecInput" & oCol.Orden.ToString), DevExpress.XtraEditors.DateEdit).DateTime = oCol.Valor
+                        With fecInput
+                            .Name = "_fecInput" & oCol.Orden
+                            .Properties.DisplayFormat.FormatString = "dd/MM/yyyy"
+                            .Visible = oCol.VisibleABM
+                            .TabIndex = nTabOrden
+                            .TabStop = oCol.Habilitada
+                            .Top = TOP_CONTROLES + (25 * (nCont - 1))
+                            .Left = withLabel
+                            .Width = Cont.Width - .Left - 10 - Cont.Left
+                            .DateTime = Date.Today
+                            .Tag = oCol.Key
+
+                            If MODO_APE = "B" Then
+                                .ReadOnly = True
                             Else
-                                CType(Cont.Controls("_txtInput" & oCol.Orden), DevExpress.XtraEditors.TextEdit).Text = oCol.Valor.ToString
+                                .ReadOnly = Not oCol.Habilitada
+                                If Not .ReadOnly And (Not bPrimero) Then
+                                    .TabIndex = 0
+                                    bPrimero = True
+                                End If
                             End If
+                            If .ReadOnly Then
+                                .ForeColor = Color.Gray
+                            End If
+                        End With
+
+                        AddHandler fecInput.EditValueChanged, AddressOf fecInput_EditValueChanged
+                        Cont.Controls.Add(fecInput)
+
+                    End If
+                Else
+
+                    Dim cboInput As New DevExpress.XtraEditors.ComboBoxEdit
+
+                    With cboInput
+                        .Name = "_cboInput" & oCol.Orden
+                        .Visible = oCol.VisibleABM
+                        .TabIndex = nTabOrden
+                        .TabStop = oCol.Habilitada
+                        .Top = TOP_CONTROLES + (25 * (nCont - 1))
+                        .Left = withLabel
+                        .Width = Cont.Width - .Left - 10 - Cont.Left
+                        .Text = "<Seleccione...>"
+                        .Tag = oCol.Key
+
+                        If MODO_APE = "B" Then
+                            .ReadOnly = True
                         Else
-                            SelComboDevExpress(CType(Cont.Controls("_cboInput" & oCol.Orden.ToString), DevExpress.XtraEditors.ComboBoxEdit), "K" & oCol.Valor.ToString)
+                            .ReadOnly = Not oCol.Habilitada
+                            If Not .ReadOnly And (Not bPrimero) Then
+                                .TabIndex = 0
+                                bPrimero = True
+                            End If
                         End If
-                    End If
+                        If .ReadOnly Then
+                            .ForeColor = Color.Gray
+                        End If
+                    End With
+
+                    AddHandler cboInput.SelectedIndexChanged, AddressOf cboInput_SelectedIndexChanged
+                    Cont.Controls.Add(cboInput)
+
+                    CargarComboDevExpress(cboInput, frmMain.ReemplazarVariablesExt(oCol.HelpQuery))
 
                 End If
 
-                If oCol.VisibleABM Then
-                    nTabOrden = nTabOrden + 1
-                    If nCont < 12 Then
-
-                        Cont.Height = Cont.Height + 25
-                        Me.Height = Me.Height + 25
-                        cmdGuardar.Top = cmdGuardar.Top + 25
-                        cmdCancelar.Top = cmdGuardar.Top
+                If oCol.Valor.ToString.Trim <> "" Then
+                    If oCol.Help = 0 Then
+                        If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
+                            CType(Cont.Controls("_fecInput" & oCol.Orden.ToString), DevExpress.XtraEditors.DateEdit).DateTime = oCol.Valor
+                        Else
+                            CType(Cont.Controls("_txtInput" & oCol.Orden), DevExpress.XtraEditors.TextEdit).Text = oCol.Valor.ToString
+                        End If
+                    Else
+                        SelComboDevExpress(CType(Cont.Controls("_cboInput" & oCol.Orden.ToString), DevExpress.XtraEditors.ComboBoxEdit), "K" & oCol.Valor.ToString)
                     End If
                 End If
 
+            End If
+
+            If oCol.VisibleABM Then
+                nTabOrden = nTabOrden + 1
+                If nCont < 12 Then
+
+                    Cont.Height = Cont.Height + 25
+                    Me.Height = Me.Height + 25
+                    cmdGuardar.Top = cmdGuardar.Top + 25
+                    cmdCancelar.Top = cmdGuardar.Top
+                End If
             End If
         Next
     End Sub

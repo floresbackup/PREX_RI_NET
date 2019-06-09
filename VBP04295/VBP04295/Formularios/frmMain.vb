@@ -663,7 +663,7 @@ Public Class frmMain
     Private Sub btnExportar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExportar.Click
         GuardarLOG(AccionesLOG.ExportacionDeDatos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
 
-        frmExportar.PasarViewResultados(Me.Text, Me.lblTitulo.Text, GridView1)
+        frmExportar.PasarViewResultados("", Me.lblTitulo.Text, GridView1)
         frmExportar.ShowDialog()
 
     End Sub
@@ -1653,9 +1653,12 @@ Reinicio:
 
             sSQL = oConsulta.ActualizaValida.Trim
 
-            If (Not oConsulta.Actualiza) Or (sSQL = "") Then
+            If Not oConsulta.Actualiza Then
                 Return False
-                Exit Function
+            End If
+
+            If sSQL.Trim() = "" Then
+                Return True
             End If
 
             For Each oCol In oColumnas

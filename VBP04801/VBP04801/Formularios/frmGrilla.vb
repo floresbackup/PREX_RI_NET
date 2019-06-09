@@ -31,8 +31,8 @@ Public Class frmGrilla
 
    Private Sub cmdExportar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdExportar.Click
 
-      frmExportar.PasarViewResultados(Me.Text, Me.Text, gResult)
-      frmExportar.ShowDialog()
+        frmExportar.PasarViewResultados("", Me.Text, gResult)
+        frmExportar.ShowDialog()
 
    End Sub
 

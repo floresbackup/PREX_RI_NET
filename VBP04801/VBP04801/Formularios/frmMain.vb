@@ -583,8 +583,8 @@ Public Class frmMain
 
     Private Sub btnExportar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExportar.Click
 
-      frmExportar.PasarViewResultados(Me.Text, lblTransaccion.Text, gDiseno)
-      frmExportar.ShowDialog()
+        frmExportar.PasarViewResultados("", lblTransaccion.Text, gDiseno)
+        frmExportar.ShowDialog()
 
    End Sub
 
@@ -2233,8 +2233,8 @@ GrabarCampo:
 
    Private Sub btnExportarResult_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExportarResult.Click
 
-      frmExportar.PasarViewResultados(Me.Text, lblTransaccion.Text, gResult)
-      frmExportar.ShowDialog()
+        frmExportar.PasarViewResultados("", lblTransaccion.Text, gResult)
+        frmExportar.ShowDialog()
 
    End Sub
 
