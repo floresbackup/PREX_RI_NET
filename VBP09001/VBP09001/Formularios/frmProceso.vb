@@ -40,19 +40,22 @@ Public Class frmProceso
 
         ' Especificaciones al control ActiveX de edición de código SQL
         'Todo:   comente esto
-        With cmSQL
+        'If cmSQL Is Nothing Then
+        '    cmSQL = New AxCodeMax.AxCodeMax()
+        'End If
+        '
+        '
+        'cmSQL.Language = "SQL"
+        'cmSQL.SetColor(CodeMax.cmColorItem.cmClrLineNumber, RGB(180, 180, 180))
+        'cmSQL.SetColor(CodeMax.cmColorItem.cmClrLineNumberBk, RGB(90, 90, 90))
+        'cmSQL.SetFontStyle(CodeMax.cmFontStyleItem.cmStyLineNumber, CodeMax.cmFontStyle.cmFontBold)
+        'cmSQL.LineNumbering = True
+        'cmSQL.LineNumberStart = 1
+        'cmSQL.LineNumberStyle = CodeMax.cmLineNumStyle.cmDecimal
+        'cmSQL.ColorSyntax = True
+        'cmSQL.NormalizeCase = True
 
-            .Language = "SQL"
-            .SetColor(CodeMax.cmColorItem.cmClrLineNumber, RGB(180, 180, 180))
-            .SetColor(CodeMax.cmColorItem.cmClrLineNumberBk, RGB(90, 90, 90))
-            .SetFontStyle(CodeMax.cmFontStyleItem.cmStyLineNumber, CodeMax.cmFontStyle.cmFontBold)
-            .LineNumbering = True
-            .LineNumberStart = 1
-            .LineNumberStyle = CodeMax.cmLineNumStyle.cmDecimal
-            .ColorSyntax = True
-            .NormalizeCase = True
 
-        End With
 
         ' Drop Down Tipo de grilla de diseño
         Dim oItem As cboTipo

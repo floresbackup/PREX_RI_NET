@@ -1514,7 +1514,7 @@ Salir:
         Dim nOrden As Integer
         Dim dFechaReal As Date
         Dim oForm As clsFormato
-
+        Dim procesoFin = False
         '      Try
 
         Me.Cursor = Cursors.WaitCursor
@@ -1527,284 +1527,300 @@ Salir:
             File.Delete(sFile)
         End If
         oText = File.CreateText(sFile)
+        Try
 
-        sSQL = "SELECT    MAX(TR_FECHAVIG) AS MAX_FECHA " &
+            sSQL = "SELECT    MAX(TR_FECHAVIG) AS MAX_FECHA " &
                "FROM      TXTREL " &
                "WHERE     TR_FECHAVIG <= " & FechaSQL(dFecha) & " " &
                "AND       TR_CODIGO = " & nCod
 
-        rstTemp = oAdmLocal.AbrirDataset(sSQL)
+            rstTemp = oAdmLocal.AbrirDataset(sSQL)
+            If rstTemp IsNot Nothing Then
 
-        With rstTemp.Tables(0)
-            If .Rows.Count = 0 Then
+                With rstTemp.Tables(0)
+                    If .Rows.Count = 0 Then
 Salir:
+                        MensajeError("No existe el diseño para la fecha ingresada")
+                        Exit Sub
+                    Else
+                        If .Rows(0).Item("MAX_FECHA") Is DBNull.Value Then
+                            GoTo Salir
+                        Else
+                            dFechaProx = .Rows(0).Item("MAX_FECHA")
+                        End If
+                    End If
+                End With
+            Else
+
                 MensajeError("No existe el diseño para la fecha ingresada")
                 Exit Sub
-            Else
-                If .Rows(0).Item("MAX_FECHA") Is DBNull.Value Then
-                    GoTo Salir
-                Else
-                    dFechaProx = .Rows(0).Item("MAX_FECHA")
-                End If
             End If
-        End With
 
-        rstTemp = Nothing
+            rstTemp = Nothing
 
-        sSQL = "SELECT    DISTINCT TR_CUADRO, TR_TABLATRABAJO " &
+            sSQL = "SELECT    DISTINCT TR_CUADRO, TR_TABLATRABAJO " &
                "FROM      TXTREL " &
                "WHERE     TR_CODIGO = " & nCod & " " &
                "AND       TR_FECHAVIG = " & FechaSQL(dFechaProx) & " " &
                "ORDER BY  TR_CUADRO ASC"
 
-        rstCuadros = oAdmLocal.AbrirDataset(sSQL)
+            rstCuadros = oAdmLocal.AbrirDataset(sSQL)
 
-        ' Ver formato ----------
+            ' Ver formato ----------
 
-        sSQL = "SELECT   * " &
+            sSQL = "SELECT   * " &
                "FROM     TXTDIS " &
                "WHERE    TD_CODIGO = " & nCod & " " &
                "AND      TD_FECHAVIG = " & FechaSQL(dFechaProx) & " " &
                "ORDER BY TD_ORDEN"
 
-        rstFormato = oAdmLocal.AbrirDataset(sSQL)
+            rstFormato = oAdmLocal.AbrirDataset(sSQL)
 
-        Formato.Clear()
+            Formato.Clear()
 
-        With rstFormato.Tables(0)
+            With rstFormato.Tables(0)
 
-            For Each row As DataRow In .Rows
+                For Each row As DataRow In .Rows
 
-                oForm = New clsFormato
+                    oForm = New clsFormato
 
-                oForm.Codigo = row("TD_CODIGO")
-                oForm.Decimales = row("TD_CANTDECIMALES")
-                oForm.Descripcion = row("TD_DESCRIPCION")
-                oForm.Fecha = row("TD_FECHAVIG")
-                oForm.FormatoCampo = "" & row("TD_FORMATO")
-                oForm.Inicio = row("TD_INICIO")
-                oForm.Longitud = row("TD_LONGITUD")
-                oForm.Tipo = row("TD_TIPO")
-                oForm.Key = "K" & row("TD_ORDEN")
+                    oForm.Codigo = row("TD_CODIGO")
+                    oForm.Decimales = row("TD_CANTDECIMALES")
+                    oForm.Descripcion = row("TD_DESCRIPCION")
+                    oForm.Fecha = row("TD_FECHAVIG")
+                    oForm.FormatoCampo = "" & row("TD_FORMATO")
+                    oForm.Inicio = row("TD_INICIO")
+                    oForm.Longitud = row("TD_LONGITUD")
+                    oForm.Tipo = row("TD_TIPO")
+                    oForm.Key = "K" & row("TD_ORDEN")
 
-                If oForm.FormatoCampo = "yyyymmdd" Then oForm.FormatoCampo = "yyyyMMdd"
-                If oForm.FormatoCampo = "yyyymm" Then oForm.FormatoCampo = "yyyyMM"
+                    If oForm.FormatoCampo = "yyyymmdd" Then oForm.FormatoCampo = "yyyyMMdd"
+                    If oForm.FormatoCampo = "yyyymm" Then oForm.FormatoCampo = "yyyyMM"
 
-                Formato.Add(oForm, oForm.Key)
+                    Formato.Add(oForm, oForm.Key)
 
-                oForm = Nothing
+                    oForm = Nothing
 
-            Next
+                Next
 
-        End With
+            End With
 
-        rstFormato = Nothing
+            rstFormato = Nothing
 
-        '-- Generar TXT
-        sTabla = rstCuadros.Tables(0).Rows(0).Item("TR_TABLATRABAJO")
+            If rstCuadros IsNot Nothing AndAlso rstCuadros.Tables(0) IsNot Nothing AndAlso
+                rstCuadros.Tables(0).Rows.Count > 0 Then
 
-        '-- Generar Tabla de Trabajo
-        If Not (PreparaTxt(dFechaReal, sTabla)) Then
-            cmdGenerar.Enabled = True
-            lblStatus.Text = ""
-            Me.Cursor = Cursors.Default
-            Exit Sub
-        End If
-        lblStatus.Text = "Procesando..."
-        lblStatus.Visible = True
+                '-- Generar TXT
+                sTabla = rstCuadros.Tables(0).Rows(0).Item("TR_TABLATRABAJO")
 
-        For Each row As DataRow In rstCuadros.Tables(0).Rows
+                '-- Generar Tabla de Trabajo
+                If Not (PreparaTxt(dFechaReal, sTabla)) Then
+                    cmdGenerar.Enabled = True
+                    lblStatus.Text = ""
+                    Me.Cursor = Cursors.Default
+                    Exit Sub
+                End If
+            End If
+            lblStatus.Text = "Procesando..."
+            lblStatus.Visible = True
 
-            sCuadro = row("TR_CUADRO")
+            For Each row As DataRow In rstCuadros.Tables(0).Rows
 
-            sSQL = "SELECT       * " &
+                sCuadro = row("TR_CUADRO")
+
+                sSQL = "SELECT       * " &
                    "FROM         " & sTabla & " " &
                    "WHERE        FECHAVIG = " & FechaSQL(dFecha) & " " &
                    "AND          CUADRO = '" & sCuadro & "' " &
                    "AND          GENERATXT = 1 " &
-                                 FiltroTablaTrabajo(sTabla) & " " &
+        FiltroTablaTrabajo(sTabla) & " " &
                    "ORDER BY     CODIGO, CAMPO8, PERIODO"
-            rstTrabajo = oAdmLocal.AbrirDataset(sSQL)
+                rstTrabajo = oAdmLocal.AbrirDataset(sSQL)
 
-            sSQL = "SELECT       * " &
+                sSQL = "SELECT       * " &
                    "FROM         TXTREL " &
                    "WHERE        TR_CODIGO = " & nCod & " " &
                    "AND          TR_CUADRO = '" & sCuadro & "' " &
                    "AND          TR_FECHAVIG = " & FechaSQL(dFechaProx) & " " &
                    "ORDER BY     TR_ORDENTXT ASC"
-            rstAux = oAdmLocal.AbrirDataset(sSQL)
+                rstAux = oAdmLocal.AbrirDataset(sSQL)
 
-            For Each rowTrabajo As DataRow In rstTrabajo.Tables(0).Rows
+                For Each rowTrabajo As DataRow In rstTrabajo.Tables(0).Rows
 
-                'If j = 102 Then Stop
+                    'If j = 102 Then Stop
 
-                For Each rowAux As DataRow In rstAux.Tables(0).Rows
+                    For Each rowAux As DataRow In rstAux.Tables(0).Rows
 
-                    nOrden = rowAux("TR_ORDENTXT")
+                        nOrden = rowAux("TR_ORDENTXT")
 
-                    If "" & rowAux("TR_CAMPOTRABAJO") = "" Then ' Dato fijo !!
+                        If "" & rowAux("TR_CAMPOTRABAJO") = "" Then ' Dato fijo !!
 
-                        If InStr(1, "" & rowAux("TR_DATOFIJO"), "[") > 0 Then
+                            If InStr(1, "" & rowAux("TR_DATOFIJO"), "[") > 0 Then
 
-                            Select Case "" & rowAux("TR_DATOFIJO")
+                                Select Case "" & rowAux("TR_DATOFIJO")
 
-                                Case "[RECTIFICATIVA]"
-                                    sLine = sLine & IIf(chkRectivicativa.Checked, "R", "N")
+                                    Case "[RECTIFICATIVA]"
+                                        sLine = sLine & IIf(chkRectivicativa.Checked, "R", "N")
 
-                                Case "[ENTIDAD]"
-                                    sLine = sLine & Format(CODIGO_ENTIDAD, Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
+                                    Case "[ENTIDAD]"
+                                        sLine = sLine & Format(CODIGO_ENTIDAD, Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
 
-                            End Select
+                                End Select
+
+                            Else
+
+                                Select Case CType(Formato(nOrden), clsFormato).Tipo
+
+                                    Case "N"
+                                        If IsNumeric(rowAux("TR_DATOFIJO")) Then
+                                            sLine = sLine & Format(Val(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
+                                        ElseIf IsDate(rowAux("TR_DATOFIJO")) Then
+                                            sLine = sLine & Format(CDate(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
+                                        Else
+                                            sLine = sLine & Format(NoNulo(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
+                                        End If
+                                    Case "F"
+                                        If NoNulo(rowAux("TR_DATOFIJO"), False) = 0 Then
+                                            'sLine = sLine & "".PadLeft(CType(Formato(nOrden), clsFormato).Longitud, "0")
+                                            sLine = sLine & New String("0", CType(Formato(nOrden), clsFormato).Longitud)
+                                        Else
+                                            sLine = sLine & Format(CDate(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
+                                        End If
+
+                                    Case Else
+                                        sLine = sLine & RellenarCadena(Trim("" & rowAux("TR_DATOFIJO")), CType(Formato(nOrden), clsFormato).Longitud)
+
+                                End Select
+                            End If
+
+                            ' Ver rutina --------
 
                         Else
+
+                            sCampo = rowAux("TR_CAMPOTRABAJO")
 
                             Select Case CType(Formato(nOrden), clsFormato).Tipo
 
                                 Case "N"
-                                    If IsNumeric(rowAux("TR_DATOFIJO")) Then
-                                        sLine = sLine & Format(Val(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
-                                    ElseIf IsDate(rowAux("TR_DATOFIJO")) Then
-                                        sLine = sLine & Format(CDate(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
+                                    vDato = Val(rowTrabajo(sCampo))
+                                    If CType(Formato(nOrden), clsFormato).Decimales > 0 Then
+                                        sLine = sLine & Format(vDato * Val("1" & "".PadLeft(CType(Formato(nOrden), clsFormato).Decimales, "0")), CType(Formato(nOrden), clsFormato).FormatoCampo)
                                     Else
-                                        sLine = sLine & Format(NoNulo(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
-                                    End If
-                                Case "F"
-                                    If NoNulo(rowAux("TR_DATOFIJO"), False) = 0 Then
-                                        'sLine = sLine & "".PadLeft(CType(Formato(nOrden), clsFormato).Longitud, "0")
-                                        sLine = sLine & New String("0", CType(Formato(nOrden), clsFormato).Longitud)
-                                    Else
-                                        sLine = sLine & Format(CDate(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
+                                        If vDato >= 0 Then
+                                            sLine = sLine & (IIf(vDato = 0 AndAlso CType(Formato(nOrden), clsFormato).FormatoCampo = String.Empty, String.Empty, Format(vDato, CType(Formato(nOrden), clsFormato).FormatoCampo)))
+                                        Else
+                                            sLine = sLine & Format(vDato, Microsoft.VisualBasic.Strings.Right(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud - 1))
+                                        End If
                                     End If
 
-                                Case Else
-                                    sLine = sLine & RellenarCadena(Trim("" & rowAux("TR_DATOFIJO")), CType(Formato(nOrden), clsFormato).Longitud)
-
-                            End Select
-                        End If
-
-                        ' Ver rutina --------
-
-                    Else
-
-                        sCampo = rowAux("TR_CAMPOTRABAJO")
-
-                        Select Case CType(Formato(nOrden), clsFormato).Tipo
-
-                            Case "N"
-                                vDato = Val(rowTrabajo(sCampo))
-                                If CType(Formato(nOrden), clsFormato).Decimales > 0 Then
-                                    sLine = sLine & Format(vDato * Val("1" & "".PadLeft(CType(Formato(nOrden), clsFormato).Decimales, "0")), CType(Formato(nOrden), clsFormato).FormatoCampo)
-                                Else
-                                    If vDato >= 0 Then
-                                        sLine = sLine & (IIf(vDato = 0 AndAlso CType(Formato(nOrden), clsFormato).FormatoCampo = String.Empty, String.Empty, Format(vDato, CType(Formato(nOrden), clsFormato).FormatoCampo)))
-                                    Else
-                                        sLine = sLine & Format(vDato, Microsoft.VisualBasic.Strings.Right(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud - 1))
+                                    If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then
+                                        sLine = sLine & ";"
                                     End If
-                                End If
+                                Case "T"
 
-                                If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then
-                                    sLine = sLine & ";"
-                                End If
-                            Case "T"
+                                    If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then ' Right("" & rowAux("TR_DATOFIJO", 1) = ";" Then
 
-                                If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then ' Right("" & rowAux("TR_DATOFIJO", 1) = ";" Then
+                                        vDato = rowTrabajo(sCampo).ToString.Trim
+                                        sLine = sLine & vDato.ToString & ";"
 
-                                    vDato = rowTrabajo(sCampo).ToString.Trim
-                                    sLine = sLine & vDato.ToString & ";"
+                                    ElseIf Strings.Right(rowAux("TR_DATOFIJO").ToString, 2) = "||" Then 'Right("" & rstAux!TR_DATOFIJO, 2) = "||" Then
 
-                                ElseIf Strings.Right(rowAux("TR_DATOFIJO").ToString, 2) = "||" Then 'Right("" & rstAux!TR_DATOFIJO, 2) = "||" Then
+                                        vDato = rowTrabajo(sCampo).ToString.Trim
+                                        sLine = sLine & vDato.ToString & ""
 
-                                    vDato = rowTrabajo(sCampo).ToString.Trim
-                                    sLine = sLine & vDato.ToString & ""
+                                    Else
 
-                                Else
+                                        vDato = Trim(rowTrabajo(sCampo).ToString)
+                                        sLine = sLine & RellenarCadena(vDato, CType(Formato(nOrden), clsFormato).Longitud)
 
-                                    vDato = Trim(rowTrabajo(sCampo).ToString)
-                                    sLine = sLine & RellenarCadena(vDato, CType(Formato(nOrden), clsFormato).Longitud)
-
-                                End If
+                                    End If
 
                                 'Codigo anterior
                                 'vDato = Trim(rowTrabajo(sCampo).ToString)
                                 'sLine = sLine & RellenarCadena(vDato, CType(Formato(nOrden), clsFormato).Longitud)
 
-                            Case "F"
-                                vDato = NoNulo(rowTrabajo(sCampo))
+                                Case "F"
+                                    vDato = NoNulo(rowTrabajo(sCampo))
 
-                                Select Case rowAux("TR_DATOFIJO").ToString
+                                    Select Case rowAux("TR_DATOFIJO").ToString
 
-                                    Case "[PERIODOANT]"
+                                        Case "[PERIODOANT]"
 
-                                        dNewValue = UnAnioMenos(DateTime.Parse(vDato.ToString))
-                                        sLine = sLine & Format(dNewValue, Formato(nOrden).FORMATOCAMPO)
+                                            dNewValue = UnAnioMenos(DateTime.Parse(vDato.ToString))
+                                            sLine = sLine & Format(dNewValue, Formato(nOrden).FORMATOCAMPO)
 
-                                    Case Else ' VACIO !!
+                                        Case Else ' VACIO !!
 
-                                        If vDato.ToString = "0" Then
+                                            If vDato.ToString = "0" Then
 
-                                            If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then
-                                                sLine = sLine
+                                                If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then
+                                                    sLine = sLine
+                                                Else
+                                                    sLine = sLine & Format(vDato, "".PadLeft(Len(Formato(nOrden).FORMATOCAMPO), "0"))
+                                                End If
+
                                             Else
-                                                sLine = sLine & Format(vDato, "".PadLeft(Len(Formato(nOrden).FORMATOCAMPO), "0"))
+
+                                                sLine = sLine & Format(vDato, Formato(nOrden).FORMATOCAMPO)
+
                                             End If
 
-                                        Else
+                                    End Select
 
-                                            sLine = sLine & Format(vDato, Formato(nOrden).FORMATOCAMPO)
-
-                                        End If
-
-                                End Select
-
-                                If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then
-                                    sLine = sLine & ";"
-                                End If
+                                    If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then
+                                        sLine = sLine & ";"
+                                    End If
 
 
-                        End Select
+                            End Select
 
-                    End If
+                        End If
 
+                    Next
+
+                    j = j + 1
+                    oText.WriteLine(sLine)
+                    sLine = ""
+                    procesoFin = True
+                    lblStatus.Text = "Procesados: " & j.ToString & " ..."
+                    Application.DoEvents()
+                    Threading.Thread.Sleep(10)
                 Next
 
-                j = j + 1
-                oText.WriteLine(sLine)
-                sLine = ""
-                lblStatus.Text = "Procesados: " & j.ToString & " ..."
-                Application.DoEvents()
-                Threading.Thread.Sleep(10)
+                rstTrabajo = Nothing
+                rstAux = Nothing
+
             Next
 
-            rstTrabajo = Nothing
-            rstAux = Nothing
 
-        Next
+            'Exit Sub
 
-        oText.Close()
-        oText = Nothing
-
-        rstCuadros = Nothing
-
-        cmdGenerar.Enabled = True
-
-        Me.Cursor = Cursors.Default
-
-        MensajeInformacion("Proceso finalizado")
-
-        Me.lblStatus.Visible = True
-
-        If chkOpen.Checked Then
-            Process.Start(sFile)
-        End If
-
-        'Exit Sub
-
-        '   Catch ex As Exception
-        ' Me.Cursor = Cursors.Default
-        ' TratarError(ex, "GenerarTXT", "Campo: " & sCampo & vbCrLf & Err.Description)
-        ' End Try
+            '   Catch ex As Exception
+            ' Me.Cursor = Cursors.Default
+            ' TratarError(ex, "GenerarTXT", "Campo: " & sCampo & vbCrLf & Err.Description)
+            ' End Try
 
 
+        Finally
+            oText.Close()
+            oText = Nothing
+
+            rstCuadros = Nothing
+
+            cmdGenerar.Enabled = True
+
+            Me.Cursor = Cursors.Default
+
+            If (procesoFin) Then
+                MensajeInformacion("Proceso finalizado")
+                Me.lblStatus.Visible = True
+            End If
+
+
+            If chkOpen.Checked Then
+                Process.Start(sFile)
+            End If
+        End Try
 
     End Sub
 

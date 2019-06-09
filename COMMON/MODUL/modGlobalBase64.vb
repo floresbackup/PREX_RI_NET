@@ -11,24 +11,26 @@ Module modGlobalBase64
       Dim sOut As String
 
       sText = sRemoveWhitespace(BASE64TEXT_IN)    'get working copy of base64 text
+        If sText Is Nothing Then
+            Return String.Empty
+        End If
+        For i = 1 To Len(sText) Step 4 'for the entire base64 text line
+            sFour = Mid$(sText, i, 4)  '  get the next group of four bytes
+            While Len(sFour) < 4 : sFour = sFour & "=" : End While 'pad to four bytes if necessary
+            sThree = sDecode4(sFour)  'convert the group of four bytes
+            If Len(sThree) = 3 Then
+                sOut = sOut & sThree
+            Else
+                rc = MsgBox("Illegal Characters <" & sFour & "> found", vbOKCancel, "PROGRAM ERROR")
+                If rc = vbCancel Then Exit For 'if user cancels, quit
+                'keep trying, maybe some data can be decoded
+                sOut = sOut & "???"
+            End If
+        Next i
 
-      For i = 1 To Len(sText) Step 4 'for the entire base64 text line
-         sFour = Mid$(sText, i, 4)  '  get the next group of four bytes
-         While Len(sFour) < 4 : sFour = sFour & "=" : End While 'pad to four bytes if necessary
-         sThree = sDecode4(sFour)  'convert the group of four bytes
-         If Len(sThree) = 3 Then
-            sOut = sOut & sThree
-         Else
-            rc = MsgBox("Illegal Characters <" & sFour & "> found", vbOKCancel, "PROGRAM ERROR")
-            If rc = vbCancel Then Exit For 'if user cancels, quit
-            'keep trying, maybe some data can be decoded
-            sOut = sOut & "???"
-         End If
-      Next i
+        Return sOut    'return the text
 
-      VB6Base64Decode = sOut    'return the text
-
-   End Function
+    End Function
 
    Public Function VB6Base64Encode(ByVal TEXT_IN As String) As String
       'returns a base64 coded string of the given text

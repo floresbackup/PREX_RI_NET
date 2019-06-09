@@ -19,7 +19,6 @@ Partial Class frmProceso
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmProceso))
         Me.panTop = New System.Windows.Forms.Panel()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.lblSubtitulo = New System.Windows.Forms.Label()
@@ -59,7 +58,7 @@ Partial Class frmProceso
         Me.colTR_ORDENTXT = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.colTR_DATOFIJO = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
-        Me.cmSQL = New AxCodeMax.AxCodeMax()
+        Me.cmSQL = New System.Windows.Forms.TextBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.panTop.SuspendLayout()
@@ -77,7 +76,6 @@ Partial Class frmProceso
         CType(Me.gridRel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.viewRel, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage4.SuspendLayout()
-        CType(Me.cmSQL, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -496,10 +494,10 @@ Partial Class frmProceso
         'cmSQL
         '
         Me.cmSQL.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.cmSQL.Location = New System.Drawing.Point(0, 0)
+        Me.cmSQL.Location = New System.Drawing.Point(3, 3)
+        Me.cmSQL.Multiline = True
         Me.cmSQL.Name = "cmSQL"
-        Me.cmSQL.OcxState = CType(resources.GetObject("cmSQL.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.cmSQL.Size = New System.Drawing.Size(0, 0)
+        Me.cmSQL.Size = New System.Drawing.Size(576, 295)
         Me.cmSQL.TabIndex = 1
         '
         'Panel1
@@ -549,7 +547,7 @@ Partial Class frmProceso
         CType(Me.gridRel, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.viewRel, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage4.ResumeLayout(False)
-        CType(Me.cmSQL, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage4.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
@@ -593,7 +591,7 @@ Partial Class frmProceso
    Friend WithEvents colTR_CAMPOTRABAJO As DevExpress.XtraGrid.Columns.GridColumn
    Friend WithEvents colTR_ORDENTXT As DevExpress.XtraGrid.Columns.GridColumn
    Friend WithEvents colTR_DATOFIJO As DevExpress.XtraGrid.Columns.GridColumn
-   Friend WithEvents cmSQL As AxCodeMax.AxCodeMax
-   Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents cmSQL As System.Windows.Forms.TextBox
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
    Friend WithEvents Button1 As System.Windows.Forms.Button
 End Class
