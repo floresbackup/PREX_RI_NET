@@ -155,10 +155,12 @@
     <Compile Include="Formularios\frmError.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formularios\frmExportar.designer.vb">
+    <Compile Include="..\..\COMMON\FORM\frmExportar.designer.vb">
+      <Link>Formularios\frmExportar.designer.vb</Link>
       <DependentUpon>frmExportar.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formularios\frmExportar.vb">
+    <Compile Include="..\..\COMMON\FORM\frmExportar.vb">
+      <Link>Formularios\frmExportar.vb</Link>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formularios\frmMain.Designer.vb">
@@ -193,8 +195,10 @@
     <EmbeddedResource Include="Formularios\frmError.resx">
       <DependentUpon>frmError.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Formularios\frmExportar.resx">
+    <EmbeddedResource Include="..\..\COMMON\FORM\frmExportar.resx">
+      <Link>Formularios\frmExportar.resx</Link>
       <DependentUpon>frmExportar.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>

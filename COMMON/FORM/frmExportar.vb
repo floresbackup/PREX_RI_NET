@@ -65,26 +65,19 @@ Public Class frmExportar
          Select Case Me.cboExportarA.SelectedIndex
 
             Case 0 'Planilla Excel
-               Dim oOptions As New XlsExportOptions
 
-                    oOptions.ShowGridLines = False
+                    Dim oOptions As New XlsExportOptionsEx
+
                     oOptions.Suppress65536RowsWarning = False
                     oOptions.Suppress256ColumnsWarning = False
-                    oOptions.RawDataMode = True
-
-                    'Dim s = oGvwResults.OptionsSelection.MultiSelect
-                    'oGvwResults.OptionsSelection.MultiSelect = True
-                    'oGvwResults.OptionsPrint.PrintSelectedRowsOnly = True
-                    'oGvwResults.OptionsPrint.UsePrintStyles = False
-                    'oGvwResults.SelectAll()
+                    oOptions.ApplyFormattingToEntireColumn = DevExpress.Utils.DefaultBoolean.False
                     oGvwResults.ExportToXls(txtFileName.Text.Trim, oOptions)
-                    'oGvwResults.ClearSelection()
-                    'oGvwResults.OptionsSelection.MultiSelect = s
+
                 Case 1 'Archivo PDF
 
                     Dim oOptions As New PdfExportOptions
 
-               oOptions.Compressed = True
+                    oOptions.Compressed = True
                oOptions.ImageQuality = PdfJpegImageQuality.Highest
                oOptions.DocumentOptions.Title = "Titulo"
                oOptions.DocumentOptions.Subject = "Subtitulo"
