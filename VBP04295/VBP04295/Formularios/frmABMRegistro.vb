@@ -1,5 +1,5 @@
 Imports Microsoft.Data.ConnectionUI
-
+Imports ExtensionsAdm
 Public Class frmABMRegistro
 
     Private Const TOP_CONTROLES As Long = 10
@@ -324,7 +324,7 @@ Public Class frmABMRegistro
 
                 If bProcesa Then
                     If MODO_APE = "A" Or MODO_APE = "N" Then
-                        oRow.Item(oCol.Campo) = oCol.Valor
+                        oRow.Item(oCol.Campo) = oAdmTablas.ValueOrDbNull(oCol.Valor)
                     Else
                         Select Case TipoDatosADO(oCol.Tipo)
                             Case "Numérico"

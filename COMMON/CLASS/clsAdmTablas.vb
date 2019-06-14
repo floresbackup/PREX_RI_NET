@@ -2,20 +2,33 @@ Imports System.Data
 Imports System.Data.SqlClient
 Imports System.Data.OracleClient
 Imports System.Threading
+Imports System.Runtime.CompilerServices
+
+Public Module ExtensionsAdm
+    <Extension()>
+    Public Function CommandTextWithParametersValues(ByVal cmd As SqlCommand) As String
+        Dim sql As String = cmd.CommandText
+        For Each p As SqlParameter In cmd.Parameters
+            sql = sql.Replace("@" & p.ParameterName, p.Value.ToString)
+        Next
+        Return sql
+    End Function
+
+End Module
 
 Public Class AdmTablas
 
-   Private sConnectionString As String
+    Private sConnectionString As String
 
-   Public Property ConnectionString() As String
-      Get
-         Return sConnectionString
-      End Get
+    Public Property ConnectionString() As String
+        Get
+            Return sConnectionString
+        End Get
 
-      Set(ByVal sConnString As String)
-         sConnectionString = sConnString
-      End Set
-   End Property
+        Set(ByVal sConnString As String)
+            sConnectionString = sConnString
+        End Set
+    End Property
 
     'Public Function AbrirDatasetNativo(ByVal sSQL As String, _
     '                                   Optional ByVal bAsincrono As Boolean = True, _
@@ -128,6 +141,10 @@ Public Class AdmTablas
     '   End Try
 
     'End Function
+    Public Function ValueOrDbNull(ByVal obj As Object) As Object
+        If obj Is Nothing Then Return DBNull.Value
+        Return obj
+    End Function
 
     Public Function AbrirDataset(ByVal sSQL As String,
                                 Optional ByRef oDa As OleDb.OleDbDataAdapter = Nothing,
@@ -231,11 +248,11 @@ Public Class AdmTablas
 
     Public Function EjecutarComandoODBCNativo(ByVal sSQL As String) As Boolean
 
-      Dim oConn As Odbc.OdbcConnection
-      Dim oCommand As Odbc.OdbcCommand
-      Dim iRows As Integer
+        Dim oConn As Odbc.OdbcConnection
+        Dim oCommand As Odbc.OdbcCommand
+        Dim iRows As Integer
 
-      Try
+        Try
 
             oConn = New Odbc.OdbcConnection
             oCommand = New Odbc.OdbcCommand(sSQL, oConn)
@@ -259,14 +276,14 @@ Public Class AdmTablas
 
             Return iRows
 
-      Catch ex As Exception
+        Catch ex As Exception
             GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "Error: EjecutarComandoODBCNativo - " & ex.Message, CODIGO_TRANSACCION)
 
             TratarError(ex)
 
-      End Try
+        End Try
 
-   End Function
+    End Function
     Public Function EjecutarComandoSQL(cmd As SqlCommand) As Boolean
         Dim oConn As New SqlConnection
         Try
@@ -279,7 +296,7 @@ Public Class AdmTablas
             oConn.Close()
             'Agregado para que genere LOG detallado
             If GENERAR_LOG_SQL Then
-                GuardarLOG(AccionesLOG.Intruccion_SQL_Automatica, cmd.CommandText, CODIGO_TRANSACCION)
+                GuardarLOG(AccionesLOG.Intruccion_SQL_Automatica, cmd.CommandTextWithParametersValues, CODIGO_TRANSACCION)
             End If
             Return True
         Catch ex As Exception
@@ -288,11 +305,14 @@ Public Class AdmTablas
             Return False
         End Try
     End Function
+
+
+
     Public Function EjecutarComandoSQL(ByVal sSQL As String) As Boolean
 
-      Dim oConn As OleDb.OleDbConnection
-      Dim da As OleDb.OleDbDataAdapter
-      Dim ds As System.Data.DataSet
+        Dim oConn As OleDb.OleDbConnection
+        Dim da As OleDb.OleDbDataAdapter
+        Dim ds As System.Data.DataSet
 
         Try
 
@@ -317,20 +337,21 @@ Public Class AdmTablas
             GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "EROR: EjecutarComandoSQL - " & ex.Message, CODIGO_TRANSACCION)
 
             Return False
-      End Try
+        End Try
 
-   End Function
+    End Function
 
-   Public Function EjecutarComandoAsincrono(ByVal sSQL As String, _
-                                            Optional ByRef sError As String = "", _
-                                            Optional ByRef nFilas As Integer = 0, _
-                                            Optional ByRef ds As DataSet = Nothing) As Boolean
+    Public Function EjecutarComandoAsincrono(ByVal sSQL As String,
+                                             Optional ByRef sError As String = "",
+                                             Optional ByRef nFilas As Integer = 0,
+                                             Optional ByRef ds As DataSet = Nothing,
+                                             Optional ByRef isLog As Boolean = False) As Boolean
 
-      Dim oConn As OleDb.OleDbConnection
-      Dim cmd As New OleDb.OleDbCommand
+        Dim oConn As OleDb.OleDbConnection
+        Dim cmd As New OleDb.OleDbCommand
 
 
-      Try
+        Try
 
             oConn = New OleDb.OleDbConnection
             oConn.ConnectionString = ConnectionString
@@ -350,32 +371,32 @@ Public Class AdmTablas
 
 
             'Agregado para que genere LOG detallado
-            If GENERAR_LOG_SQL Then
+            If GENERAR_LOG_SQL AndAlso Not isLog Then
                 GuardarLOG(AccionesLOG.Intruccion_SQL_Automatica, sSQL, CODIGO_TRANSACCION)
             End If
 
             Return True
 
-      Catch ex As Exception
+        Catch ex As Exception
             sError = ex.Message
             GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "Error: EjecutarComandoAsincrono - " & sError, CODIGO_TRANSACCION)
 
             Return False
-      End Try
+        End Try
 
-   End Function
+    End Function
 
-   Public Function ProximoID(ByVal sTabla As String, ByVal sCampoClave As String, Optional ByVal sFiltroWhere As String = vbNullString) As Long
+    Public Function ProximoID(ByVal sTabla As String, ByVal sCampoClave As String, Optional ByVal sFiltroWhere As String = vbNullString) As Long
 
-      Dim sSQL As String
-      Dim ds As DataSet
+        Dim sSQL As String
+        Dim ds As DataSet
 
-      sSQL = "SELECT  MAX(" & sCampoClave & ") " & _
-             "FROM    " & sTabla & " "
+        sSQL = "SELECT  MAX(" & sCampoClave & ") " &
+               "FROM    " & sTabla & " "
 
-      If sFiltroWhere <> vbNullString Then
-         sSQL = sSQL & "WHERE " & sFiltroWhere
-      End If
+        If sFiltroWhere <> vbNullString Then
+            sSQL = sSQL & "WHERE " & sFiltroWhere
+        End If
 
         Try
 
@@ -397,21 +418,21 @@ Public Class AdmTablas
             GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "Error: ProximoID - " & ex.Message, CODIGO_TRANSACCION)
 
             Return 0
-      End Try
+        End Try
 
-   End Function
+    End Function
 
-   Public Function DevolverValor(ByVal sTabla As String, ByVal sCampo As String, ByVal sCondicion As String, Optional ByVal sDescripcionInexistente As Object = "") As Object
+    Public Function DevolverValor(ByVal sTabla As String, ByVal sCampo As String, ByVal sCondicion As String, Optional ByVal sDescripcionInexistente As Object = "") As Object
 
-      Dim sSQL As String
-      Dim ds As DataSet
+        Dim sSQL As String
+        Dim ds As DataSet
 
-      sSQL = "SELECT  " & sCampo & " " & _
-             "FROM    " & sTabla & " "
+        sSQL = "SELECT  " & sCampo & " " &
+               "FROM    " & sTabla & " "
 
-      If sCondicion <> vbNullString Then
-         sSQL = sSQL & "WHERE " & sCondicion
-      End If
+        If sCondicion <> vbNullString Then
+            sSQL = sSQL & "WHERE " & sCondicion
+        End If
 
         Try
 
@@ -434,46 +455,46 @@ Public Class AdmTablas
             GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "Error: DevolverValor - " & ex.Message, CODIGO_TRANSACCION)
 
             Return 0
-      End Try
+        End Try
 
-   End Function
+    End Function
 
-   Private Function DataReaderToDataSet(ByVal reader As OleDb.OleDbDataReader) As DataSet
+    Private Function DataReaderToDataSet(ByVal reader As OleDb.OleDbDataReader) As DataSet
 
-      Dim dataSet As DataSet = New DataSet()
-      Dim schemaTable As DataTable = reader.GetSchemaTable()
-      Dim dataTable As DataTable = New DataTable()
-      Dim intCounter As Integer
+        Dim dataSet As DataSet = New DataSet()
+        Dim schemaTable As DataTable = reader.GetSchemaTable()
+        Dim dataTable As DataTable = New DataTable()
+        Dim intCounter As Integer
 
-      For intCounter = 0 To schemaTable.Rows.Count - 1
+        For intCounter = 0 To schemaTable.Rows.Count - 1
 
-         Dim dataRow As DataRow = schemaTable.Rows(intCounter)
-         Dim columnName As String = CType(dataRow("ColumnName"), String)
-         Dim column As DataColumn = New DataColumn(columnName, CType(dataRow("DataType"), Type))
+            Dim dataRow As DataRow = schemaTable.Rows(intCounter)
+            Dim columnName As String = CType(dataRow("ColumnName"), String)
+            Dim column As DataColumn = New DataColumn(columnName, CType(dataRow("DataType"), Type))
 
-         dataTable.Columns.Add(column)
+            dataTable.Columns.Add(column)
 
-      Next
+        Next
 
-      dataSet.Tables.Add(dataTable)
+        dataSet.Tables.Add(dataTable)
 
-      While reader.Read()
+        While reader.Read()
 
-         Dim dataRow As DataRow = dataTable.NewRow()
+            Dim dataRow As DataRow = dataTable.NewRow()
 
-         For intCounter = 0 To reader.FieldCount - 1
-            dataRow(intCounter) = reader.GetValue(intCounter)
-         Next
+            For intCounter = 0 To reader.FieldCount - 1
+                dataRow(intCounter) = reader.GetValue(intCounter)
+            Next
 
-         dataTable.Rows.Add(dataRow)
+            dataTable.Rows.Add(dataRow)
 
-      End While
+        End While
 
-      Return dataSet
+        Return dataSet
 
-   End Function
+    End Function
 
-   Public Function ExisteCampo(ByVal sTabla As String, ByVal sCampo As String)
+    Public Function ExisteCampo(ByVal sTabla As String, ByVal sCampo As String)
         Try
             Dim ds = AbrirDataset("SELECT TOP 1 " & sCampo & " FROM " & sTabla)
             If ds Is Nothing Then Return False
@@ -485,11 +506,11 @@ Public Class AdmTablas
             GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "ERROR: ExisteCampo - " & ex.Message, CODIGO_TRANSACCION)
 
             Return False
-      End Try
+        End Try
 
-   End Function
+    End Function
 
-   Public Function ExisteTabla(ByVal sTabla As String)
+    Public Function ExisteTabla(ByVal sTabla As String)
         Try
             Dim ds = AbrirDataset("SELECT TOP 1 * FROM " & sTabla)
             If ds Is Nothing Then
@@ -504,8 +525,8 @@ Public Class AdmTablas
             GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "ERROR: ExisteTabla - " & ex.Message, CODIGO_TRANSACCION)
 
             Return False
-      End Try
+        End Try
 
-   End Function
+    End Function
 
 End Class

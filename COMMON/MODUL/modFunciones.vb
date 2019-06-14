@@ -198,7 +198,7 @@ Module modFunciones
                             DOMINIO_DEFAULT = sTemp
                         Case "DEBUG" 'SI EXISTE LA VARIABLE EN EL INI - 0 = NO / 1 = SI
                             GENERAR_LOG_SQL = IIf(Integer.Parse(sTemp) = 1, True, False)
-                        Case "" 'SI EXISTE LA VARIABLE EN EL INI - 1= Completo 2= Solo modificaciones no SELECT 3= Ninguna grabación
+                        Case "TIPOLOG" 'SI EXISTE LA VARIABLE EN EL INI - 1= Completo 2= Solo modificaciones no SELECT 3= Ninguna grabación
                             TIPO_LOG_SQL = Integer.Parse(sTemp)
                     End Select
 
@@ -685,7 +685,7 @@ Module modFunciones
         sSQL = sSQL.Replace("@EXTRA", "'" & sExtra.Replace("'", "") & "'")
         sSQL = sSQL.Replace("@WKSTAT", "'" & System.Environment.MachineName & "'")
 
-        oAdmLOG.EjecutarComandoAsincrono(sSQL)
+        oAdmLOG.EjecutarComandoAsincrono(sSQL, "", 0, Nothing, True)
 
         oAdmLOG = Nothing
 
