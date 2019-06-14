@@ -158,9 +158,15 @@
       <Link>Formularios\frmTablaGeneral.vb</Link>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Clases\clsAdmTablas.vb" />
-    <Compile Include="Clases\clsCampos.vb" />
-    <Compile Include="Clases\clsItem.vb" />
+    <Compile Include="..\COMMON\CLASS\clsAdmTablas.vb">
+      <Link>Clases\clsAdmTablas.vb</Link>
+    </Compile>
+    <Compile Include="..\COMMON\CLASS\clsCampos.vb">
+      <Link>Clases\clsCampos.vb</Link>
+    </Compile>
+    <Compile Include="..\COMMON\CLASS\clsItem.vb">
+      <Link>Clases\clsItem.vb</Link>
+    </Compile>
     <Compile Include="Formularios\frmErrores.Designer.vb">
       <DependentUpon>frmErrores.vb</DependentUpon>
     </Compile>
