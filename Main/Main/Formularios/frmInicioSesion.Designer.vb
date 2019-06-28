@@ -28,20 +28,20 @@ Partial Class frmInicioSesion
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmInicioSesion))
-        Me.UsernameLabel = New System.Windows.Forms.Label
-        Me.PasswordLabel = New System.Windows.Forms.Label
-        Me.txtUsuario = New System.Windows.Forms.TextBox
-        Me.txtPassword = New System.Windows.Forms.TextBox
-        Me.OK = New System.Windows.Forms.Button
-        Me.Cancel = New System.Windows.Forms.Button
-        Me.cboDominio = New System.Windows.Forms.ComboBox
-        Me.Panel = New System.Windows.Forms.Panel
-        Me.lblDescri = New System.Windows.Forms.Label
-        Me.lblHeader = New System.Windows.Forms.Label
-        Me.LogoPictureBox = New System.Windows.Forms.PictureBox
-        Me.lblDominio = New System.Windows.Forms.Label
-        Me.lblEntidad = New System.Windows.Forms.Label
-        Me.cboEntidad = New System.Windows.Forms.ComboBox
+        Me.UsernameLabel = New System.Windows.Forms.Label()
+        Me.PasswordLabel = New System.Windows.Forms.Label()
+        Me.txtUsuario = New System.Windows.Forms.TextBox()
+        Me.txtPassword = New System.Windows.Forms.TextBox()
+        Me.OK = New System.Windows.Forms.Button()
+        Me.Cancel = New System.Windows.Forms.Button()
+        Me.cboDominio = New System.Windows.Forms.ComboBox()
+        Me.Panel = New System.Windows.Forms.Panel()
+        Me.lblDescri = New System.Windows.Forms.Label()
+        Me.lblHeader = New System.Windows.Forms.Label()
+        Me.LogoPictureBox = New System.Windows.Forms.PictureBox()
+        Me.lblDominio = New System.Windows.Forms.Label()
+        Me.lblEntidad = New System.Windows.Forms.Label()
+        Me.cboEntidad = New System.Windows.Forms.ComboBox()
         Me.Panel.SuspendLayout()
         CType(Me.LogoPictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -197,10 +197,10 @@ Partial Class frmInicioSesion
         Me.Controls.Add(Me.PasswordLabel)
         Me.Controls.Add(Me.UsernameLabel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmInicioSesion"
-        Me.ShowInTaskbar = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Inicio de sesión"
