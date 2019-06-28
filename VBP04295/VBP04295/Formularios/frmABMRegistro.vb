@@ -336,7 +336,7 @@ Public Class frmABMRegistro
                                 sValor = "'" & oCol.Valor & "'"
                         End Select
 
-                        If oCol.VisibleABM And oCol.Habilitada Then
+                        If oCol.VisibleABM AndAlso (oCol.Habilitada OrElse oCol.Formula.Trim().Length() > 0) Then
                             sUpdate = sUpdate & " [" & oCol.Campo & "] = " & sValor & ","
 
                             'AGREGADO PARA QUE ESCRIBA LOG DE LAS MODIFICACIONES MANUALES
