@@ -175,7 +175,8 @@ Public Class frmMain
 		gridViewResults.OptionsView.ColumnAutoWidth = False
 		gridViewResults.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.Default
 
-		grdResults.DataSource = data
+        gridViewResults.Columns.Clear()
+        grdResults.DataSource = data
 		grdResults.RefreshDataSource()
 		grdResults.Refresh()
 
