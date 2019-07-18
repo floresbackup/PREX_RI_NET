@@ -15,5 +15,6 @@ namespace Prex.Satelite.Utils
         public string PathBCP          { get; set; }
         public string PathFMT          { get; set; }
         public string DecimalSeparator { get; set; }
+        public string PrefijoTabla     { get; set; }
     }
 }

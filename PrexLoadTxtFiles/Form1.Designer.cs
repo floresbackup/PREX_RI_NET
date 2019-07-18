@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.txtUserPass = new System.Windows.Forms.TextBox();
             this.txtDataBase = new System.Windows.Forms.TextBox();
             this.txtSQLServer = new System.Windows.Forms.TextBox();
@@ -38,13 +37,24 @@
             this.Label5 = new System.Windows.Forms.Label();
             this.Label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtPrefijoTabla = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.txtPathBCP = new System.Windows.Forms.TextBox();
             this.Label1 = new System.Windows.Forms.Label();
             this.txtDecimalSeparator = new System.Windows.Forms.TextBox();
             this.Label4 = new System.Windows.Forms.Label();
             this.btnDialogBCP = new System.Windows.Forms.Button();
             this.btnProcesar = new System.Windows.Forms.Button();
+            this.lblProgreso = new System.Windows.Forms.Label();
+            this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.chkDiseno4305 = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.chkDiseno4307 = new System.Windows.Forms.CheckBox();
+            this.chkDiseno4306 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtUserPass
@@ -114,6 +124,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txtPrefijoTabla);
+            this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.txtSQLServer);
             this.groupBox1.Controls.Add(this.txtUserPass);
             this.groupBox1.Controls.Add(this.Label3);
@@ -124,14 +136,30 @@
             this.groupBox1.Controls.Add(this.Label6);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(482, 90);
+            this.groupBox1.Size = new System.Drawing.Size(482, 115);
             this.groupBox1.TabIndex = 16;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Conexión con DB";
             // 
+            // txtPrefijoTabla
+            // 
+            this.txtPrefijoTabla.Location = new System.Drawing.Point(332, 81);
+            this.txtPrefijoTabla.Name = "txtPrefijoTabla";
+            this.txtPrefijoTabla.Size = new System.Drawing.Size(124, 20);
+            this.txtPrefijoTabla.TabIndex = 17;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(211, 84);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(116, 13);
+            this.label2.TabIndex = 16;
+            this.label2.Text = "Agregar prefijo de tabla";
+            // 
             // txtPathBCP
             // 
-            this.txtPathBCP.Location = new System.Drawing.Point(149, 115);
+            this.txtPathBCP.Location = new System.Drawing.Point(149, 135);
             this.txtPathBCP.Name = "txtPathBCP";
             this.txtPathBCP.ReadOnly = true;
             this.txtPathBCP.Size = new System.Drawing.Size(319, 20);
@@ -141,7 +169,7 @@
             // Label1
             // 
             this.Label1.AutoSize = true;
-            this.Label1.Location = new System.Drawing.Point(14, 118);
+            this.Label1.Location = new System.Drawing.Point(14, 138);
             this.Label1.Name = "Label1";
             this.Label1.Size = new System.Drawing.Size(129, 13);
             this.Label1.TabIndex = 18;
@@ -149,7 +177,7 @@
             // 
             // txtDecimalSeparator
             // 
-            this.txtDecimalSeparator.Location = new System.Drawing.Point(149, 142);
+            this.txtDecimalSeparator.Location = new System.Drawing.Point(149, 162);
             this.txtDecimalSeparator.Name = "txtDecimalSeparator";
             this.txtDecimalSeparator.Size = new System.Drawing.Size(25, 20);
             this.txtDecimalSeparator.TabIndex = 21;
@@ -157,7 +185,7 @@
             // Label4
             // 
             this.Label4.AutoSize = true;
-            this.Label4.Location = new System.Drawing.Point(41, 145);
+            this.Label4.Location = new System.Drawing.Point(41, 165);
             this.Label4.Name = "Label4";
             this.Label4.Size = new System.Drawing.Size(102, 13);
             this.Label4.TabIndex = 22;
@@ -166,7 +194,7 @@
             // btnDialogBCP
             // 
             this.btnDialogBCP.Image = global::PrexLoadTxtFiles.Properties.Resources.folder_drag_accept_3;
-            this.btnDialogBCP.Location = new System.Drawing.Point(474, 113);
+            this.btnDialogBCP.Location = new System.Drawing.Point(474, 133);
             this.btnDialogBCP.Name = "btnDialogBCP";
             this.btnDialogBCP.Size = new System.Drawing.Size(26, 23);
             this.btnDialogBCP.TabIndex = 19;
@@ -177,7 +205,7 @@
             // 
             this.btnProcesar.Image = global::PrexLoadTxtFiles.Properties.Resources.document_save_4;
             this.btnProcesar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnProcesar.Location = new System.Drawing.Point(419, 238);
+            this.btnProcesar.Location = new System.Drawing.Point(419, 290);
             this.btnProcesar.Name = "btnProcesar";
             this.btnProcesar.Size = new System.Drawing.Size(75, 23);
             this.btnProcesar.TabIndex = 17;
@@ -186,11 +214,85 @@
             this.btnProcesar.UseVisualStyleBackColor = true;
             this.btnProcesar.Click += new System.EventHandler(this.btnProcesar_Click);
             // 
+            // lblProgreso
+            // 
+            this.lblProgreso.AutoSize = true;
+            this.lblProgreso.Location = new System.Drawing.Point(14, 270);
+            this.lblProgreso.Name = "lblProgreso";
+            this.lblProgreso.Size = new System.Drawing.Size(59, 13);
+            this.lblProgreso.TabIndex = 24;
+            this.lblProgreso.Text = "lblProgreso";
+            this.lblProgreso.Visible = false;
+            // 
+            // fileSystemWatcher1
+            // 
+            this.fileSystemWatcher1.EnableRaisingEvents = true;
+            this.fileSystemWatcher1.SynchronizingObject = this;
+            // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(17, 290);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(386, 23);
+            this.progressBar.TabIndex = 25;
+            this.progressBar.Visible = false;
+            // 
+            // chkDiseno4305
+            // 
+            this.chkDiseno4305.AutoSize = true;
+            this.chkDiseno4305.Checked = true;
+            this.chkDiseno4305.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkDiseno4305.Location = new System.Drawing.Point(47, 33);
+            this.chkDiseno4305.Name = "chkDiseno4305";
+            this.chkDiseno4305.Size = new System.Drawing.Size(50, 17);
+            this.chkDiseno4305.TabIndex = 26;
+            this.chkDiseno4305.Text = "4305";
+            this.chkDiseno4305.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.chkDiseno4306);
+            this.groupBox2.Controls.Add(this.chkDiseno4307);
+            this.groupBox2.Controls.Add(this.chkDiseno4305);
+            this.groupBox2.Location = new System.Drawing.Point(12, 191);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(482, 67);
+            this.groupBox2.TabIndex = 27;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Diseños a procesar";
+            // 
+            // chkDiseno4307
+            // 
+            this.chkDiseno4307.AutoSize = true;
+            this.chkDiseno4307.Checked = true;
+            this.chkDiseno4307.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkDiseno4307.Location = new System.Drawing.Point(311, 33);
+            this.chkDiseno4307.Name = "chkDiseno4307";
+            this.chkDiseno4307.Size = new System.Drawing.Size(50, 17);
+            this.chkDiseno4307.TabIndex = 27;
+            this.chkDiseno4307.Text = "4307";
+            this.chkDiseno4307.UseVisualStyleBackColor = true;
+            // 
+            // chkDiseno4306
+            // 
+            this.chkDiseno4306.AutoSize = true;
+            this.chkDiseno4306.Checked = true;
+            this.chkDiseno4306.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkDiseno4306.Location = new System.Drawing.Point(186, 33);
+            this.chkDiseno4306.Name = "chkDiseno4306";
+            this.chkDiseno4306.Size = new System.Drawing.Size(50, 17);
+            this.chkDiseno4306.TabIndex = 28;
+            this.chkDiseno4306.Text = "4306";
+            this.chkDiseno4306.UseVisualStyleBackColor = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(507, 273);
+            this.ClientSize = new System.Drawing.Size(507, 320);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.progressBar);
+            this.Controls.Add(this.lblProgreso);
             this.Controls.Add(this.txtDecimalSeparator);
             this.Controls.Add(this.Label4);
             this.Controls.Add(this.btnDialogBCP);
@@ -205,6 +307,9 @@
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -227,6 +332,15 @@
         internal System.Windows.Forms.Label Label1;
         internal System.Windows.Forms.TextBox txtDecimalSeparator;
         internal System.Windows.Forms.Label Label4;
+        internal System.Windows.Forms.TextBox txtPrefijoTabla;
+        internal System.Windows.Forms.Label label2;
+        internal System.Windows.Forms.Label lblProgreso;
+        private System.IO.FileSystemWatcher fileSystemWatcher1;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.CheckBox chkDiseno4306;
+        private System.Windows.Forms.CheckBox chkDiseno4307;
+        private System.Windows.Forms.CheckBox chkDiseno4305;
     }
 }
 
