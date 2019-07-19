@@ -50,8 +50,8 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.chkDiseno4305 = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.chkDiseno4307 = new System.Windows.Forms.CheckBox();
             this.chkDiseno4306 = new System.Windows.Forms.CheckBox();
+            this.chkDiseno4307 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -261,29 +261,29 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Diseños a procesar";
             // 
-            // chkDiseno4307
-            // 
-            this.chkDiseno4307.AutoSize = true;
-            this.chkDiseno4307.Checked = true;
-            this.chkDiseno4307.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkDiseno4307.Location = new System.Drawing.Point(311, 33);
-            this.chkDiseno4307.Name = "chkDiseno4307";
-            this.chkDiseno4307.Size = new System.Drawing.Size(50, 17);
-            this.chkDiseno4307.TabIndex = 27;
-            this.chkDiseno4307.Text = "4307";
-            this.chkDiseno4307.UseVisualStyleBackColor = true;
-            // 
             // chkDiseno4306
             // 
             this.chkDiseno4306.AutoSize = true;
             this.chkDiseno4306.Checked = true;
             this.chkDiseno4306.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkDiseno4306.Location = new System.Drawing.Point(186, 33);
+            this.chkDiseno4306.Location = new System.Drawing.Point(190, 33);
             this.chkDiseno4306.Name = "chkDiseno4306";
             this.chkDiseno4306.Size = new System.Drawing.Size(50, 17);
             this.chkDiseno4306.TabIndex = 28;
             this.chkDiseno4306.Text = "4306";
             this.chkDiseno4306.UseVisualStyleBackColor = true;
+            // 
+            // chkDiseno4307
+            // 
+            this.chkDiseno4307.AutoSize = true;
+            this.chkDiseno4307.Checked = true;
+            this.chkDiseno4307.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkDiseno4307.Location = new System.Drawing.Point(332, 33);
+            this.chkDiseno4307.Name = "chkDiseno4307";
+            this.chkDiseno4307.Size = new System.Drawing.Size(50, 17);
+            this.chkDiseno4307.TabIndex = 27;
+            this.chkDiseno4307.Text = "4307";
+            this.chkDiseno4307.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 
