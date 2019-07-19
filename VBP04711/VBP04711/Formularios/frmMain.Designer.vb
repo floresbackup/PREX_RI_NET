@@ -329,6 +329,8 @@ Partial Class frmMain
         '
         'gDiseno
         '
+        Me.gDiseno.Appearance.Preview.Options.UseTextOptions = True
+        Me.gDiseno.Appearance.Preview.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap
         Me.gDiseno.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colUsuario, Me.colFecha, Me.colHora, Me.colCodTrans, Me.colTransaccion, Me.colAccion})
         Me.gDiseno.GridControl = Me.GridDiseno
         Me.gDiseno.GroupPanelText = "Arrastre el encabezado de columna aquí para agrupar por esa columna"
@@ -339,6 +341,7 @@ Partial Class frmMain
         Me.gDiseno.OptionsBehavior.Editable = False
         Me.gDiseno.OptionsBehavior.ReadOnly = True
         Me.gDiseno.OptionsMenu.EnableColumnMenu = False
+        Me.gDiseno.OptionsView.AutoCalcPreviewLineCount = True
         Me.gDiseno.OptionsView.BestFitMode = DevExpress.XtraGrid.Views.Grid.GridBestFitMode.Full
         Me.gDiseno.OptionsView.ShowPreview = True
         Me.gDiseno.PaintStyleName = "WindowsXP"
@@ -390,6 +393,9 @@ Partial Class frmMain
         '
         'colAccion
         '
+        Me.colAccion.AppearanceCell.Options.UseTextOptions = True
+        Me.colAccion.AppearanceCell.TextOptions.Trimming = DevExpress.Utils.Trimming.None
+        Me.colAccion.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap
         Me.colAccion.Caption = "Acción"
         Me.colAccion.FieldName = "TG_DESCRI"
         Me.colAccion.Name = "colAccion"
