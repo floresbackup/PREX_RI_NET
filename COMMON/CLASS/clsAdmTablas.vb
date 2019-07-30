@@ -288,7 +288,7 @@ Public Class AdmTablas
         Dim oConn As New SqlConnection
         Try
             Dim ss As String = ConnectionString
-            oConn.ConnectionString = ss.Replace("Provider=SQLOLEDB;", String.Empty)
+            oConn.ConnectionString = ss.Replace("Provider=SQLOLEDB;", String.Empty).Replace("Provider=SQLOLEDB.1;", String.Empty)
             oConn.Open()
 
             cmd.Connection = oConn

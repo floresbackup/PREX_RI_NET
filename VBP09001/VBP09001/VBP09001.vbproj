@@ -66,6 +66,9 @@
   <PropertyGroup>
     <ApplicationIcon>Prex.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Text</OptionCompare>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ABCpdf, Version=7.0.1.9, Culture=neutral, PublicKeyToken=a7a0b3f5184f2169, processorArchitecture=MSIL">
       <HintPath>..\..\BIN\ABCpdf.dll</HintPath>
