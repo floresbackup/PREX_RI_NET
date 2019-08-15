@@ -275,8 +275,8 @@ Module modFunciones
     End Sub
 
     Public Function FlotanteSQL(ByVal nNumero As Double) As String
-
-        Return Format(nNumero, "Fixed").Replace(",", ".")
+        Return Math.Round(nNumero, 6).ToString.Replace(",", ".")
+        'Return Format(nNumero, "Fixed").Replace(",", ".")
 
     End Function
 
