@@ -51,6 +51,8 @@ namespace Prex.Utils
 
     public class PrexConfig
     {
+        #region Propiedades
+
         public string CONN_LOCAL         { get; internal set; }
         public string CONN_LOCAL_ADO => CONN_LOCAL.Substring(CONN_LOCAL.IndexOf(';')+1, CONN_LOCAL.Length-(CONN_LOCAL.IndexOf(';') + 1));
         public  string FFECHA     { get; internal set; }
@@ -64,12 +66,12 @@ namespace Prex.Utils
         public  string INPUT_GENERAL     { get; internal set; }
         public  string NOMBRE_EMPRESA    { get; internal set; }
         public  string NOMBRE_ENTIDAD    { get; internal set; }
-        public string CODIGO_ENTIDAD     { get; internal set; }
-        public string CODIGO_TRANSACCION { get; internal set; }
+        public string CODIGO_ENTIDAD     { get; set; }
+        public long CODIGO_TRANSACCION   { get; set; }
         public string SIMBOLO_DECIMAL    { get; internal set; }
         public string DOMINIO            { get; internal set; }
         public string DBTYPE             { get; internal set; }
-        public CultureInfo CulturaActual { get; internal set; }
+        public CultureInfo CulturaActual { get; set; }
 
         public bool CONSULTA_CANCELADA   { get; internal set; }
 
@@ -96,6 +98,9 @@ namespace Prex.Utils
         public long ID_SISTEMA           { get; internal set; }
         public string SG_CONFIG { get; internal set; }
         public Usuario UsuarioActual { get; internal set; }
+        #endregion
+
+        #region Contructor
 
         public PrexConfig()
         {
@@ -123,6 +128,7 @@ namespace Prex.Utils
             if (!CARPETA_LOCAL.EndsWith("\\")) CARPETA_LOCAL += "\\";
 
         }
+        #endregion
     }
     #endregion
 

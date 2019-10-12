@@ -46,6 +46,7 @@ namespace Prex.Utils.Logging
     public static class Log
     {
         public static void GuardarLog(AccionesLOG accion, string extra) => GuardarLog(accion, extra, -1, -1);
+        public static void GuardarLog(AccionesLOG accion, string extra, long codTransaccion) => GuardarLog(accion, extra, codTransaccion, -1);
         public static void GuardarLog(AccionesLOG accion, string extra, long codTransaccion, long codUsuario)
         {
             SqlConnection conn = new SqlConnection(Configuration.PrexConfig.CONN_LOCAL_ADO);
