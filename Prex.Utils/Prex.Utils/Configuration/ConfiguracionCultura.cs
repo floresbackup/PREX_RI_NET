@@ -58,6 +58,19 @@ namespace Prex.Utils
         //
         //   End Sub
 
+        public static void CrearTablaCultura()
+        {
+            var sql = "if OBJECT_ID(N'CULTUR', N'U') is null begin " +
+                    "   CREATE TABLE[dbo].[CULTUR]( " +
+                    "       [CU_CULTUR][varchar](50) NOT NULL, " +
+                    "      [CU_ORIGEN] [varchar] (255) NOT NULL, " +
+                    "       [CU_OBJETO] [varchar] (500) NOT NULL, " +
+                    "        [CU_TEXTO] [varchar] (4000) NULL " +
+                    "	) ON[PRIMARY] " +
+                    "end";
+            DataAccess.Execute(sql);
+        }
+
         public static void CulturaCargarTextos(string idCultura)
         {
             if (CulturaTextos == null)
@@ -65,16 +78,13 @@ namespace Prex.Utils
             else
                 CulturaTextos.Clear();
 
+            CrearTablaCultura();
+
             var sSQL = "SELECT  * " +
              "FROM    CULTUR " +
              "WHERE   CU_CULTUR = '" + idCultura + "'";
 
-            var cmd = new SqlCommand(sSQL)
-            {
-                Connection = new SqlConnection(Configuration.PrexConfig.CONN_LOCAL)
-            };
-
-            using (var reader = cmd.ExecuteReader())
+            using (var reader = DataAccess.GetReader(sSQL))
             {
                 while (reader.Read())
                 {

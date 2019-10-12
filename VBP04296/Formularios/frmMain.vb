@@ -3,8 +3,16 @@ Imports Prex.Utils
 
 Public Class frmMain
     Public ErrorPermiso As Boolean = False
+    Public Sub New()
 
-#Region "Metodos"
+        ' Llamada necesaria para el Diseñador de Windows Forms.
+        InitializeComponent()
+
+        ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+        AnalizarCommand()
+    End Sub
+
+    '#Region "Metodos"
     Public Sub AnalizarCommand()
 
         Try
@@ -83,7 +91,6 @@ Public Class frmMain
         Try
             Dim sError = String.Empty
             ''''' USUARIO '''''
-
             Dim sSQL = "SELECT    US_CODUSU, US_NOMBRE, US_DESCRI " &
                         "FROM      USUARI " &
                         "WHERE     US_CODUSU = " & nCodigoUsuario
@@ -97,16 +104,13 @@ Public Class frmMain
                 Configuration.PrexConfig.UsuarioActual.Codigo = nCodigoUsuario
                 Configuration.PrexConfig.UsuarioActual.Nombre = rstAux("US_NOMBRE").ToString()
                 Configuration.PrexConfig.UsuarioActual.Descripcion = rstAux("US_DESCRI").ToString()
-
+                Configuration.PrexConfig.UsuarioActual.SoloLectura = False
+                lblUsuario.Text = Configuration.PrexConfig.UsuarioActual.Descripcion
             End While
-
             rstAux.Close()
-         Set dckStatic = dckStudio.Commands("stcUsuario")
-            dckStatic.Text = !US_DESCRI
 
 
             ''''' ENTIDAD '''''
-
             sSQL = "SELECT    TG_CODCON, TG_DESCRI " &
           "FROM      TABGEN " &
           "WHERE     TG_CODTAB = " & EnumTablasGenerales.TGL_Entidades & " " &
@@ -114,67 +118,39 @@ Public Class frmMain
 
             rstAux = DataAccess.GetReader(sSQL)
 
-            With rstAux
+            If rstAux.RecordsAffected = 0 OrElse rstAux.RecordsAffected > 1 Then
+                sError = "Parámetro de entidad no válido"
+            End If
 
-                If .BOF And .EOF Then
-                    sError = "Parámetro de entidad no válido"
-                Else
-                    NOMBRE_ENTIDAD = !TG_DESCRI
-
-         Set dckStatic = dckStudio.Commands("stcEntidad")
-        dckStatic.Text = !TG_DESCRI
-         Set dckStatic = Nothing
-
-        End If
-
-            End With
-
+            While rstAux.Read()
+                Configuration.PrexConfig.NOMBRE_ENTIDAD = rstAux("TG_DESCRI").ToString()
+                lblEntidad.Text = rstAux("TG_DESCRI").ToString()
+            End While
             rstAux = Nothing
 
             ''''' TRANSACCION '''''
-
             sSQL = "SELECT    MU_TRANSA, MU_DESCRI " &
           "FROM      MENUES " &
           "WHERE     MU_CODTRA = " & nCodigoTransaccion
 
             rstAux = DataAccess.GetReader(sSQL)
 
-            With rstAux
-
-                If .BOF And .EOF Then
-                    sError = "Error en la línea de comandos. Parámetro de transacción incorrecto"
-                Else
-
-         Set dckStatic = dckStudio.Commands("stcCodigoTransaccion")
-        dckStatic.Text = nCodigoTransaccion
-         Set dckStatic = Nothing
-
-         Set dckStatic = dckStudio.Commands("stcDescripcionTransaccion")
-        dckStatic.Text = !MU_TRANSA
-         Set dckStatic = Nothing
-
-         Set dckStatic = dckStudio.Commands("stcPrograma")
-        dckStatic.Text = UCase(App.EXEName)
-         Set dckStatic = Nothing
-
-         Set dckStatic = dckStudio.Commands("stcVersion")
-        dckStatic.Text = App.Major & "." & Format(App.Minor, "00") & "." & Format(App.Revision, "000")
-         Set dckStatic = Nothing
-
-        Caption = NOMBRE_SISTEMA & " | " & nCodigoTransaccion & " - " & !MU_TRANSA
-
-                End If
-
-            End With
-
-   Set rstAux = Nothing
-
-        If sError <> "" Then
-                MensajeError sError
-        End
+            If rstAux.RecordsAffected = 0 OrElse rstAux.RecordsAffected > 1 Then
+                sError = "Error en la línea de comandos. Parámetro de transacción incorrecto"
             End If
 
-            Exit Sub
+            While rstAux.Read()
+                Configuration.PrexConfig.CODIGO_TRANSACCION = nCodigoTransaccion
+                lblTransaccion.Text = rstAux("MU_DESCRI").ToString()
+                Me.Text = "Transacción:" & nCodigoTransaccion.ToString & " - " & rstAux("MU_TRANSA").ToString
+                lblTitulo.Text = rstAux("MU_TRANSA").ToString
+                lblSubtitulo.Text = rstAux.Item("MU_DESCRI").ToString
+            End While
+            rstAux = Nothing
+
+            If sError <> "" Then
+                Prex.Utils.MensajesForms.MostrarError(sError)
+            End If
 
 
         Catch ex As Exception
@@ -183,546 +159,526 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub NuevaConsulta()
+    '    Private Sub NuevaConsulta()
 
-   Set oDetSys = Nothing
-   Set oVarSys = Nothing
-   Set oProSys = Nothing
-   Set oSysGra = Nothing
-   
-   Set oDetSys = New DetSys
-   Set oVarSys = New VarSys
-   Set oProSys = New ProSys
-   Set oSysGra = New SysGra
+    '   Set oDetSys = Nothing
+    '   Set oVarSys = Nothing
+    '   Set oProSys = Nothing
+    '   Set oSysGra = Nothing
 
-   nLlave = 0
-        nLlavePro = 0
-        nLlaveDet = 0
+    '   Set oDetSys = New DetSys
+    '   Set oVarSys = New VarSys
+    '   Set oProSys = New ProSys
+    '   Set oSysGra = New SysGra
 
-        cmSQL.Text = ""
+    '   nLlave = 0
+    '        nLlavePro = 0
+    '        nLlaveDet = 0
 
-        GridVar.ItemCount = 0
-        GridVar.Refresh
-        GridCols.ItemCount = 0
-        GridCols.Refresh
-        GridPro.ItemCount = 0
-        GridPro.Refresh
+    '        cmSQL.Text = ""
 
-        With tCabSys
-            .CS_CODCON = 0
-            .CS_CODENT = CODIGO_ENTIDAD
-            .CS_CODTRA = 0
-            .CS_DESCRI = ""
-            .CS_FECPRO = Date
-            .CS_LAYOUT = ""
-            .CS_NOMBRE = "Nueva Consulta"
-            .CS_QUERY = ""
-            .CS_REPORT = ""
-            .CS_UPDATE = False
-            .CS_DRILLD = False
-            .CS_GROUPB = False
-            .CS_DRIQUE = ""
-            .CS_DRIPRE = ""
-            .CS_TABLA = ""
-            .CS_UPDQUE = ""
-            .CS_ALTQUE = ""
-            .CS_BAJQUE = ""
-            .CS_ALTA = False
-            .CS_BAJA = False
-            .CS_NDESDE = ""
-            .CS_NDEVAL = ""
-            .CS_HABNDE = False
-            .CS_ALTVAL = ""
-            .CS_MODVAL = ""
-        End With
+    '        GridVar.ItemCount = 0
+    '        GridVar.Refresh
+    '        GridCols.ItemCount = 0
+    '        GridCols.Refresh
+    '        GridPro.ItemCount = 0
+    '        GridPro.Refresh
 
-        txtNombreCab = tCabSys.CS_NOMBRE
-        cmSQL.Text = tCabSys.CS_QUERY
-        chkABM.Value = 0
-        chkDrillDown.Value = 0
-        chkGroup.Value = 0
-        chkReempl.Value = 0
-        chkBaja.Value = 0
-        chkAlta.Value = 0
+    '        With tCabSys
+    '            .CS_CODCON = 0
+    '            .CS_CODENT = CODIGO_ENTIDAD
+    '            .CS_CODTRA = 0
+    '            .CS_DESCRI = ""
+    '            .CS_FECPRO = Date
+    '            .CS_LAYOUT = ""
+    '            .CS_NOMBRE = "Nueva Consulta"
+    '            .CS_QUERY = ""
+    '            .CS_REPORT = ""
+    '            .CS_UPDATE = False
+    '            .CS_DRILLD = False
+    '            .CS_GROUPB = False
+    '            .CS_DRIQUE = ""
+    '            .CS_DRIPRE = ""
+    '            .CS_TABLA = ""
+    '            .CS_UPDQUE = ""
+    '            .CS_ALTQUE = ""
+    '            .CS_BAJQUE = ""
+    '            .CS_ALTA = False
+    '            .CS_BAJA = False
+    '            .CS_NDESDE = ""
+    '            .CS_NDEVAL = ""
+    '            .CS_HABNDE = False
+    '            .CS_ALTVAL = ""
+    '            .CS_MODVAL = ""
+    '        End With
 
-        txtCodTraCab = ""
-        txtDescriCab = ""
-        txtOrdenVar = ""
-        txtNombreVar = ""
-        txtTituloVar = ""
-        txtTipoVar = ""
-        txtHelpVar = ""
-        txtRutaHelp.Text = ""
+    '        txtNombreCab = tCabSys.CS_NOMBRE
+    '        cmSQL.Text = tCabSys.CS_QUERY
+    '        chkABM.Value = 0
+    '        chkDrillDown.Value = 0
+    '        chkGroup.Value = 0
+    '        chkReempl.Value = 0
+    '        chkBaja.Value = 0
+    '        chkAlta.Value = 0
 
-        txtTitulo = ""
-        txtFormat = ""
-        TxtMaxAncho = ""
+    '        txtCodTraCab = ""
+    '        txtDescriCab = ""
+    '        txtOrdenVar = ""
+    '        txtNombreVar = ""
+    '        txtTituloVar = ""
+    '        txtTipoVar = ""
+    '        txtHelpVar = ""
+    '        txtRutaHelp.Text = ""
 
-        cmHelp.Text = ""
-        txtFormul.Text = ""
-        chkHabili.Value = 1
-        chkVisible.Value = 1
-        lstIntelliSense.Clear
+    '        txtTitulo = ""
+    '        txtFormat = ""
+    '        TxtMaxAncho = ""
 
-        cmHelp.Enabled = False
-        lbl(10).Enabled = False
+    '        cmHelp.Text = ""
+    '        txtFormul.Text = ""
+    '        chkHabili.Value = 1
+    '        chkVisible.Value = 1
+    '        lstIntelliSense.Clear
 
-        CargarCombos
-        Tabs.Tabs(1).Selected = True
+    '        cmHelp.Enabled = False
+    '        lbl(10).Enabled = False
 
-    End Sub
+    '        CargarCombos
+    '        Tabs.Tabs(1).Selected = True
 
-    Public Sub CargarVariable(ByVal nOrden As Integer,
-                          ByVal sNombre As String,
-                          ByVal nTipo As Integer,
-                          ByVal sTitulo As String,
-                          ByVal nHelp As Integer,
-                          ByVal sHelSQL As String)
+    '    End Sub
+
+    '    Public Sub CargarVariable(ByVal nOrden As Integer,
+    '                          ByVal sNombre As String,
+    '                          ByVal nTipo As Integer,
+    '                          ByVal sTitulo As String,
+    '                          ByVal nHelp As Integer,
+    '                          ByVal sHelSQL As String)
 
 
-        Dim oVar As ItemsVarSys
+    '        Dim oVar As ItemsVarSys
 
-        If nOrden = 0 Then
-            nLlave = nLlave + 1
-            oVarSys.Add tCabSys.CS_CODCON, oVarSys.Count + 1, sNombre, nTipo, sTitulo, nHelp, sHelSQL, "K" & nLlave
-   End If
+    '        If nOrden = 0 Then
+    '            nLlave = nLlave + 1
+    '            oVarSys.Add tCabSys.CS_CODCON, oVarSys.Count + 1, sNombre, nTipo, sTitulo, nHelp, sHelSQL, "K" & nLlave
+    '   End If
 
-        If nOrden <> 0 Then
-            For Each oVar In oVarSys
-                If oVar.Orden = nOrden Then
-                    oVar.Nombre = sNombre
-                    oVar.Tipo = nTipo
-                    oVar.Titulo = sTitulo
-                    oVar.Help = nHelp
-                    oVar.HelQue = sHelSQL
-                    Exit For
-                End If
-            Next
-        End If
+    '        If nOrden <> 0 Then
+    '            For Each oVar In oVarSys
+    '                If oVar.Orden = nOrden Then
+    '                    oVar.Nombre = sNombre
+    '                    oVar.Tipo = nTipo
+    '                    oVar.Titulo = sTitulo
+    '                    oVar.Help = nHelp
+    '                    oVar.HelQue = sHelSQL
+    '                    Exit For
+    '                End If
+    '            Next
+    '        End If
 
-        CargarVariables()
+    '        CargarVariables()
 
-    End Sub
+    '    End Sub
 
-    Private Sub CargarVariables()
+    '    Private Sub CargarVariables()
 
-        GridVar.ItemCount = oVarSys.Count
-        GridVar.Refresh
-        GridVar.RefreshSort
-        DoEvents
+    '        GridVar.ItemCount = oVarSys.Count
+    '        GridVar.Refresh
+    '        GridVar.RefreshSort
+    '        DoEvents
 
-        If GridVar.ItemCount > 0 Then
-            MostrarVariable "K" & GridVar.Value(GridVar.Columns("Key").Index)
-   End If
+    '        If GridVar.ItemCount > 0 Then
+    '            MostrarVariable "K" & GridVar.Value(GridVar.Columns("Key").Index)
+    '   End If
 
-    End Sub
+    '    End Sub
 
-#End Region
+    '#End Region
 
 #Region "Eventos Form"
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Set oAdmLocal = New AdmTablas
-        'Set oAdmSIB = New AdmTablas
 
-        '        oAdmLocal.PasarConnString CONN_LOCAL
-        '       oAdmSIB.PasarConnString CONN_SIB
-
-        'GridCons.DatabaseName = CONN_LOCAL
-        'GridCons.RecordSource = "SELECT *, CAST(CS_CODTRA AS VARCHAR) +  ' - ' + CS_NOMBRE AS XX_DESCRI FROM CABSYS ORDER BY CS_CODTRA "
-        'GridCons.Rebind True
-
-        'GridCols.ItemCount = 0
-        'GridVar.ItemCount = 0
-        'GridPro.ItemCount = 0
-        'GridPro.SortKeys.Add GridPro.Columns("Orden").Index, jgexSortAscending
-        'GridVar.SortKeys.Add GridVar.Columns("Orden").Index, jgexSortAscending
-        'GridCols.SortKeys.Add GridCols.Columns("Orden").Index, jgexSortAscending
-        NuevaConsulta()
-
-        ''PARAMETROS CUADRO SQL
-        AjusteCodemax cmSQL
-        AjusteCodemax cmHelp
-        AjusteCodemax txtFormul
+        Dim dt As SqlDataReader = DataAccess.GetReader("SELECT *, CAST(CS_CODTRA AS VARCHAR) +  ' - ' + CS_NOMBRE AS XX_DESCRI FROM CABSYS ORDER BY CS_CODTRA ")
+        While dt.Read()
+            GridCons.Items.Add(dt("XX_DESCRI").ToString)
+        End While
+        dt.Close()
+        'NuevaConsulta()
+        '
+        '''PARAMETROS CUADRO SQL
+        'AjusteCodemax cmSQL
+        '    AjusteCodemax cmHelp
+        '    AjusteCodemax txtFormul
 
     End Sub
 #End Region
 
-#Region "Eventos Controles"
-    Private Sub cboHelp_Click()
+    '#Region "Eventos Controles"
 
-        cmHelp.Enabled = (DatoItemCombo(cboHelp) = 1)
-        lbl(10).Enabled = (DatoItemCombo(cboHelp) = 1)
+    '    Private Sub chkABM_Click()
 
-        If GridCols.ItemCount > 0 Then
-            oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Help = DatoItemCombo(cboHelp)
-        End If
+    '        tCabSys.CS_UPDATE = CBool(chkABM.Value)
+    '        cmdQueryUpdate.Enabled = tCabSys.CS_UPDATE
+    '        cmdModValida.Enabled = tCabSys.CS_UPDATE
+    '        cmdValidarUpdate.Enabled = (chkABM.Value = 1)
 
-    End Sub
+    '    End Sub
 
-    Private Sub chkABM_Click()
+    '    Private Sub chkClave_Click()
 
-        tCabSys.CS_UPDATE = CBool(chkABM.Value)
-        cmdQueryUpdate.Enabled = tCabSys.CS_UPDATE
-        cmdModValida.Enabled = tCabSys.CS_UPDATE
-        cmdValidarUpdate.Enabled = (chkABM.Value = 1)
+    '        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Llave = CBool(chkClave.Value)
 
-    End Sub
+    '    End Sub
 
-    Private Sub chkClave_Click()
+    '    Private Sub chkDrill_Click()
 
-        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Llave = CBool(chkClave.Value)
+    '        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DrillD = CBool(chkDrill.Value)
 
-    End Sub
+    '        cmdDrill.Enabled = (chkDrill.Value = 1)
 
-    Private Sub chkDrill_Click()
+    '    End Sub
 
-        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DrillD = CBool(chkDrill.Value)
+    '    Private Sub chkDrillDown_Click()
+    '        cmdDrillDown.Enabled = CBool(chkDrillDown.Value)
+    '        tCabSys.CS_DRILLD = cmdDrillDown.Enabled
+    '    End Sub
 
-        cmdDrill.Enabled = (chkDrill.Value = 1)
+    '    Private Sub chkGroup_Click()
+    '        tCabSys.CS_GROUPB = CBool(chkGroup.Value)
+    '    End Sub
 
-    End Sub
+    '    Private Sub chkHabili_Click()
+    '        On Error Resume Next
+    '        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Habili = CBool(chkHabili.Value)
+    '    End Sub
 
-    Private Sub chkDrillDown_Click()
-        cmdDrillDown.Enabled = CBool(chkDrillDown.Value)
-        tCabSys.CS_DRILLD = cmdDrillDown.Enabled
-    End Sub
+    '    Private Sub chkNDesde_Click()
 
-    Private Sub chkGroup_Click()
-        tCabSys.CS_GROUPB = CBool(chkGroup.Value)
-    End Sub
+    '        tCabSys.CS_HABNDE = CBool(chkNDesde.Value)
+    '        cmdQueryNDesde.Enabled = tCabSys.CS_HABNDE
 
-    Private Sub chkHabili_Click()
-        On Error Resume Next
-        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Habili = CBool(chkHabili.Value)
-    End Sub
+    '        cmdValidaNuevoDesde.Enabled = (chkNDesde.Value = 1)
 
-    Private Sub chkNDesde_Click()
+    '    End Sub
 
-        tCabSys.CS_HABNDE = CBool(chkNDesde.Value)
-        cmdQueryNDesde.Enabled = tCabSys.CS_HABNDE
+    '    Private Sub chkReempl_Click()
+    '        On Error Resume Next
+    '        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Reemplazo = CBool(chkReempl.Value)
+    '    End Sub
 
-        cmdValidaNuevoDesde.Enabled = (chkNDesde.Value = 1)
+    '    Private Sub chkVisible_Click()
+    '        On Error Resume Next
+    '        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Visible = CBool(chkVisible.Value)
+    '    End Sub
 
-    End Sub
+    '    Private Sub chkVisABM_Click()
+    '        On Error Resume Next
+    '        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).VisABM = CBool(chkVisABM.Value)
+    '    End Sub
 
-    Private Sub chkReempl_Click()
-        On Error Resume Next
-        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Reemplazo = CBool(chkReempl.Value)
-    End Sub
+    '    Private Sub cmdAlta_Click()
 
-    Private Sub chkVisible_Click()
-        On Error Resume Next
-        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Visible = CBool(chkVisible.Value)
-    End Sub
+    '        Load frmDrillDown
+    '   frmDrillDown.PasarQuery tCabSys.CS_ALTQUE
+    '   frmDrillDown.Show vbModal, Me
 
-    Private Sub chkVisABM_Click()
-        On Error Resume Next
-        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).VisABM = CBool(chkVisABM.Value)
-    End Sub
+    '    If Trim(INPUT_GENERAL) <> "" Then
+    '            tCabSys.CS_ALTQUE = INPUT_GENERAL
+    '        End If
 
-    Private Sub cmdAlta_Click()
+    '    End Sub
 
-        Load frmDrillDown
-   frmDrillDown.PasarQuery tCabSys.CS_ALTQUE
-   frmDrillDown.Show vbModal, Me
+    '    Private Sub cmdAltaValida_Click()
 
-    If Trim(INPUT_GENERAL) <> "" Then
-            tCabSys.CS_ALTQUE = INPUT_GENERAL
-        End If
+    '        Load frmDrillDown
+    '   frmDrillDown.PasarQuery tCabSys.CS_ALTVAL
+    '   frmDrillDown.Show vbModal, Me
 
-    End Sub
+    '    If FORM_MODAL_RESP Then
+    '            tCabSys.CS_ALTVAL = Trim(INPUT_GENERAL)
+    '        End If
 
-    Private Sub cmdAltaValida_Click()
+    '    End Sub
 
-        Load frmDrillDown
-   frmDrillDown.PasarQuery tCabSys.CS_ALTVAL
-   frmDrillDown.Show vbModal, Me
+    '    Private Sub cmdBaja_Click()
 
-    If FORM_MODAL_RESP Then
-            tCabSys.CS_ALTVAL = Trim(INPUT_GENERAL)
-        End If
+    '        Load frmDrillDown
+    '   frmDrillDown.PasarQuery tCabSys.CS_BAJQUE
+    '   frmDrillDown.Show vbModal, Me
 
-    End Sub
+    '    If Trim(INPUT_GENERAL) <> "" Then
+    '            tCabSys.CS_BAJQUE = INPUT_GENERAL
+    '        End If
 
-    Private Sub cmdBaja_Click()
+    '    End Sub
 
-        Load frmDrillDown
-   frmDrillDown.PasarQuery tCabSys.CS_BAJQUE
-   frmDrillDown.Show vbModal, Me
+    '    Private Sub cmdDrill_Click()
 
-    If Trim(INPUT_GENERAL) <> "" Then
-            tCabSys.CS_BAJQUE = INPUT_GENERAL
-        End If
+    '        Load frmDrillDown
+    '   frmDrillDown.PasarConsulta tCabSys.CS_CODTRA, oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Campo, oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DriQue, oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DriPre
+    '   frmDrillDown.Show vbModal, Me
 
-    End Sub
+    '    If Trim(INPUT_GENERAL) <> "" Then
+    '            oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DriQue = INPUT_GENERAL
 
-    Private Sub cmdDrill_Click()
+    '            If Trim(INPUT_GENERAL_AUX) <> "" Then
+    '                oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DriPre = INPUT_GENERAL_AUX
+    '            End If
 
-        Load frmDrillDown
-   frmDrillDown.PasarConsulta tCabSys.CS_CODTRA, oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Campo, oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DriQue, oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DriPre
-   frmDrillDown.Show vbModal, Me
+    '        Else
+    '            chkDrill.Value = 0
+    '        End If
 
-    If Trim(INPUT_GENERAL) <> "" Then
-            oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DriQue = INPUT_GENERAL
+    '    End Sub
 
-            If Trim(INPUT_GENERAL_AUX) <> "" Then
-                oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DriPre = INPUT_GENERAL_AUX
-            End If
+    '    Private Sub cmdDrillDown_Click()
 
-        Else
-            chkDrill.Value = 0
-        End If
+    '        Load frmDrillDown
+    '   frmDrillDown.PasarConsulta tCabSys.CS_CODTRA, "", tCabSys.CS_DRIQUE, tCabSys.CS_DRIPRE
+    '   frmDrillDown.Show vbModal, Me
 
-    End Sub
+    '    If Trim(INPUT_GENERAL) <> "" Then
+    '            tCabSys.CS_DRIQUE = INPUT_GENERAL
+    '        End If
 
-    Private Sub cmdDrillDown_Click()
+    '        If Trim(INPUT_GENERAL_AUX) <> "" Then
+    '            tCabSys.CS_DRIPRE = INPUT_GENERAL_AUX
+    '        End If
 
-        Load frmDrillDown
-   frmDrillDown.PasarConsulta tCabSys.CS_CODTRA, "", tCabSys.CS_DRIQUE, tCabSys.CS_DRIPRE
-   frmDrillDown.Show vbModal, Me
+    '    End Sub
 
-    If Trim(INPUT_GENERAL) <> "" Then
-            tCabSys.CS_DRIQUE = INPUT_GENERAL
-        End If
+    '    Private Sub cmdFondo_Click()
 
-        If Trim(INPUT_GENERAL_AUX) <> "" Then
-            tCabSys.CS_DRIPRE = INPUT_GENERAL_AUX
-        End If
+    '        On Error Resume Next
 
-    End Sub
+    '        Dim nColor As Long
 
-    Private Sub cmdFondo_Click()
+    '        nColor = picFondo.BackColor
 
-        On Error Resume Next
+    '        If VBChooseColor(nColor, True, True) Then
+    '            picFondo.BackColor = nColor
 
-        Dim nColor As Long
+    '            Dim sFormat As String
 
-        nColor = picFondo.BackColor
+    '            sFormat = txtFormat.Text & ";" &
+    '             picFondo.BackColor & ";" &
+    '             picFrente.BackColor & ";" &
+    '             txtFuente.Font.name & ";" &
+    '             IIf(txtFuente.Font.Bold, 1, 0) & ";" &
+    '             IIf(txtFuente.Font.Underline, 1, 0) & ";" &
+    '             IIf(txtFuente.Font.Strikethrough, 1, 0) & ";" &
+    '             Int(Val(txtFuente.Font.Size)) & ";" &
+    '             Int(Val(txtAncho.Text)) & ";" &
+    '             txtCond
 
-        If VBChooseColor(nColor, True, True) Then
-            picFondo.BackColor = nColor
+    '            oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Format = sFormat
 
-            Dim sFormat As String
+    '        End If
 
-            sFormat = txtFormat.Text & ";" &
-             picFondo.BackColor & ";" &
-             picFrente.BackColor & ";" &
-             txtFuente.Font.name & ";" &
-             IIf(txtFuente.Font.Bold, 1, 0) & ";" &
-             IIf(txtFuente.Font.Underline, 1, 0) & ";" &
-             IIf(txtFuente.Font.Strikethrough, 1, 0) & ";" &
-             Int(Val(txtFuente.Font.Size)) & ";" &
-             Int(Val(txtAncho.Text)) & ";" &
-             txtCond
+    '    End Sub
 
-            oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Format = sFormat
+    '    Private Sub cmdFrente_Click()
 
-        End If
 
-    End Sub
+    '        Dim nColor As Long
 
-    Private Sub cmdFrente_Click()
+    '        nColor = picFrente.BackColor
 
+    '        If VBChooseColor(nColor, True, True) Then
+    '            picFrente.BackColor = nColor
 
-        Dim nColor As Long
+    '            Dim sFormat As String
 
-        nColor = picFrente.BackColor
+    '            sFormat = txtFormat.Text & ";" &
+    '             picFondo.BackColor & ";" &
+    '             picFrente.BackColor & ";" &
+    '             txtFuente.Font.name & ";" &
+    '             IIf(txtFuente.Font.Bold, 1, 0) & ";" &
+    '             IIf(txtFuente.Font.Underline, 1, 0) & ";" &
+    '             IIf(txtFuente.Font.Strikethrough, 1, 0) & ";" &
+    '             Int(Val(txtFuente.Font.Size)) & ";" &
+    '             Int(Val(txtAncho.Text)) & ";" &
+    '             txtCond
 
-        If VBChooseColor(nColor, True, True) Then
-            picFrente.BackColor = nColor
+    '            oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Format = sFormat
 
-            Dim sFormat As String
+    '        End If
 
-            sFormat = txtFormat.Text & ";" &
-             picFondo.BackColor & ";" &
-             picFrente.BackColor & ";" &
-             txtFuente.Font.name & ";" &
-             IIf(txtFuente.Font.Bold, 1, 0) & ";" &
-             IIf(txtFuente.Font.Underline, 1, 0) & ";" &
-             IIf(txtFuente.Font.Strikethrough, 1, 0) & ";" &
-             Int(Val(txtFuente.Font.Size)) & ";" &
-             Int(Val(txtAncho.Text)) & ";" &
-             txtCond
+    '    End Sub
 
-            oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Format = sFormat
+    '    Private Sub cmdFuente_Click()
 
-        End If
+    '        Dim oFont As StdFont
 
-    End Sub
+    '    Set oFont = New StdFont
+    '    Set oFont = txtFuente.Font
 
-    Private Sub cmdFuente_Click()
+    '    If VBChooseFont(oFont) Then
+    '    Set txtFuente.Font = oFont
 
-        Dim oFont As StdFont
+    '    Dim sFormat As String
 
-    Set oFont = New StdFont
-    Set oFont = txtFuente.Font
+    '            sFormat = txtFormat.Text & ";" &
+    '             picFondo.BackColor & ";" &
+    '             picFrente.BackColor & ";" &
+    '             txtFuente.Font.name & ";" &
+    '             IIf(txtFuente.Font.Bold, 1, 0) & ";" &
+    '             IIf(txtFuente.Font.Underline, 1, 0) & ";" &
+    '             IIf(txtFuente.Font.Strikethrough, 1, 0) & ";" &
+    '             Int(Val(txtFuente.Font.Size)) & ";" &
+    '             Int(Val(txtAncho.Text)) & ";" &
+    '             txtCond
 
-    If VBChooseFont(oFont) Then
-    Set txtFuente.Font = oFont
+    '            oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Format = sFormat
 
-    Dim sFormat As String
+    '        End If
 
-            sFormat = txtFormat.Text & ";" &
-             picFondo.BackColor & ";" &
-             picFrente.BackColor & ";" &
-             txtFuente.Font.name & ";" &
-             IIf(txtFuente.Font.Bold, 1, 0) & ";" &
-             IIf(txtFuente.Font.Underline, 1, 0) & ";" &
-             IIf(txtFuente.Font.Strikethrough, 1, 0) & ";" &
-             Int(Val(txtFuente.Font.Size)) & ";" &
-             Int(Val(txtAncho.Text)) & ";" &
-             txtCond
+    '    Set oFont = Nothing
 
-            oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Format = sFormat
 
-        End If
+    '    Private Sub cmdModValida_Click()
 
-    Set oFont = Nothing
+    '        Load frmDrillDown
+    '   frmDrillDown.PasarQuery tCabSys.CS_MODVAL
+    '   frmDrillDown.Show vbModal, Me
 
+    '    If FORM_MODAL_RESP Then
+    '            tCabSys.CS_MODVAL = Trim(INPUT_GENERAL)
+    '        End If
 
-    Private Sub cmdModValida_Click()
+    '    End Sub
 
-        Load frmDrillDown
-   frmDrillDown.PasarQuery tCabSys.CS_MODVAL
-   frmDrillDown.Show vbModal, Me
+    '    Private Sub cmdQueryNDesde_Click()
 
-    If FORM_MODAL_RESP Then
-            tCabSys.CS_MODVAL = Trim(INPUT_GENERAL)
-        End If
+    '        Load frmDrillDown
+    '   frmDrillDown.PasarQuery tCabSys.CS_NDESDE
+    '   frmDrillDown.Show vbModal, Me
 
-    End Sub
+    '    If Trim(INPUT_GENERAL) <> "" Then
+    '            tCabSys.CS_NDESDE = INPUT_GENERAL
+    '        End If
 
-    Private Sub cmdQueryNDesde_Click()
+    '    End Sub
 
-        Load frmDrillDown
-   frmDrillDown.PasarQuery tCabSys.CS_NDESDE
-   frmDrillDown.Show vbModal, Me
+    '    Private Sub cmdQueryUpdate_Click()
 
-    If Trim(INPUT_GENERAL) <> "" Then
-            tCabSys.CS_NDESDE = INPUT_GENERAL
-        End If
+    '        Load frmDrillDown
+    '   frmDrillDown.PasarQuery tCabSys.CS_TABLA
+    '   frmDrillDown.Show vbModal, Me
 
-    End Sub
+    '    If Trim(INPUT_GENERAL) <> "" Then
+    '            tCabSys.CS_TABLA = INPUT_GENERAL
+    '        End If
 
-    Private Sub cmdQueryUpdate_Click()
+    '    End Sub
 
-        Load frmDrillDown
-   frmDrillDown.PasarQuery tCabSys.CS_TABLA
-   frmDrillDown.Show vbModal, Me
+    '    Private Sub cmdValidaNuevoDesde_Click()
 
-    If Trim(INPUT_GENERAL) <> "" Then
-            tCabSys.CS_TABLA = INPUT_GENERAL
-        End If
+    '        Load frmDrillDown
+    '   frmDrillDown.PasarQuery tCabSys.CS_NDEVAL
+    '   frmDrillDown.Show vbModal, Me
 
-    End Sub
+    '    If Trim(INPUT_GENERAL) <> "" Then
+    '            tCabSys.CS_NDEVAL = INPUT_GENERAL
+    '        End If
 
-    Private Sub cmdValidaNuevoDesde_Click()
+    '    End Sub
 
-        Load frmDrillDown
-   frmDrillDown.PasarQuery tCabSys.CS_NDEVAL
-   frmDrillDown.Show vbModal, Me
+    '    Private Sub cmdValidarUpdate_Click()
 
-    If Trim(INPUT_GENERAL) <> "" Then
-            tCabSys.CS_NDEVAL = INPUT_GENERAL
-        End If
+    '        Load frmDrillDown
+    '   frmDrillDown.PasarQuery tCabSys.CS_UPDQUE
+    '   frmDrillDown.Show vbModal, Me
 
-    End Sub
+    '    If Trim(INPUT_GENERAL) <> "" Then
+    '            tCabSys.CS_UPDQUE = INPUT_GENERAL
+    '        End If
 
-    Private Sub cmdValidarUpdate_Click()
+    '    End Sub
 
-        Load frmDrillDown
-   frmDrillDown.PasarQuery tCabSys.CS_UPDQUE
-   frmDrillDown.Show vbModal, Me
+    '    Private Sub cmHelp_Change(ByVal Control As CodeMaxCtl.ICodeMax)
+    '        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).HelQue = cmHelp.Text
+    '    End Sub
 
-    If Trim(INPUT_GENERAL) <> "" Then
-            tCabSys.CS_UPDQUE = INPUT_GENERAL
-        End If
+    '    Private Function cmHelp_RClick(ByVal Control As CodeMaxCtl.ICodeMax) As Boolean
+    '        cmHelp_RClick = True
+    '    End Function
 
-    End Sub
+    '    Private Sub cmSQL_Change(ByVal Control As CodeMaxCtl.ICodeMax)
+    '        tCabSys.CS_QUERY = cmSQL.Text
+    '    End Sub
 
-    Private Sub cmHelp_Change(ByVal Control As CodeMaxCtl.ICodeMax)
-        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).HelQue = cmHelp.Text
-    End Sub
+    '    Private Function cmSQL_RClick(ByVal Control As CodeMaxCtl.ICodeMax) As Boolean
+    '        cmSQL_RClick = True
+    '    End Function
 
-    Private Function cmHelp_RClick(ByVal Control As CodeMaxCtl.ICodeMax) As Boolean
-        cmHelp_RClick = True
-    End Function
+    '    Private Sub dckCampos_CommandClick(ByVal Command As InnovaDSXP.Command)
 
-    Private Sub cmSQL_Change(ByVal Control As CodeMaxCtl.ICodeMax)
-        tCabSys.CS_QUERY = cmSQL.Text
-    End Sub
+    '        Select Case Command.name
 
-    Private Function cmSQL_RClick(ByVal Control As CodeMaxCtl.ICodeMax) As Boolean
-        cmSQL_RClick = True
-    End Function
+    '            Case "btnBaja"
+    '                If Pregunta("¿Eliminar columna?") = vbYes Then
+    '                    EliminarCampo GridCols.Value(GridCols.Columns("Key").Index)
+    '    End If
 
-    Private Sub dckCampos_CommandClick(ByVal Command As InnovaDSXP.Command)
+    '            Case "btnArriba"
+    '                SubirOrdenCol GridCols.Value(GridCols.Columns("Orden").Index)
 
-        Select Case Command.name
+    '    Case "btnAbajo"
+    '                BajarOrdenCol GridCols.Value(GridCols.Columns("Orden").Index)
 
-            Case "btnBaja"
-                If Pregunta("¿Eliminar columna?") = vbYes Then
-                    EliminarCampo GridCols.Value(GridCols.Columns("Key").Index)
-    End If
+    '    End Select
 
-            Case "btnArriba"
-                SubirOrdenCol GridCols.Value(GridCols.Columns("Orden").Index)
+    '    End Sub
 
-    Case "btnAbajo"
-                BajarOrdenCol GridCols.Value(GridCols.Columns("Orden").Index)
+    '    Private Sub dckCons_CommandClick(ByVal Command As InnovaDSXP.Command)
 
-    End Select
+    '        Dim oRespuesta As VbMsgBoxResult
 
-    End Sub
+    '        Select Case Command.name
 
-    Private Sub dckCons_CommandClick(ByVal Command As InnovaDSXP.Command)
+    '            Case "btnNuevo"
 
-        Dim oRespuesta As VbMsgBoxResult
+    '                oRespuesta = MsgBox("Se perderan los cambios de la consulta actual. ¿Desea guardar los cambios?", vbQuestion + vbYesNoCancel, "Preguta del sistema")
 
-        Select Case Command.name
+    '                If oRespuesta = vbYes Then
+    '                    GuardarConsulta
+    '                ElseIf oRespuesta = vbCancel Then
+    '                    Exit Sub
+    '                Else
+    '                    NuevaConsulta
+    '                End If
 
-            Case "btnNuevo"
+    '            Case "btnBaja"
 
-                oRespuesta = MsgBox("Se perderan los cambios de la consulta actual. ¿Desea guardar los cambios?", vbQuestion + vbYesNoCancel, "Preguta del sistema")
+    '                If Pregunta("¿Eliminar la consulta de la base de datos?") = vbYes Then
+    '                    EliminarConsulta
+    '                End If
 
-                If oRespuesta = vbYes Then
-                    GuardarConsulta
-                ElseIf oRespuesta = vbCancel Then
-                    Exit Sub
-                Else
-                    NuevaConsulta
-                End If
+    '            Case "btnEditar"
+    '                EditarConsulta
 
-            Case "btnBaja"
+    '        End Select
 
-                If Pregunta("¿Eliminar la consulta de la base de datos?") = vbYes Then
-                    EliminarConsulta
-                End If
+    '    End Sub
 
-            Case "btnEditar"
-                EditarConsulta
+    '    Private Sub dckStudio_CommandClick(ByVal Command As InnovaDSXP.Command)
 
-        End Select
+    '        Select Case Command.name
 
-    End Sub
+    '            Case "btnAyuda"
 
-    Private Sub dckStudio_CommandClick(ByVal Command As InnovaDSXP.Command)
+    '                Ayuda
 
-        Select Case Command.name
+    '            Case "btnSalir"
 
-            Case "btnAyuda"
+    '                Unload Me
 
-                Ayuda
+    '    End Select
 
-            Case "btnSalir"
+    '    End Sub
 
-                Unload Me
 
-    End Select
-
-    End Sub
-
-
-#End Region
+    '#End Region
 
 End Class

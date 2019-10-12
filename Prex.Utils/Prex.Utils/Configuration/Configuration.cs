@@ -65,7 +65,7 @@ namespace Prex.Utils
         public string LAST_USER          { get; internal set; }
         public  string INPUT_GENERAL     { get; internal set; }
         public  string NOMBRE_EMPRESA    { get; internal set; }
-        public  string NOMBRE_ENTIDAD    { get; internal set; }
+        public  string NOMBRE_ENTIDAD    { get; set; }
         public string CODIGO_ENTIDAD     { get; set; }
         public long CODIGO_TRANSACCION   { get; set; }
         public string SIMBOLO_DECIMAL    { get; internal set; }
@@ -186,10 +186,10 @@ namespace Prex.Utils
                     _config = new PrexConfig(prexConfig);
 
                 }
-                //else
-                //{
-                //    throw new Exception("No se encontró archivo Prex.config");
-                //}
+                else
+                {
+                    throw new Exception("No se encontró archivo Prex.config");
+                }
 
 
 

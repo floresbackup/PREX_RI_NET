@@ -863,4 +863,8 @@ Public Class frmMain
     Private Sub cmdMostrarAgrupamiento_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdMostrarAgrupamiento.ItemClick
         GridResultado.OptionsView.ShowGroupPanel = Not GridResultado.OptionsView.ShowGroupPanel
     End Sub
+
+    Private Sub btnAyuda_Click(sender As Object, e As EventArgs) Handles btnAyuda.Click
+
+    End Sub
 End Class
