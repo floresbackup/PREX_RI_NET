@@ -3,6 +3,8 @@ Imports Prex.Utils
 
 Public Class frmMain
     Public ErrorPermiso As Boolean = False
+    Private tCabSys As CabSys
+
     Public Sub New()
 
         ' Llamada necesaria para el Diseñador de Windows Forms.
@@ -142,7 +144,7 @@ Public Class frmMain
             While rstAux.Read()
                 Configuration.PrexConfig.CODIGO_TRANSACCION = nCodigoTransaccion
                 lblTransaccion.Text = rstAux("MU_DESCRI").ToString()
-                Me.Text = "Transacción:" & nCodigoTransaccion.ToString & " - " & rstAux("MU_TRANSA").ToString
+                Me.Text = "Gestión RI | " & nCodigoTransaccion.ToString & " - " & rstAux("MU_TRANSA").ToString
                 lblTitulo.Text = rstAux("MU_TRANSA").ToString
                 lblSubtitulo.Text = rstAux.Item("MU_DESCRI").ToString
             End While
@@ -159,94 +161,47 @@ Public Class frmMain
 
     End Sub
 
-    '    Private Sub NuevaConsulta()
+    Private Sub NuevaConsulta()
 
-    '   Set oDetSys = Nothing
-    '   Set oVarSys = Nothing
-    '   Set oProSys = Nothing
-    '   Set oSysGra = Nothing
+        tCabSys = New CabSys(Configuration.PrexConfig.CODIGO_ENTIDAD)
 
-    '   Set oDetSys = New DetSys
-    '   Set oVarSys = New VarSys
-    '   Set oProSys = New ProSys
-    '   Set oSysGra = New SysGra
+        txtNombreCab.Text = tCabSys.CS_NOMBRE
+        txtDescriCab.Text = ""
+        txtCodTraCab.text = ""
+        chkAlta.Checked = False
+        chkBaja.Checked = False
+        chkABM.Checked = False
+        chkNDesde.Checked = False
+        chkDrillDown.Checked = False
+        chkGroup.Checked = False
 
-    '   nLlave = 0
-    '        nLlavePro = 0
-    '        nLlaveDet = 0
+        'cmSQL.Text = tCabSys.CS_QUERY
+        '
+        'txtOrdenVar = ""
+        'txtNombreVar = ""
+        'txtTituloVar = ""
+        'txtTipoVar = ""
+        'txtHelpVar = ""
+        'txtRutaHelp.Text = ""
+        '
+        'txtTitulo = ""
+        'txtFormat = ""
+        'TxtMaxAncho = ""
+        '
+        'cmHelp.Text = ""
+        'txtFormul.Text = ""
+        'chkHabili.Value = 1
+        'chkVisible.Value = 1
+        'lstIntelliSense.Clear
+        '
+        'cmHelp.Enabled = False
+        'lbl(10).Enabled = False
+        '
+        'CargarCombos
 
-    '        cmSQL.Text = ""
+        tabPageFormulario.Select()
 
-    '        GridVar.ItemCount = 0
-    '        GridVar.Refresh
-    '        GridCols.ItemCount = 0
-    '        GridCols.Refresh
-    '        GridPro.ItemCount = 0
-    '        GridPro.Refresh
-
-    '        With tCabSys
-    '            .CS_CODCON = 0
-    '            .CS_CODENT = CODIGO_ENTIDAD
-    '            .CS_CODTRA = 0
-    '            .CS_DESCRI = ""
-    '            .CS_FECPRO = Date
-    '            .CS_LAYOUT = ""
-    '            .CS_NOMBRE = "Nueva Consulta"
-    '            .CS_QUERY = ""
-    '            .CS_REPORT = ""
-    '            .CS_UPDATE = False
-    '            .CS_DRILLD = False
-    '            .CS_GROUPB = False
-    '            .CS_DRIQUE = ""
-    '            .CS_DRIPRE = ""
-    '            .CS_TABLA = ""
-    '            .CS_UPDQUE = ""
-    '            .CS_ALTQUE = ""
-    '            .CS_BAJQUE = ""
-    '            .CS_ALTA = False
-    '            .CS_BAJA = False
-    '            .CS_NDESDE = ""
-    '            .CS_NDEVAL = ""
-    '            .CS_HABNDE = False
-    '            .CS_ALTVAL = ""
-    '            .CS_MODVAL = ""
-    '        End With
-
-    '        txtNombreCab = tCabSys.CS_NOMBRE
-    '        cmSQL.Text = tCabSys.CS_QUERY
-    '        chkABM.Value = 0
-    '        chkDrillDown.Value = 0
-    '        chkGroup.Value = 0
-    '        chkReempl.Value = 0
-    '        chkBaja.Value = 0
-    '        chkAlta.Value = 0
-
-    '        txtCodTraCab = ""
-    '        txtDescriCab = ""
-    '        txtOrdenVar = ""
-    '        txtNombreVar = ""
-    '        txtTituloVar = ""
-    '        txtTipoVar = ""
-    '        txtHelpVar = ""
-    '        txtRutaHelp.Text = ""
-
-    '        txtTitulo = ""
-    '        txtFormat = ""
-    '        TxtMaxAncho = ""
-
-    '        cmHelp.Text = ""
-    '        txtFormul.Text = ""
-    '        chkHabili.Value = 1
-    '        chkVisible.Value = 1
-    '        lstIntelliSense.Clear
-
-    '        cmHelp.Enabled = False
-    '        lbl(10).Enabled = False
-
-    '        CargarCombos
-    '        Tabs.Tabs(1).Selected = True
-
-    '    End Sub
+    End Sub
 
     '    Public Sub CargarVariable(ByVal nOrden As Integer,
     '                          ByVal sNombre As String,
@@ -298,31 +253,36 @@ Public Class frmMain
 #Region "Eventos Form"
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+
         Dim dt As SqlDataReader = DataAccess.GetReader("SELECT *, CAST(CS_CODTRA AS VARCHAR) +  ' - ' + CS_NOMBRE AS XX_DESCRI FROM CABSYS ORDER BY CS_CODTRA ")
-        While dt.Read()
-            GridCons.Items.Add(dt("XX_DESCRI").ToString)
-        End While
+        GridCons.DataSource = dt
         dt.Close()
-        'NuevaConsulta()
-        '
+        NuevaConsulta()
+
         '''PARAMETROS CUADRO SQL
         'AjusteCodemax cmSQL
         '    AjusteCodemax cmHelp
         '    AjusteCodemax txtFormul
 
     End Sub
+
+    Private Sub btnSalir_Click(sender As Object, e As EventArgs) Handles btnSalir.Click
+        Me.Close()
+    End Sub
+
+    Private Sub TableLayoutPanel2_Paint(sender As Object, e As PaintEventArgs) Handles TableLayoutPanel2.Paint
+
+    End Sub
 #End Region
 
-    '#Region "Eventos Controles"
+#Region "Eventos Controles"
 
-    '    Private Sub chkABM_Click()
-
-    '        tCabSys.CS_UPDATE = CBool(chkABM.Value)
-    '        cmdQueryUpdate.Enabled = tCabSys.CS_UPDATE
-    '        cmdModValida.Enabled = tCabSys.CS_UPDATE
-    '        cmdValidarUpdate.Enabled = (chkABM.Value = 1)
-
-    '    End Sub
+    Private Sub chkABM_CheckedChanged(sender As Object, e As EventArgs) Handles chkABM.CheckedChanged
+        tCabSys.CS_UPDATE = chkABM.Checked
+        cmdQueryUpdate.Enabled = tCabSys.CS_UPDATE
+        cmdModValida.Enabled = tCabSys.CS_UPDATE
+        cmdValidarUpdate.Enabled = (chkABM.Value = 1)
+    End Sub
 
     '    Private Sub chkClave_Click()
 
@@ -352,14 +312,13 @@ Public Class frmMain
     '        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Habili = CBool(chkHabili.Value)
     '    End Sub
 
-    '    Private Sub chkNDesde_Click()
 
-    '        tCabSys.CS_HABNDE = CBool(chkNDesde.Value)
-    '        cmdQueryNDesde.Enabled = tCabSys.CS_HABNDE
+    Private Sub chkNDesde_CheckedChanged(sender As Object, e As EventArgs) Handles chkNDesde.CheckedChanged
+        tCabSys.CS_HABNDE = chkNDesde.Checked
+        cmdQueryNDesde.Enabled = tCabSys.CS_HABNDE
 
-    '        cmdValidaNuevoDesde.Enabled = (chkNDesde.Value = 1)
-
-    '    End Sub
+        cmdValidaNuevoDesde.Enabled = chkNDesde.Value
+    End Sub
 
     '    Private Sub chkReempl_Click()
     '        On Error Resume Next
@@ -376,17 +335,17 @@ Public Class frmMain
     '        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).VisABM = CBool(chkVisABM.Value)
     '    End Sub
 
-    '    Private Sub cmdAlta_Click()
+    Private Sub chkAlta_CheckedChanged(sender As Object, e As EventArgs) Handles chkAlta.CheckedChanged
 
-    '        Load frmDrillDown
-    '   frmDrillDown.PasarQuery tCabSys.CS_ALTQUE
-    '   frmDrillDown.Show vbModal, Me
+        'Load frmDrillDown
+        'frmDrillDown.PasarQuery tCabSys.CS_ALTQUE
+        'frmDrillDown.Show vbModal, Me
 
-    '    If Trim(INPUT_GENERAL) <> "" Then
-    '            tCabSys.CS_ALTQUE = INPUT_GENERAL
-    '        End If
+        If Trim(INPUT_GENERAL) <> "" Then
+            tCabSys.CS_ALTQUE = INPUT_GENERAL
+        End If
 
-    '    End Sub
+    End Sub
 
     '    Private Sub cmdAltaValida_Click()
 
@@ -679,6 +638,6 @@ Public Class frmMain
     '    End Sub
 
 
-    '#End Region
+#End Region
 
 End Class
