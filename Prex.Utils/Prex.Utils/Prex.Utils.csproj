@@ -40,6 +40,9 @@
     <OutputPath>Z:\BIN\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Main\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -57,12 +60,14 @@
     <Compile Include="Configuration\TablasGenerales.cs" />
     <Compile Include="DataAccess\DataAccess.cs" />
     <Compile Include="Logging\Log.cs" />
+    <Compile Include="Misc\Encoding.cs" />
     <Compile Include="Misc\Forms\FrmError.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Misc\Forms\FrmError.Designer.cs">
       <DependentUpon>FrmError.cs</DependentUpon>
     </Compile>
+    <Compile Include="Misc\Forms\ScintillaSQL.cs" />
     <Compile Include="Misc\ManejarErrores.cs" />
     <Compile Include="Misc\MensajesForms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,6 +76,9 @@
     <EmbeddedResource Include="Misc\Forms\FrmError.resx">
       <DependentUpon>FrmError.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

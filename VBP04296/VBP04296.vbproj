@@ -84,6 +84,9 @@
     <Reference Include="DevExpress.XtraLayout.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraPrinting.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="PresentationCore" />
+    <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\Main\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -114,6 +117,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entidades\CabSys.vb" />
     <Compile Include="Formularios\frmMain.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -170,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Prex.ico" />
+    <None Include="packages.config" />
     <None Include="Resources\Messenger-Information1.ico" />
     <None Include="Resources\Home1.ico" />
     <None Include="Resources\Help-21.ico" />

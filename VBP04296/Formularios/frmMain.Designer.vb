@@ -42,13 +42,7 @@ Partial Class frmMain
         Me.pnlMain = New DevExpress.XtraEditors.PanelControl()
         Me.SplitContainerControl1 = New DevExpress.XtraEditors.SplitContainerControl()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.GridCons = New DevExpress.XtraGrid.GridControl()
-        Me.GridViewCons = New DevExpress.XtraGrid.Views.Grid.GridView()
-        Me.colNombreConsulta = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.colCodTran = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.colCodCon = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.StandaloneBarDockControl1 = New DevExpress.XtraBars.StandaloneBarDockControl()
+        Me.StandaloneBarDockControl2 = New DevExpress.XtraBars.StandaloneBarDockControl()
         Me.BarManager1 = New DevExpress.XtraBars.BarManager(Me.components)
         Me.Bar2 = New DevExpress.XtraBars.Bar()
         Me.cmdSave = New DevExpress.XtraBars.BarButtonItem()
@@ -56,32 +50,48 @@ Partial Class frmMain
         Me.cmdObtenerCampos = New DevExpress.XtraBars.BarButtonItem()
         Me.cmdCancelar = New DevExpress.XtraBars.BarButtonItem()
         Me.BarButtonItem1 = New DevExpress.XtraBars.BarButtonItem()
+        Me.StandaloneBarDockControl1 = New DevExpress.XtraBars.StandaloneBarDockControl()
+        Me.Bar1 = New DevExpress.XtraBars.Bar()
+        Me.btnNueva = New DevExpress.XtraBars.BarButtonItem()
+        Me.btnEliminar = New DevExpress.XtraBars.BarButtonItem()
+        Me.btnEditar = New DevExpress.XtraBars.BarButtonItem()
         Me.barDockControlTop = New DevExpress.XtraBars.BarDockControl()
         Me.barDockControlBottom = New DevExpress.XtraBars.BarDockControl()
         Me.barDockControlLeft = New DevExpress.XtraBars.BarDockControl()
         Me.barDockControlRight = New DevExpress.XtraBars.BarDockControl()
+        Me.GridCons = New DevExpress.XtraGrid.GridControl()
+        Me.GridViewCons = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.colNombreConsulta = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colCodTran = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colCodCon = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.tabPanel = New DevExpress.XtraTab.XtraTabControl()
         Me.tabPageFormulario = New DevExpress.XtraTab.XtraTabPage()
+        Me.cmdValidarUpdate = New DevExpress.XtraEditors.SimpleButton()
+        Me.cmdBaja = New DevExpress.XtraEditors.SimpleButton()
+        Me.SimpleButton7 = New DevExpress.XtraEditors.SimpleButton()
+        Me.cmdDrillDown = New DevExpress.XtraEditors.SimpleButton()
+        Me.cmdValidaNuevoDesde = New DevExpress.XtraEditors.SimpleButton()
+        Me.cmdQueryNDesde = New DevExpress.XtraEditors.SimpleButton()
+        Me.cmdModValida = New DevExpress.XtraEditors.SimpleButton()
+        Me.cmdQueryUpdate = New DevExpress.XtraEditors.SimpleButton()
+        Me.cmdAltaValida = New DevExpress.XtraEditors.SimpleButton()
+        Me.cmdAlta = New DevExpress.XtraEditors.SimpleButton()
+        Me.chkGroup = New DevExpress.XtraEditors.CheckEdit()
+        Me.chkDrillDown = New DevExpress.XtraEditors.CheckEdit()
+        Me.chkNDesde = New DevExpress.XtraEditors.CheckEdit()
+        Me.chkABM = New DevExpress.XtraEditors.CheckEdit()
+        Me.chkAlta = New DevExpress.XtraEditors.CheckEdit()
+        Me.chkBaja = New DevExpress.XtraEditors.CheckEdit()
+        Me.txtDescriCab = New DevExpress.XtraEditors.MemoEdit()
+        Me.txtCodTraCab = New DevExpress.XtraEditors.TextEdit()
+        Me.txtNombreCab = New DevExpress.XtraEditors.TextEdit()
+        Me.LabelControl3 = New DevExpress.XtraEditors.LabelControl()
+        Me.LabelControl2 = New DevExpress.XtraEditors.LabelControl()
+        Me.LabelControl1 = New DevExpress.XtraEditors.LabelControl()
         Me.tabPageQuery = New DevExpress.XtraTab.XtraTabPage()
         Me.tabPageColumnas = New DevExpress.XtraTab.XtraTabPage()
         Me.tabPageProcesos = New DevExpress.XtraTab.XtraTabPage()
-        Me.StandaloneBarDockControl2 = New DevExpress.XtraBars.StandaloneBarDockControl()
-        Me.Bar1 = New DevExpress.XtraBars.Bar()
-        Me.BarButtonItem2 = New DevExpress.XtraBars.BarButtonItem()
-        Me.BarButtonItem3 = New DevExpress.XtraBars.BarButtonItem()
-        Me.BarButtonItem4 = New DevExpress.XtraBars.BarButtonItem()
-        Me.LabelControl1 = New DevExpress.XtraEditors.LabelControl()
-        Me.LabelControl2 = New DevExpress.XtraEditors.LabelControl()
-        Me.LabelControl3 = New DevExpress.XtraEditors.LabelControl()
-        Me.txtNombreCab = New DevExpress.XtraEditors.TextEdit()
-        Me.txtCodTraCab = New DevExpress.XtraEditors.TextEdit()
-        Me.txtDescriCab = New DevExpress.XtraEditors.MemoEdit()
-        Me.chkBaja = New DevExpress.XtraEditors.CheckEdit()
-        Me.chkAlta = New DevExpress.XtraEditors.CheckEdit()
-        Me.chkABM = New DevExpress.XtraEditors.CheckEdit()
-        Me.chkNDesde = New DevExpress.XtraEditors.CheckEdit()
-        Me.chkDrillDown = New DevExpress.XtraEditors.CheckEdit()
-        Me.chkGroup = New DevExpress.XtraEditors.CheckEdit()
         Me.toolMain.SuspendLayout()
         Me.sbMain.SuspendLayout()
         CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -92,22 +102,22 @@ Partial Class frmMain
         CType(Me.SplitContainerControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainerControl1.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
+        CType(Me.BarManager1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.GridCons, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.GridViewCons, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TableLayoutPanel2.SuspendLayout()
-        CType(Me.BarManager1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.tabPanel, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tabPanel.SuspendLayout()
         Me.tabPageFormulario.SuspendLayout()
-        CType(Me.txtNombreCab.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.txtCodTraCab.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.txtDescriCab.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.chkBaja.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.chkAlta.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.chkABM.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.chkNDesde.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.chkDrillDown.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.chkGroup.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chkDrillDown.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chkNDesde.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chkABM.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chkAlta.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chkBaja.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.txtDescriCab.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.txtCodTraCab.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.txtNombreCab.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'toolMain
@@ -287,14 +297,178 @@ Partial Class frmMain
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(233, 569)
         Me.TableLayoutPanel1.TabIndex = 0
         '
+        'StandaloneBarDockControl2
+        '
+        Me.StandaloneBarDockControl2.CausesValidation = False
+        Me.StandaloneBarDockControl2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.StandaloneBarDockControl2.Location = New System.Drawing.Point(0, 0)
+        Me.StandaloneBarDockControl2.Manager = Me.BarManager1
+        Me.StandaloneBarDockControl2.Margin = New System.Windows.Forms.Padding(0)
+        Me.StandaloneBarDockControl2.Name = "StandaloneBarDockControl2"
+        Me.StandaloneBarDockControl2.Size = New System.Drawing.Size(233, 24)
+        Me.StandaloneBarDockControl2.Text = "StandaloneBarDockControl2"
+        '
+        'BarManager1
+        '
+        Me.BarManager1.Bars.AddRange(New DevExpress.XtraBars.Bar() {Me.Bar2, Me.Bar1})
+        Me.BarManager1.DockControls.Add(Me.barDockControlTop)
+        Me.BarManager1.DockControls.Add(Me.barDockControlBottom)
+        Me.BarManager1.DockControls.Add(Me.barDockControlLeft)
+        Me.BarManager1.DockControls.Add(Me.barDockControlRight)
+        Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl1)
+        Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl2)
+        Me.BarManager1.Form = Me
+        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.cmdSave, Me.cmdSaveNuevo, Me.cmdObtenerCampos, Me.cmdCancelar, Me.BarButtonItem1, Me.btnNueva, Me.btnEliminar, Me.btnEditar})
+        Me.BarManager1.MainMenu = Me.Bar2
+        Me.BarManager1.MaxItemId = 8
+        '
+        'Bar2
+        '
+        Me.Bar2.BarName = "Personalizada 4"
+        Me.Bar2.DockCol = 0
+        Me.Bar2.DockRow = 0
+        Me.Bar2.DockStyle = DevExpress.XtraBars.BarDockStyle.Standalone
+        Me.Bar2.FloatLocation = New System.Drawing.Point(272, 242)
+        Me.Bar2.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.KeyTip, Me.cmdSave, "", False, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.Standard, "", ""), New DevExpress.XtraBars.LinkPersistInfo(Me.cmdSaveNuevo), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.cmdObtenerCampos, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.cmdCancelar, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.BarButtonItem1, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)})
+        Me.Bar2.OptionsBar.AllowQuickCustomization = False
+        Me.Bar2.OptionsBar.DrawBorder = False
+        Me.Bar2.OptionsBar.DrawDragBorder = False
+        Me.Bar2.OptionsBar.MultiLine = True
+        Me.Bar2.OptionsBar.UseWholeRow = True
+        Me.Bar2.StandaloneBarDockControl = Me.StandaloneBarDockControl1
+        Me.Bar2.Text = "Personalizada 4"
+        '
+        'cmdSave
+        '
+        Me.cmdSave.Hint = "Guardar"
+        Me.cmdSave.Id = 0
+        Me.cmdSave.ImageOptions.Image = CType(resources.GetObject("cmdSave.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdSave.ImageOptions.LargeImage = CType(resources.GetObject("cmdSave.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdSave.Name = "cmdSave"
+        '
+        'cmdSaveNuevo
+        '
+        Me.cmdSaveNuevo.Hint = "Guardar Nueva"
+        Me.cmdSaveNuevo.Id = 1
+        Me.cmdSaveNuevo.ImageOptions.Image = CType(resources.GetObject("cmdSaveNuevo.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdSaveNuevo.ImageOptions.LargeImage = CType(resources.GetObject("cmdSaveNuevo.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdSaveNuevo.Name = "cmdSaveNuevo"
+        '
+        'cmdObtenerCampos
+        '
+        Me.cmdObtenerCampos.Caption = "Obtener Campos"
+        Me.cmdObtenerCampos.Id = 2
+        Me.cmdObtenerCampos.ImageOptions.Image = CType(resources.GetObject("cmdObtenerCampos.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdObtenerCampos.ImageOptions.LargeImage = CType(resources.GetObject("cmdObtenerCampos.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdObtenerCampos.Name = "cmdObtenerCampos"
+        '
+        'cmdCancelar
+        '
+        Me.cmdCancelar.Caption = "Cancelar"
+        Me.cmdCancelar.Id = 3
+        Me.cmdCancelar.ImageOptions.Image = CType(resources.GetObject("cmdCancelar.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdCancelar.ImageOptions.LargeImage = CType(resources.GetObject("cmdCancelar.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdCancelar.Name = "cmdCancelar"
+        '
+        'BarButtonItem1
+        '
+        Me.BarButtonItem1.Caption = "Generar Script"
+        Me.BarButtonItem1.Id = 4
+        Me.BarButtonItem1.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image"), System.Drawing.Image)
+        Me.BarButtonItem1.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.BarButtonItem1.Name = "BarButtonItem1"
+        '
+        'StandaloneBarDockControl1
+        '
+        Me.StandaloneBarDockControl1.CausesValidation = False
+        Me.StandaloneBarDockControl1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.StandaloneBarDockControl1.Location = New System.Drawing.Point(0, 0)
+        Me.StandaloneBarDockControl1.Manager = Me.BarManager1
+        Me.StandaloneBarDockControl1.Margin = New System.Windows.Forms.Padding(0)
+        Me.StandaloneBarDockControl1.Name = "StandaloneBarDockControl1"
+        Me.StandaloneBarDockControl1.Size = New System.Drawing.Size(818, 24)
+        Me.StandaloneBarDockControl1.Text = "StandaloneBarDockControl1"
+        '
+        'Bar1
+        '
+        Me.Bar1.BarName = "Personalizada 5"
+        Me.Bar1.DockCol = 0
+        Me.Bar1.DockRow = 0
+        Me.Bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Standalone
+        Me.Bar1.FloatLocation = New System.Drawing.Point(217, 227)
+        Me.Bar1.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.btnNueva), New DevExpress.XtraBars.LinkPersistInfo(Me.btnEliminar), New DevExpress.XtraBars.LinkPersistInfo(Me.btnEditar)})
+        Me.Bar1.OptionsBar.AllowQuickCustomization = False
+        Me.Bar1.OptionsBar.DrawBorder = False
+        Me.Bar1.OptionsBar.DrawDragBorder = False
+        Me.Bar1.OptionsBar.MultiLine = True
+        Me.Bar1.OptionsBar.UseWholeRow = True
+        Me.Bar1.StandaloneBarDockControl = Me.StandaloneBarDockControl2
+        Me.Bar1.Text = "Personalizada 5"
+        '
+        'btnNueva
+        '
+        Me.btnNueva.Hint = "Nueva Consulta"
+        Me.btnNueva.Id = 5
+        Me.btnNueva.ImageOptions.Image = CType(resources.GetObject("BarButtonItem2.ImageOptions.Image"), System.Drawing.Image)
+        Me.btnNueva.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem2.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.btnNueva.Name = "btnNueva"
+        '
+        'btnEliminar
+        '
+        Me.btnEliminar.Hint = "Eliminar Consulta"
+        Me.btnEliminar.Id = 6
+        Me.btnEliminar.ImageOptions.Image = CType(resources.GetObject("BarButtonItem3.ImageOptions.Image"), System.Drawing.Image)
+        Me.btnEliminar.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem3.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.btnEliminar.Name = "btnEliminar"
+        '
+        'btnEditar
+        '
+        Me.btnEditar.Hint = "Editar Consulta"
+        Me.btnEditar.Id = 7
+        Me.btnEditar.ImageOptions.Image = CType(resources.GetObject("BarButtonItem4.ImageOptions.Image"), System.Drawing.Image)
+        Me.btnEditar.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem4.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.btnEditar.Name = "btnEditar"
+        '
+        'barDockControlTop
+        '
+        Me.barDockControlTop.CausesValidation = False
+        Me.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.barDockControlTop.Location = New System.Drawing.Point(0, 0)
+        Me.barDockControlTop.Manager = Me.BarManager1
+        Me.barDockControlTop.Size = New System.Drawing.Size(1060, 0)
+        '
+        'barDockControlBottom
+        '
+        Me.barDockControlBottom.CausesValidation = False
+        Me.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.barDockControlBottom.Location = New System.Drawing.Point(0, 677)
+        Me.barDockControlBottom.Manager = Me.BarManager1
+        Me.barDockControlBottom.Size = New System.Drawing.Size(1060, 0)
+        '
+        'barDockControlLeft
+        '
+        Me.barDockControlLeft.CausesValidation = False
+        Me.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left
+        Me.barDockControlLeft.Location = New System.Drawing.Point(0, 0)
+        Me.barDockControlLeft.Manager = Me.BarManager1
+        Me.barDockControlLeft.Size = New System.Drawing.Size(0, 677)
+        '
+        'barDockControlRight
+        '
+        Me.barDockControlRight.CausesValidation = False
+        Me.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right
+        Me.barDockControlRight.Location = New System.Drawing.Point(1060, 0)
+        Me.barDockControlRight.Manager = Me.BarManager1
+        Me.barDockControlRight.Size = New System.Drawing.Size(0, 677)
+        '
         'GridCons
         '
         Me.GridCons.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GridCons.Location = New System.Drawing.Point(0, 20)
+        Me.GridCons.Location = New System.Drawing.Point(0, 27)
         Me.GridCons.MainView = Me.GridViewCons
-        Me.GridCons.Margin = New System.Windows.Forms.Padding(0)
+        Me.GridCons.Margin = New System.Windows.Forms.Padding(0, 3, 0, 0)
         Me.GridCons.Name = "GridCons"
-        Me.GridCons.Size = New System.Drawing.Size(217, 497)
+        Me.GridCons.Size = New System.Drawing.Size(233, 542)
         Me.GridCons.TabIndex = 0
         Me.GridCons.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.GridViewCons})
         '
@@ -360,119 +534,6 @@ Partial Class frmMain
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(818, 569)
         Me.TableLayoutPanel2.TabIndex = 2
         '
-        'StandaloneBarDockControl1
-        '
-        Me.StandaloneBarDockControl1.CausesValidation = False
-        Me.StandaloneBarDockControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.StandaloneBarDockControl1.Location = New System.Drawing.Point(0, 0)
-        Me.StandaloneBarDockControl1.Manager = Me.BarManager1
-        Me.StandaloneBarDockControl1.Margin = New System.Windows.Forms.Padding(0)
-        Me.StandaloneBarDockControl1.Name = "StandaloneBarDockControl1"
-        Me.StandaloneBarDockControl1.Size = New System.Drawing.Size(818, 24)
-        Me.StandaloneBarDockControl1.Text = "StandaloneBarDockControl1"
-        '
-        'BarManager1
-        '
-        Me.BarManager1.Bars.AddRange(New DevExpress.XtraBars.Bar() {Me.Bar2, Me.Bar1})
-        Me.BarManager1.DockControls.Add(Me.barDockControlTop)
-        Me.BarManager1.DockControls.Add(Me.barDockControlBottom)
-        Me.BarManager1.DockControls.Add(Me.barDockControlLeft)
-        Me.BarManager1.DockControls.Add(Me.barDockControlRight)
-        Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl1)
-        Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl2)
-        Me.BarManager1.Form = Me
-        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.cmdSave, Me.cmdSaveNuevo, Me.cmdObtenerCampos, Me.cmdCancelar, Me.BarButtonItem1, Me.BarButtonItem2, Me.BarButtonItem3, Me.BarButtonItem4})
-        Me.BarManager1.MainMenu = Me.Bar2
-        Me.BarManager1.MaxItemId = 8
-        '
-        'Bar2
-        '
-        Me.Bar2.BarName = "Personalizada 4"
-        Me.Bar2.DockCol = 0
-        Me.Bar2.DockRow = 0
-        Me.Bar2.DockStyle = DevExpress.XtraBars.BarDockStyle.Standalone
-        Me.Bar2.FloatLocation = New System.Drawing.Point(272, 242)
-        Me.Bar2.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.KeyTip, Me.cmdSave, "", False, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.Standard, "", ""), New DevExpress.XtraBars.LinkPersistInfo(Me.cmdSaveNuevo), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.cmdObtenerCampos, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.cmdCancelar, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.BarButtonItem1, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)})
-        Me.Bar2.OptionsBar.AllowQuickCustomization = False
-        Me.Bar2.OptionsBar.DrawBorder = False
-        Me.Bar2.OptionsBar.DrawDragBorder = False
-        Me.Bar2.OptionsBar.MultiLine = True
-        Me.Bar2.OptionsBar.UseWholeRow = True
-        Me.Bar2.StandaloneBarDockControl = Me.StandaloneBarDockControl1
-        Me.Bar2.Text = "Personalizada 4"
-        '
-        'cmdSave
-        '
-        Me.cmdSave.Hint = "Guardar"
-        Me.cmdSave.Id = 0
-        Me.cmdSave.ImageOptions.Image = CType(resources.GetObject("cmdSave.ImageOptions.Image"), System.Drawing.Image)
-        Me.cmdSave.ImageOptions.LargeImage = CType(resources.GetObject("cmdSave.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.cmdSave.Name = "cmdSave"
-        '
-        'cmdSaveNuevo
-        '
-        Me.cmdSaveNuevo.Hint = "Guardar Nueva"
-        Me.cmdSaveNuevo.Id = 1
-        Me.cmdSaveNuevo.ImageOptions.Image = CType(resources.GetObject("cmdSaveNuevo.ImageOptions.Image"), System.Drawing.Image)
-        Me.cmdSaveNuevo.ImageOptions.LargeImage = CType(resources.GetObject("cmdSaveNuevo.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.cmdSaveNuevo.Name = "cmdSaveNuevo"
-        '
-        'cmdObtenerCampos
-        '
-        Me.cmdObtenerCampos.Caption = "Obtener Campos"
-        Me.cmdObtenerCampos.Id = 2
-        Me.cmdObtenerCampos.ImageOptions.Image = CType(resources.GetObject("cmdObtenerCampos.ImageOptions.Image"), System.Drawing.Image)
-        Me.cmdObtenerCampos.ImageOptions.LargeImage = CType(resources.GetObject("cmdObtenerCampos.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.cmdObtenerCampos.Name = "cmdObtenerCampos"
-        '
-        'cmdCancelar
-        '
-        Me.cmdCancelar.Caption = "Cancelar"
-        Me.cmdCancelar.Id = 3
-        Me.cmdCancelar.ImageOptions.Image = CType(resources.GetObject("cmdCancelar.ImageOptions.Image"), System.Drawing.Image)
-        Me.cmdCancelar.ImageOptions.LargeImage = CType(resources.GetObject("cmdCancelar.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.cmdCancelar.Name = "cmdCancelar"
-        '
-        'BarButtonItem1
-        '
-        Me.BarButtonItem1.Caption = "Generar Script"
-        Me.BarButtonItem1.Id = 4
-        Me.BarButtonItem1.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image"), System.Drawing.Image)
-        Me.BarButtonItem1.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.BarButtonItem1.Name = "BarButtonItem1"
-        '
-        'barDockControlTop
-        '
-        Me.barDockControlTop.CausesValidation = False
-        Me.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top
-        Me.barDockControlTop.Location = New System.Drawing.Point(0, 0)
-        Me.barDockControlTop.Manager = Me.BarManager1
-        Me.barDockControlTop.Size = New System.Drawing.Size(1060, 0)
-        '
-        'barDockControlBottom
-        '
-        Me.barDockControlBottom.CausesValidation = False
-        Me.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.barDockControlBottom.Location = New System.Drawing.Point(0, 677)
-        Me.barDockControlBottom.Manager = Me.BarManager1
-        Me.barDockControlBottom.Size = New System.Drawing.Size(1060, 0)
-        '
-        'barDockControlLeft
-        '
-        Me.barDockControlLeft.CausesValidation = False
-        Me.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left
-        Me.barDockControlLeft.Location = New System.Drawing.Point(0, 0)
-        Me.barDockControlLeft.Manager = Me.BarManager1
-        Me.barDockControlLeft.Size = New System.Drawing.Size(0, 677)
-        '
-        'barDockControlRight
-        '
-        Me.barDockControlRight.CausesValidation = False
-        Me.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right
-        Me.barDockControlRight.Location = New System.Drawing.Point(1060, 0)
-        Me.barDockControlRight.Manager = Me.BarManager1
-        Me.barDockControlRight.Size = New System.Drawing.Size(0, 677)
-        '
         'tabPanel
         '
         Me.tabPanel.Dock = System.Windows.Forms.DockStyle.Fill
@@ -487,6 +548,16 @@ Partial Class frmMain
         '
         'tabPageFormulario
         '
+        Me.tabPageFormulario.Controls.Add(Me.cmdValidarUpdate)
+        Me.tabPageFormulario.Controls.Add(Me.cmdBaja)
+        Me.tabPageFormulario.Controls.Add(Me.SimpleButton7)
+        Me.tabPageFormulario.Controls.Add(Me.cmdDrillDown)
+        Me.tabPageFormulario.Controls.Add(Me.cmdValidaNuevoDesde)
+        Me.tabPageFormulario.Controls.Add(Me.cmdQueryNDesde)
+        Me.tabPageFormulario.Controls.Add(Me.cmdModValida)
+        Me.tabPageFormulario.Controls.Add(Me.cmdQueryUpdate)
+        Me.tabPageFormulario.Controls.Add(Me.cmdAltaValida)
+        Me.tabPageFormulario.Controls.Add(Me.cmdAlta)
         Me.tabPageFormulario.Controls.Add(Me.chkGroup)
         Me.tabPageFormulario.Controls.Add(Me.chkDrillDown)
         Me.tabPageFormulario.Controls.Add(Me.chkNDesde)
@@ -505,124 +576,169 @@ Partial Class frmMain
         Me.tabPageFormulario.Size = New System.Drawing.Size(812, 514)
         Me.tabPageFormulario.Text = "Formulario"
         '
-        'tabPageQuery
+        'cmdValidarUpdate
         '
-        Me.tabPageQuery.ImageOptions.Image = CType(resources.GetObject("tabPageQuery.ImageOptions.Image"), System.Drawing.Image)
-        Me.tabPageQuery.Margin = New System.Windows.Forms.Padding(0)
-        Me.tabPageQuery.Name = "tabPageQuery"
-        Me.tabPageQuery.Size = New System.Drawing.Size(828, 514)
-        Me.tabPageQuery.Text = "Query"
+        Me.cmdValidarUpdate.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
+        Me.cmdValidarUpdate.Appearance.Options.UseFont = True
+        Me.cmdValidarUpdate.Location = New System.Drawing.Point(502, 202)
+        Me.cmdValidarUpdate.Margin = New System.Windows.Forms.Padding(0)
+        Me.cmdValidarUpdate.Name = "cmdValidarUpdate"
+        Me.cmdValidarUpdate.Size = New System.Drawing.Size(100, 20)
+        Me.cmdValidarUpdate.TabIndex = 22
+        Me.cmdValidarUpdate.Text = "Validación ABM"
         '
-        'tabPageColumnas
+        'cmdBaja
         '
-        Me.tabPageColumnas.ImageOptions.Image = CType(resources.GetObject("tabPageColumnas.ImageOptions.Image"), System.Drawing.Image)
-        Me.tabPageColumnas.Margin = New System.Windows.Forms.Padding(0)
-        Me.tabPageColumnas.Name = "tabPageColumnas"
-        Me.tabPageColumnas.Size = New System.Drawing.Size(828, 514)
-        Me.tabPageColumnas.Text = "Columnas"
+        Me.cmdBaja.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
+        Me.cmdBaja.Appearance.Options.UseFont = True
+        Me.cmdBaja.Location = New System.Drawing.Point(276, 177)
+        Me.cmdBaja.Margin = New System.Windows.Forms.Padding(0)
+        Me.cmdBaja.Name = "cmdBaja"
+        Me.cmdBaja.Size = New System.Drawing.Size(100, 20)
+        Me.cmdBaja.TabIndex = 21
+        Me.cmdBaja.Text = "&Query de Baja"
         '
-        'tabPageProcesos
+        'SimpleButton7
         '
-        Me.tabPageProcesos.ImageOptions.Image = CType(resources.GetObject("tabPageProcesos.ImageOptions.Image"), System.Drawing.Image)
-        Me.tabPageProcesos.Margin = New System.Windows.Forms.Padding(0)
-        Me.tabPageProcesos.Name = "tabPageProcesos"
-        Me.tabPageProcesos.Size = New System.Drawing.Size(812, 514)
-        Me.tabPageProcesos.Text = "Procesos Previos"
+        Me.SimpleButton7.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
+        Me.SimpleButton7.Appearance.Options.UseFont = True
+        Me.SimpleButton7.Location = New System.Drawing.Point(390, 252)
+        Me.SimpleButton7.Margin = New System.Windows.Forms.Padding(0)
+        Me.SimpleButton7.Name = "SimpleButton7"
+        Me.SimpleButton7.Size = New System.Drawing.Size(100, 20)
+        Me.SimpleButton7.TabIndex = 20
+        Me.SimpleButton7.Text = "&Query de Validación"
         '
-        'StandaloneBarDockControl2
+        'cmdDrillDown
         '
-        Me.StandaloneBarDockControl2.CausesValidation = False
-        Me.StandaloneBarDockControl2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.StandaloneBarDockControl2.Location = New System.Drawing.Point(0, 0)
-        Me.StandaloneBarDockControl2.Manager = Me.BarManager1
-        Me.StandaloneBarDockControl2.Margin = New System.Windows.Forms.Padding(0)
-        Me.StandaloneBarDockControl2.Name = "StandaloneBarDockControl2"
-        Me.StandaloneBarDockControl2.Size = New System.Drawing.Size(233, 24)
-        Me.StandaloneBarDockControl2.Text = "StandaloneBarDockControl2"
+        Me.cmdDrillDown.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
+        Me.cmdDrillDown.Appearance.Options.UseFont = True
+        Me.cmdDrillDown.Location = New System.Drawing.Point(276, 252)
+        Me.cmdDrillDown.Margin = New System.Windows.Forms.Padding(0)
+        Me.cmdDrillDown.Name = "cmdDrillDown"
+        Me.cmdDrillDown.Size = New System.Drawing.Size(100, 20)
+        Me.cmdDrillDown.TabIndex = 19
+        Me.cmdDrillDown.Text = "&Query Drill Down"
         '
-        'Bar1
+        'cmdValidaNuevoDesde
         '
-        Me.Bar1.BarName = "Personalizada 5"
-        Me.Bar1.DockCol = 0
-        Me.Bar1.DockRow = 0
-        Me.Bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Standalone
-        Me.Bar1.FloatLocation = New System.Drawing.Point(217, 227)
-        Me.Bar1.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.BarButtonItem2), New DevExpress.XtraBars.LinkPersistInfo(Me.BarButtonItem3), New DevExpress.XtraBars.LinkPersistInfo(Me.BarButtonItem4)})
-        Me.Bar1.OptionsBar.AllowQuickCustomization = False
-        Me.Bar1.OptionsBar.DrawBorder = False
-        Me.Bar1.OptionsBar.DrawDragBorder = False
-        Me.Bar1.OptionsBar.MultiLine = True
-        Me.Bar1.OptionsBar.UseWholeRow = True
-        Me.Bar1.StandaloneBarDockControl = Me.StandaloneBarDockControl2
-        Me.Bar1.Text = "Personalizada 5"
+        Me.cmdValidaNuevoDesde.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
+        Me.cmdValidaNuevoDesde.Appearance.Options.UseFont = True
+        Me.cmdValidaNuevoDesde.Location = New System.Drawing.Point(390, 227)
+        Me.cmdValidaNuevoDesde.Margin = New System.Windows.Forms.Padding(0)
+        Me.cmdValidaNuevoDesde.Name = "cmdValidaNuevoDesde"
+        Me.cmdValidaNuevoDesde.Size = New System.Drawing.Size(100, 20)
+        Me.cmdValidaNuevoDesde.TabIndex = 18
+        Me.cmdValidaNuevoDesde.Text = "&Query de Validación"
         '
-        'BarButtonItem2
+        'cmdQueryNDesde
         '
-        Me.BarButtonItem2.Hint = "Nueva Consulta"
-        Me.BarButtonItem2.Id = 5
-        Me.BarButtonItem2.ImageOptions.Image = CType(resources.GetObject("BarButtonItem2.ImageOptions.Image"), System.Drawing.Image)
-        Me.BarButtonItem2.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem2.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.BarButtonItem2.Name = "BarButtonItem2"
+        Me.cmdQueryNDesde.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
+        Me.cmdQueryNDesde.Appearance.Options.UseFont = True
+        Me.cmdQueryNDesde.Location = New System.Drawing.Point(276, 227)
+        Me.cmdQueryNDesde.Margin = New System.Windows.Forms.Padding(0)
+        Me.cmdQueryNDesde.Name = "cmdQueryNDesde"
+        Me.cmdQueryNDesde.Size = New System.Drawing.Size(100, 20)
+        Me.cmdQueryNDesde.TabIndex = 17
+        Me.cmdQueryNDesde.Text = "&Query"
         '
-        'BarButtonItem3
+        'cmdModValida
         '
-        Me.BarButtonItem3.Hint = "Eliminar Consulta"
-        Me.BarButtonItem3.Id = 6
-        Me.BarButtonItem3.ImageOptions.Image = CType(resources.GetObject("BarButtonItem3.ImageOptions.Image"), System.Drawing.Image)
-        Me.BarButtonItem3.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem3.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.BarButtonItem3.Name = "BarButtonItem3"
+        Me.cmdModValida.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
+        Me.cmdModValida.Appearance.Options.UseFont = True
+        Me.cmdModValida.Location = New System.Drawing.Point(390, 202)
+        Me.cmdModValida.Margin = New System.Windows.Forms.Padding(0)
+        Me.cmdModValida.Name = "cmdModValida"
+        Me.cmdModValida.Size = New System.Drawing.Size(100, 20)
+        Me.cmdModValida.TabIndex = 16
+        Me.cmdModValida.Text = "&Query de Validación"
         '
-        'BarButtonItem4
+        'cmdQueryUpdate
         '
-        Me.BarButtonItem4.Hint = "Editar Consulta"
-        Me.BarButtonItem4.Id = 7
-        Me.BarButtonItem4.ImageOptions.Image = CType(resources.GetObject("BarButtonItem4.ImageOptions.Image"), System.Drawing.Image)
-        Me.BarButtonItem4.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem4.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.BarButtonItem4.Name = "BarButtonItem4"
+        Me.cmdQueryUpdate.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
+        Me.cmdQueryUpdate.Appearance.Options.UseFont = True
+        Me.cmdQueryUpdate.Location = New System.Drawing.Point(276, 202)
+        Me.cmdQueryUpdate.Margin = New System.Windows.Forms.Padding(0)
+        Me.cmdQueryUpdate.Name = "cmdQueryUpdate"
+        Me.cmdQueryUpdate.Size = New System.Drawing.Size(100, 20)
+        Me.cmdQueryUpdate.TabIndex = 15
+        Me.cmdQueryUpdate.Text = "&Query de Modif."
         '
-        'LabelControl1
+        'cmdAltaValida
         '
-        Me.LabelControl1.Location = New System.Drawing.Point(66, 17)
-        Me.LabelControl1.Name = "LabelControl1"
-        Me.LabelControl1.Size = New System.Drawing.Size(41, 13)
-        Me.LabelControl1.TabIndex = 0
-        Me.LabelControl1.Text = "Nombre:"
+        Me.cmdAltaValida.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
+        Me.cmdAltaValida.Appearance.Options.UseFont = True
+        Me.cmdAltaValida.Location = New System.Drawing.Point(390, 151)
+        Me.cmdAltaValida.Margin = New System.Windows.Forms.Padding(0)
+        Me.cmdAltaValida.Name = "cmdAltaValida"
+        Me.cmdAltaValida.Size = New System.Drawing.Size(100, 20)
+        Me.cmdAltaValida.TabIndex = 14
+        Me.cmdAltaValida.Text = "Validación ABM"
         '
-        'LabelControl2
+        'cmdAlta
         '
-        Me.LabelControl2.Location = New System.Drawing.Point(46, 43)
-        Me.LabelControl2.Name = "LabelControl2"
-        Me.LabelControl2.Size = New System.Drawing.Size(61, 13)
-        Me.LabelControl2.TabIndex = 1
-        Me.LabelControl2.Text = "Transacción:"
+        Me.cmdAlta.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
+        Me.cmdAlta.Appearance.Options.UseFont = True
+        Me.cmdAlta.Location = New System.Drawing.Point(276, 151)
+        Me.cmdAlta.Margin = New System.Windows.Forms.Padding(0)
+        Me.cmdAlta.Name = "cmdAlta"
+        Me.cmdAlta.Size = New System.Drawing.Size(100, 20)
+        Me.cmdAlta.TabIndex = 13
+        Me.cmdAlta.Text = "&Query de Alta"
         '
-        'LabelControl3
+        'chkGroup
         '
-        Me.LabelControl3.Location = New System.Drawing.Point(49, 69)
-        Me.LabelControl3.Name = "LabelControl3"
-        Me.LabelControl3.Size = New System.Drawing.Size(58, 13)
-        Me.LabelControl3.TabIndex = 2
-        Me.LabelControl3.Text = "Descripción:"
+        Me.chkGroup.Location = New System.Drawing.Point(113, 276)
+        Me.chkGroup.MenuManager = Me.BarManager1
+        Me.chkGroup.Name = "chkGroup"
+        Me.chkGroup.Properties.Caption = "Mostrar cuadro de a&grupación en grilla"
+        Me.chkGroup.Size = New System.Drawing.Size(230, 19)
+        Me.chkGroup.TabIndex = 12
         '
-        'txtNombreCab
+        'chkDrillDown
         '
-        Me.txtNombreCab.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtNombreCab.Location = New System.Drawing.Point(113, 14)
-        Me.txtNombreCab.MenuManager = Me.BarManager1
-        Me.txtNombreCab.Name = "txtNombreCab"
-        Me.txtNombreCab.Size = New System.Drawing.Size(660, 20)
-        Me.txtNombreCab.TabIndex = 3
+        Me.chkDrillDown.Location = New System.Drawing.Point(113, 251)
+        Me.chkDrillDown.MenuManager = Me.BarManager1
+        Me.chkDrillDown.Name = "chkDrillDown"
+        Me.chkDrillDown.Properties.Caption = "Utilizar &Dril lDown"
+        Me.chkDrillDown.Size = New System.Drawing.Size(180, 19)
+        Me.chkDrillDown.TabIndex = 11
         '
-        'txtCodTraCab
+        'chkNDesde
         '
-        Me.txtCodTraCab.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtCodTraCab.Location = New System.Drawing.Point(113, 40)
-        Me.txtCodTraCab.MenuManager = Me.BarManager1
-        Me.txtCodTraCab.Name = "txtCodTraCab"
-        Me.txtCodTraCab.Size = New System.Drawing.Size(660, 20)
-        Me.txtCodTraCab.TabIndex = 5
+        Me.chkNDesde.Location = New System.Drawing.Point(113, 226)
+        Me.chkNDesde.MenuManager = Me.BarManager1
+        Me.chkNDesde.Name = "chkNDesde"
+        Me.chkNDesde.Properties.Caption = "Permite &Nuevo Desde"
+        Me.chkNDesde.Size = New System.Drawing.Size(180, 19)
+        Me.chkNDesde.TabIndex = 10
+        '
+        'chkABM
+        '
+        Me.chkABM.Location = New System.Drawing.Point(113, 201)
+        Me.chkABM.MenuManager = Me.BarManager1
+        Me.chkABM.Name = "chkABM"
+        Me.chkABM.Properties.Caption = "Permite &Modificar Registros"
+        Me.chkABM.Size = New System.Drawing.Size(180, 19)
+        Me.chkABM.TabIndex = 9
+        '
+        'chkAlta
+        '
+        Me.chkAlta.Location = New System.Drawing.Point(113, 151)
+        Me.chkAlta.MenuManager = Me.BarManager1
+        Me.chkAlta.Name = "chkAlta"
+        Me.chkAlta.Properties.Caption = "Permite &Alta de Registros"
+        Me.chkAlta.Size = New System.Drawing.Size(180, 19)
+        Me.chkAlta.TabIndex = 8
+        '
+        'chkBaja
+        '
+        Me.chkBaja.Location = New System.Drawing.Point(113, 176)
+        Me.chkBaja.MenuManager = Me.BarManager1
+        Me.chkBaja.Name = "chkBaja"
+        Me.chkBaja.Properties.Caption = "Permite &Baja de Registros"
+        Me.chkBaja.Size = New System.Drawing.Size(180, 19)
+        Me.chkBaja.TabIndex = 7
         '
         'txtDescriCab
         '
@@ -634,59 +750,73 @@ Partial Class frmMain
         Me.txtDescriCab.Size = New System.Drawing.Size(660, 67)
         Me.txtDescriCab.TabIndex = 6
         '
-        'chkBaja
+        'txtCodTraCab
         '
-        Me.chkBaja.Location = New System.Drawing.Point(113, 176)
-        Me.chkBaja.MenuManager = Me.BarManager1
-        Me.chkBaja.Name = "chkBaja"
-        Me.chkBaja.Properties.Caption = "Permite &Baja de Registros"
-        Me.chkBaja.Size = New System.Drawing.Size(180, 19)
-        Me.chkBaja.TabIndex = 7
+        Me.txtCodTraCab.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtCodTraCab.Location = New System.Drawing.Point(113, 40)
+        Me.txtCodTraCab.MenuManager = Me.BarManager1
+        Me.txtCodTraCab.Name = "txtCodTraCab"
+        Me.txtCodTraCab.Size = New System.Drawing.Size(660, 20)
+        Me.txtCodTraCab.TabIndex = 5
         '
-        'chkAlta
+        'txtNombreCab
         '
-        Me.chkAlta.Location = New System.Drawing.Point(113, 151)
-        Me.chkAlta.MenuManager = Me.BarManager1
-        Me.chkAlta.Name = "chkAlta"
-        Me.chkAlta.Properties.Caption = "Permite &Alta de Registros"
-        Me.chkAlta.Size = New System.Drawing.Size(180, 19)
-        Me.chkAlta.TabIndex = 8
+        Me.txtNombreCab.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtNombreCab.Location = New System.Drawing.Point(113, 14)
+        Me.txtNombreCab.MenuManager = Me.BarManager1
+        Me.txtNombreCab.Name = "txtNombreCab"
+        Me.txtNombreCab.Size = New System.Drawing.Size(660, 20)
+        Me.txtNombreCab.TabIndex = 3
         '
-        'chkABM
+        'LabelControl3
         '
-        Me.chkABM.Location = New System.Drawing.Point(113, 201)
-        Me.chkABM.MenuManager = Me.BarManager1
-        Me.chkABM.Name = "chkABM"
-        Me.chkABM.Properties.Caption = "Permite &Modificar Registros"
-        Me.chkABM.Size = New System.Drawing.Size(180, 19)
-        Me.chkABM.TabIndex = 9
+        Me.LabelControl3.Location = New System.Drawing.Point(49, 69)
+        Me.LabelControl3.Name = "LabelControl3"
+        Me.LabelControl3.Size = New System.Drawing.Size(58, 13)
+        Me.LabelControl3.TabIndex = 2
+        Me.LabelControl3.Text = "Descripción:"
         '
-        'chkNDesde
+        'LabelControl2
         '
-        Me.chkNDesde.Location = New System.Drawing.Point(113, 226)
-        Me.chkNDesde.MenuManager = Me.BarManager1
-        Me.chkNDesde.Name = "chkNDesde"
-        Me.chkNDesde.Properties.Caption = "Permite &Nuevo Desde"
-        Me.chkNDesde.Size = New System.Drawing.Size(180, 19)
-        Me.chkNDesde.TabIndex = 10
+        Me.LabelControl2.Location = New System.Drawing.Point(46, 43)
+        Me.LabelControl2.Name = "LabelControl2"
+        Me.LabelControl2.Size = New System.Drawing.Size(61, 13)
+        Me.LabelControl2.TabIndex = 1
+        Me.LabelControl2.Text = "Transacción:"
         '
-        'chkDrillDown
+        'LabelControl1
         '
-        Me.chkDrillDown.Location = New System.Drawing.Point(113, 251)
-        Me.chkDrillDown.MenuManager = Me.BarManager1
-        Me.chkDrillDown.Name = "chkDrillDown"
-        Me.chkDrillDown.Properties.Caption = "Utilizar &Dril lDown"
-        Me.chkDrillDown.Size = New System.Drawing.Size(180, 19)
-        Me.chkDrillDown.TabIndex = 11
+        Me.LabelControl1.Location = New System.Drawing.Point(66, 17)
+        Me.LabelControl1.Name = "LabelControl1"
+        Me.LabelControl1.Size = New System.Drawing.Size(41, 13)
+        Me.LabelControl1.TabIndex = 0
+        Me.LabelControl1.Text = "Nombre:"
         '
-        'chkGroup
+        'tabPageQuery
         '
-        Me.chkGroup.Location = New System.Drawing.Point(113, 276)
-        Me.chkGroup.MenuManager = Me.BarManager1
-        Me.chkGroup.Name = "chkGroup"
-        Me.chkGroup.Properties.Caption = "Mostrar cuadro de a&grupación en grilla"
-        Me.chkGroup.Size = New System.Drawing.Size(230, 19)
-        Me.chkGroup.TabIndex = 12
+        Me.tabPageQuery.ImageOptions.Image = CType(resources.GetObject("tabPageQuery.ImageOptions.Image"), System.Drawing.Image)
+        Me.tabPageQuery.Margin = New System.Windows.Forms.Padding(0)
+        Me.tabPageQuery.Name = "tabPageQuery"
+        Me.tabPageQuery.Size = New System.Drawing.Size(812, 514)
+        Me.tabPageQuery.Text = "Query"
+        '
+        'tabPageColumnas
+        '
+        Me.tabPageColumnas.ImageOptions.Image = CType(resources.GetObject("tabPageColumnas.ImageOptions.Image"), System.Drawing.Image)
+        Me.tabPageColumnas.Margin = New System.Windows.Forms.Padding(0)
+        Me.tabPageColumnas.Name = "tabPageColumnas"
+        Me.tabPageColumnas.Size = New System.Drawing.Size(812, 514)
+        Me.tabPageColumnas.Text = "Columnas"
+        '
+        'tabPageProcesos
+        '
+        Me.tabPageProcesos.ImageOptions.Image = CType(resources.GetObject("tabPageProcesos.ImageOptions.Image"), System.Drawing.Image)
+        Me.tabPageProcesos.Margin = New System.Windows.Forms.Padding(0)
+        Me.tabPageProcesos.Name = "tabPageProcesos"
+        Me.tabPageProcesos.Size = New System.Drawing.Size(812, 514)
+        Me.tabPageProcesos.Text = "Procesos Previos"
         '
         'frmMain
         '
@@ -716,23 +846,23 @@ Partial Class frmMain
         CType(Me.SplitContainerControl1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainerControl1.ResumeLayout(False)
         Me.TableLayoutPanel1.ResumeLayout(False)
+        CType(Me.BarManager1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.GridCons, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.GridViewCons, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TableLayoutPanel2.ResumeLayout(False)
-        CType(Me.BarManager1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.tabPanel, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tabPanel.ResumeLayout(False)
         Me.tabPageFormulario.ResumeLayout(False)
         Me.tabPageFormulario.PerformLayout()
-        CType(Me.txtNombreCab.Properties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.txtCodTraCab.Properties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.txtDescriCab.Properties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.chkBaja.Properties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.chkAlta.Properties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.chkABM.Properties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.chkNDesde.Properties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.chkDrillDown.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.chkGroup.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chkDrillDown.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chkNDesde.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chkABM.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chkAlta.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chkBaja.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.txtDescriCab.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.txtCodTraCab.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.txtNombreCab.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -781,9 +911,9 @@ Partial Class frmMain
     Friend WithEvents barDockControlRight As DevExpress.XtraBars.BarDockControl
     Friend WithEvents StandaloneBarDockControl2 As DevExpress.XtraBars.StandaloneBarDockControl
     Friend WithEvents Bar1 As DevExpress.XtraBars.Bar
-    Friend WithEvents BarButtonItem2 As DevExpress.XtraBars.BarButtonItem
-    Friend WithEvents BarButtonItem3 As DevExpress.XtraBars.BarButtonItem
-    Friend WithEvents BarButtonItem4 As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents btnNueva As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents btnEliminar As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents btnEditar As DevExpress.XtraBars.BarButtonItem
     Friend WithEvents txtCodTraCab As DevExpress.XtraEditors.TextEdit
     Friend WithEvents txtNombreCab As DevExpress.XtraEditors.TextEdit
     Friend WithEvents LabelControl3 As DevExpress.XtraEditors.LabelControl
@@ -796,4 +926,14 @@ Partial Class frmMain
     Friend WithEvents chkAlta As DevExpress.XtraEditors.CheckEdit
     Friend WithEvents chkBaja As DevExpress.XtraEditors.CheckEdit
     Friend WithEvents txtDescriCab As DevExpress.XtraEditors.MemoEdit
+    Friend WithEvents cmdAltaValida As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents cmdAlta As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents cmdValidarUpdate As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents cmdBaja As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents SimpleButton7 As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents cmdDrillDown As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents cmdValidaNuevoDesde As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents cmdQueryNDesde As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents cmdModValida As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents cmdQueryUpdate As DevExpress.XtraEditors.SimpleButton
 End Class

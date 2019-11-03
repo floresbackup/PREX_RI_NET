@@ -4,6 +4,10 @@ Imports Prex.Utils
 Public Class frmMain
     Public ErrorPermiso As Boolean = False
     Private tCabSys As CabSys
+    Private tVarSys As List(Of VarSys)
+    Private tProcesosPrevios As List(Of ProSys)
+    Private oDetSys As List(Of DetSys)
+    Private cmSql As ScintillaNET.Scintilla
 
     Public Sub New()
 
@@ -12,6 +16,12 @@ Public Class frmMain
 
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
         AnalizarCommand()
+
+        cmSql = New ScintillaNET.Scintilla()
+        tabPageQuery.Controls.Add(cmSql)
+        cmSql.Dock = DockStyle.Fill
+        Prex.Utils.Misc.Forms.ScintillaSQL.InitialiseScintilla(cmSql)
+        AddHandler cmSql.TextChanged, AddressOf cmSQL_Change
     End Sub
 
     '#Region "Metodos"
@@ -167,7 +177,7 @@ Public Class frmMain
 
         txtNombreCab.Text = tCabSys.CS_NOMBRE
         txtDescriCab.Text = ""
-        txtCodTraCab.text = ""
+        txtCodTraCab.Text = ""
         chkAlta.Checked = False
         chkBaja.Checked = False
         chkABM.Checked = False
@@ -175,7 +185,7 @@ Public Class frmMain
         chkDrillDown.Checked = False
         chkGroup.Checked = False
 
-        'cmSQL.Text = tCabSys.CS_QUERY
+        cmSql.Text = tCabSys.CS_QUERY
         '
         'txtOrdenVar = ""
         'txtNombreVar = ""
@@ -203,6 +213,332 @@ Public Class frmMain
 
     End Sub
 
+#Region "Guardar"
+
+    Private Function VerificacionExistenciaConsulta() As Boolean
+        Dim existe = False
+        Try
+            Dim co = Long.Parse(Prex.Utils.DataAccess.GetScalar("SELECT count(1) FROM CABSYS WHERE CS_CODTRA=" & tCabSys.CS_CODTRA))
+            existe = co > 0
+        Catch ex As Exception
+            Throw New Exception("Verificando si existe consulta", ex)
+        End Try
+        Try
+            If tCabSys.CS_CODCON = 0 Then
+                If existe Then
+                    Prex.Utils.MensajesForms.MostrarError("El código de transacción ya se encuentra asignado. Especifique otro.")
+                    Return False
+                End If
+                tCabSys.CS_CODCON = Prex.Utils.DataAccess.ProximoID("CABSYS", "CS_CODCON")
+                tCabSys.isNew = True
+                Return True
+            Else
+                tCabSys.isNew = False
+            End If
+
+        Catch ex As Exception
+            Throw New Exception("Obteniendo nuevo código de consulta", ex)
+        End Try
+        Return True
+    End Function
+
+    Private Sub GuardarEncabezado(con As SqlConnection, tran As SqlTransaction)
+
+        Try
+            Dim cmd As New SqlCommand("", con, tran)
+            If tCabSys.isNew Then
+
+                Dim sSql = "insert into CABSYS (CS_CODCON, CS_CODENT, CS_CODTRA, CS_DESCRI, CS_FECPRO, CS_LAYOUT, "
+                sSql += " CS_NOMBRE, CS_QUERY, CS_REPORT, CS_UPDATE, CS_DRILLD, CS_GROUPB, CS_DRIQUE, "
+                sSql += " CS_DRIPRE, CS_TABLA, CS_UPDQUE, CS_NDESDE, CS_NDEVAL, CS_HABNDE, CS_BAJA, "
+                sSql += " CS_ALTA, CS_ALTQUE, CS_BAJQUE, CS_ALTVAL, CS_MODVAL) "
+                sSql += " values (@CS_CODCON, @CS_CODENT, @CS_CODTRA, @CS_DESCRI, @CS_FECPRO, @CS_LAYOUT, "
+                sSql += " @CS_NOMBRE, @CS_QUERY, @CS_REPORT, @CS_UPDATE, @CS_DRILLD, @CS_GROUPB, @CS_DRIQUE, "
+                sSql += " @CS_DRIPRE, @CS_TABLA, @CS_UPDQUE, @CS_NDESDE, @CS_NDEVAL, @CS_HABNDE, @CS_BAJA, "
+                sSql += " @CS_ALTA, @CS_ALTQUE, @CS_BAJQUE, @CS_ALTVAL, @CS_MODVAL) "
+                cmd.CommandText = sSql
+
+            Else
+
+                Dim sSql = "update CABSYS set "
+                sSql += " CS_CODCON = @CS_CODCON, "
+                sSql += " CS_CODENT = @CS_CODENT, "
+                sSql += " CS_CODTRA = @CS_CODTRA, "
+                sSql += " CS_DESCRI = @CS_DESCRI, "
+                sSql += " CS_FECPRO = @CS_FECPRO, "
+                sSql += " CS_LAYOUT = @CS_LAYOUT, "
+                sSql += " CS_NOMBRE = @CS_NOMBRE, "
+                sSql += " CS_QUERY = @CS_QUERY, "
+                sSql += " CS_REPORT = @CS_REPORT, "
+                sSql += " CS_UPDATE = @CS_UPDATE, "
+                sSql += " CS_DRILLD = @CS_DRILLD, "
+                sSql += " CS_GROUPB = @CS_GROUPB, "
+                sSql += " CS_DRIQUE = @CS_DRIQUE, "
+                sSql += " CS_DRIPRE = @CS_DRIPRE, "
+                sSql += " CS_TABLA = @CS_TABLA, "
+                sSql += " CS_UPDQUE = @CS_UPDQUE, "
+                sSql += " CS_NDESDE = @CS_NDESDE, "
+                sSql += " CS_NDEVAL = @CS_NDEVAL, "
+                sSql += " CS_HABNDE = @CS_HABNDE, "
+                sSql += " CS_BAJA = @CS_BAJA, "
+                sSql += " CS_ALTA = @CS_ALTA, "
+                sSql += " CS_ALTQUE = @CS_ALTQUE, "
+                sSql += " CS_BAJQUE = @CS_BAJQUE, "
+                sSql += " CS_ALTVAL = @CS_ALTVAL, "
+                sSql += " CS_MODVAL = @CS_MODVAL "
+                sSql += " WHERE CS_CODCON = @CS_CODCON2"
+
+                cmd.CommandText = sSql
+                cmd.Parameters.AddWithValue("CS_CODCON2", tCabSys.CS_CODCON)
+            End If
+
+            With cmd.Parameters
+                .AddWithValue("CS_CODCON", tCabSys.CS_CODCON)
+                .AddWithValue("CS_CODENT", tCabSys.CS_CODENT)
+                .AddWithValue("CS_CODTRA", tCabSys.CS_CODTRA)
+                .AddWithValue("CS_DESCRI", tCabSys.CS_DESCRI)
+                .AddWithValue("CS_FECPRO", tCabSys.CS_FECPRO)
+                .AddWithValue("CS_LAYOUT", tCabSys.CS_LAYOUT)
+                .AddWithValue("CS_NOMBRE", tCabSys.CS_NOMBRE)
+                .AddWithValue("CS_QUERY", Misc.Encoding.Base64Encode(tCabSys.CS_QUERY))
+                .AddWithValue("CS_REPORT", tCabSys.CS_REPORT)
+                .AddWithValue("CS_UPDATE", IIf(tCabSys.CS_UPDATE, 1, 0))
+                .AddWithValue("CS_DRILLD", IIf(tCabSys.CS_DRILLD, 1, 0))
+                .AddWithValue("CS_GROUPB", IIf(tCabSys.CS_GROUPB, 1, 0))
+                .AddWithValue("CS_DRIQUE", Misc.Encoding.Base64Encode(tCabSys.CS_DRIQUE))
+                .AddWithValue("CS_DRIPRE", Misc.Encoding.Base64Encode(tCabSys.CS_DRIPRE))
+                .AddWithValue("CS_TABLA", Misc.Encoding.Base64Encode(tCabSys.CS_TABLA))
+                .AddWithValue("CS_UPDQUE", Misc.Encoding.Base64Encode(tCabSys.CS_UPDQUE))
+                .AddWithValue("CS_NDESDE", Misc.Encoding.Base64Encode(tCabSys.CS_NDESDE))
+                .AddWithValue("CS_NDEVAL", Misc.Encoding.Base64Encode(tCabSys.CS_NDEVAL))
+                .AddWithValue("CS_HABNDE", IIf(tCabSys.CS_HABNDE, 1, 0))
+                .AddWithValue("CS_BAJA", IIf(tCabSys.CS_BAJA, 1, 0))
+                .AddWithValue("CS_ALTA", IIf(tCabSys.CS_ALTA, 1, 0))
+                .AddWithValue("CS_ALTQUE", Misc.Encoding.Base64Encode(tCabSys.CS_ALTQUE))
+                .AddWithValue("CS_BAJQUE", Misc.Encoding.Base64Encode(tCabSys.CS_BAJQUE))
+                .AddWithValue("CS_ALTVAL", Misc.Encoding.Base64Encode(tCabSys.CS_ALTVAL))
+                .AddWithValue("CS_MODVAL", Misc.Encoding.Base64Encode(tCabSys.CS_MODVAL))
+            End With
+
+            cmd.ExecuteNonQuery()
+        Catch ex As Exception
+            Throw New Exception("Guardando encabezado de consulta", ex)
+        End Try
+
+    End Sub
+
+    Private Sub GuardarVariablesEntrada(con As SqlConnection, tran As SqlTransaction)
+        Try
+            Dim sSql = "insert into VARSYS (VS_CODCON, VS_HELP, VS_HELQUE, VS_NOMBRE "
+            sSql += " VS_ORDEN, VS_TIPO, VS_TITULO) values (@VS_CODCON, @VS_HELP, @VS_HELQUE, @VS_NOMBRE "
+            sSql += " @VS_ORDEN, @VS_TIPO, @VS_TITULO)"
+            Dim cmd As New SqlCommand(sSql, con, tran)
+
+            DeteleTablaRelacionada(con, tran, "VARSYS", "VS_CODCON")
+
+            For Each oVar As VarSys In tVarSys
+                Dim cmdClone As SqlCommand = cmd.Clone
+                With cmdClone.Parameters
+                    .AddWithValue("VS_CODCON", tCabSys.CS_CODCON)
+                    .AddWithValue("VS_HELP", oVar.Help)
+                    .AddWithValue("VS_HELQUE", Misc.Encoding.Base64Encode(oVar.HelQue))
+                    .AddWithValue("VS_NOMBRE", oVar.Nombre)
+                    .AddWithValue("VS_ORDEN", oVar.Orden)
+                    .AddWithValue("VS_TIPO", oVar.Tipo)
+                    .AddWithValue("VS_TITULO", oVar.Titulo)
+                End With
+                cmd.ExecuteNonQuery()
+            Next
+
+        Catch ex As Exception
+            Throw New Exception("Guardando variables de entrada", ex)
+        End Try
+    End Sub
+
+    Private Sub DeteleTablaRelacionada(con As SqlConnection, tran As SqlTransaction, tabla As String, campoClave As String)
+        Dim cmdDelete As New SqlCommand($"delete {tabla} where {campoClave} = @VCODCON", con, tran)
+        cmdDelete.Parameters.AddWithValue("CODCON", tCabSys.CS_CODCON)
+        cmdDelete.ExecuteNonQuery()
+    End Sub
+
+    Private Sub GuardarProcesosPrevios(con As SqlConnection, tran As SqlTransaction)
+        Try
+
+            Dim sSQL = "insert into PROSYS (PS_CODCON, PS_DESCRI, PS_NOMBRE, PS_ORDEN "
+            sSQL += " PS_PARAME, PS_TITULO) VALUES (@PS_CODCON, @PS_DESCRI, @PS_NOMBRE, @PS_ORDEN "
+            sSQL += " @PS_PARAME, @PS_TITULO)"
+            Dim cmd As New SqlCommand(sSQL, con, tran)
+
+
+            DeteleTablaRelacionada(con, tran, "PROSYS", "PS_CODCON")
+
+            For Each oPro As ProSys In tProcesosPrevios
+                Dim cmdClone As SqlCommand = cmd.Clone
+                With cmdClone.Parameters
+                    .AddWithValue("PS_CODCON", tCabSys.CS_CODCON)
+                    .AddWithValue("PS_DESCRI", oPro.Descripcion)
+                    .AddWithValue("PS_NOMBRE", oPro.Nombre)
+                    .AddWithValue("PS_ORDEN", oPro.Orden)
+                    .AddWithValue("PS_PARAME", oPro.Parametros)
+                    .AddWithValue("PS_TITULO", oPro.Titulo)
+                End With
+                cmdClone.ExecuteNonQuery()
+            Next
+
+        Catch ex As Exception
+            Throw New Exception("Guardando procesos previos", ex)
+        End Try
+    End Sub
+
+    Private Sub GuardarColumnas(con As SqlConnection, tran As SqlTransaction)
+        Try
+            Dim sSQL = "Insert into DETSYS (DS_CODCON, DS_CAMPO, DS_FORMAT, DS_FORMUL, DS_HABILI, "
+            sSQL += " DS_HELP, DS_HELQUE, DS_LARGO, DS_ORDEN, DS_TIPO, "
+            sSQL += " DS_TITULO, DS_VISIBL, DS_DRILLD, DS_DRIQUE, DS_DRIPRE, "
+            sSQL += " DS_LLAVE, DS_REEMPL, DS_AYUDA, DS_MAXLAR, DS_VISABM) values (@DS_CODCON, @DS_CAMPO, @DS_FORMAT, @DS_FORMUL, @DS_HABILI, "
+            sSQL += " @DS_HELP, @DS_HELQUE, @DS_LARGO, @DS_ORDEN, @DS_TIPO, "
+            sSQL += " @DS_TITULO, @DS_VISIBL, @DS_DRILLD, @DS_DRIQUE, @DS_DRIPRE, "
+            sSQL += " @DS_LLAVE, @DS_REEMPL, @DS_AYUDA, @DS_MAXLAR, @DS_VISABM)"
+            Dim cmd As New SqlCommand(sSQL, con, tran)
+
+            DeteleTablaRelacionada(con, tran, "DETSYS", "DS_CODCON")
+
+            For Each oCol As DetSys In oDetSys
+                Dim cmdClone As SqlCommand = cmd.Clone
+                With cmdClone.Parameters
+                    .AddWithValue("DS_CODCON", tCabSys.CS_CODCON)
+                    .AddWithValue("DS_CAMPO", oCol.Campo)
+                    .AddWithValue("DS_FORMAT", oCol.Format)
+                    .AddWithValue("DS_FORMUL", Misc.Encoding.Base64Encode(oCol.Formul))
+                    .AddWithValue("DS_HABILI", IIf(oCol.Habili, 1, 0))
+                    .AddWithValue("DS_HELP", oCol.Help)
+                    .AddWithValue("DS_HELQUE", Misc.Encoding.Base64Encode(oCol.HelQue))
+                    .AddWithValue("DS_LARGO", oCol.Largo)
+                    .AddWithValue("DS_ORDEN", oCol.Orden)
+                    .AddWithValue("DS_TIPO", oCol.Tipo)
+                    .AddWithValue("DS_TITULO", oCol.Titulo)
+                    .AddWithValue("DS_VISIBL", IIf(oCol.Visible, 1, 0))
+                    .AddWithValue("DS_DRILLD", IIf(oCol.DrillD, 1, 0))
+                    .AddWithValue("DS_DRIQUE", Misc.Encoding.Base64Encode(oCol.DriQue))
+                    .AddWithValue("DS_DRIPRE", Misc.Encoding.Base64Encode(oCol.DriPre))
+                    .AddWithValue("DS_LLAVE", IIf(oCol.Llave, 1, 0))
+                    .AddWithValue("DS_REEMPL", IIf(oCol.Reemplazo, 1, 0))
+                    .AddWithValue("DS_AYUDA", oCol.RutaAyuda)
+                    .AddWithValue("DS_MAXLAR", oCol.MaxLargo)
+                    ' .AddWithValue("DS_VISABM", IIf(chkVisABM.Checked, IIf(oCol.VisABM, 1, 0), DBNull.Value))
+                End With
+                cmdClone.ExecuteNonQuery()
+            Next
+        Catch ex As Exception
+            Throw New Exception("Guardando Columnas", ex)
+        End Try
+    End Sub
+
+    Private Sub GuardarGraficos(con As SqlConnection, tran As SqlTransaction)
+        '     Try
+        '         Dim sSQL = "Select    * " &
+        '       "FROM      SYSGRA " &
+        '       "WHERE     SG_CODCON = " & tCabSys.CS_CODCON
+        'Set RS = oAdmLocal.AbrirRecordset(sSQL, True)
+        'DeteleTablaRelacionada(con, tran, "SYSGRA", "SG_CODCON")
+
+        '         With RS
+        '         Do Until .EOF
+        '             .Delete
+        '             .MoveNext
+        '             DoEvents
+        '         Loop
+
+        '         For Each oBan In oSysGra
+        '             .AddNew
+
+        '             !SG_CODCON = tCabSys.CS_CODCON
+        '             !SG_ORDEN = oBan.Orden
+        '             !SG_TIPO = oBan.Tipo
+        '             !SG_CAMVAL = oBan.CamVal
+        '             !SG_CAMTIT = oBan.CamTit
+        '             !SG_TITULO = oBan.Titulo
+        '             !SG_QUERY = oBan.Query
+        '             !SG_POSLEY = oBan.PosLeyenda
+        '             !SG_TITVIS = oBan.TitVisible
+
+        '             .Update
+
+        '             DoEvents
+        '         Next
+        '     End With
+
+        '     Catch ex As Exception
+        '         Throw New Exception("Guardando graficos", ex)
+        '     End Try
+
+    End Sub
+
+    Private Sub GuardarConsulta()
+        Dim tr As SqlTransaction = Nothing
+        Dim con As SqlConnection = Nothing
+        Try
+            Me.Cursor = Cursors.WaitCursor
+            Try
+                If Not VerificacionExistenciaConsulta() Then Exit Sub
+                con = DataAccess.GetConnection()
+
+                tr = con.BeginTransaction()
+                GuardarEncabezado(con, tr)
+                GuardarVariablesEntrada(con, tr)
+                GuardarProcesosPrevios(con, tr)
+                GuardarColumnas(con, tr)
+                GuardarGraficos(con, tr)
+
+                tr.Commit()
+            Catch ex As Exception
+                If tr IsNot Nothing Then tr.Rollback()
+                ManejarErrores.TratarError(ex, "GuardarConsulta")
+            End Try
+
+        Finally
+            Me.Cursor = Cursors.Default
+            If con IsNot Nothing Then
+                If con.State = ConnectionState.Open Then con.Close()
+                con = Nothing
+            End If
+        End Try
+    End Sub
+
+    Private Sub EliminarConsulta()
+        EliminarConsulta(False)
+    End Sub
+
+    Private Sub EliminarConsulta(ByVal bModoSilencioso As Boolean)
+        Try
+            Me.Cursor = Cursors.WaitCursor
+
+            Dim tr As SqlTransaction = Nothing
+
+            Try
+                Dim con As SqlConnection = Prex.Utils.DataAccess.GetConnection()
+                tr = con.BeginTransaction
+                DeteleTablaRelacionada(con, tr, "CABSYS", "CS_CODCON")
+                DeteleTablaRelacionada(con, tr, "DETSYS", "DS_CODCON")
+                DeteleTablaRelacionada(con, tr, "VARSYS", "VS_CODCON")
+
+                tr.Commit()
+                If Not bModoSilencioso Then
+                    Prex.Utils.MensajesForms.MostrarInformacion("Consulta Eliminada")
+                End If
+
+            Catch ex As Exception
+                Prex.Utils.ManejarErrores.TratarError(ex, "EliminarConsulta")
+                If tr IsNot Nothing Then tr.Rollback()
+            End Try
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
+
+    End Sub
+
+
+#End Region
     '    Public Sub CargarVariable(ByVal nOrden As Integer,
     '                          ByVal sNombre As String,
     '                          ByVal nTipo As Integer,
@@ -254,13 +590,12 @@ Public Class frmMain
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
 
-        Dim dt As SqlDataReader = DataAccess.GetReader("SELECT *, CAST(CS_CODTRA AS VARCHAR) +  ' - ' + CS_NOMBRE AS XX_DESCRI FROM CABSYS ORDER BY CS_CODTRA ")
+        Dim dt As SqlDataReader = DataAccess.GetReader("Select *, CAST(CS_CODTRA As VARCHAR) +  ' - ' + CS_NOMBRE AS XX_DESCRI FROM CABSYS ORDER BY CS_CODTRA ")
         GridCons.DataSource = dt
         dt.Close()
         NuevaConsulta()
 
         '''PARAMETROS CUADRO SQL
-        'AjusteCodemax cmSQL
         '    AjusteCodemax cmHelp
         '    AjusteCodemax txtFormul
 
@@ -279,9 +614,9 @@ Public Class frmMain
 
     Private Sub chkABM_CheckedChanged(sender As Object, e As EventArgs) Handles chkABM.CheckedChanged
         tCabSys.CS_UPDATE = chkABM.Checked
-        cmdQueryUpdate.Enabled = tCabSys.CS_UPDATE
-        cmdModValida.Enabled = tCabSys.CS_UPDATE
-        cmdValidarUpdate.Enabled = (chkABM.Value = 1)
+        cmdQueryUpdate.Enabled = chkABM.Checked
+        cmdModValida.Enabled = chkABM.Checked
+        cmdValidarUpdate.Enabled = chkABM.Checked
     End Sub
 
     '    Private Sub chkClave_Click()
@@ -290,18 +625,18 @@ Public Class frmMain
 
     '    End Sub
 
-    '    Private Sub chkDrill_Click()
+    'Private Sub chkDrill_Click()
+    '
+    '    oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DrillD = CBool(chkDrill.Value)
+    '
+    '    cmdDrill.Enabled = (chkDrill.Value = 1)
+    '
+    'End Sub
 
-    '        oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DrillD = CBool(chkDrill.Value)
-
-    '        cmdDrill.Enabled = (chkDrill.Value = 1)
-
-    '    End Sub
-
-    '    Private Sub chkDrillDown_Click()
-    '        cmdDrillDown.Enabled = CBool(chkDrillDown.Value)
-    '        tCabSys.CS_DRILLD = cmdDrillDown.Enabled
-    '    End Sub
+    Private Sub chkDrillDown_CheckedChanged(sender As Object, e As EventArgs) Handles chkDrillDown.CheckedChanged
+        cmdDrillDown.Enabled = chkDrillDown.Checked
+        tCabSys.CS_DRILLD = cmdDrillDown.Enabled
+    End Sub
 
     '    Private Sub chkGroup_Click()
     '        tCabSys.CS_GROUPB = CBool(chkGroup.Value)
@@ -315,9 +650,8 @@ Public Class frmMain
 
     Private Sub chkNDesde_CheckedChanged(sender As Object, e As EventArgs) Handles chkNDesde.CheckedChanged
         tCabSys.CS_HABNDE = chkNDesde.Checked
-        cmdQueryNDesde.Enabled = tCabSys.CS_HABNDE
-
-        cmdValidaNuevoDesde.Enabled = chkNDesde.Value
+        cmdQueryNDesde.Enabled = chkNDesde.Checked
+        cmdValidaNuevoDesde.Enabled = chkNDesde.Checked
     End Sub
 
     '    Private Sub chkReempl_Click()
@@ -336,42 +670,54 @@ Public Class frmMain
     '    End Sub
 
     Private Sub chkAlta_CheckedChanged(sender As Object, e As EventArgs) Handles chkAlta.CheckedChanged
+        tCabSys.CS_ALTA = chkAlta.Checked
+        cmdAlta.Enabled = chkAlta.Checked
+        cmdAltaValida.Enabled = chkAlta.Checked
+        cmdAlta.Enabled = chkAlta.Checked
+    End Sub
+
+    Private Sub cmdAlta_Click(sender As Object, e As EventArgs) Handles cmdAlta.Click
 
         'Load frmDrillDown
         'frmDrillDown.PasarQuery tCabSys.CS_ALTQUE
         'frmDrillDown.Show vbModal, Me
 
-        If Trim(INPUT_GENERAL) <> "" Then
-            tCabSys.CS_ALTQUE = INPUT_GENERAL
-        End If
+        'If Trim(INPUT_GENERAL) <> "" Then
+        '    tCabSys.CS_ALTQUE = INPUT_GENERAL
+        'End If
 
     End Sub
 
-    '    Private Sub cmdAltaValida_Click()
+    Private Sub cmdAltaValida_Click(sender As Object, e As EventArgs) Handles cmdAltaValida.Click
 
-    '        Load frmDrillDown
-    '   frmDrillDown.PasarQuery tCabSys.CS_ALTVAL
-    '   frmDrillDown.Show vbModal, Me
+        'Load frmDrillDown
+        'rmDrillDown.PasarQuery tCabSys.CS_ALTVAL
+        'rmDrillDown.Show vbModal, Me
+        '
+        'If FORM_MODAL_RESP Then
+        '    tCabSys.CS_ALTVAL = Trim(INPUT_GENERAL)
+        'End If
 
-    '    If FORM_MODAL_RESP Then
-    '            tCabSys.CS_ALTVAL = Trim(INPUT_GENERAL)
-    '        End If
+    End Sub
 
-    '    End Sub
+    Private Sub cmdBaja_Click(sender As Object, e As EventArgs) Handles cmdBaja.Click
 
-    '    Private Sub cmdBaja_Click()
+        '        Load frmDrillDown
+        '   frmDrillDown.PasarQuery tCabSys.CS_BAJQUE
+        '   frmDrillDown.Show vbModal, Me
 
-    '        Load frmDrillDown
-    '   frmDrillDown.PasarQuery tCabSys.CS_BAJQUE
-    '   frmDrillDown.Show vbModal, Me
+        '    If Trim(INPUT_GENERAL) <> "" Then
+        '            tCabSys.CS_BAJQUE = INPUT_GENERAL
+        '        End If
 
-    '    If Trim(INPUT_GENERAL) <> "" Then
-    '            tCabSys.CS_BAJQUE = INPUT_GENERAL
-    '        End If
+    End Sub
 
-    '    End Sub
+    Private Sub chkBaja_CheckedChanged(sender As Object, e As EventArgs) Handles chkBaja.CheckedChanged
+        tCabSys.CS_BAJA = chkBaja.Checked
+        cmdBaja.Enabled = tCabSys.CS_BAJA
+    End Sub
 
-    '    Private Sub cmdDrill_Click()
+    ' Private Sub cmdDrill_Click(sender As Object, e As EventArgs)
 
     '        Load frmDrillDown
     '   frmDrillDown.PasarConsulta tCabSys.CS_CODTRA, oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Campo, oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DriQue, oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DriPre
@@ -388,23 +734,45 @@ Public Class frmMain
     '            chkDrill.Value = 0
     '        End If
 
-    '    End Sub
+    ' End Sub
 
-    '    Private Sub cmdDrillDown_Click()
+    Private Sub cmdDrillDown_Click(sender As Object, e As EventArgs) Handles cmdDrillDown.Click
 
-    '        Load frmDrillDown
-    '   frmDrillDown.PasarConsulta tCabSys.CS_CODTRA, "", tCabSys.CS_DRIQUE, tCabSys.CS_DRIPRE
-    '   frmDrillDown.Show vbModal, Me
+        '        Load frmDrillDown
+        '   frmDrillDown.PasarConsulta tCabSys.CS_CODTRA, "", tCabSys.CS_DRIQUE, tCabSys.CS_DRIPRE
+        '   frmDrillDown.Show vbModal, Me
 
-    '    If Trim(INPUT_GENERAL) <> "" Then
-    '            tCabSys.CS_DRIQUE = INPUT_GENERAL
-    '        End If
+        '    If Trim(INPUT_GENERAL) <> "" Then
+        '            tCabSys.CS_DRIQUE = INPUT_GENERAL
+        '        End If
 
-    '        If Trim(INPUT_GENERAL_AUX) <> "" Then
-    '            tCabSys.CS_DRIPRE = INPUT_GENERAL_AUX
-    '        End If
+        '        If Trim(INPUT_GENERAL_AUX) <> "" Then
+        '            tCabSys.CS_DRIPRE = INPUT_GENERAL_AUX
+        '        End If
 
-    '    End Sub
+    End Sub
+
+    Private Sub cmdSave_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdSave.ItemClick
+
+        Dim res As MsgBoxResult = MsgBox("Se perderan los cambios de la consulta actual. ¿Desea guardar los cambios?", vbQuestion + vbYesNoCancel, "Preguta del sistema")
+
+        If res = MsgBoxResult.Yes Then
+            GuardarConsulta()
+        ElseIf res = MsgBoxResult.Cancel Then
+            Exit Sub
+        Else
+            NuevaConsulta()
+        End If
+    End Sub
+
+    Private Sub btnEliminar_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles btnEliminar.ItemClick
+
+        If Prex.Utils.MensajesForms.MostrarPregunta("¿Eliminar la consulta de la base de datos?") = DialogResult.Yes Then
+            EliminarConsulta()
+        End If
+
+    End Sub
+
 
     '    Private Sub cmdFondo_Click()
 
@@ -563,9 +931,9 @@ Public Class frmMain
     '        cmHelp_RClick = True
     '    End Function
 
-    '    Private Sub cmSQL_Change(ByVal Control As CodeMaxCtl.ICodeMax)
-    '        tCabSys.CS_QUERY = cmSQL.Text
-    '    End Sub
+    Private Sub cmSQL_Change(ByVal Control As Object, ByVal e As EventArgs)
+        tCabSys.CS_QUERY = cmSql.Text
+    End Sub
 
     '    Private Function cmSQL_RClick(ByVal Control As CodeMaxCtl.ICodeMax) As Boolean
     '        cmSQL_RClick = True

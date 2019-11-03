@@ -1,5 +1,8 @@
 ﻿Public Class CabSys
-    Public CS_CODCON As Integer
+
+
+    Public isNew As Boolean
+    Public CS_CODCON As Long
     Public CS_CODENT As Integer
     Public CS_CODTRA As Integer
     Public CS_DESCRI As String
@@ -24,6 +27,8 @@
     Public CS_HABNDE As Boolean
     Public CS_ALTVAL As String
     Public CS_MODVAL As String
+
+
 
     Public Sub New()
         CS_CODCON = 0
@@ -56,6 +61,57 @@
     Public Sub New(codEntidad As Integer)
         Me.New
         CS_CODENT = codEntidad
+
+    End Sub
+End Class
+
+Public Class VarSys
+    Public Nombre As String
+    Public Tipo As String
+    Public Titulo As String
+    Public Help As String
+    Public HelQue As String
+    Public Orden As Integer
+
+    Public Sub New()
+
+    End Sub
+End Class
+
+Public Class ProSys
+    Public Descripcion As String
+    Public Nombre As String
+    Public Orden As Integer
+    Public Parametros As String
+    Public Titulo As String
+
+    Public Sub New()
+
+    End Sub
+End Class
+
+Public Class DetSys
+    Public Campo As String
+    Public Format As String
+    Public Formul As String
+    Public Habili As Boolean
+    Public Help As Integer
+    Public HelQue As String
+    Public Largo As Integer
+    Public Orden As Integer
+    Public Tipo As Integer
+    Public Titulo As Integer
+    Public Visible As Boolean
+    Public DrillD As Boolean
+    Public DriQue As String
+    Public DriPre As String
+    Public Llave As Boolean
+    Public Reemplazo As Boolean
+    Public RutaAyuda As String
+    Public MaxLargo As Integer
+    Public VisABM As Boolean
+
+    Public Sub New()
 
     End Sub
 End Class
