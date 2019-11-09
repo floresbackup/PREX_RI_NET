@@ -2541,7 +2541,7 @@ GrabarCampo:
                 sSoloArch = oAdmlocal.DevolverValor("TABGEN", "TG_ALFA02",
                         "TG_CODTAB = 10 AND TG_CODCON BETWEEN 500 AND 600 AND TG_DESCRI = '" & sTabla & "'").ToString()
 
-                If Len(sArchFij) < 5 Or sArchFij = " inexistente" Then
+                If Len(sArchFij) < 5 OrElse sArchFij = " inexistente" Then
                     MensajeInformacion("No existen archivos parametrizados para la tabla seleccionada")
                     CargarTablas()
                 Else
