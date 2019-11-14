@@ -523,6 +523,7 @@ Module modFunciones
     'Alias creado para compatibilidad con la versión anterior del sistema
     Public Function sBase64Decode(ByVal sCadena As String) As String
         'Return System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(sCadena))
+        'Return System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(sCadena))
         Return VB6Base64Decode(sCadena).Replace(vbNullChar, String.Empty)
     End Function
 

@@ -158,9 +158,9 @@ Public Class frmProceso
 
       sCod = viewTXT.GetDataRow(viewTXT.FocusedRowHandle).Item("TN_CODIGO").ToString
       sSQL = viewTXT.GetDataRow(viewTXT.FocusedRowHandle).Item("TN_PROCES").ToString
-      sSQL = sBase64Decode(sSQL)
+        sSQL = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(sSQL)) 'sBase64Decode(sSQL)
 
-      Try
+        Try
 
          daDis = Nothing
          dsDis = Nothing

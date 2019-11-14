@@ -722,7 +722,7 @@ Public Class frmMain
             sSQL = ""
 
             If ds.Tables(0).Rows.Count > 0 Then
-                sSQL = sBase64Decode(ds.Tables(0).Rows(0).Item("TN_PROCES"))
+                sSQL = Encoding.UTF8.GetString(Convert.FromBase64String(ds.Tables(0).Rows(0).Item("TN_PROCES"))) 'sBase64Decode(ds.Tables(0).Rows(0).Item("TN_PROCES"))
             End If
 
             sSQL = Replace(sSQL, "@FECDES", FechaSQL(dFecha.AddDays((dFecha.Day) * -1 + 1)))
