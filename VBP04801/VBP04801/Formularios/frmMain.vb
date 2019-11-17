@@ -195,10 +195,12 @@ Public Class frmMain
 
         cboTabla1.Text = "<Seleccionar...>"
         txtFecha.Format = DateTimePickerFormat.Custom
-      txtFecha.CustomFormat = "dd/MM/yyyy"
-      txtFecha.Value = Date.Today
+        txtFecha.CustomFormat = "dd/MM/yyyy"
+        txtFecha.Value = Date.Today
 
-      CargarTablas()
+        RemoveHandler cboTabla1.SelectedIndexChanged, AddressOf cboTabla1_SelectedIndexChanged
+        CargarTablas()
+        AddHandler cboTabla1.SelectedIndexChanged, AddressOf cboTabla1_SelectedIndexChanged
 
         cboTabla1.Enabled = True
         cboTabla1.Focus()
@@ -207,17 +209,17 @@ Public Class frmMain
         cboPeriodo1.Enabled = False
 
         GridDiseno.DataSource = Nothing
-      GridDiseno.RefreshDataSource()
-      GridDiseno.Refresh()
-      GridDiseno.Enabled = False
+        GridDiseno.RefreshDataSource()
+        GridDiseno.Refresh()
+        GridDiseno.Enabled = False
 
-      gResult.Columns.Clear()
-      Grid.DataSource = Nothing
-      Grid.RefreshDataSource()
-      Grid.Refresh()
+        gResult.Columns.Clear()
+        Grid.DataSource = Nothing
+        Grid.RefreshDataSource()
+        Grid.Refresh()
 
-      txtOrigen.Text = ""
-      cmdIncorporar.Text = "&Vista previa"
+        txtOrigen.Text = ""
+        cmdIncorporar.Text = "&Vista previa"
 
         tabDatos.Enabled = False
 
@@ -571,8 +573,10 @@ Public Class frmMain
                 CargarPeriodos()
 
             End If
-
-            CargarRutasFijas(Llave(cboTabla1))
+            If Not (cboTabla1.SelectedItem Is Nothing) AndAlso cboTabla1.SelectedItem.GetType() Is GetType(clsItem.Item) _
+                AndAlso CType(cboTabla1.SelectedItem, clsItem.Item).Valor.ToString(0) = "K" Then
+                CargarRutasFijas(Llave(cboTabla1))
+            End If
         End If
 
     End Sub
@@ -2534,7 +2538,9 @@ GrabarCampo:
 
 
             If nTablas > 0 Then
-
+                If sTabla = String.Empty Then
+                    Exit Sub
+                End If
                 sArchFij = oAdmlocal.DevolverValor("TABGEN", "TG_ALFA01 + '\' + TG_ALFA02",
                        "TG_CODTAB = 10 AND TG_CODCON BETWEEN 500 AND 600 AND TG_DESCRI = '" & sTabla & "'").ToString()
 
