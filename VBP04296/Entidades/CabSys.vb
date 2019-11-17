@@ -72,9 +72,22 @@ Public Class VarSys
     Public Help As String
     Public HelQue As String
     Public Orden As Integer
+    Public Llave As String
+    Public CodCon As Long
 
     Public Sub New()
 
+    End Sub
+
+    Public Sub New(codCon As Long, orden As Integer, nombre As String, tipo As String, titulo As String, help As String, helpque As String, llave As String)
+        Me.Orden = orden
+        Me.Nombre = nombre
+        Me.Tipo = tipo
+        Me.Titulo = titulo
+        Me.Help = help
+        Me.HelQue = helpque
+        Me.Llave = llave
+        Me.CodCon = codCon
     End Sub
 End Class
 
@@ -84,9 +97,21 @@ Public Class ProSys
     Public Orden As Integer
     Public Parametros As String
     Public Titulo As String
+    Public CodCon As Long
+    Public Llave As String
 
     Public Sub New()
 
+    End Sub
+
+    Public Sub New(codCon As Long, orden As Integer, nombre As String, titulo As String, descri As String, param As String, llave As String)
+        Me.CodCon = codCon
+        Me.Orden = orden
+        Me.Nombre = nombre
+        Me.Titulo = titulo
+        Me.Descripcion = descri
+        Me.Parametros = param
+        Me.Llave = llave
     End Sub
 End Class
 
@@ -95,12 +120,12 @@ Public Class DetSys
     Public Format As String
     Public Formul As String
     Public Habili As Boolean
-    Public Help As Integer
+    Public Help As String
     Public HelQue As String
     Public Largo As Integer
     Public Orden As Integer
     Public Tipo As Integer
-    Public Titulo As Integer
+    Public Titulo As String
     Public Visible As Boolean
     Public DrillD As Boolean
     Public DriQue As String
@@ -113,5 +138,57 @@ Public Class DetSys
 
     Public Sub New()
 
+    End Sub
+
+    Public Sub New(codCon As Long, orden As Integer, campo As String, tipo As Integer, largo As Integer, formato As String, titulo As String, help As String, helque As String, formula As String, habilidato As Boolean, visible As Boolean, visibleABM As Boolean, llave As Boolean, drilldown As Boolean, drique As String, dripe As String, reemplazo As Boolean, ayuda As String, maxLargo As Integer, key As String)
+        Me.Campo = campo
+        Me.Format = formato
+        Me.Formul = formula
+        Me.Habili = habilidato
+        Me.Help = help
+        Me.HelQue = helque
+        Me.Largo = largo
+        Me.Orden = orden
+        Me.Tipo = tipo
+        Me.Titulo = titulo
+        Me.Visible = visible
+        Me.DrillD = drilldown
+        Me.DriQue = drique
+        Me.DriPre = drique
+        Me.Llave = llave
+        Me.Reemplazo = reemplazo
+        Me.RutaAyuda = RutaAyuda
+        Me.MaxLargo = maxLargo
+        Me.VisABM = visibleABM
+    End Sub
+End Class
+
+Public Class SysGra
+    Public CamTit As String
+    Public CamVal As String
+    Public CodCon As Long
+    Public Largo As Integer
+    Public Orden As Integer
+    Public Query As String
+    Public Tipo As Long
+    Public Titulo As String
+    Public PosLeyenda As Integer
+    Public TitVisible As Integer
+
+    Public Sub New()
+
+    End Sub
+
+    Public Sub New(codCon As Long, orden As Integer, tipo As Long, largo As Integer, camVal As String, camTit As String, titulo As String, query As String, posLeyenda As Integer, tituloVisible As Integer, sKey As String)
+        camTit = camTit
+        camVal = camVal
+        codCon = codCon
+        largo = largo
+        orden = orden
+        query = query
+        tipo = tipo
+        titulo = titulo
+        posLeyenda = posLeyenda
+        TitVisible = tituloVisible
     End Sub
 End Class

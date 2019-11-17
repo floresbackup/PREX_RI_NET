@@ -409,24 +409,24 @@ Partial Class frmMain
         '
         Me.btnNueva.Hint = "Nueva Consulta"
         Me.btnNueva.Id = 5
-        Me.btnNueva.ImageOptions.Image = CType(resources.GetObject("BarButtonItem2.ImageOptions.Image"), System.Drawing.Image)
-        Me.btnNueva.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem2.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.btnNueva.ImageOptions.Image = CType(resources.GetObject("btnNueva.ImageOptions.Image"), System.Drawing.Image)
+        Me.btnNueva.ImageOptions.LargeImage = CType(resources.GetObject("btnNueva.ImageOptions.LargeImage"), System.Drawing.Image)
         Me.btnNueva.Name = "btnNueva"
         '
         'btnEliminar
         '
         Me.btnEliminar.Hint = "Eliminar Consulta"
         Me.btnEliminar.Id = 6
-        Me.btnEliminar.ImageOptions.Image = CType(resources.GetObject("BarButtonItem3.ImageOptions.Image"), System.Drawing.Image)
-        Me.btnEliminar.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem3.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.btnEliminar.ImageOptions.Image = CType(resources.GetObject("btnEliminar.ImageOptions.Image"), System.Drawing.Image)
+        Me.btnEliminar.ImageOptions.LargeImage = CType(resources.GetObject("btnEliminar.ImageOptions.LargeImage"), System.Drawing.Image)
         Me.btnEliminar.Name = "btnEliminar"
         '
         'btnEditar
         '
         Me.btnEditar.Hint = "Editar Consulta"
         Me.btnEditar.Id = 7
-        Me.btnEditar.ImageOptions.Image = CType(resources.GetObject("BarButtonItem4.ImageOptions.Image"), System.Drawing.Image)
-        Me.btnEditar.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem4.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.btnEditar.ImageOptions.Image = CType(resources.GetObject("btnEditar.ImageOptions.Image"), System.Drawing.Image)
+        Me.btnEditar.ImageOptions.LargeImage = CType(resources.GetObject("btnEditar.ImageOptions.LargeImage"), System.Drawing.Image)
         Me.btnEditar.Name = "btnEditar"
         '
         'barDockControlTop
@@ -474,8 +474,12 @@ Partial Class frmMain
         '
         'GridViewCons
         '
-        Me.GridViewCons.Appearance.SelectedRow.BackColor = System.Drawing.Color.LightBlue
+        Me.GridViewCons.Appearance.SelectedRow.BackColor = System.Drawing.SystemColors.Highlight
+        Me.GridViewCons.Appearance.SelectedRow.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
         Me.GridViewCons.Appearance.SelectedRow.Options.UseBackColor = True
+        Me.GridViewCons.Appearance.SelectedRow.Options.UseBorderColor = True
+        Me.GridViewCons.Appearance.SelectedRow.Options.UseFont = True
+        Me.GridViewCons.Appearance.SelectedRow.Options.UseTextOptions = True
         Me.GridViewCons.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colNombreConsulta, Me.colCodTran, Me.colCodCon})
         Me.GridViewCons.GridControl = Me.GridCons
         Me.GridViewCons.Name = "GridViewCons"
@@ -491,6 +495,7 @@ Partial Class frmMain
         Me.GridViewCons.OptionsCustomization.AllowSort = False
         Me.GridViewCons.OptionsPrint.PrintHorzLines = False
         Me.GridViewCons.OptionsPrint.PrintVertLines = False
+        Me.GridViewCons.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CellSelect
         Me.GridViewCons.OptionsView.ShowColumnHeaders = False
         Me.GridViewCons.OptionsView.ShowDetailButtons = False
         Me.GridViewCons.OptionsView.ShowGroupExpandCollapseButtons = False

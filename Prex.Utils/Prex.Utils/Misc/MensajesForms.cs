@@ -6,6 +6,7 @@ namespace Prex.Utils
     {
 
         public static DialogResult MostrarPregunta(string mensaje) =>  MessageBox.Show(mensaje, "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        public static DialogResult MostrarPreguntaCancelar(string mensaje) => MessageBox.Show(mensaje, "Pregunta", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
         public static void MostrarInformacion(string mensaje) => MessageBox.Show(mensaje, "Mensaje del sistema", MessageBoxButtons.OK, MessageBoxIcon.Information);
 

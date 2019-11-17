@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Prex.Utils.Misc
 {
     public static class Encoding
     {
-        public static string Base64Encode(string plainText)
-        {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
-        }
+        public static string Base64Encode(string plainText) => Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(plainText));
+        public static string Base64DeCode(string base64) => System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(base64));
+        
     }
 }

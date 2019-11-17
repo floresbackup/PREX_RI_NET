@@ -1,4 +1,8 @@
 ﻿Imports System.Data.SqlClient
+Imports System.Text
+Imports DevExpress.Utils
+Imports DevExpress.XtraGrid.Views.Grid
+Imports DevExpress.XtraGrid.Views.Grid.ViewInfo
 Imports Prex.Utils
 
 Public Class frmMain
@@ -6,6 +10,8 @@ Public Class frmMain
     Private tCabSys As CabSys
     Private tVarSys As List(Of VarSys)
     Private tProcesosPrevios As List(Of ProSys)
+    Private tGraficos As List(Of SysGra)
+
     Private oDetSys As List(Of DetSys)
     Private cmSql As ScintillaNET.Scintilla
 
@@ -172,8 +178,14 @@ Public Class frmMain
     End Sub
 
     Private Sub NuevaConsulta()
+        rowHandle = -99
 
         tCabSys = New CabSys(Configuration.PrexConfig.CODIGO_ENTIDAD)
+
+        tProcesosPrevios = New List(Of ProSys)
+        tGraficos = New List(Of SysGra)
+        tVarSys = New List(Of VarSys)
+        oDetSys = New List(Of DetSys)
 
         txtNombreCab.Text = tCabSys.CS_NOMBRE
         txtDescriCab.Text = ""
@@ -536,6 +548,184 @@ Public Class frmMain
         End Try
 
     End Sub
+
+    Private Sub CargarConsultaSeleccionada()
+
+        NuevaConsulta()
+        Dim hdle = GridViewCons.GetSelectedRows().FirstOrDefault()
+        With GridViewCons
+            tCabSys.CS_CODCON = .GetRowCellValue(hdle, .Columns("CS_CODCON"))
+            tCabSys.CS_CODENT = .GetRowCellValue(hdle, .Columns("CS_CODENT"))
+            tCabSys.CS_CODTRA = .GetRowCellValue(hdle, .Columns("CS_CODTRA"))
+            tCabSys.CS_DESCRI = .GetRowCellValue(hdle, .Columns("CS_DESCRI"))
+            tCabSys.CS_FECPRO = Date.Now
+            tCabSys.CS_LAYOUT = .GetRowCellValue(hdle, .Columns("CS_LAYOUT"))
+            tCabSys.CS_NOMBRE = .GetRowCellValue(hdle, .Columns("CS_NOMBRE"))
+            tCabSys.CS_QUERY = Misc.Encoding.Base64DeCode(.GetRowCellValue(hdle, .Columns("CS_QUERY")))
+            tCabSys.CS_REPORT = .GetRowCellValue(hdle, .Columns("CS_REPORT"))
+            tCabSys.CS_UPDATE = .GetRowCellValue(hdle, .Columns("CS_UPDATE"))
+            tCabSys.CS_DRILLD = .GetRowCellValue(hdle, .Columns("CS_DRILLD"))
+            tCabSys.CS_GROUPB = .GetRowCellValue(hdle, .Columns("CS_GROUPB"))
+            tCabSys.CS_DRIQUE = Misc.Encoding.Base64DeCode(.GetRowCellValue(hdle, .Columns("CS_DRIQUE")))
+            tCabSys.CS_DRIPRE = Misc.Encoding.Base64DeCode("" & .GetRowCellValue(hdle, .Columns("CS_DRIPRE")))
+            tCabSys.CS_TABLA = Misc.Encoding.Base64DeCode(.GetRowCellValue(hdle, .Columns("CS_TABLA")))
+            tCabSys.CS_UPDQUE = Misc.Encoding.Base64DeCode("" & .GetRowCellValue(hdle, .Columns("CS_UPDQUE")))
+            tCabSys.CS_NDESDE = Misc.Encoding.Base64DeCode("" & .GetRowCellValue(hdle, .Columns("CS_NDESDE")))
+            tCabSys.CS_NDEVAL = Misc.Encoding.Base64DeCode("" & .GetRowCellValue(hdle, .Columns("CS_NDEVAL")))
+            tCabSys.CS_HABNDE = .GetRowCellValue(hdle, .Columns("CS_HABNDE"))
+            tCabSys.CS_ALTQUE = Misc.Encoding.Base64DeCode("" & .GetRowCellValue(hdle, .Columns("CS_ALTQUE")))
+            tCabSys.CS_BAJQUE = Misc.Encoding.Base64DeCode("" & .GetRowCellValue(hdle, .Columns("CS_BAJQUE")))
+            tCabSys.CS_ALTA = .GetRowCellValue(hdle, .Columns("CS_ALTA"))
+            tCabSys.CS_BAJA = .GetRowCellValue(hdle, .Columns("CS_BAJA"))
+            tCabSys.CS_HABNDE = .GetRowCellValue(hdle, .Columns("CS_HABNDE"))
+            tCabSys.CS_ALTVAL = Misc.Encoding.Base64DeCode("" & .GetRowCellValue(hdle, .Columns("CS_ALTVAL")))
+            tCabSys.CS_MODVAL = Misc.Encoding.Base64DeCode("" & .GetRowCellValue(hdle, .Columns("CS_MODVAL")))
+        End With
+
+        txtNombreCab.Text = tCabSys.CS_NOMBRE
+        txtCodTraCab.Text = tCabSys.CS_CODTRA
+        txtDescriCab.Text = tCabSys.CS_DESCRI
+        chkABM.Checked = IIf(tCabSys.CS_UPDATE, 1, 0)
+        chkBaja.Checked = IIf(tCabSys.CS_BAJA, 1, 0)
+        chkAlta.Checked = IIf(tCabSys.CS_ALTA, 1, 0)
+        chkDrillDown.Checked = IIf(tCabSys.CS_DRILLD, 1, 0)
+        chkGroup.Checked = IIf(tCabSys.CS_GROUPB, 1, 0)
+        chkNDesde.Checked = IIf(tCabSys.CS_HABNDE, 1, 0)
+        cmSql.Text = tCabSys.CS_QUERY
+    End Sub
+
+    Private Sub CargarVariables()
+        Dim sSQL = "SELECT    * " &
+              "FROM      VARSYS " &
+              "WHERE     VS_CODCON = " & tCabSys.CS_CODCON & " " &
+              "ORDER BY  VS_ORDEN "
+        tVarSys.Clear()
+        Dim rd As SqlDataReader = DataAccess.GetReader(sSQL)
+        While rd.Read
+            tVarSys.Add(New VarSys(rd("VS_CODCON").ToString, Integer.Parse(rd("VS_ORDEN").ToString), rd("VS_NOMBRE").ToString,
+                                   rd("VS_TIPO").ToString, rd("VS_TITULO").ToString, rd("VS_HELP").ToString,
+                                   Misc.Encoding.Base64DeCode(rd("VS_HELQUE").ToString), "K" & rd("VS_ORDEN").ToString))
+        End While
+        rd.Close()
+
+        'nLlave = oVarSys.Count
+
+    End Sub
+
+    Private Sub CargarProcesosPrevios()
+        Dim sSQL = "SELECT    * " &
+          "FROM      PROSYS " &
+          "WHERE     PS_CODCON = " & tCabSys.CS_CODCON & " " &
+          "ORDER BY  PS_ORDEN "
+
+        tProcesosPrevios.Clear()
+        Dim rd As SqlDataReader = DataAccess.GetReader(sSQL)
+        While rd.Read
+            tProcesosPrevios.Add(New ProSys(Long.Parse(rd("PS_CODCON").ToString), Integer.Parse(rd("PS_ORDEN").ToString),
+                                            rd("PS_NOMBRE").ToString, rd("PS_TITULO").ToString, rd("PS_DESCRI").ToString, rd("PS_PARAME").ToString, "K" & rd("PS_ORDEN").ToString))
+        End While
+        rd.Close()
+
+        'nLlavePro = oProSys.Count
+    End Sub
+
+    Private Sub CargarGraficos()
+        Dim sSQL = "SELECT    * " &
+          "FROM      SYSGRA " &
+          "WHERE     SG_CODCON = " & tCabSys.CS_CODCON & " " &
+          "ORDER BY  SG_ORDEN "
+
+
+        tGraficos.Clear()
+        Dim rd As SqlDataReader = DataAccess.GetReader(sSQL)
+        While rd.Read
+            tGraficos.Add(New SysGra(Long.Parse(rd("SG_CODCON").ToString), Integer.Parse(rd("SG_ORDEN").ToString), Long.Parse(rd("SG_TIPO").ToString), 0, rd("SG_CAMVAL").ToString, rd("SG_CAMTIT").ToString,
+                                    rd("SG_TITULO").ToString, rd("SG_QUERY").ToString, Integer.Parse(rd("SG_POSLEY").ToString), Integer.Parse(rd("SG_TITVIS").ToString), "K" & rd("SG_ORDEN").ToString))
+        End While
+        rd.Close()
+
+    End Sub
+
+    Private Sub CargarColumnas()
+        'COLUMNAS
+        Dim sSQL = "SELECT       * " &
+          "FROM         DETSYS " &
+          "WHERE        DS_CODCON = " & tCabSys.CS_CODCON & " " &
+          "ORDER BY     DS_ORDEN "
+
+        oDetSys.Clear()
+        Dim rd As SqlDataReader = DataAccess.GetReader(sSQL)
+        While rd.Read
+            oDetSys.Add(New DetSys(Long.Parse(rd("DS_CODCON").ToString), Integer.Parse(rd("DS_ORDEN").ToString), Integer.Parse(rd("DS_CAMPO").ToString),
+                                   Integer.Parse(rd("DS_TIPO").ToString), Integer.Parse(rd("DS_LARGO").ToString), rd("DS_FORMAT").ToString, rd("DS_TITULO").ToString,
+                                   rd("DS_HELP").ToString, Misc.Encoding.Base64DeCode(rd("DS_HELQUE").ToString), Misc.Encoding.Base64DeCode(rd("DS_FORMUL").ToString),
+                                   Boolean.Parse(rd("DS_HABILI")), Boolean.Parse(rd("DS_VISIBL")), Boolean.Parse(rd("DS_VISABM")), Boolean.Parse(rd("DS_LLAVE")),
+                                   Boolean.Parse(rd("DS_DRILLD")), Misc.Encoding.Base64DeCode(rd("DS_DRIQUE").ToString), Misc.Encoding.Base64DeCode(rd("DS_DRIPRE")),
+                                   Boolean.Parse(rd("DS_REEMPL")), rd("DS_AYUDA").ToString, Integer.Parse(rd("DS_MAXLAR")), "K" & rd("DS_ORDEN").ToString))
+        End While
+        rd.Close()
+
+        'nLlaveDet = oDetSys.Count
+    End Sub
+
+    Private Function EditarConsulta() As Boolean
+        Try
+            Dim oRespuesta = MensajesForms.MostrarPreguntaCancelar("Se perderan los cambios de la consulta actual. ¿Desea guardar los cambios?")
+
+            If oRespuesta = vbYes Then
+                GuardarConsulta()
+            ElseIf oRespuesta = DialogResult.Cancel Then
+                Return False
+            End If
+
+            Me.Cursor = Cursors.WaitCursor
+            Try
+                CargarConsultaSeleccionada()
+                CargarVariables()
+                CargarProcesosPrevios()
+                CargarGraficos()
+                CargarColumnas()
+
+                'GridVar.ItemCount = oVarSys.Count
+                'GridVar.Refresh
+                'GridVar.RefreshSort
+                '
+                'If GridVar.ItemCount > 0 Then
+                '    GridVar.Row = 1
+                '    MostrarVariable "K" & GridVar.Value(GridVar.Columns("Key").Index)
+                'End If
+                '
+                'GridPro.ItemCount = oProSys.Count
+                'GridPro.Refresh
+                'GridPro.RefreshSort
+                '
+                'If GridPro.ItemCount > 0 Then
+                '    GridPro.Row = 1
+                '    MostrarProceso "K" & GridPro.Value(GridPro.Columns("Key").Index)
+                'End If
+                '
+                'GridCols.ItemCount = oDetSys.Count
+                'GridCols.Refresh
+
+                'If GridCols.ItemCount > 0 Then
+                '    GridCols.Row = 1
+                'End If
+                '
+                'Label1.Caption = "Explorador de consultas - (" & tCabSys.CS_CODCON & ")"
+                Return True
+            Finally
+                Me.Cursor = Cursors.Default
+
+            End Try
+        Catch ex As Exception
+            If Err.Number Then
+                ManejarErrores.TratarError(ex, "EditarConsulta")
+            End If
+            Return False
+        End Try
+
+
+    End Function
 
 
 #End Region
@@ -933,6 +1123,25 @@ Public Class frmMain
 
     Private Sub cmSQL_Change(ByVal Control As Object, ByVal e As EventArgs)
         tCabSys.CS_QUERY = cmSql.Text
+    End Sub
+    Private Sub GridCons_RowStyle(sender As Object, e As RowStyleEventArgs) Handles GridViewCons.RowStyle
+        If e.RowHandle = rowHandle Then
+
+            e.Appearance.BackColor = BackColor
+            e.HighPriority = True
+        End If
+    End Sub
+    Private rowHandle As Integer
+    Private Sub GridCons_DoubleClick(sender As Object, e As EventArgs) Handles GridViewCons.DoubleClick
+        If EditarConsulta() Then
+            Dim ea As DXMouseEventArgs = CType(e, DXMouseEventArgs)
+            Dim hitInfo As GridHitInfo = GridViewCons.CalcHitInfo(ea.Location)
+            If hitInfo.InRowCell Then
+
+                rowHandle = hitInfo.RowHandle
+                GridViewCons.LayoutChanged()
+            End If
+        End If
     End Sub
 
     '    Private Function cmSQL_RClick(ByVal Control As CodeMaxCtl.ICodeMax) As Boolean
