@@ -649,7 +649,13 @@ Public Class frmMain
                                             rd("PS_NOMBRE").ToString, rd("PS_TITULO").ToString, rd("PS_DESCRI").ToString, rd("PS_PARAME").ToString, "K" & rd("PS_ORDEN").ToString))
         End While
         rd.Close()
+        gridViewProc.OptionsBehavior.AutoPopulateColumns = True
+        gridProc.DataSource = tProcesosPrevios.Select(Function(c) New With {c.Nombre, c.Llave}).ToList()
+        For Each item As DevExpress.XtraGrid.Columns.GridColumn In gridViewProc.Columns
 
+            item.Visible = item.FieldName.Contains("Nombre")
+
+        Next
         'nLlavePro = oProSys.Count
     End Sub
 
@@ -716,17 +722,18 @@ Public Class frmMain
                 '
                 'If GridVar.ItemCount > 0 Then
                 '    GridVar.Row = 1
-                '    MostrarVariable "K" & GridVar.Value(GridVar.Columns("Key").Index)
+                'MostrarVariable("K" & GridVar.Value(GridVar.Columns("Key").Index))
                 'End If
                 '
                 'GridPro.ItemCount = oProSys.Count
                 'GridPro.Refresh
                 'GridPro.RefreshSort
                 '
-                'If GridPro.ItemCount > 0 Then
-                '    GridPro.Row = 1
-                '    MostrarProceso "K" & GridPro.Value(GridPro.Columns("Key").Index)
-                'End If
+                If tProcesosPrevios.Any() Then
+
+                    BeginInvoke(New Action(Function() FocusRow(gridViewProc)))
+                    MostrarProceso(tProcesosPrevios.FirstOrDefault().Llave)
+                End If
                 '
                 'GridCols.ItemCount = oDetSys.Count
                 'GridCols.Refresh
@@ -750,6 +757,22 @@ Public Class frmMain
 
 
     End Function
+
+    Private Function FocusRow(ByVal view As GridView) As Boolean
+        view.FocusedRowHandle = 0
+        Return True
+    End Function
+
+    Private Sub MostrarProceso(ByVal sLlave As String)
+        If tProcesosPrevios.Any() Then
+            Dim proc = tProcesosPrevios.FirstOrDefault(Function(p) p.Llave = sLlave)
+            txtOrdenPro.Text = proc.Orden
+            txtNombrePro.Text = proc.Nombre
+            txtTituloPro.Text = proc.Titulo
+            txtDescriPro.Text = proc.Descripcion
+            txtParamPro.Text = proc.Parametros
+        End If
+    End Sub
 
     Private Sub MostrarVariable(ByVal sLlave As String)
 
@@ -1148,11 +1171,11 @@ Public Class frmMain
     'End Sub
     Private rowHandle As Integer
     Private Sub GridCons_DoubleClick(sender As Object, e As EventArgs) Handles GridViewCons.DoubleClick
-        If EditarConsulta() Then
-            Dim ea As DXMouseEventArgs = CType(e, DXMouseEventArgs)
+
+        Dim ea As DXMouseEventArgs = CType(e, DXMouseEventArgs)
             Dim hitInfo As GridHitInfo = GridViewCons.CalcHitInfo(ea.Location)
             If hitInfo.InRowCell Then
-
+            If EditarConsulta() Then
                 rowHandle = hitInfo.RowHandle
                 GridViewCons.LayoutChanged()
             End If
@@ -1171,6 +1194,26 @@ Public Class frmMain
             e.Appearance.BackColor = Color.White
 
         End If
+    End Sub
+
+    Private Sub gridViewProc_SelectionChanged(sender As Object, e As DevExpress.Data.SelectionChangedEventArgs) Handles gridViewProc.SelectionChanged
+        MostrarProceso(gridViewProc.GetFocusedRowCellValue("Llave"))
+    End Sub
+
+    Private Sub gridViewProc_DoubleClick(sender As Object, e As EventArgs) Handles gridViewProc.DoubleClick
+
+
+        Dim ea As DXMouseEventArgs = CType(e, DXMouseEventArgs)
+        Dim hitInfo As GridHitInfo = gridViewProc.CalcHitInfo(ea.Location)
+        If hitInfo.InRowCell Then
+            Dim sLlave = gridViewProc.GetFocusedRowCellValue("Llave")
+            Dim frmABMPro As New frmABMPro()
+            frmABMPro.PasarDatos(tProcesosPrevios.FirstOrDefault(Function(t) t.Llave = sLlave))
+            frmABMPro.showDialog()
+
+            gridViewProc.LayoutChanged()
+        End If
+
     End Sub
 
 

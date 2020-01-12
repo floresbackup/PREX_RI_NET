@@ -93,6 +93,18 @@ Partial Class frmMain
         Me.tabPageQuery = New DevExpress.XtraTab.XtraTabPage()
         Me.tabPageColumnas = New DevExpress.XtraTab.XtraTabPage()
         Me.tabPageProcesos = New DevExpress.XtraTab.XtraTabPage()
+        Me.gridProc = New DevExpress.XtraGrid.GridControl()
+        Me.gridViewProc = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.txtDescriPro = New DevExpress.XtraEditors.TextEdit()
+        Me.txtParamPro = New DevExpress.XtraEditors.TextEdit()
+        Me.txtTituloPro = New DevExpress.XtraEditors.TextEdit()
+        Me.txtNombrePro = New DevExpress.XtraEditors.TextEdit()
+        Me.txtOrdenPro = New DevExpress.XtraEditors.TextEdit()
+        Me.LabelControl8 = New DevExpress.XtraEditors.LabelControl()
+        Me.LabelControl7 = New DevExpress.XtraEditors.LabelControl()
+        Me.LabelControl6 = New DevExpress.XtraEditors.LabelControl()
+        Me.LabelControl5 = New DevExpress.XtraEditors.LabelControl()
+        Me.LabelControl4 = New DevExpress.XtraEditors.LabelControl()
         Me.toolMain.SuspendLayout()
         Me.sbMain.SuspendLayout()
         CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -119,6 +131,14 @@ Partial Class frmMain
         CType(Me.txtDescriCab.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtCodTraCab.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtNombreCab.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tabPageProcesos.SuspendLayout()
+        CType(Me.gridProc, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.gridViewProc, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.txtDescriPro.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.txtParamPro.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.txtTituloPro.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.txtNombrePro.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.txtOrdenPro.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'toolMain
@@ -828,11 +848,124 @@ Partial Class frmMain
         '
         'tabPageProcesos
         '
+        Me.tabPageProcesos.Controls.Add(Me.gridProc)
+        Me.tabPageProcesos.Controls.Add(Me.txtDescriPro)
+        Me.tabPageProcesos.Controls.Add(Me.txtParamPro)
+        Me.tabPageProcesos.Controls.Add(Me.txtTituloPro)
+        Me.tabPageProcesos.Controls.Add(Me.txtNombrePro)
+        Me.tabPageProcesos.Controls.Add(Me.txtOrdenPro)
+        Me.tabPageProcesos.Controls.Add(Me.LabelControl8)
+        Me.tabPageProcesos.Controls.Add(Me.LabelControl7)
+        Me.tabPageProcesos.Controls.Add(Me.LabelControl6)
+        Me.tabPageProcesos.Controls.Add(Me.LabelControl5)
+        Me.tabPageProcesos.Controls.Add(Me.LabelControl4)
         Me.tabPageProcesos.ImageOptions.Image = CType(resources.GetObject("tabPageProcesos.ImageOptions.Image"), System.Drawing.Image)
         Me.tabPageProcesos.Margin = New System.Windows.Forms.Padding(0)
         Me.tabPageProcesos.Name = "tabPageProcesos"
         Me.tabPageProcesos.Size = New System.Drawing.Size(812, 514)
         Me.tabPageProcesos.Text = "Procesos Previos"
+        '
+        'gridProc
+        '
+        Me.gridProc.Location = New System.Drawing.Point(28, 178)
+        Me.gridProc.MainView = Me.gridViewProc
+        Me.gridProc.MenuManager = Me.BarManager1
+        Me.gridProc.Name = "gridProc"
+        Me.gridProc.Size = New System.Drawing.Size(418, 200)
+        Me.gridProc.TabIndex = 2
+        Me.gridProc.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gridViewProc})
+        '
+        'gridViewProc
+        '
+        Me.gridViewProc.Appearance.FocusedRow.BackColor = System.Drawing.Color.LightSkyBlue
+        Me.gridViewProc.Appearance.FocusedRow.BackColor2 = System.Drawing.Color.LightSkyBlue
+        Me.gridViewProc.Appearance.FocusedRow.Options.UseBackColor = True
+        Me.gridViewProc.GridControl = Me.gridProc
+        Me.gridViewProc.Name = "gridViewProc"
+        Me.gridViewProc.OptionsBehavior.Editable = False
+        Me.gridViewProc.OptionsSelection.MultiSelect = True
+        Me.gridViewProc.OptionsView.ShowGroupPanel = False
+        '
+        'txtDescriPro
+        '
+        Me.txtDescriPro.Location = New System.Drawing.Point(93, 90)
+        Me.txtDescriPro.Name = "txtDescriPro"
+        Me.txtDescriPro.Properties.ReadOnly = True
+        Me.txtDescriPro.Size = New System.Drawing.Size(353, 20)
+        Me.txtDescriPro.TabIndex = 1
+        '
+        'txtParamPro
+        '
+        Me.txtParamPro.Location = New System.Drawing.Point(93, 116)
+        Me.txtParamPro.Name = "txtParamPro"
+        Me.txtParamPro.Properties.ReadOnly = True
+        Me.txtParamPro.Size = New System.Drawing.Size(353, 20)
+        Me.txtParamPro.TabIndex = 1
+        '
+        'txtTituloPro
+        '
+        Me.txtTituloPro.Location = New System.Drawing.Point(93, 64)
+        Me.txtTituloPro.Name = "txtTituloPro"
+        Me.txtTituloPro.Properties.ReadOnly = True
+        Me.txtTituloPro.Size = New System.Drawing.Size(353, 20)
+        Me.txtTituloPro.TabIndex = 1
+        '
+        'txtNombrePro
+        '
+        Me.txtNombrePro.Location = New System.Drawing.Point(93, 38)
+        Me.txtNombrePro.Name = "txtNombrePro"
+        Me.txtNombrePro.Properties.ReadOnly = True
+        Me.txtNombrePro.Size = New System.Drawing.Size(353, 20)
+        Me.txtNombrePro.TabIndex = 1
+        '
+        'txtOrdenPro
+        '
+        Me.txtOrdenPro.Location = New System.Drawing.Point(93, 12)
+        Me.txtOrdenPro.MenuManager = Me.BarManager1
+        Me.txtOrdenPro.Name = "txtOrdenPro"
+        Me.txtOrdenPro.Properties.ReadOnly = True
+        Me.txtOrdenPro.Size = New System.Drawing.Size(353, 20)
+        Me.txtOrdenPro.TabIndex = 1
+        '
+        'LabelControl8
+        '
+        Me.LabelControl8.Location = New System.Drawing.Point(28, 119)
+        Me.LabelControl8.Name = "LabelControl8"
+        Me.LabelControl8.Size = New System.Drawing.Size(59, 13)
+        Me.LabelControl8.TabIndex = 0
+        Me.LabelControl8.Text = "Parametros:"
+        '
+        'LabelControl7
+        '
+        Me.LabelControl7.Location = New System.Drawing.Point(28, 93)
+        Me.LabelControl7.Name = "LabelControl7"
+        Me.LabelControl7.Size = New System.Drawing.Size(58, 13)
+        Me.LabelControl7.TabIndex = 0
+        Me.LabelControl7.Text = "Descripcion:"
+        '
+        'LabelControl6
+        '
+        Me.LabelControl6.Location = New System.Drawing.Point(57, 67)
+        Me.LabelControl6.Name = "LabelControl6"
+        Me.LabelControl6.Size = New System.Drawing.Size(30, 13)
+        Me.LabelControl6.TabIndex = 0
+        Me.LabelControl6.Text = "Titulo:"
+        '
+        'LabelControl5
+        '
+        Me.LabelControl5.Location = New System.Drawing.Point(46, 41)
+        Me.LabelControl5.Name = "LabelControl5"
+        Me.LabelControl5.Size = New System.Drawing.Size(41, 13)
+        Me.LabelControl5.TabIndex = 0
+        Me.LabelControl5.Text = "Nombre:"
+        '
+        'LabelControl4
+        '
+        Me.LabelControl4.Location = New System.Drawing.Point(53, 15)
+        Me.LabelControl4.Name = "LabelControl4"
+        Me.LabelControl4.Size = New System.Drawing.Size(34, 13)
+        Me.LabelControl4.TabIndex = 0
+        Me.LabelControl4.Text = "Orden:"
         '
         'frmMain
         '
@@ -879,6 +1012,15 @@ Partial Class frmMain
         CType(Me.txtDescriCab.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtCodTraCab.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtNombreCab.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tabPageProcesos.ResumeLayout(False)
+        Me.tabPageProcesos.PerformLayout()
+        CType(Me.gridProc, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.gridViewProc, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.txtDescriPro.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.txtParamPro.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.txtTituloPro.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.txtNombrePro.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.txtOrdenPro.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -953,4 +1095,16 @@ Partial Class frmMain
     Friend WithEvents cmdModValida As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents cmdQueryUpdate As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents ColNombre As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents txtDescriPro As DevExpress.XtraEditors.TextEdit
+    Friend WithEvents txtParamPro As DevExpress.XtraEditors.TextEdit
+    Friend WithEvents txtTituloPro As DevExpress.XtraEditors.TextEdit
+    Friend WithEvents txtNombrePro As DevExpress.XtraEditors.TextEdit
+    Friend WithEvents txtOrdenPro As DevExpress.XtraEditors.TextEdit
+    Friend WithEvents LabelControl8 As DevExpress.XtraEditors.LabelControl
+    Friend WithEvents LabelControl7 As DevExpress.XtraEditors.LabelControl
+    Friend WithEvents LabelControl6 As DevExpress.XtraEditors.LabelControl
+    Friend WithEvents LabelControl5 As DevExpress.XtraEditors.LabelControl
+    Friend WithEvents LabelControl4 As DevExpress.XtraEditors.LabelControl
+    Friend WithEvents gridProc As DevExpress.XtraGrid.GridControl
+    Friend WithEvents gridViewProc As DevExpress.XtraGrid.Views.Grid.GridView
 End Class
