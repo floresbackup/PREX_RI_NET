@@ -52,6 +52,8 @@ namespace Prex.Utils.Misc.Forms
             //think it's supposed to be the keywords, but doesn't change them!
             scintilla1.Styles[Style.Sql.Word].ForeColor = Color.Blue;
             scintilla1.Styles[Style.Sql.Word2].ForeColor = Color.Pink;
+            
+
 
             //in double quotes
             scintilla1.Styles[Style.Sql.String].ForeColor = Color.Red;

@@ -118,6 +118,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entidades\CabSys.vb" />
+    <Compile Include="Formularios\frmDrillDown.Designer.vb">
+      <DependentUpon>frmDrillDown.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\frmDrillDown.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\frmMain.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +149,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Formularios\frmDrillDown.resx">
+      <DependentUpon>frmDrillDown.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>
     </EmbeddedResource>

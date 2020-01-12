@@ -64,6 +64,7 @@ Partial Class frmMain
         Me.colNombreConsulta = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.colCodTran = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.colCodCon = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.ColNombre = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.tabPanel = New DevExpress.XtraTab.XtraTabControl()
         Me.tabPageFormulario = New DevExpress.XtraTab.XtraTabPage()
@@ -480,13 +481,10 @@ Partial Class frmMain
         Me.GridViewCons.Appearance.SelectedRow.Options.UseBorderColor = True
         Me.GridViewCons.Appearance.SelectedRow.Options.UseFont = True
         Me.GridViewCons.Appearance.SelectedRow.Options.UseTextOptions = True
-        Me.GridViewCons.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colNombreConsulta, Me.colCodTran, Me.colCodCon})
+        Me.GridViewCons.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colNombreConsulta, Me.colCodTran, Me.colCodCon, Me.ColNombre})
         Me.GridViewCons.GridControl = Me.GridCons
         Me.GridViewCons.Name = "GridViewCons"
-        Me.GridViewCons.OptionsBehavior.AllowPartialRedrawOnScrolling = False
-        Me.GridViewCons.OptionsBehavior.AllowValidationErrors = False
         Me.GridViewCons.OptionsBehavior.Editable = False
-        Me.GridViewCons.OptionsBehavior.ReadOnly = True
         Me.GridViewCons.OptionsCustomization.AllowColumnMoving = False
         Me.GridViewCons.OptionsCustomization.AllowColumnResizing = False
         Me.GridViewCons.OptionsCustomization.AllowFilter = False
@@ -495,7 +493,6 @@ Partial Class frmMain
         Me.GridViewCons.OptionsCustomization.AllowSort = False
         Me.GridViewCons.OptionsPrint.PrintHorzLines = False
         Me.GridViewCons.OptionsPrint.PrintVertLines = False
-        Me.GridViewCons.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CellSelect
         Me.GridViewCons.OptionsView.ShowColumnHeaders = False
         Me.GridViewCons.OptionsView.ShowDetailButtons = False
         Me.GridViewCons.OptionsView.ShowGroupExpandCollapseButtons = False
@@ -514,14 +511,18 @@ Partial Class frmMain
         '
         'colCodTran
         '
-        Me.colCodTran.Caption = "CS_CODTRAN"
-        Me.colCodTran.FieldName = "CS_CODTRAN"
+        Me.colCodTran.FieldName = "CS_CODTRA"
         Me.colCodTran.Name = "colCodTran"
         '
         'colCodCon
         '
         Me.colCodCon.FieldName = "CS_CODCON"
         Me.colCodCon.Name = "colCodCon"
+        '
+        'ColNombre
+        '
+        Me.ColNombre.FieldName = "CS_NOMBRE"
+        Me.ColNombre.Name = "ColNombre"
         '
         'TableLayoutPanel2
         '
@@ -585,6 +586,7 @@ Partial Class frmMain
         '
         Me.cmdValidarUpdate.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
         Me.cmdValidarUpdate.Appearance.Options.UseFont = True
+        Me.cmdValidarUpdate.Enabled = False
         Me.cmdValidarUpdate.Location = New System.Drawing.Point(502, 202)
         Me.cmdValidarUpdate.Margin = New System.Windows.Forms.Padding(0)
         Me.cmdValidarUpdate.Name = "cmdValidarUpdate"
@@ -596,6 +598,7 @@ Partial Class frmMain
         '
         Me.cmdBaja.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
         Me.cmdBaja.Appearance.Options.UseFont = True
+        Me.cmdBaja.Enabled = False
         Me.cmdBaja.Location = New System.Drawing.Point(276, 177)
         Me.cmdBaja.Margin = New System.Windows.Forms.Padding(0)
         Me.cmdBaja.Name = "cmdBaja"
@@ -607,6 +610,7 @@ Partial Class frmMain
         '
         Me.SimpleButton7.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
         Me.SimpleButton7.Appearance.Options.UseFont = True
+        Me.SimpleButton7.Enabled = False
         Me.SimpleButton7.Location = New System.Drawing.Point(390, 252)
         Me.SimpleButton7.Margin = New System.Windows.Forms.Padding(0)
         Me.SimpleButton7.Name = "SimpleButton7"
@@ -618,6 +622,7 @@ Partial Class frmMain
         '
         Me.cmdDrillDown.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
         Me.cmdDrillDown.Appearance.Options.UseFont = True
+        Me.cmdDrillDown.Enabled = False
         Me.cmdDrillDown.Location = New System.Drawing.Point(276, 252)
         Me.cmdDrillDown.Margin = New System.Windows.Forms.Padding(0)
         Me.cmdDrillDown.Name = "cmdDrillDown"
@@ -629,6 +634,7 @@ Partial Class frmMain
         '
         Me.cmdValidaNuevoDesde.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
         Me.cmdValidaNuevoDesde.Appearance.Options.UseFont = True
+        Me.cmdValidaNuevoDesde.Enabled = False
         Me.cmdValidaNuevoDesde.Location = New System.Drawing.Point(390, 227)
         Me.cmdValidaNuevoDesde.Margin = New System.Windows.Forms.Padding(0)
         Me.cmdValidaNuevoDesde.Name = "cmdValidaNuevoDesde"
@@ -640,6 +646,7 @@ Partial Class frmMain
         '
         Me.cmdQueryNDesde.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
         Me.cmdQueryNDesde.Appearance.Options.UseFont = True
+        Me.cmdQueryNDesde.Enabled = False
         Me.cmdQueryNDesde.Location = New System.Drawing.Point(276, 227)
         Me.cmdQueryNDesde.Margin = New System.Windows.Forms.Padding(0)
         Me.cmdQueryNDesde.Name = "cmdQueryNDesde"
@@ -651,6 +658,7 @@ Partial Class frmMain
         '
         Me.cmdModValida.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
         Me.cmdModValida.Appearance.Options.UseFont = True
+        Me.cmdModValida.Enabled = False
         Me.cmdModValida.Location = New System.Drawing.Point(390, 202)
         Me.cmdModValida.Margin = New System.Windows.Forms.Padding(0)
         Me.cmdModValida.Name = "cmdModValida"
@@ -662,6 +670,7 @@ Partial Class frmMain
         '
         Me.cmdQueryUpdate.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
         Me.cmdQueryUpdate.Appearance.Options.UseFont = True
+        Me.cmdQueryUpdate.Enabled = False
         Me.cmdQueryUpdate.Location = New System.Drawing.Point(276, 202)
         Me.cmdQueryUpdate.Margin = New System.Windows.Forms.Padding(0)
         Me.cmdQueryUpdate.Name = "cmdQueryUpdate"
@@ -673,6 +682,7 @@ Partial Class frmMain
         '
         Me.cmdAltaValida.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
         Me.cmdAltaValida.Appearance.Options.UseFont = True
+        Me.cmdAltaValida.Enabled = False
         Me.cmdAltaValida.Location = New System.Drawing.Point(390, 151)
         Me.cmdAltaValida.Margin = New System.Windows.Forms.Padding(0)
         Me.cmdAltaValida.Name = "cmdAltaValida"
@@ -684,6 +694,7 @@ Partial Class frmMain
         '
         Me.cmdAlta.Appearance.Font = New System.Drawing.Font("Tahoma", 7.5!)
         Me.cmdAlta.Appearance.Options.UseFont = True
+        Me.cmdAlta.Enabled = False
         Me.cmdAlta.Location = New System.Drawing.Point(276, 151)
         Me.cmdAlta.Margin = New System.Windows.Forms.Padding(0)
         Me.cmdAlta.Name = "cmdAlta"
@@ -941,4 +952,5 @@ Partial Class frmMain
     Friend WithEvents cmdQueryNDesde As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents cmdModValida As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents cmdQueryUpdate As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents ColNombre As DevExpress.XtraGrid.Columns.GridColumn
 End Class

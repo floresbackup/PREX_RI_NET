@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -57,6 +58,29 @@ namespace Prex.Utils
 
                 throw new Exception("Ocurrió un error al obtener Scalar", ex);
             }
+        }
+
+
+
+        public static DataTable GetDataTable(string sql)
+        {
+            try
+            {
+                var dtb = new DataTable();
+                var con = new SqlConnection(Configuration.PrexConfig.CONN_LOCAL_ADO);
+                con.Open();
+
+                var dad = new SqlDataAdapter(sql, con);
+                dad.Fill(dtb);
+                con.Close();
+                return dtb;
+            }
+            catch (Exception ex)
+            {
+                Prex.Utils.Logging.Log.GuardarLog(Prex.Utils.Logging.AccionesLOG.AL_ERROR_SISTEMA, $"Ocurrió un error al  obtener DataTable - {ex.Message}", Configuration.PrexConfig.CODIGO_TRANSACCION);
+                throw new Exception("Ocurrió un error al obtener DataTable", ex);
+            }
+
         }
 
         public static SqlDataReader GetReader(string sql)
