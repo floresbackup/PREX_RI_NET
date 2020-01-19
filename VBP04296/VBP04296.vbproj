@@ -192,6 +192,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Prex.ico" />
+    <None Include="Resources\dialog-information.png" />
     <None Include="Resources\run-build-configure.png" />
     <None Include="packages.config" />
     <None Include="Resources\Messenger-Information1.ico" />

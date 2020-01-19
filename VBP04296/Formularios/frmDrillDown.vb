@@ -80,7 +80,7 @@
 
     End Sub
 
-    Private Sub btnEjecutar_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles btnEjecutar.ItemClick
+    Private Sub btnEjecutar_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) 
         Try
 
 
@@ -141,6 +141,10 @@
         Catch ex As Exception
             Prex.Utils.ManejarErrores.TratarError(ex, "EjecutarConsulta")
         End Try
+
+    End Sub
+
+    Private Sub cmdGuardar_Click(sender As Object, e As EventArgs) Handles cmdGuardar.Click
 
     End Sub
 End Class

@@ -24,17 +24,33 @@ Partial Class frmABMPro
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmABMPro))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.PanelControl1 = New DevExpress.XtraEditors.PanelControl()
         Me.PanelControl3 = New DevExpress.XtraEditors.PanelControl()
+        Me.pnlHelp = New DevExpress.XtraEditors.PanelControl()
+        Me.txtParametros = New DevExpress.XtraEditors.TextEdit()
+        Me.cboProcesos = New DevExpress.XtraEditors.ComboBoxEdit()
+        Me.txtDescripcion = New DevExpress.XtraEditors.MemoEdit()
+        Me.txtTitulo = New DevExpress.XtraEditors.TextEdit()
+        Me.PanelControl1 = New DevExpress.XtraEditors.PanelControl()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.cmdGuardar = New DevExpress.XtraEditors.SimpleButton()
         Me.cmdCancelar = New DevExpress.XtraEditors.SimpleButton()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.LabelControl1 = New DevExpress.XtraEditors.LabelControl()
+        Me.lblInfoParametro = New DevExpress.XtraEditors.LabelControl()
         Me.TableLayoutPanel1.SuspendLayout()
+        CType(Me.PanelControl3, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.PanelControl3.SuspendLayout()
+        CType(Me.pnlHelp, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlHelp.SuspendLayout()
+        CType(Me.txtParametros.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.cboProcesos.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.txtDescripcion.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.txtTitulo.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PanelControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanelControl1.SuspendLayout()
-        CType(Me.PanelControl3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -56,6 +72,64 @@ Partial Class frmABMPro
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(428, 311)
         Me.TableLayoutPanel1.TabIndex = 0
         '
+        'PanelControl3
+        '
+        Me.PanelControl3.Controls.Add(Me.pnlHelp)
+        Me.PanelControl3.Controls.Add(Me.txtParametros)
+        Me.PanelControl3.Controls.Add(Me.cboProcesos)
+        Me.PanelControl3.Controls.Add(Me.txtDescripcion)
+        Me.PanelControl3.Controls.Add(Me.txtTitulo)
+        Me.PanelControl3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.PanelControl3.Location = New System.Drawing.Point(3, 43)
+        Me.PanelControl3.Name = "PanelControl3"
+        Me.PanelControl3.Size = New System.Drawing.Size(422, 225)
+        Me.PanelControl3.TabIndex = 3
+        '
+        'pnlHelp
+        '
+        Me.pnlHelp.Appearance.BackColor = System.Drawing.SystemColors.Info
+        Me.pnlHelp.Appearance.BackColor2 = System.Drawing.SystemColors.Info
+        Me.pnlHelp.Appearance.Options.UseBackColor = True
+        Me.pnlHelp.Controls.Add(Me.lblInfoParametro)
+        Me.pnlHelp.Controls.Add(Me.LabelControl1)
+        Me.pnlHelp.Controls.Add(Me.PictureBox2)
+        Me.pnlHelp.Location = New System.Drawing.Point(5, 157)
+        Me.pnlHelp.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat
+        Me.pnlHelp.LookAndFeel.UseDefaultLookAndFeel = False
+        Me.pnlHelp.Name = "pnlHelp"
+        Me.pnlHelp.Size = New System.Drawing.Size(412, 68)
+        Me.pnlHelp.TabIndex = 4
+        '
+        'txtParametros
+        '
+        Me.txtParametros.Location = New System.Drawing.Point(103, 131)
+        Me.txtParametros.Name = "txtParametros"
+        Me.txtParametros.Size = New System.Drawing.Size(256, 20)
+        Me.txtParametros.TabIndex = 3
+        '
+        'cboProcesos
+        '
+        Me.cboProcesos.Location = New System.Drawing.Point(103, 105)
+        Me.cboProcesos.Name = "cboProcesos"
+        Me.cboProcesos.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.cboProcesos.Properties.Items.AddRange(New Object() {"ConsFechaFinMes", "ConsValidarPeriodo", "ConsActualizar", "ConsFormatoCondicional", "ConsActualizarEx", "ConsActualizar_PNP"})
+        Me.cboProcesos.Size = New System.Drawing.Size(256, 20)
+        Me.cboProcesos.TabIndex = 2
+        '
+        'txtDescripcion
+        '
+        Me.txtDescripcion.Location = New System.Drawing.Point(103, 40)
+        Me.txtDescripcion.Name = "txtDescripcion"
+        Me.txtDescripcion.Size = New System.Drawing.Size(256, 59)
+        Me.txtDescripcion.TabIndex = 1
+        '
+        'txtTitulo
+        '
+        Me.txtTitulo.Location = New System.Drawing.Point(103, 14)
+        Me.txtTitulo.Name = "txtTitulo"
+        Me.txtTitulo.Size = New System.Drawing.Size(256, 20)
+        Me.txtTitulo.TabIndex = 0
+        '
         'PanelControl1
         '
         Me.PanelControl1.Controls.Add(Me.cmdGuardar)
@@ -67,14 +141,6 @@ Partial Class frmABMPro
         Me.PanelControl1.Size = New System.Drawing.Size(428, 40)
         Me.PanelControl1.TabIndex = 1
         '
-        'PanelControl3
-        '
-        Me.PanelControl3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PanelControl3.Location = New System.Drawing.Point(3, 43)
-        Me.PanelControl3.Name = "PanelControl3"
-        Me.PanelControl3.Size = New System.Drawing.Size(422, 225)
-        Me.PanelControl3.TabIndex = 3
-        '
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.SystemColors.ActiveBorder
@@ -85,6 +151,16 @@ Partial Class frmABMPro
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(428, 40)
         Me.Panel1.TabIndex = 4
+        '
+        'PictureBox2
+        '
+        Me.PictureBox2.Image = Global.VBP04296.My.Resources.Resources.dialog_information
+        Me.PictureBox2.Location = New System.Drawing.Point(0, 0)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(20, 20)
+        Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.PictureBox2.TabIndex = 0
+        Me.PictureBox2.TabStop = False
         '
         'cmdGuardar
         '
@@ -119,6 +195,24 @@ Partial Class frmABMPro
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
+        'LabelControl1
+        '
+        Me.LabelControl1.Appearance.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.LabelControl1.Appearance.Options.UseFont = True
+        Me.LabelControl1.Location = New System.Drawing.Point(26, 4)
+        Me.LabelControl1.Name = "LabelControl1"
+        Me.LabelControl1.Size = New System.Drawing.Size(264, 13)
+        Me.LabelControl1.TabIndex = 1
+        Me.LabelControl1.Text = "Especificaciones sobre la carga de parámetros:"
+        '
+        'lblInfoParametro
+        '
+        Me.lblInfoParametro.Location = New System.Drawing.Point(26, 23)
+        Me.lblInfoParametro.Name = "lblInfoParametro"
+        Me.lblInfoParametro.Size = New System.Drawing.Size(66, 13)
+        Me.lblInfoParametro.TabIndex = 2
+        Me.lblInfoParametro.Text = "LabelControl2"
+        '
         'frmABMPro
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -132,10 +226,19 @@ Partial Class frmABMPro
         Me.Name = "frmABMPro"
         Me.Text = "Procesos Previos"
         Me.TableLayoutPanel1.ResumeLayout(False)
+        CType(Me.PanelControl3, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.PanelControl3.ResumeLayout(False)
+        CType(Me.pnlHelp, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlHelp.ResumeLayout(False)
+        Me.pnlHelp.PerformLayout()
+        CType(Me.txtParametros.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.cboProcesos.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.txtDescripcion.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.txtTitulo.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PanelControl1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PanelControl1.ResumeLayout(False)
-        CType(Me.PanelControl3, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -148,4 +251,12 @@ Partial Class frmABMPro
     Friend WithEvents cmdGuardar As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents Panel1 As Panel
     Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents txtTitulo As DevExpress.XtraEditors.TextEdit
+    Friend WithEvents txtDescripcion As DevExpress.XtraEditors.MemoEdit
+    Friend WithEvents pnlHelp As DevExpress.XtraEditors.PanelControl
+    Friend WithEvents txtParametros As DevExpress.XtraEditors.TextEdit
+    Friend WithEvents cboProcesos As DevExpress.XtraEditors.ComboBoxEdit
+    Friend WithEvents PictureBox2 As PictureBox
+    Friend WithEvents lblInfoParametro As DevExpress.XtraEditors.LabelControl
+    Friend WithEvents LabelControl1 As DevExpress.XtraEditors.LabelControl
 End Class
