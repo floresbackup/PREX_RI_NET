@@ -4,6 +4,7 @@ Imports DevExpress.Utils
 Imports DevExpress.XtraGrid.Views.Grid
 Imports DevExpress.XtraGrid.Views.Grid.ViewInfo
 Imports Prex.Utils
+Imports VBP04296.Dominio
 
 Public Class frmMain
     Public ErrorPermiso As Boolean = False
@@ -36,6 +37,7 @@ Public Class frmMain
         GridViewCons.Appearance.SelectedRow.BackColor = Color.FromArgb(255, 255, 192)
         GridViewCons.Appearance.SelectedRow.Options.UseBackColor = True
 
+        gridViewProc.OptionsBehavior.AutoPopulateColumns = True
         AddHandler cmSql.TextChanged, AddressOf cmSQL_Change
     End Sub
 
@@ -718,13 +720,8 @@ Public Class frmMain
                 '    GridVar.Row = 1
                 'MostrarVariable("K" & GridVar.Value(GridVar.Columns("Key").Index))
                 'End If
-                '
-                'GridPro.ItemCount = oProSys.Count
-                'GridPro.Refresh
-                'GridPro.RefreshSort
-                '
-                If tProcesosPrevios.Any() Then
 
+                If tProcesosPrevios.Any() Then
                     BeginInvoke(New Action(Function() FocusRow(gridViewProc)))
                     MostrarProceso(tProcesosPrevios.FirstOrDefault().Llave)
                 End If
@@ -1156,8 +1153,8 @@ Public Class frmMain
     Private Sub GridCons_DoubleClick(sender As Object, e As EventArgs) Handles GridViewCons.DoubleClick
 
         Dim ea As DXMouseEventArgs = CType(e, DXMouseEventArgs)
-            Dim hitInfo As GridHitInfo = GridViewCons.CalcHitInfo(ea.Location)
-            If hitInfo.InRowCell Then
+        Dim hitInfo As GridHitInfo = GridViewCons.CalcHitInfo(ea.Location)
+        If hitInfo.InRowCell Then
             If EditarConsulta() Then
                 rowHandle = hitInfo.RowHandle
                 GridViewCons.LayoutChanged()
@@ -1189,12 +1186,32 @@ Public Class frmMain
         Dim ea As DXMouseEventArgs = CType(e, DXMouseEventArgs)
         Dim hitInfo As GridHitInfo = gridViewProc.CalcHitInfo(ea.Location)
         If hitInfo.InRowCell Then
-            MostrarAbmProcesoSeleccionado()
+            ModificarProceso(False)
             gridViewProc.LayoutChanged()
         End If
 
     End Sub
 
+
+    Private Sub cmdNuevoProceso_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdNuevoProceso.ItemClick
+        ModificarProceso(True)
+    End Sub
+
+    Private Sub cmdEditarProceso_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdEditarProceso.ItemClick
+        ModificarProceso(False)
+    End Sub
+
+    Private Sub cmdEliminarProceso_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdEliminarProceso.ItemClick
+        EliminarProceso()
+    End Sub
+
+    Private Sub cmdSubirOrdenProceso_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdSubirOrdenProceso.ItemClick
+        SubirOrdenPro()
+    End Sub
+
+    Private Sub cmdBajarOrdenProceso_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdBajarOrdenProceso.ItemClick
+        BajarOrdenPro()
+    End Sub
 
     '    Private Function cmSQL_RClick(ByVal Control As CodeMaxCtl.ICodeMax) As Boolean
     '        cmSQL_RClick = True
@@ -1269,21 +1286,32 @@ Public Class frmMain
 
 #End Region
 
-#Region 'Procesos'
-    Private Sub ModificarProceso()
+#Region "Procesos"
+    Private Sub ModificarProceso(esNuevo As Boolean)
         Dim sLlave = gridViewProc.GetFocusedRowCellValue("Llave")
         Dim frmABMPro As New frmABMPro()
-        frmABMPro.PasarDatos(tProcesosPrevios.FirstOrDefault(Function(t) t.Llave = sLlave))
-        frmABMPro.ShowDialog()
+        frmABMPro.PasarDatos(IIf(esNuevo, Nothing, tProcesosPrevios.FirstOrDefault(Function(t) t.Llave = sLlave)), tProcesosPrevios)
+        If frmABMPro.ShowDialog() = DialogResult.OK Then
+            If esNuevo Then
+                tProcesosPrevios.Add(frmABMPro.Proceso)
+                sLlave = frmABMPro.Proceso.Llave
+            End If
+            RefrescarGrillaProcesos()
+            MostrarProceso(sLlave)
+        End If
     End Sub
 
     Private Sub RefrescarGrillaProcesos()
+        Try
+            RemoveHandler gridViewProc.SelectionChanged, AddressOf gridViewProc_SelectionChanged
 
-        gridViewProc.OptionsBehavior.AutoPopulateColumns = True
-        gridProc.DataSource = tProcesosPrevios.OrderBy(Function(c) c.Orden).Select(Function(c) New With {c.Nombre, c.Llave}).ToList()
-        For Each item As DevExpress.XtraGrid.Columns.GridColumn In gridViewProc.Columns
-            item.Visible = item.FieldName.Contains("Nombre")
-        Next
+            gridProc.DataSource = tProcesosPrevios.OrderBy(Function(c) c.Orden).Select(Function(c) New With {c.Nombre, c.Llave}).ToList()
+            For Each item As DevExpress.XtraGrid.Columns.GridColumn In gridViewProc.Columns
+                item.Visible = item.FieldName.Contains("Nombre")
+            Next
+        Finally
+            AddHandler gridViewProc.SelectionChanged, AddressOf gridViewProc_SelectionChanged
+        End Try
     End Sub
 
     Private Sub CargarProcesos()
@@ -1292,97 +1320,85 @@ Public Class frmMain
     End Sub
 
 
-    Private Sub EliminarProceso(ByVal sLlave As String)
+    Private Sub EliminarProceso()
+        Try
 
-        On Error Resume Next
+            Dim sLlave = gridViewProc.GetFocusedRowCellValue("Llave")
+            Dim oPro = tProcesosPrevios.FirstOrDefault(Function(t) t.Llave = sLlave)
 
-        Dim nOrden As Integer
-        Dim oPro As ItemsProSys
+            For Each item As ProSys In tProcesosPrevios
+                If item.Orden > oPro.Orden Then
+                    item.Orden = item.Orden - 1
+                End If
+            Next
 
-        nOrden = oProSys(sLlave).Orden
-
-        For Each oPro In oProSys
-
-            If oPro.Orden > nOrden Then
-                oPro.Orden = oPro.Orden - 1
-            End If
-
-        Next
-
-        oProSys.Remove sLlave
-
-   CargarProcesos()
+            tProcesosPrevios.Remove(oPro)
+            CargarProcesos()
+        Catch ex As Exception
+            ManejarErrores.TratarError(ex, "EliminarProceso")
+        End Try
 
     End Sub
 
-    Private Sub SubirOrdenPro(ByVal nOrden As Integer)
+    Private Sub SubirOrdenPro()
+        Dim sLlave = gridViewProc.GetFocusedRowCellValue("Llave")
+        Dim oPro As ProSys = tProcesosPrevios.FirstOrDefault(Function(t) t.Llave = sLlave)
+        oPro.Orden -= 1
 
-        Dim oPro As ItemsProSys
-        Dim sLlave2 As String
-        Dim sLlave As String
-
-        If nOrden < 2 Then
-            Exit Sub
-        End If
-
-        For Each oPro In oProSys
-
-            If oPro.Orden = nOrden - 1 Then
-                sLlave2 = oPro.Key
+        Dim l As New List(Of ProSys)
+        For Each item As ProSys In tProcesosPrevios.Where(Function(t) t.Llave <> oPro.Llave)
+            If oPro.Orden = item.Orden Then
+                item.Orden += 1
             End If
-
-            If oPro.Orden = nOrden Then
-                sLlave = oPro.Key
-            End If
-
+            l.Add(item)
         Next
+        l.Add(oPro)
 
-        oProSys(sLlave).Orden = nOrden - 1
-        oProSys(sLlave2).Orden = nOrden
-
+        tProcesosPrevios = l.OrderBy(Function(t) t.Orden).ToList()
         CargarProcesos()
-
     End Sub
 
-    Private Sub BajarOrdenPro(ByVal nOrden As Long)
+    Private Sub BajarOrdenPro()
+        Dim sLlave = gridViewProc.GetFocusedRowCellValue("Llave")
+        Dim oPro As ProSys = tProcesosPrevios.FirstOrDefault(Function(t) t.Llave = sLlave)
+        oPro.Orden += 1
 
-        Dim oPro As ItemsProSys
-        Dim sLlave2 As String
-        Dim sLlave As String
-
-        If nOrden > oProSys.Count - 1 Then
-            Exit Sub
-        End If
-
-        For Each oPro In oProSys
-
-            If oPro.Orden = nOrden + 1 Then
-                sLlave2 = oPro.Key
+        Dim l As New List(Of ProSys)
+        For Each item As ProSys In tProcesosPrevios.Where(Function(t) t.Llave <> oPro.Llave)
+            If oPro.Orden = item.Orden Then
+                item.Orden -= 1
             End If
-
-            If oPro.Orden = nOrden Then
-                sLlave = oPro.Key
-            End If
-
+            l.Add(item)
         Next
+        l.Add(oPro)
 
-        oProSys(sLlave).Orden = nOrden + 1
-        oProSys(sLlave2).Orden = nOrden
-
+        tProcesosPrevios = l.OrderBy(Function(t) t.Orden).ToList()
         CargarProcesos()
-
     End Sub
 
 
     Private Sub MostrarProceso(ByVal sLlave As String)
-        If tProcesosPrevios.Any() Then
-            Dim proc = tProcesosPrevios.FirstOrDefault(Function(p) p.Llave = sLlave)
+        Dim proc = tProcesosPrevios.FirstOrDefault(Function(p) p.Llave = sLlave)
+        If proc IsNot Nothing Then
             txtOrdenPro.Text = proc.Orden
             txtNombrePro.Text = proc.Nombre
             txtTituloPro.Text = proc.Titulo
             txtDescriPro.Text = proc.Descripcion
             txtParamPro.Text = proc.Parametros
+            Dim rh = gridViewProc.GetRowHandle(proc.Orden - 1)
+            gridViewProc.SelectRow(rh)
+        Else
+            txtOrdenPro.Text = String.Empty
+            txtNombrePro.Text = String.Empty
+            txtTituloPro.Text = String.Empty
+            txtDescriPro.Text = String.Empty
+            txtParamPro.Text = String.Empty
         End If
+
+        cmdEditarProceso.Enabled = tProcesosPrevios.Any
+        cmdEliminarProceso.Enabled = tProcesosPrevios.Any
+        cmdSubirOrdenProceso.Enabled = tProcesosPrevios.Count() > 1
+        cmdBajarOrdenProceso.Enabled = tProcesosPrevios.Count() > 1
     End Sub
 
 #End Region

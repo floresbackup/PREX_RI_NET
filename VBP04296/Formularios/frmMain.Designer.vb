@@ -55,6 +55,13 @@ Partial Class frmMain
         Me.btnNueva = New DevExpress.XtraBars.BarButtonItem()
         Me.btnEliminar = New DevExpress.XtraBars.BarButtonItem()
         Me.btnEditar = New DevExpress.XtraBars.BarButtonItem()
+        Me.barProcesos = New DevExpress.XtraBars.Bar()
+        Me.cmdNuevoProceso = New DevExpress.XtraBars.BarButtonItem()
+        Me.cmdEditarProceso = New DevExpress.XtraBars.BarButtonItem()
+        Me.cmdEliminarProceso = New DevExpress.XtraBars.BarButtonItem()
+        Me.cmdSubirOrdenProceso = New DevExpress.XtraBars.BarButtonItem()
+        Me.cmdBajarOrdenProceso = New DevExpress.XtraBars.BarButtonItem()
+        Me.StandaloneBarDockControl3 = New DevExpress.XtraBars.StandaloneBarDockControl()
         Me.barDockControlTop = New DevExpress.XtraBars.BarDockControl()
         Me.barDockControlBottom = New DevExpress.XtraBars.BarDockControl()
         Me.barDockControlLeft = New DevExpress.XtraBars.BarDockControl()
@@ -105,13 +112,6 @@ Partial Class frmMain
         Me.LabelControl6 = New DevExpress.XtraEditors.LabelControl()
         Me.LabelControl5 = New DevExpress.XtraEditors.LabelControl()
         Me.LabelControl4 = New DevExpress.XtraEditors.LabelControl()
-        Me.StandaloneBarDockControl3 = New DevExpress.XtraBars.StandaloneBarDockControl()
-        Me.barProcesos = New DevExpress.XtraBars.Bar()
-        Me.BarButtonItem2 = New DevExpress.XtraBars.BarButtonItem()
-        Me.BarButtonItem3 = New DevExpress.XtraBars.BarButtonItem()
-        Me.BarButtonItem4 = New DevExpress.XtraBars.BarButtonItem()
-        Me.BarButtonItem5 = New DevExpress.XtraBars.BarButtonItem()
-        Me.BarButtonItem6 = New DevExpress.XtraBars.BarButtonItem()
         Me.toolMain.SuspendLayout()
         Me.sbMain.SuspendLayout()
         CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -347,7 +347,7 @@ Partial Class frmMain
         Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl2)
         Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl3)
         Me.BarManager1.Form = Me
-        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.cmdSave, Me.cmdSaveNuevo, Me.cmdObtenerCampos, Me.cmdCancelar, Me.BarButtonItem1, Me.btnNueva, Me.btnEliminar, Me.btnEditar, Me.BarButtonItem2, Me.BarButtonItem3, Me.BarButtonItem4, Me.BarButtonItem5, Me.BarButtonItem6})
+        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.cmdSave, Me.cmdSaveNuevo, Me.cmdObtenerCampos, Me.cmdCancelar, Me.BarButtonItem1, Me.btnNueva, Me.btnEliminar, Me.btnEditar, Me.cmdNuevoProceso, Me.cmdEditarProceso, Me.cmdSubirOrdenProceso, Me.cmdBajarOrdenProceso, Me.cmdEliminarProceso})
         Me.BarManager1.MainMenu = Me.Bar2
         Me.BarManager1.MaxItemId = 13
         '
@@ -457,6 +457,77 @@ Partial Class frmMain
         Me.btnEditar.ImageOptions.Image = CType(resources.GetObject("btnEditar.ImageOptions.Image"), System.Drawing.Image)
         Me.btnEditar.ImageOptions.LargeImage = CType(resources.GetObject("btnEditar.ImageOptions.LargeImage"), System.Drawing.Image)
         Me.btnEditar.Name = "btnEditar"
+        '
+        'barProcesos
+        '
+        Me.barProcesos.BarName = "Personalizada 6"
+        Me.barProcesos.DockCol = 0
+        Me.barProcesos.DockRow = 0
+        Me.barProcesos.DockStyle = DevExpress.XtraBars.BarDockStyle.Standalone
+        Me.barProcesos.FloatLocation = New System.Drawing.Point(363, 419)
+        Me.barProcesos.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.cmdNuevoProceso), New DevExpress.XtraBars.LinkPersistInfo(Me.cmdEditarProceso), New DevExpress.XtraBars.LinkPersistInfo(Me.cmdEliminarProceso), New DevExpress.XtraBars.LinkPersistInfo(Me.cmdSubirOrdenProceso, True), New DevExpress.XtraBars.LinkPersistInfo(Me.cmdBajarOrdenProceso)})
+        Me.barProcesos.OptionsBar.AllowQuickCustomization = False
+        Me.barProcesos.OptionsBar.DrawDragBorder = False
+        Me.barProcesos.StandaloneBarDockControl = Me.StandaloneBarDockControl3
+        Me.barProcesos.Text = "Personalizada 6"
+        '
+        'cmdNuevoProceso
+        '
+        Me.cmdNuevoProceso.Caption = "Nuevo"
+        Me.cmdNuevoProceso.Id = 8
+        Me.cmdNuevoProceso.ImageOptions.Image = CType(resources.GetObject("cmdNuevoProceso.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdNuevoProceso.ImageOptions.LargeImage = CType(resources.GetObject("cmdNuevoProceso.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdNuevoProceso.Name = "cmdNuevoProceso"
+        '
+        'cmdEditarProceso
+        '
+        Me.cmdEditarProceso.Caption = "Editar"
+        Me.cmdEditarProceso.Enabled = False
+        Me.cmdEditarProceso.Id = 9
+        Me.cmdEditarProceso.ImageOptions.Image = CType(resources.GetObject("cmdEditarProceso.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdEditarProceso.ImageOptions.LargeImage = CType(resources.GetObject("cmdEditarProceso.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdEditarProceso.Name = "cmdEditarProceso"
+        '
+        'cmdEliminarProceso
+        '
+        Me.cmdEliminarProceso.Caption = "Eliminar"
+        Me.cmdEliminarProceso.Enabled = False
+        Me.cmdEliminarProceso.Id = 12
+        Me.cmdEliminarProceso.ImageOptions.Image = CType(resources.GetObject("cmdEliminarProceso.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdEliminarProceso.ImageOptions.LargeImage = CType(resources.GetObject("cmdEliminarProceso.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdEliminarProceso.Name = "cmdEliminarProceso"
+        '
+        'cmdSubirOrdenProceso
+        '
+        Me.cmdSubirOrdenProceso.Caption = "Subir"
+        Me.cmdSubirOrdenProceso.Enabled = False
+        Me.cmdSubirOrdenProceso.Id = 10
+        Me.cmdSubirOrdenProceso.ImageOptions.Image = CType(resources.GetObject("cmdSubirOrdenProceso.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdSubirOrdenProceso.ImageOptions.LargeImage = CType(resources.GetObject("cmdSubirOrdenProceso.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdSubirOrdenProceso.Name = "cmdSubirOrdenProceso"
+        '
+        'cmdBajarOrdenProceso
+        '
+        Me.cmdBajarOrdenProceso.Caption = "Bajar"
+        Me.cmdBajarOrdenProceso.Enabled = False
+        Me.cmdBajarOrdenProceso.Id = 11
+        Me.cmdBajarOrdenProceso.ImageOptions.Image = CType(resources.GetObject("cmdBajarOrdenProceso.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdBajarOrdenProceso.ImageOptions.LargeImage = CType(resources.GetObject("cmdBajarOrdenProceso.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdBajarOrdenProceso.Name = "cmdBajarOrdenProceso"
+        '
+        'StandaloneBarDockControl3
+        '
+        Me.StandaloneBarDockControl3.Appearance.BackColor = System.Drawing.Color.White
+        Me.StandaloneBarDockControl3.Appearance.BackColor2 = System.Drawing.Color.White
+        Me.StandaloneBarDockControl3.Appearance.Options.UseBackColor = True
+        Me.StandaloneBarDockControl3.AutoSize = True
+        Me.StandaloneBarDockControl3.CausesValidation = False
+        Me.StandaloneBarDockControl3.Location = New System.Drawing.Point(28, 168)
+        Me.StandaloneBarDockControl3.Manager = Me.BarManager1
+        Me.StandaloneBarDockControl3.Margin = New System.Windows.Forms.Padding(0)
+        Me.StandaloneBarDockControl3.Name = "StandaloneBarDockControl3"
+        Me.StandaloneBarDockControl3.Size = New System.Drawing.Size(167, 31)
+        Me.StandaloneBarDockControl3.Text = "StandaloneBarDockControl3"
         '
         'barDockControlTop
         '
@@ -976,73 +1047,6 @@ Partial Class frmMain
         Me.LabelControl4.TabIndex = 0
         Me.LabelControl4.Text = "Orden:"
         '
-        'StandaloneBarDockControl3
-        '
-        Me.StandaloneBarDockControl3.Appearance.BackColor = System.Drawing.Color.White
-        Me.StandaloneBarDockControl3.Appearance.BackColor2 = System.Drawing.Color.White
-        Me.StandaloneBarDockControl3.Appearance.Options.UseBackColor = True
-        Me.StandaloneBarDockControl3.AutoSize = True
-        Me.StandaloneBarDockControl3.CausesValidation = False
-        Me.StandaloneBarDockControl3.Location = New System.Drawing.Point(28, 168)
-        Me.StandaloneBarDockControl3.Manager = Me.BarManager1
-        Me.StandaloneBarDockControl3.Margin = New System.Windows.Forms.Padding(0)
-        Me.StandaloneBarDockControl3.Name = "StandaloneBarDockControl3"
-        Me.StandaloneBarDockControl3.Size = New System.Drawing.Size(167, 31)
-        Me.StandaloneBarDockControl3.Text = "StandaloneBarDockControl3"
-        '
-        'barProcesos
-        '
-        Me.barProcesos.BarName = "Personalizada 6"
-        Me.barProcesos.DockCol = 0
-        Me.barProcesos.DockRow = 0
-        Me.barProcesos.DockStyle = DevExpress.XtraBars.BarDockStyle.Standalone
-        Me.barProcesos.FloatLocation = New System.Drawing.Point(363, 419)
-        Me.barProcesos.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.BarButtonItem2), New DevExpress.XtraBars.LinkPersistInfo(Me.BarButtonItem3), New DevExpress.XtraBars.LinkPersistInfo(Me.BarButtonItem6), New DevExpress.XtraBars.LinkPersistInfo(Me.BarButtonItem4, True), New DevExpress.XtraBars.LinkPersistInfo(Me.BarButtonItem5)})
-        Me.barProcesos.OptionsBar.AllowQuickCustomization = False
-        Me.barProcesos.OptionsBar.DrawDragBorder = False
-        Me.barProcesos.StandaloneBarDockControl = Me.StandaloneBarDockControl3
-        Me.barProcesos.Text = "Personalizada 6"
-        '
-        'BarButtonItem2
-        '
-        Me.BarButtonItem2.Caption = "Nuevo"
-        Me.BarButtonItem2.Id = 8
-        Me.BarButtonItem2.ImageOptions.Image = CType(resources.GetObject("BarButtonItem2.ImageOptions.Image"), System.Drawing.Image)
-        Me.BarButtonItem2.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem2.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.BarButtonItem2.Name = "BarButtonItem2"
-        '
-        'BarButtonItem3
-        '
-        Me.BarButtonItem3.Caption = "Editar"
-        Me.BarButtonItem3.Id = 9
-        Me.BarButtonItem3.ImageOptions.Image = CType(resources.GetObject("BarButtonItem3.ImageOptions.Image"), System.Drawing.Image)
-        Me.BarButtonItem3.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem3.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.BarButtonItem3.Name = "BarButtonItem3"
-        '
-        'BarButtonItem4
-        '
-        Me.BarButtonItem4.Caption = "Subir"
-        Me.BarButtonItem4.Id = 10
-        Me.BarButtonItem4.ImageOptions.Image = CType(resources.GetObject("BarButtonItem4.ImageOptions.Image"), System.Drawing.Image)
-        Me.BarButtonItem4.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem4.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.BarButtonItem4.Name = "BarButtonItem4"
-        '
-        'BarButtonItem5
-        '
-        Me.BarButtonItem5.Caption = "Bajar"
-        Me.BarButtonItem5.Id = 11
-        Me.BarButtonItem5.ImageOptions.Image = CType(resources.GetObject("BarButtonItem5.ImageOptions.Image"), System.Drawing.Image)
-        Me.BarButtonItem5.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem5.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.BarButtonItem5.Name = "BarButtonItem5"
-        '
-        'BarButtonItem6
-        '
-        Me.BarButtonItem6.Caption = "Eliminar"
-        Me.BarButtonItem6.Id = 12
-        Me.BarButtonItem6.ImageOptions.Image = CType(resources.GetObject("BarButtonItem6.ImageOptions.Image"), System.Drawing.Image)
-        Me.BarButtonItem6.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem6.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.BarButtonItem6.Name = "BarButtonItem6"
-        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1056,6 +1060,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.barDockControlRight)
         Me.Controls.Add(Me.barDockControlBottom)
         Me.Controls.Add(Me.barDockControlTop)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "frmMain"
         Me.Text = "Form1"
         Me.toolMain.ResumeLayout(False)
@@ -1184,10 +1189,10 @@ Partial Class frmMain
     Friend WithEvents gridProc As DevExpress.XtraGrid.GridControl
     Friend WithEvents gridViewProc As DevExpress.XtraGrid.Views.Grid.GridView
     Friend WithEvents barProcesos As DevExpress.XtraBars.Bar
-    Friend WithEvents BarButtonItem2 As DevExpress.XtraBars.BarButtonItem
-    Friend WithEvents BarButtonItem3 As DevExpress.XtraBars.BarButtonItem
-    Friend WithEvents BarButtonItem6 As DevExpress.XtraBars.BarButtonItem
-    Friend WithEvents BarButtonItem4 As DevExpress.XtraBars.BarButtonItem
-    Friend WithEvents BarButtonItem5 As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents cmdNuevoProceso As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents cmdEditarProceso As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents cmdEliminarProceso As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents cmdSubirOrdenProceso As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents cmdBajarOrdenProceso As DevExpress.XtraBars.BarButtonItem
     Friend WithEvents StandaloneBarDockControl3 As DevExpress.XtraBars.StandaloneBarDockControl
 End Class
