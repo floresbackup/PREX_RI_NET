@@ -335,9 +335,9 @@ Public Class frmMain
 
     Private Sub GuardarVariablesEntrada(con As SqlConnection, tran As SqlTransaction)
         Try
-            Dim sSql = "insert into VARSYS (VS_CODCON, VS_HELP, VS_HELQUE, VS_NOMBRE "
-            sSql += " VS_ORDEN, VS_TIPO, VS_TITULO) values (@VS_CODCON, @VS_HELP, @VS_HELQUE, @VS_NOMBRE "
-            sSql += " @VS_ORDEN, @VS_TIPO, @VS_TITULO)"
+			Dim sSql = "insert into VARSYS (VS_CODCON, VS_HELP, VS_HELQUE, VS_NOMBRE, "
+			sSql += " VS_ORDEN, VS_TIPO, VS_TITULO) values (@VS_CODCON, @VS_HELP, @VS_HELQUE, @VS_NOMBRE, "
+			sSql += " @VS_ORDEN, @VS_TIPO, @VS_TITULO)"
             Dim cmd As New SqlCommand(sSql, con, tran)
 
             DeteleTablaRelacionada(con, tran, "VARSYS", "VS_CODCON")
@@ -353,8 +353,8 @@ Public Class frmMain
                     .AddWithValue("VS_TIPO", oVar.Tipo)
                     .AddWithValue("VS_TITULO", oVar.Titulo)
                 End With
-                cmd.ExecuteNonQuery()
-            Next
+				cmdClone.ExecuteNonQuery()
+			Next
 
         Catch ex As Exception
             Throw New Exception("Guardando variables de entrada", ex)
@@ -363,8 +363,8 @@ Public Class frmMain
 
     Private Sub DeteleTablaRelacionada(con As SqlConnection, tran As SqlTransaction, tabla As String, campoClave As String)
         Dim cmdDelete As New SqlCommand($"delete {tabla} where {campoClave} = @VCODCON", con, tran)
-        cmdDelete.Parameters.AddWithValue("CODCON", tCabSys.CS_CODCON)
-        cmdDelete.ExecuteNonQuery()
+		cmdDelete.Parameters.AddWithValue("VCODCON", tCabSys.CS_CODCON)
+		cmdDelete.ExecuteNonQuery()
     End Sub
 
     Private Sub GuardarProcesosPrevios(con As SqlConnection, tran As SqlTransaction)
@@ -401,8 +401,9 @@ Public Class frmMain
             Dim sSQL = "Insert into DETSYS (DS_CODCON, DS_CAMPO, DS_FORMAT, DS_FORMUL, DS_HABILI, "
             sSQL += " DS_HELP, DS_HELQUE, DS_LARGO, DS_ORDEN, DS_TIPO, "
             sSQL += " DS_TITULO, DS_VISIBL, DS_DRILLD, DS_DRIQUE, DS_DRIPRE, "
-            sSQL += " DS_LLAVE, DS_REEMPL, DS_AYUDA, DS_MAXLAR, DS_VISABM) values (@DS_CODCON, @DS_CAMPO, @DS_FORMAT, @DS_FORMUL, @DS_HABILI, "
-            sSQL += " @DS_HELP, @DS_HELQUE, @DS_LARGO, @DS_ORDEN, @DS_TIPO, "
+			sSQL += " DS_LLAVE, DS_REEMPL, DS_AYUDA, DS_MAXLAR, DS_VISABM) values "
+			sSQL += " (@DS_CODCON, @DS_CAMPO, @DS_FORMAT, @DS_FORMUL, @DS_HABILI, "
+			sSQL += " @DS_HELP, @DS_HELQUE, @DS_LARGO, @DS_ORDEN, @DS_TIPO, "
             sSQL += " @DS_TITULO, @DS_VISIBL, @DS_DRILLD, @DS_DRIQUE, @DS_DRIPRE, "
             sSQL += " @DS_LLAVE, @DS_REEMPL, @DS_AYUDA, @DS_MAXLAR, @DS_VISABM)"
             Dim cmd As New SqlCommand(sSQL, con, tran)
@@ -429,10 +430,11 @@ Public Class frmMain
                     .AddWithValue("DS_DRIPRE", Misc.Encoding.Base64Encode(oCol.DriPre))
                     .AddWithValue("DS_LLAVE", IIf(oCol.Llave, 1, 0))
                     .AddWithValue("DS_REEMPL", IIf(oCol.Reemplazo, 1, 0))
-                    .AddWithValue("DS_AYUDA", oCol.RutaAyuda)
-                    .AddWithValue("DS_MAXLAR", oCol.MaxLargo)
-                    ' .AddWithValue("DS_VISABM", IIf(chkVisABM.Checked, IIf(oCol.VisABM, 1, 0), DBNull.Value))
-                End With
+					.AddWithValue("DS_AYUDA", oCol.RutaAyuda.ValueOrDbNull())
+					.AddWithValue("DS_MAXLAR", oCol.MaxLargo)
+					.AddWithValue("DS_VISABM", IIf(oCol.VisABM, 1, 0))
+					'.AddWithValue("DS_VISABM", IIf(chkVisABM.Checked, IIf(oCol.VisABM, 1, 0), DBNull.Value))
+				End With
                 cmdClone.ExecuteNonQuery()
             Next
         Catch ex As Exception
@@ -975,11 +977,18 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub cmdSave_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdSave.ItemClick
+	Private Sub cmdCancelar_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdCancelar.ItemClick
+		Dim res As MsgBoxResult = MsgBox("¿Esta seguro que desea canceclar los cambios realizados?", vbQuestion + vbYesNo, "Pregunta del sistema")
+		If res = MsgBoxResult.Yes Then
+			NuevaConsulta()
+		End If
+	End Sub
 
-        Dim res As MsgBoxResult = MsgBox("Se perderan los cambios de la consulta actual. ¿Desea guardar los cambios?", vbQuestion + vbYesNoCancel, "Preguta del sistema")
+	Private Sub cmdSave_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdSave.ItemClick
 
-        If res = MsgBoxResult.Yes Then
+		Dim res As MsgBoxResult = MsgBox("¿Desea guardar los cambios?", vbQuestion + vbYesNoCancel, "Pregunta del sistema")
+
+		If res = MsgBoxResult.Yes Then
             GuardarConsulta()
         ElseIf res = MsgBoxResult.Cancel Then
             Exit Sub
@@ -1167,19 +1176,19 @@ Public Class frmMain
 
 
     Private Sub GridViewCons_RowStyle(sender As Object, e As RowStyleEventArgs) Handles GridViewCons.RowStyle
-        If Not GridViewCons.IsDataRow(e.RowHandle) Then
-            Return
-        End If
-        If e.RowHandle = rowHandle Then
-            e.Appearance.BackColor = Color.LightBlue
-            e.Appearance.Options.UseBackColor = True
-        Else
-            e.Appearance.BackColor = Color.White
+		If Not GridViewCons.IsDataRow(e.RowHandle) Then
+			Return
+		End If
+		If e.RowHandle = rowHandle Then
+			e.Appearance.BackColor = Color.LightBlue
+			e.Appearance.Options.UseBackColor = True
+		Else
+			e.Appearance.BackColor = Color.White
+		End If
 
-        End If
-    End Sub
+	End Sub
 
-    Private Sub gridViewProc_SelectionChanged(sender As Object, e As DevExpress.Data.SelectionChangedEventArgs) Handles gridViewProc.SelectionChanged
+	Private Sub gridViewProc_SelectionChanged(sender As Object, e As DevExpress.Data.SelectionChangedEventArgs) Handles gridViewProc.SelectionChanged
         MostrarProceso(gridViewProc.GetFocusedRowCellValue("Llave"))
     End Sub
 
