@@ -967,7 +967,7 @@ Public Class frmMain
                 Dim dFecPro As Date
 
                 If IsArchivoPorDia Then
-                    dFecPro = New Date(cboDia.Text, MesSeleccionado, cboDia.Text)
+                    dFecPro = New Date(cboAno.Text, MesSeleccionado, cboDia.Text)
                 Else
                     dFecPro = FechaCorrecta(MesSeleccionado, Val(cboAno.Text))
                 End If

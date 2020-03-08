@@ -326,17 +326,22 @@ Public Class frmABMRegistro
                     If MODO_APE = "A" Or MODO_APE = "N" Then
                         oRow.Item(oCol.Campo) = oAdmTablas.ValueOrDbNull(oCol.Valor)
                     Else
-                        Select Case TipoDatosADO(oCol.Tipo)
-                            Case "Numérico"
-                                sValor = FlotanteSQL(oCol.Valor)
-                            Case "Fecha/Hora"
-                                sValor = FechaSQL(oCol.Valor)
+                        If oCol.Valor Is Nothing Then
+                            sValor = "NULL"
+                        Else
+                            Select Case TipoDatosADO(oCol.Tipo)
+                                Case "Numérico"
+                                    sValor = FlotanteSQL(oCol.Valor)
+                                Case "Fecha/Hora"
+                                    sValor = FechaSQL(oCol.Valor)
 
-                            Case Else
-                                sValor = "'" & oCol.Valor & "'"
-                        End Select
+                                Case Else
+                                    sValor = "'" & oCol.Valor & "'"
+                            End Select
+                        End If
+                    End If
 
-                        If oCol.VisibleABM AndAlso (oCol.Habilitada OrElse oCol.Formula.Trim().Length() > 0) Then
+                    If oCol.VisibleABM AndAlso (oCol.Habilitada OrElse oCol.Formula.Trim().Length() > 0) Then
                             sUpdate = sUpdate & " [" & oCol.Campo & "] = " & sValor & ","
 
                             'AGREGADO PARA QUE ESCRIBA LOG DE LAS MODIFICACIONES MANUALES
