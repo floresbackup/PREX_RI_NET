@@ -13,7 +13,7 @@ namespace Prex.Utils.Misc.Forms
 
         public static void InitialiseScintilla(Scintilla scintilla1)
         {
-
+           
             //Set the line numbers 
             scintilla1.Margins[0].Width = 16;
 

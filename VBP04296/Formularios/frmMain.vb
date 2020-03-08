@@ -675,6 +675,7 @@ Public Class frmMain
                                    Boolean.Parse(rd("DS_REEMPL")), rd("DS_AYUDA").ToString, Integer.Parse(rd("DS_MAXLAR")), "K" & rd("DS_ORDEN").ToString))
         End While
         rd.Close()
+        UcFrmColumnas1.CargarGrillaColumnas(oDetSys)
 
         'nLlaveDet = oDetSys.Count
     End Sub
@@ -697,26 +698,11 @@ Public Class frmMain
                 CargarGraficos()
                 CargarColumnas()
 
-                'GridVar.ItemCount = oVarSys.Count
-                'GridVar.Refresh
-                'GridVar.RefreshSort
-                '
-                'If GridVar.ItemCount > 0 Then
-                '    GridVar.Row = 1
-                'MostrarVariable("K" & GridVar.Value(GridVar.Columns("Key").Index))
-                'End If
-
                 If tProcesosPrevios.Any() Then
                     BeginInvoke(New Action(Function() FocusRow(gridViewProc)))
                     MostrarProceso(tProcesosPrevios.FirstOrDefault().Llave)
                 End If
-                '
-                'GridCols.ItemCount = oDetSys.Count
-                'GridCols.Refresh
 
-                'If GridCols.ItemCount > 0 Then
-                '    GridCols.Row = 1
-                'End If
 
                 lblSubtitulo.Text = $"Explorador de consultas - {tCabSys.CS_NOMBRE} ({tCabSys.CS_CODCON})"
                 Return True
@@ -739,66 +725,7 @@ Public Class frmMain
         Return True
     End Function
 
-    Private Sub MostrarVariable(ByVal sLlave As String)
-
-        On Error Resume Next
-
-        If tVarSys.Any() Then
-            'txtOrdenVar.Text = tVarSys(sLlave).Orden
-            'txtNombreVar.Text = tVarSys(sLlave).Nombre
-            'txtTituloVar.Text = tVarSys(sLlave).Titulo
-            'txtTipoVar.Text = DescripcionTipoVar(tVarSys(sLlave).Tipo)
-            'txtHelpVar.Text = DescripcionHelpVar(tVarSys(sLlave).Help)
-        End If
-
-    End Sub
 #End Region
-    '    Public Sub CargarVariable(ByVal nOrden As Integer,
-    '                          ByVal sNombre As String,
-    '                          ByVal nTipo As Integer,
-    '                          ByVal sTitulo As String,
-    '                          ByVal nHelp As Integer,
-    '                          ByVal sHelSQL As String)
-
-
-    '        Dim oVar As ItemsVarSys
-
-    '        If nOrden = 0 Then
-    '            nLlave = nLlave + 1
-    '            oVarSys.Add tCabSys.CS_CODCON, oVarSys.Count + 1, sNombre, nTipo, sTitulo, nHelp, sHelSQL, "K" & nLlave
-    '   End If
-
-    '        If nOrden <> 0 Then
-    '            For Each oVar In oVarSys
-    '                If oVar.Orden = nOrden Then
-    '                    oVar.Nombre = sNombre
-    '                    oVar.Tipo = nTipo
-    '                    oVar.Titulo = sTitulo
-    '                    oVar.Help = nHelp
-    '                    oVar.HelQue = sHelSQL
-    '                    Exit For
-    '                End If
-    '            Next
-    '        End If
-
-    '        CargarVariables()
-
-    '    End Sub
-
-    '    Private Sub CargarVariables()
-
-    '        GridVar.ItemCount = oVarSys.Count
-    '        GridVar.Refresh
-    '        GridVar.RefreshSort
-    '        DoEvents
-
-    '        If GridVar.ItemCount > 0 Then
-    '            MostrarVariable "K" & GridVar.Value(GridVar.Columns("Key").Index)
-    '   End If
-
-    '    End Sub
-
-    '#End Region
 
 #Region "Eventos Form"
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load

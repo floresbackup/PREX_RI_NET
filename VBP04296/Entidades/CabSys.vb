@@ -143,7 +143,7 @@ Namespace Dominio
         Public Habili As Boolean
         Public Help As String
         Public HelQue As String
-        Public Largo As Integer
+        Public Largo As Integer?
         Public Orden As Integer
         Public Tipo As Integer
         Public Titulo As String
@@ -154,14 +154,14 @@ Namespace Dominio
         Public Llave As Boolean
         Public Reemplazo As Boolean
         Public RutaAyuda As String
-        Public MaxLargo As Integer
+        Public MaxLargo As Integer?
         Public VisABM As Boolean
 
         Public Sub New()
 
         End Sub
 
-        Public Sub New(codCon As Long, orden As Integer, campo As String, tipo As Integer, largo As Integer, formato As String, titulo As String, help As String, helque As String, formula As String, habilidato As Boolean, visible As Boolean, visibleABM As Boolean, llave As Boolean, drilldown As Boolean, drique As String, dripe As String, reemplazo As Boolean, ayuda As String, maxLargo As Integer, key As String)
+        Public Sub New(codCon As Long, orden As Integer, campo As String, tipo As Integer, largo As Integer?, formato As String, titulo As String, help As String, helque As String, formula As String, habilidato As Boolean, visible As Boolean, visibleABM As Boolean, llave As Boolean, drilldown As Boolean, drique As String, dripe As String, reemplazo As Boolean, ayuda As String, maxLargo As Integer?, key As String)
             Me.Campo = campo
             Me.Format = formato
             Me.Formul = formula
