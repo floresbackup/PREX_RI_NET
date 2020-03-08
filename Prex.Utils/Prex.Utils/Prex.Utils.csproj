@@ -61,6 +61,7 @@
     <Compile Include="DataAccess\DataAccess.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Misc\Encoding.cs" />
+    <Compile Include="Misc\ExtensionMehods.cs" />
     <Compile Include="Misc\Forms\FrmError.cs">
       <SubType>Form</SubType>
     </Compile>

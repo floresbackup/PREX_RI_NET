@@ -22,173 +22,156 @@ Public Class frmMain
         ' Llamada necesaria para el Diseñador de Windows Forms.
         InitializeComponent()
 
-        ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
-        AnalizarCommand()
+	End Sub
 
-        cmSql = New ScintillaNET.Scintilla()
-        tabPageQuery.Controls.Add(cmSql)
-        cmSql.Dock = DockStyle.Fill
-        Prex.Utils.Misc.Forms.ScintillaSQL.InitialiseScintilla(cmSql)
+	'#Region "Metodos"
+	Public Function AnalizarCommand() As Boolean
 
+		Try
 
-        GridViewCons.OptionsSelection.EnableAppearanceFocusedCell = True
-        GridViewCons.OptionsSelection.EnableAppearanceFocusedRow = True
-        GridViewCons.Appearance.FocusedRow.BackColor = Color.FromArgb(255, 255, 192)
-        GridViewCons.Appearance.SelectedRow.BackColor = Color.FromArgb(255, 255, 192)
-        GridViewCons.Appearance.SelectedRow.Options.UseBackColor = True
+			Dim sTemp As String
+			Dim nPos As Integer
+			Dim nPosAux As Integer
+			Dim nCodigoUsuario As Long
+			Dim nCodigoTransaccion As Long
+			Dim nCodigoEntidad As Long
 
-        gridViewProc.OptionsBehavior.AutoPopulateColumns = True
-        AddHandler cmSql.TextChanged, AddressOf cmSQL_Change
-    End Sub
+			sTemp = Command()
 
-    '#Region "Metodos"
-    Public Sub AnalizarCommand()
+			'''''' USUARIO ''''''
 
-        Try
+			nPos = InStr(1, UCase(sTemp), "/U:")
 
-            Dim sTemp As String
-            Dim nPos As Integer
-            Dim nPosAux As Integer
-            Dim nCodigoUsuario As Long
-            Dim nCodigoTransaccion As Long
-            Dim nCodigoEntidad As Long
+			If nPos = 0 Then
+				MensajesForms.MostrarError("Los argumentos de la línea de comandos no son válidos")
+				Return False
+			End If
 
-            sTemp = Command()
+			nPosAux = InStr(1, Mid(sTemp, nPos + 3), "/")
 
-            '''''' USUARIO ''''''
+			If nPosAux > 0 Then
+				nCodigoUsuario = Val(Mid(sTemp, nPos + 3, nPosAux - 1))
+			Else
+				nCodigoUsuario = Val(Mid(sTemp, nPos + 3))
+			End If
 
-            nPos = InStr(1, UCase(sTemp), "/U:")
+			'''''' TRANSACCION ''''''
 
-            If nPos = 0 Then
-                MensajesForms.MostrarError("Los argumentos de la línea de comandos no son válidos")
-                Exit Sub
-            End If
+			nPos = InStr(1, UCase(sTemp), "/T:")
 
-            nPosAux = InStr(1, Mid(sTemp, nPos + 3), "/")
+			If nPos = 0 Then
+				MensajesForms.MostrarError("Los argumentos de la línea de comandos no son válidos")
+				Return False
+			End If
 
-            If nPosAux > 0 Then
-                nCodigoUsuario = Val(Mid(sTemp, nPos + 3, nPosAux - 1))
-            Else
-                nCodigoUsuario = Val(Mid(sTemp, nPos + 3))
-            End If
+			nPosAux = InStr(1, Mid(sTemp, nPos + 3), "/")
 
-            '''''' TRANSACCION ''''''
+			If nPosAux > 0 Then
+				nCodigoTransaccion = Val(Mid(sTemp, nPos + 3, nPosAux - 1))
+			Else
+				nCodigoTransaccion = Val(Mid(sTemp, nPos + 3))
+			End If
 
-            nPos = InStr(1, UCase(sTemp), "/T:")
+			'''''' ENTIDAD ''''''
 
-            If nPos = 0 Then
-                MensajesForms.MostrarError("Los argumentos de la línea de comandos no son válidos")
-                Exit Sub
-            End If
+			nPos = InStr(1, UCase(sTemp), "/E:")
 
-            nPosAux = InStr(1, Mid(sTemp, nPos + 3), "/")
+			If nPos = 0 Then
+				MensajesForms.MostrarError("Los argumentos de la línea de comandos no son válidos")
+				Return False
+			End If
 
-            If nPosAux > 0 Then
-                nCodigoTransaccion = Val(Mid(sTemp, nPos + 3, nPosAux - 1))
-            Else
-                nCodigoTransaccion = Val(Mid(sTemp, nPos + 3))
-            End If
+			nPosAux = InStr(1, Mid(sTemp, nPos + 3), "/")
 
-            '''''' ENTIDAD ''''''
+			If nPosAux > 0 Then
+				nCodigoEntidad = Val(Mid(sTemp, nPos + 3, nPosAux - 1))
+			Else
+				nCodigoEntidad = Val(Mid(sTemp, nPos + 3))
+			End If
 
-            nPos = InStr(1, UCase(sTemp), "/E:")
+			Configuration.PrexConfig.CODIGO_TRANSACCION = nCodigoTransaccion
+			Configuration.PrexConfig.CODIGO_ENTIDAD = nCodigoEntidad
 
-            If nPos = 0 Then
-                MensajesForms.MostrarError("Los argumentos de la línea de comandos no son válidos")
-                Exit Sub
-            End If
+			Return PresentarDatos(nCodigoTransaccion, nCodigoUsuario, nCodigoEntidad)
+		Catch ex As Exception
+			ManejarErrores.TratarError(ex, "AnalizarCommand")
+		End Try
+	End Function
 
-            nPosAux = InStr(1, Mid(sTemp, nPos + 3), "/")
+	Private Function PresentarDatos(ByVal nCodigoTransaccion As Long, ByVal nCodigoUsuario As Long, ByVal nCodigoEntidad As Long) As Boolean
+		Try
+			Dim sError = String.Empty
+			''''' USUARIO '''''
+			Dim sSQL = "SELECT    US_CODUSU, US_NOMBRE, US_DESCRI " &
+						"FROM      USUARI " &
+						"WHERE     US_CODUSU = " & nCodigoUsuario
+			Dim rstAux As SqlDataReader = DataAccess.GetReader(sSQL)
 
-            If nPosAux > 0 Then
-                nCodigoEntidad = Val(Mid(sTemp, nPos + 3, nPosAux - 1))
-            Else
-                nCodigoEntidad = Val(Mid(sTemp, nPos + 3))
-            End If
+			If Not rstAux.HasRows OrElse rstAux.RecordsAffected > 1 Then
+				sError += vbCrLf + "Falla de seguridad"
+			End If
 
-            Configuration.PrexConfig.CODIGO_TRANSACCION = nCodigoTransaccion
-            Configuration.PrexConfig.CODIGO_ENTIDAD = nCodigoEntidad
-
-            PresentarDatos(nCodigoTransaccion, nCodigoUsuario, nCodigoEntidad)
-
-        Catch ex As Exception
-            ManejarErrores.TratarError(ex, "AnalizarCommand")
-        End Try
-    End Sub
-
-    Private Sub PresentarDatos(ByVal nCodigoTransaccion As Long, ByVal nCodigoUsuario As Long, ByVal nCodigoEntidad As Long)
-        Try
-            Dim sError = String.Empty
-            ''''' USUARIO '''''
-            Dim sSQL = "SELECT    US_CODUSU, US_NOMBRE, US_DESCRI " &
-                        "FROM      USUARI " &
-                        "WHERE     US_CODUSU = " & nCodigoUsuario
-            Dim rstAux As SqlDataReader = DataAccess.GetReader(sSQL)
-
-            If rstAux.RecordsAffected = 0 OrElse rstAux.RecordsAffected > 1 Then
-                sError = "Falla de seguridad"
-            End If
-
-            While rstAux.Read()
-                Configuration.PrexConfig.UsuarioActual.Codigo = nCodigoUsuario
-                Configuration.PrexConfig.UsuarioActual.Nombre = rstAux("US_NOMBRE").ToString()
-                Configuration.PrexConfig.UsuarioActual.Descripcion = rstAux("US_DESCRI").ToString()
-                Configuration.PrexConfig.UsuarioActual.SoloLectura = False
-                lblUsuario.Text = Configuration.PrexConfig.UsuarioActual.Descripcion
-            End While
-            rstAux.Close()
+			While rstAux.Read()
+				Configuration.PrexConfig.UsuarioActual.Codigo = nCodigoUsuario
+				Configuration.PrexConfig.UsuarioActual.Nombre = rstAux("US_NOMBRE").ToString()
+				Configuration.PrexConfig.UsuarioActual.Descripcion = rstAux("US_DESCRI").ToString()
+				Configuration.PrexConfig.UsuarioActual.SoloLectura = False
+				lblUsuario.Text = Configuration.PrexConfig.UsuarioActual.Descripcion
+			End While
+			rstAux.Close()
 
 
-            ''''' ENTIDAD '''''
-            sSQL = "SELECT    TG_CODCON, TG_DESCRI " &
-          "FROM      TABGEN " &
-          "WHERE     TG_CODTAB = " & EnumTablasGenerales.TGL_Entidades & " " &
-          "AND       TG_CODCON = " & nCodigoEntidad
+			''''' ENTIDAD '''''
+			sSQL = "SELECT    TG_CODCON, TG_DESCRI " &
+		  "FROM      TABGEN " &
+		  "WHERE     TG_CODTAB = " & EnumTablasGenerales.TGL_Entidades & " " &
+		  "AND       TG_CODCON = " & nCodigoEntidad
 
-            rstAux = DataAccess.GetReader(sSQL)
+			rstAux = DataAccess.GetReader(sSQL)
 
-            If rstAux.RecordsAffected = 0 OrElse rstAux.RecordsAffected > 1 Then
-                sError = "Parámetro de entidad no válido"
-            End If
+			If Not rstAux.HasRows OrElse rstAux.RecordsAffected > 1 Then
+				sError += vbCrLf + "Parámetro de entidad no válido"
+			End If
 
-            While rstAux.Read()
-                Configuration.PrexConfig.NOMBRE_ENTIDAD = rstAux("TG_DESCRI").ToString()
-                lblEntidad.Text = rstAux("TG_DESCRI").ToString()
-            End While
-            rstAux = Nothing
+			While rstAux.Read()
+				Configuration.PrexConfig.NOMBRE_ENTIDAD = rstAux("TG_DESCRI").ToString()
+				lblEntidad.Text = rstAux("TG_DESCRI").ToString()
+			End While
+			rstAux = Nothing
 
-            ''''' TRANSACCION '''''
-            sSQL = "SELECT    MU_TRANSA, MU_DESCRI " &
-          "FROM      MENUES " &
-          "WHERE     MU_CODTRA = " & nCodigoTransaccion
+			''''' TRANSACCION '''''
+			sSQL = "SELECT    MU_TRANSA, MU_DESCRI " &
+		  "FROM      MENUES " &
+		  "WHERE     MU_CODTRA = " & nCodigoTransaccion
 
-            rstAux = DataAccess.GetReader(sSQL)
+			rstAux = DataAccess.GetReader(sSQL)
 
-            If rstAux.RecordsAffected = 0 OrElse rstAux.RecordsAffected > 1 Then
-                sError = "Error en la línea de comandos. Parámetro de transacción incorrecto"
-            End If
+			If Not rstAux.HasRows OrElse rstAux.RecordsAffected > 1 Then
+				sError += vbCrLf + "Error en la línea de comandos. Parámetro de transacción incorrecto"
+			End If
 
-            While rstAux.Read()
-                Configuration.PrexConfig.CODIGO_TRANSACCION = nCodigoTransaccion
-                lblTransaccion.Text = rstAux("MU_DESCRI").ToString()
-                Me.Text = "Gestión RI | " & nCodigoTransaccion.ToString & " - " & rstAux("MU_TRANSA").ToString
-                lblTitulo.Text = rstAux("MU_TRANSA").ToString
-                lblSubtitulo.Text = rstAux.Item("MU_DESCRI").ToString
-            End While
-            rstAux = Nothing
+			While rstAux.Read()
+				Configuration.PrexConfig.CODIGO_TRANSACCION = nCodigoTransaccion
+				lblTransaccion.Text = rstAux("MU_DESCRI").ToString()
+				Me.Text = "Gestión RI | " & nCodigoTransaccion.ToString & " - " & rstAux("MU_TRANSA").ToString
+				lblTitulo.Text = rstAux("MU_TRANSA").ToString
+				lblSubtitulo.Text = rstAux.Item("MU_DESCRI").ToString
+			End While
+			rstAux = Nothing
 
-            If sError <> "" Then
-                Prex.Utils.MensajesForms.MostrarError(sError)
-            End If
+			If sError <> "" Then
+				Prex.Utils.MensajesForms.MostrarError(sError)
+				Return False
+			End If
 
+			Return True
+		Catch ex As Exception
+			ManejarErrores.TratarError(ex, "PresentarDatos")
+		End Try
 
-        Catch ex As Exception
-            ManejarErrores.TratarError(ex, "PresentarDatos")
-        End Try
+	End Function
 
-    End Sub
-
-    Private Sub NuevaConsulta()
+	Private Sub NuevaConsulta()
         rowHandle = -99
 
         tCabSys = New CabSys(Configuration.PrexConfig.CODIGO_ENTIDAD)
@@ -352,9 +335,9 @@ Public Class frmMain
 
     Private Sub GuardarVariablesEntrada(con As SqlConnection, tran As SqlTransaction)
         Try
-            Dim sSql = "insert into VARSYS (VS_CODCON, VS_HELP, VS_HELQUE, VS_NOMBRE "
-            sSql += " VS_ORDEN, VS_TIPO, VS_TITULO) values (@VS_CODCON, @VS_HELP, @VS_HELQUE, @VS_NOMBRE "
-            sSql += " @VS_ORDEN, @VS_TIPO, @VS_TITULO)"
+			Dim sSql = "insert into VARSYS (VS_CODCON, VS_HELP, VS_HELQUE, VS_NOMBRE, "
+			sSql += " VS_ORDEN, VS_TIPO, VS_TITULO) values (@VS_CODCON, @VS_HELP, @VS_HELQUE, @VS_NOMBRE, "
+			sSql += " @VS_ORDEN, @VS_TIPO, @VS_TITULO)"
             Dim cmd As New SqlCommand(sSql, con, tran)
 
             DeteleTablaRelacionada(con, tran, "VARSYS", "VS_CODCON")
@@ -370,8 +353,8 @@ Public Class frmMain
                     .AddWithValue("VS_TIPO", oVar.Tipo)
                     .AddWithValue("VS_TITULO", oVar.Titulo)
                 End With
-                cmd.ExecuteNonQuery()
-            Next
+				cmdClone.ExecuteNonQuery()
+			Next
 
         Catch ex As Exception
             Throw New Exception("Guardando variables de entrada", ex)
@@ -380,8 +363,8 @@ Public Class frmMain
 
     Private Sub DeteleTablaRelacionada(con As SqlConnection, tran As SqlTransaction, tabla As String, campoClave As String)
         Dim cmdDelete As New SqlCommand($"delete {tabla} where {campoClave} = @VCODCON", con, tran)
-        cmdDelete.Parameters.AddWithValue("CODCON", tCabSys.CS_CODCON)
-        cmdDelete.ExecuteNonQuery()
+		cmdDelete.Parameters.AddWithValue("VCODCON", tCabSys.CS_CODCON)
+		cmdDelete.ExecuteNonQuery()
     End Sub
 
     Private Sub GuardarProcesosPrevios(con As SqlConnection, tran As SqlTransaction)
@@ -418,8 +401,9 @@ Public Class frmMain
             Dim sSQL = "Insert into DETSYS (DS_CODCON, DS_CAMPO, DS_FORMAT, DS_FORMUL, DS_HABILI, "
             sSQL += " DS_HELP, DS_HELQUE, DS_LARGO, DS_ORDEN, DS_TIPO, "
             sSQL += " DS_TITULO, DS_VISIBL, DS_DRILLD, DS_DRIQUE, DS_DRIPRE, "
-            sSQL += " DS_LLAVE, DS_REEMPL, DS_AYUDA, DS_MAXLAR, DS_VISABM) values (@DS_CODCON, @DS_CAMPO, @DS_FORMAT, @DS_FORMUL, @DS_HABILI, "
-            sSQL += " @DS_HELP, @DS_HELQUE, @DS_LARGO, @DS_ORDEN, @DS_TIPO, "
+			sSQL += " DS_LLAVE, DS_REEMPL, DS_AYUDA, DS_MAXLAR, DS_VISABM) values "
+			sSQL += " (@DS_CODCON, @DS_CAMPO, @DS_FORMAT, @DS_FORMUL, @DS_HABILI, "
+			sSQL += " @DS_HELP, @DS_HELQUE, @DS_LARGO, @DS_ORDEN, @DS_TIPO, "
             sSQL += " @DS_TITULO, @DS_VISIBL, @DS_DRILLD, @DS_DRIQUE, @DS_DRIPRE, "
             sSQL += " @DS_LLAVE, @DS_REEMPL, @DS_AYUDA, @DS_MAXLAR, @DS_VISABM)"
             Dim cmd As New SqlCommand(sSQL, con, tran)
@@ -446,10 +430,11 @@ Public Class frmMain
                     .AddWithValue("DS_DRIPRE", Misc.Encoding.Base64Encode(oCol.DriPre))
                     .AddWithValue("DS_LLAVE", IIf(oCol.Llave, 1, 0))
                     .AddWithValue("DS_REEMPL", IIf(oCol.Reemplazo, 1, 0))
-                    .AddWithValue("DS_AYUDA", oCol.RutaAyuda)
-                    .AddWithValue("DS_MAXLAR", oCol.MaxLargo)
-                    ' .AddWithValue("DS_VISABM", IIf(chkVisABM.Checked, IIf(oCol.VisABM, 1, 0), DBNull.Value))
-                End With
+					.AddWithValue("DS_AYUDA", oCol.RutaAyuda.ValueOrDbNull())
+					.AddWithValue("DS_MAXLAR", oCol.MaxLargo)
+					.AddWithValue("DS_VISABM", IIf(oCol.VisABM, 1, 0))
+					'.AddWithValue("DS_VISABM", IIf(chkVisABM.Checked, IIf(oCol.VisABM, 1, 0), DBNull.Value))
+				End With
                 cmdClone.ExecuteNonQuery()
             Next
         Catch ex As Exception
@@ -817,19 +802,39 @@ Public Class frmMain
 
 #Region "Eventos Form"
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+		If AnalizarCommand() Then
+
+			cmSql = New ScintillaNET.Scintilla()
+			tabPageQuery.Controls.Add(cmSql)
+			cmSql.Dock = DockStyle.Fill
+			Prex.Utils.Misc.Forms.ScintillaSQL.InitialiseScintilla(cmSql)
 
 
-        dataConsulta = DataAccess.GetDataTable("Select *, CAST(CS_CODTRA As VARCHAR) +  ' - ' + CS_NOMBRE AS XX_DESCRI FROM CABSYS ORDER BY CS_CODTRA ")
-        GridCons.DataSource = dataConsulta
-        NuevaConsulta()
+			GridViewCons.OptionsSelection.EnableAppearanceFocusedCell = True
+			GridViewCons.OptionsSelection.EnableAppearanceFocusedRow = True
+			GridViewCons.Appearance.FocusedRow.BackColor = Color.FromArgb(255, 255, 192)
+			GridViewCons.Appearance.SelectedRow.BackColor = Color.FromArgb(255, 255, 192)
+			GridViewCons.Appearance.SelectedRow.Options.UseBackColor = True
 
-        '''PARAMETROS CUADRO SQL
-        '    AjusteCodemax cmHelp
-        '    AjusteCodemax txtFormul
+			gridViewProc.OptionsBehavior.AutoPopulateColumns = True
+			AddHandler cmSql.TextChanged, AddressOf cmSQL_Change
 
-    End Sub
 
-    Private Sub btnSalir_Click(sender As Object, e As EventArgs) Handles btnSalir.Click
+
+			dataConsulta = DataAccess.GetDataTable("Select *, CAST(CS_CODTRA As VARCHAR) +  ' - ' + CS_NOMBRE AS XX_DESCRI FROM CABSYS ORDER BY CS_CODTRA ")
+			GridCons.DataSource = dataConsulta
+			NuevaConsulta()
+
+			'''PARAMETROS CUADRO SQL
+			'    AjusteCodemax cmHelp
+			'    AjusteCodemax txtFormul
+
+		Else
+			Me.Close()
+		End If
+	End Sub
+
+	Private Sub btnSalir_Click(sender As Object, e As EventArgs) Handles btnSalir.Click
         Me.Close()
     End Sub
 
@@ -972,11 +977,18 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub cmdSave_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdSave.ItemClick
+	Private Sub cmdCancelar_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdCancelar.ItemClick
+		Dim res As MsgBoxResult = MsgBox("¿Esta seguro que desea canceclar los cambios realizados?", vbQuestion + vbYesNo, "Pregunta del sistema")
+		If res = MsgBoxResult.Yes Then
+			NuevaConsulta()
+		End If
+	End Sub
 
-        Dim res As MsgBoxResult = MsgBox("Se perderan los cambios de la consulta actual. ¿Desea guardar los cambios?", vbQuestion + vbYesNoCancel, "Preguta del sistema")
+	Private Sub cmdSave_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdSave.ItemClick
 
-        If res = MsgBoxResult.Yes Then
+		Dim res As MsgBoxResult = MsgBox("¿Desea guardar los cambios?", vbQuestion + vbYesNoCancel, "Pregunta del sistema")
+
+		If res = MsgBoxResult.Yes Then
             GuardarConsulta()
         ElseIf res = MsgBoxResult.Cancel Then
             Exit Sub
@@ -1164,19 +1176,19 @@ Public Class frmMain
 
 
     Private Sub GridViewCons_RowStyle(sender As Object, e As RowStyleEventArgs) Handles GridViewCons.RowStyle
-        If Not GridViewCons.IsDataRow(e.RowHandle) Then
-            Return
-        End If
-        If e.RowHandle = rowHandle Then
-            e.Appearance.BackColor = Color.LightBlue
-            e.Appearance.Options.UseBackColor = True
-        Else
-            e.Appearance.BackColor = Color.White
+		If Not GridViewCons.IsDataRow(e.RowHandle) Then
+			Return
+		End If
+		If e.RowHandle = rowHandle Then
+			e.Appearance.BackColor = Color.LightBlue
+			e.Appearance.Options.UseBackColor = True
+		Else
+			e.Appearance.BackColor = Color.White
+		End If
 
-        End If
-    End Sub
+	End Sub
 
-    Private Sub gridViewProc_SelectionChanged(sender As Object, e As DevExpress.Data.SelectionChangedEventArgs) Handles gridViewProc.SelectionChanged
+	Private Sub gridViewProc_SelectionChanged(sender As Object, e As DevExpress.Data.SelectionChangedEventArgs) Handles gridViewProc.SelectionChanged
         MostrarProceso(gridViewProc.GetFocusedRowCellValue("Llave"))
     End Sub
 
@@ -1316,8 +1328,8 @@ Public Class frmMain
 
     Private Sub CargarProcesos()
         RefrescarGrillaProcesos()
-        MostrarProceso(tProcesosPrevios.FirstOrDefault().Llave)
-    End Sub
+		MostrarProceso(tProcesosPrevios.FirstOrDefault()?.Llave)
+	End Sub
 
 
     Private Sub EliminarProceso()
@@ -1377,29 +1389,30 @@ Public Class frmMain
     End Sub
 
 
-    Private Sub MostrarProceso(ByVal sLlave As String)
-        Dim proc = tProcesosPrevios.FirstOrDefault(Function(p) p.Llave = sLlave)
-        If proc IsNot Nothing Then
-            txtOrdenPro.Text = proc.Orden
-            txtNombrePro.Text = proc.Nombre
-            txtTituloPro.Text = proc.Titulo
-            txtDescriPro.Text = proc.Descripcion
-            txtParamPro.Text = proc.Parametros
-            Dim rh = gridViewProc.GetRowHandle(proc.Orden - 1)
-            gridViewProc.SelectRow(rh)
-        Else
-            txtOrdenPro.Text = String.Empty
-            txtNombrePro.Text = String.Empty
-            txtTituloPro.Text = String.Empty
-            txtDescriPro.Text = String.Empty
-            txtParamPro.Text = String.Empty
-        End If
+	Private Sub MostrarProceso(ByVal sLlave As String)
+		If Not tProcesosPrevios.Any() Then Exit Sub
+		Dim proc = tProcesosPrevios.FirstOrDefault(Function(p) p.Llave = sLlave)
+		If proc IsNot Nothing Then
+			txtOrdenPro.Text = proc.Orden
+			txtNombrePro.Text = proc.Nombre
+			txtTituloPro.Text = proc.Titulo
+			txtDescriPro.Text = proc.Descripcion
+			txtParamPro.Text = proc.Parametros
+			Dim rh = gridViewProc.GetRowHandle(proc.Orden - 1)
+			gridViewProc.SelectRow(rh)
+		Else
+			txtOrdenPro.Text = String.Empty
+			txtNombrePro.Text = String.Empty
+			txtTituloPro.Text = String.Empty
+			txtDescriPro.Text = String.Empty
+			txtParamPro.Text = String.Empty
+		End If
 
-        cmdEditarProceso.Enabled = tProcesosPrevios.Any
-        cmdEliminarProceso.Enabled = tProcesosPrevios.Any
-        cmdSubirOrdenProceso.Enabled = tProcesosPrevios.Count() > 1
-        cmdBajarOrdenProceso.Enabled = tProcesosPrevios.Count() > 1
-    End Sub
+		cmdEditarProceso.Enabled = tProcesosPrevios.Any
+		cmdEliminarProceso.Enabled = tProcesosPrevios.Any
+		cmdSubirOrdenProceso.Enabled = tProcesosPrevios.Count() > 1
+		cmdBajarOrdenProceso.Enabled = tProcesosPrevios.Count() > 1
+	End Sub
 
 #End Region
 
