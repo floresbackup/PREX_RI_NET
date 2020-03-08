@@ -342,22 +342,21 @@ Public Class frmABMRegistro
                     End If
 
                     If oCol.VisibleABM AndAlso (oCol.Habilitada OrElse oCol.Formula.Trim().Length() > 0) Then
-                            sUpdate = sUpdate & " [" & oCol.Campo & "] = " & sValor & ","
+                        sUpdate = sUpdate & " [" & oCol.Campo & "] = " & sValor & ","
 
-                            'AGREGADO PARA QUE ESCRIBA LOG DE LAS MODIFICACIONES MANUALES
-                            'SI EXISTE LA VARIABLE "DEBUG" EN EL INI - 0 = NO / 1 = SI
-                            'SI EXISTE LA VARIABLE "TIPOLOG" EN EL INI - 1= Completo 2= Solo modificaciones no SELECT 3= No graba nada
+                        'AGREGADO PARA QUE ESCRIBA LOG DE LAS MODIFICACIONES MANUALES
+                        'SI EXISTE LA VARIABLE "DEBUG" EN EL INI - 0 = NO / 1 = SI
+                        'SI EXISTE LA VARIABLE "TIPOLOG" EN EL INI - 1= Completo 2= Solo modificaciones no SELECT 3= No graba nada
 
 
-                            If GENERAR_LOG_SQL And (TIPO_LOG_SQL = 1 Or TIPO_LOG_SQL = 2 Or TIPO_LOG_SQL = 3) Then
-                                sVarLogAct = sVarLogAct +
+                        If GENERAR_LOG_SQL And (TIPO_LOG_SQL = 1 Or TIPO_LOG_SQL = 2 Or TIPO_LOG_SQL = 3) Then
+                            sVarLogAct = sVarLogAct +
                                     oCol.Titulo + ": " +
                                     sValor + ", "
 
-                                sVarLogAnt = sVarLogAnt +
+                            sVarLogAnt = sVarLogAnt +
                                      oCol.Titulo + ": " +
                                      oCol.ValorAnterior.ToString() + ", "
-                            End If
                         End If
                     End If
                 End If
