@@ -137,6 +137,12 @@
       <DependentUpon>frmMain.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Formularios\ucFrmColumnas.Designer.vb">
+      <DependentUpon>ucFrmColumnas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\ucFrmColumnas.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Modulos\ModLocalMain.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -163,6 +169,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\ucFrmColumnas.resx">
+      <DependentUpon>ucFrmColumnas.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\licenses.licx" />
     <EmbeddedResource Include="My Project\Resources.resx">
