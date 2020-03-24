@@ -1343,36 +1343,45 @@ Public Class frmMain
 
 
     Private Sub cmdGenerarScipt_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdGenerarScipt.ItemClick
+
         Try
-            Dim dialog As New SaveFileDialog With {
-                .Filter = "Script SQL(*.sql)|*.sql",
-                .Title = "Guardar Script"
-            }
+            Me.Cursor = Cursors.WaitCursor
 
-            If dialog.ShowDialog(Me) = DialogResult.OK Then
-                Dim fileName = dialog.FileName
+            Try
+                Dim dialog As New SaveFileDialog With {
+                    .Filter = "Script SQL(*.sql)|*.sql",
+                    .Title = "Guardar Script"
+                }
 
-                Dim frmInputGral As New Prex.Utils.Misc.Forms.FrmInputGeneral()
-                frmInputGral.PasarInfoVentana("Entidad Destino", "Ingrese el código de entidad destino:")
-                If frmInputGral.ShowDialog(Me) = DialogResult.OK Then
-                    Dim entDestino = frmInputGral.ResultadoInput
+                If dialog.ShowDialog(Me) = DialogResult.OK Then
+                    Dim fileName = dialog.FileName
 
-                    Dim sScript = GetStringScript(frmInputGral.ResultadoInput)
+                    Dim frmInputGral As New Prex.Utils.Misc.Forms.FrmInputGeneral()
+                    frmInputGral.PasarInfoVentana("Entidad Destino", "Ingrese el código de entidad destino:")
+                    If frmInputGral.ShowDialog(Me) = DialogResult.OK Then
+                        Dim entDestino = frmInputGral.ResultadoInput
 
-                    'guardar archivo
-                    If System.IO.File.Exists(fileName) Then System.IO.File.Delete(fileName)
+                        Dim sScript = GetStringScript(frmInputGral.ResultadoInput)
 
-                    System.IO.File.WriteAllText(fileName, sScript, Encoding.UTF8)
+                        'guardar archivo
+                        If System.IO.File.Exists(fileName) Then System.IO.File.Delete(fileName)
 
-                    Prex.Utils.MensajesForms.MostrarInformacion("Script generado exitosamente!")
+                        System.IO.File.WriteAllText(fileName, sScript, Encoding.UTF8)
+
+                        Prex.Utils.MensajesForms.MostrarInformacion("Script generado exitosamente!")
+                    End If
                 End If
-            End If
 
 
 
 
-        Catch ex As Exception
-            Prex.Utils.ManejarErrores.TratarError(ex, "GenerarScript", String.Empty, True)
+            Catch ex As Exception
+                Prex.Utils.ManejarErrores.TratarError(ex, "GenerarScript", String.Empty, True)
+            End Try
+
+        Finally
+            Me.Cursor = Cursors.Default
+
         End Try
     End Sub
 
