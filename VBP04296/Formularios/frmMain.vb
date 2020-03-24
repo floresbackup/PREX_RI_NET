@@ -410,7 +410,7 @@ Public Class frmMain
 
             DeteleTablaRelacionada(con, tran, "DETSYS", "DS_CODCON")
 
-            For Each oCol As DetSys In oDetSys
+            For Each oCol As DetSys In UcFrmColumnas1.tDetSys
                 Dim cmdClone As SqlCommand = cmd.Clone
                 With cmdClone.Parameters
                     .AddWithValue("DS_CODCON", tCabSys.CS_CODCON)
@@ -430,11 +430,11 @@ Public Class frmMain
                     .AddWithValue("DS_DRIPRE", Misc.Encoding.Base64Encode(oCol.DriPre))
                     .AddWithValue("DS_LLAVE", IIf(oCol.Llave, 1, 0))
                     .AddWithValue("DS_REEMPL", IIf(oCol.Reemplazo, 1, 0))
-					.AddWithValue("DS_AYUDA", oCol.RutaAyuda.ValueOrDbNull())
-					.AddWithValue("DS_MAXLAR", oCol.MaxLargo)
-					.AddWithValue("DS_VISABM", IIf(oCol.VisABM, 1, 0))
-					'.AddWithValue("DS_VISABM", IIf(chkVisABM.Checked, IIf(oCol.VisABM, 1, 0), DBNull.Value))
-				End With
+                    .AddWithValue("DS_AYUDA", oCol.RutaAyuda.ValueOrDbNull())
+                    .AddWithValue("DS_MAXLAR", oCol.MaxLargo)
+                    .AddWithValue("DS_VISABM", IIf(oCol.VisABM, 1, 0))
+                    '.AddWithValue("DS_VISABM", IIf(chkVisABM.Checked, IIf(oCol.VisABM, 1, 0), DBNull.Value))
+                End With
                 cmdClone.ExecuteNonQuery()
             Next
         Catch ex As Exception
@@ -1340,6 +1340,161 @@ Public Class frmMain
 		cmdSubirOrdenProceso.Enabled = tProcesosPrevios.Count() > 1
 		cmdBajarOrdenProceso.Enabled = tProcesosPrevios.Count() > 1
 	End Sub
+
+
+    Private Sub cmdGenerarScipt_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdGenerarScipt.ItemClick
+        Try
+            Dim dialog As New SaveFileDialog With {
+                .Filter = "Script SQL(*.sql)|*.sql",
+                .Title = "Guardar Script"
+            }
+
+            If dialog.ShowDialog(Me) = DialogResult.OK Then
+                Dim fileName = dialog.FileName
+
+                Dim frmInputGral As New Prex.Utils.Misc.Forms.FrmInputGeneral()
+                frmInputGral.PasarInfoVentana("Entidad Destino", "Ingrese el código de entidad destino:")
+                If frmInputGral.ShowDialog(Me) = DialogResult.OK Then
+                    Dim entDestino = frmInputGral.ResultadoInput
+
+                    Dim sScript = GetStringScript(frmInputGral.ResultadoInput)
+
+                    'guardar archivo
+                    If System.IO.File.Exists(fileName) Then System.IO.File.Delete(fileName)
+
+                    System.IO.File.WriteAllText(fileName, sScript, Encoding.UTF8)
+
+                    Prex.Utils.MensajesForms.MostrarInformacion("Script generado exitosamente!")
+                End If
+            End If
+
+
+
+
+        Catch ex As Exception
+            Prex.Utils.ManejarErrores.TratarError(ex, "GenerarScript", String.Empty, True)
+        End Try
+    End Sub
+
+    Private Function GetStringScript(codEntidad As String) As String
+        Dim script = "SET DATEFORMAT YMD" & Environment.NewLine
+        script &= "BEGIN TRANSACTION" & Environment.NewLine
+        script &= "DECLARE @CODCON INT" & Environment.NewLine
+        script &= "SELECT @CODCON = ISNULL(MAX(CS_CODCON), 0) + 1 FROM CABSYS " & Environment.NewLine
+
+        script &= Environment.NewLine & "--ENCABEZADO" & Environment.NewLine
+
+        Dim sSql = "SELECT * FROM CABSYS WHERE CS_CODCON = " & tCabSys.CS_CODCON
+        Dim dr As SqlDataReader = Prex.Utils.DataAccess.GetReader(sSql)
+
+        If Not dr.HasRows OrElse dr.RecordsAffected > 1 Then
+            Throw New Exception("CABSYS vacio en CS_CODCON = " & tCabSys.CS_CODCON)
+        End If
+
+        While dr.Read()
+            script &= QueryInsert("CABSYS", dr, codEntidad) & Environment.NewLine
+        End While
+        dr.Close()
+
+        script &= Environment.NewLine & "--VARIABLES" & Environment.NewLine
+        sSql = "SELECT       * " &
+             "FROM         VARSYS " &
+             "WHERE        VS_CODCON = " & tCabSys.CS_CODCON & " " &
+             "ORDER BY     VS_ORDEN "
+
+        dr = Prex.Utils.DataAccess.GetReader(sSql)
+
+        If Not dr.HasRows OrElse dr.RecordsAffected > 1 Then
+            Throw New Exception("VARSYS vacio en VS_CODCON = " & tCabSys.CS_CODCON)
+        End If
+
+        While dr.Read()
+            script &= QueryInsert("VARSYS", dr, codEntidad) & Environment.NewLine
+        End While
+        dr.Close()
+
+        script &= Environment.NewLine & "--DETALLE" & Environment.NewLine
+        sSql = "SELECT       * " &
+             "FROM         DETSYS " &
+             "WHERE        DS_CODCON = " & tCabSys.CS_CODCON & " " &
+             "ORDER BY     DS_ORDEN "
+        dr = Prex.Utils.DataAccess.GetReader(sSql)
+
+        If Not dr.HasRows OrElse dr.RecordsAffected > 1 Then
+            Throw New Exception("DETSYS vacio en DS_CODCON = " & tCabSys.CS_CODCON)
+        End If
+
+        While dr.Read()
+            script &= QueryInsert("DETSYS", dr, codEntidad) & Environment.NewLine
+        End While
+        dr.Close()
+
+
+        script &= Environment.NewLine & "--PROCESOS" & Environment.NewLine
+
+        sSql = "SELECT       * " &
+             "FROM         PROSYS " &
+             "WHERE        PS_CODCON = " & tCabSys.CS_CODCON & " " &
+             "ORDER BY     PS_ORDEN "
+        dr = Prex.Utils.DataAccess.GetReader(sSql)
+
+        If Not dr.HasRows OrElse dr.RecordsAffected > 1 Then
+            Throw New Exception("PROSYS vacio en PS_CODCON = " & tCabSys.CS_CODCON)
+        End If
+
+        While dr.Read()
+            script &= QueryInsert("PROSYS", dr, codEntidad) & Environment.NewLine
+        End While
+        dr.Close()
+
+        script &= Environment.NewLine & "COMMIT" & Environment.NewLine
+
+        Return script
+    End Function
+
+    Private Function QueryInsert(ByVal sTabla As String, ByVal reader As SqlDataReader, entidadDestino As String,
+                             Optional ByVal sAdicional As String = "",
+                             Optional ByVal sValorAdic As String = "") As String
+
+        Dim sSQL As String
+        Dim campos As List(Of String) = Enumerable.Range(0, reader.FieldCount).Select(Function(d) reader.GetName(d)).ToList()
+        Dim camposTipo = Enumerable.Range(0, reader.FieldCount).Select(Function(d) New With {.id = d, .tipo = reader.GetFieldType(d)}).ToList()
+
+        sSQL = "INSERT INTO " & sTabla & " (" & Join(campos.ToArray(), ",")
+        sSQL = IIf(sAdicional.IsNullOrEmpty, sSQL.Trim, sSQL & sAdicional) & ") VALUES ("
+
+        For Each campoTipo As Object In camposTipo
+            Select Case campoTipo.tipo
+                Case True AndAlso campoTipo.tipo Is GetType(String)
+                    sSQL = sSQL & "'" & Replace("" & reader(campoTipo.id), "'", "") & "',"
+                Case True AndAlso (campoTipo.tipo Is GetType(Date) OrElse campoTipo.tipo Is GetType(DateTime))
+                    sSQL = sSQL & Prex.Utils.DataAccess.FechaSQL(IIf(reader(campoTipo.id).IsNullOrEmpty(), "01/01/1900", reader(campoTipo.id))) & ","
+                Case True AndAlso campoTipo.tipo Is GetType(Boolean)
+                    sSQL = sSQL & IIf(reader(campoTipo.id), "1,", "0,")
+                Case True AndAlso (campoTipo.tipo Is GetType(Integer) OrElse campoTipo.tipo Is GetType(Long))
+
+                    If reader.GetName(campoTipo.id).Trim().ToUpper() = "CODCON" Then
+                        sSQL = sSQL & "@CODCON,"
+                    ElseIf reader.GetName(campoTipo.id).Trim().ToUpper() = "CODENT" Then
+                        sSQL = sSQL & entidadDestino & ","
+                    Else
+                        If IsNumeric(reader(campoTipo.id)) Then
+                            sSQL = sSQL & Prex.Utils.DataAccess.FlotanteSQL(reader(campoTipo.id)) & ","
+                        Else
+                            sSQL = sSQL & "0,"
+                        End If
+                    End If
+                Case Else
+                    sSQL = sSQL & "'" & Replace("" & reader(campoTipo.id), "'", "") & "',"
+            End Select
+
+        Next
+
+        sSQL = IIf(sValorAdic.IsNullOrEmpty(), sSQL.Trim, sSQL & sValorAdic) & ") "
+
+        Return sSQL
+
+    End Function
 
 #End Region
 

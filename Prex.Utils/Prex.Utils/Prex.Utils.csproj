@@ -68,6 +68,12 @@
     <Compile Include="Misc\Forms\FrmError.Designer.cs">
       <DependentUpon>FrmError.cs</DependentUpon>
     </Compile>
+    <Compile Include="Misc\Forms\FrmInputGeneral.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Misc\Forms\FrmInputGeneral.Designer.cs">
+      <DependentUpon>FrmInputGeneral.cs</DependentUpon>
+    </Compile>
     <Compile Include="Misc\Forms\ScintillaSQL.cs" />
     <Compile Include="Misc\ManejarErrores.cs" />
     <Compile Include="Misc\MensajesForms.cs" />
@@ -76,6 +82,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Misc\Forms\FrmError.resx">
       <DependentUpon>FrmError.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Misc\Forms\FrmInputGeneral.resx">
+      <DependentUpon>FrmInputGeneral.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

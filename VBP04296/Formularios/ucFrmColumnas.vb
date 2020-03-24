@@ -11,6 +11,13 @@ Public Class ucFrmColumnas
         SQL = 1 '"Utilizar Help SQL"
     End Enum
 
+    Public ReadOnly Property tDetSys As List(Of DetSys)
+        Get
+
+            Return detSys
+        End Get
+    End Property
+
     Private ReadOnly Property ColSeleccionada As DetSys
         Get
             If detSys Is Nothing OrElse Not detSys.Any() Then Return Nothing
@@ -46,6 +53,7 @@ Public Class ucFrmColumnas
         Dim item2 As New DevExpress.XtraEditors.Controls.ComboBoxItem()
         item2.Value = HelpTipo.SQL
         cboHelp.Properties.Items.Add(item2)
+
     End Sub
 
 
@@ -54,6 +62,7 @@ Public Class ucFrmColumnas
     End Sub
 
 #Region "Metodos"
+
     Public Sub CargarGrillaColumnas(tDetSys As List(Of DetSys))
         Try
             RemoveHandler gridViewColumnas.SelectionChanged, AddressOf gridViewColumnas_SelectionChanged
@@ -73,60 +82,75 @@ Public Class ucFrmColumnas
 
 
     Private Sub MostrarColumna(columna As DetSys)
-        If columna Is Nothing Then
-            txtTituloVar.Text = String.Empty
-            txtTipo.Text = String.Empty
-            cboHelp.Text = String.Empty
-            chkClaveTabla.Checked = False
-            chkDrillDown.Checked = False
-            chkHabilita.Checked = False
-            chkReemplazoValores.Checked = False
-            chkVisABM.Checked = False
-            chkVisGrilla.Checked = False
+        Try
+            RemoveHandler cmSqlFormula.TextChanged, AddressOf CambioSQL
+            RemoveHandler cmSqlHelp.TextChanged, AddressOf CambioSQL
 
-            txtFormato.Text = String.Empty
+            If columna Is Nothing Then
+                txtTituloVar.Text = String.Empty
+                txtTipo.Text = String.Empty
+                cboHelp.Text = String.Empty
+                chkClaveTabla.Checked = False
+                chkDrillDown.Checked = False
+                chkHabilita.Checked = False
+                chkReemplazoValores.Checked = False
+                chkVisABM.Checked = False
+                chkVisGrilla.Checked = False
 
-        Else
-            txtTituloVar.Text = columna.Titulo
-            txtTipo.Text = columna.Tipo
-            cboHelp.Text = GetTextoTipoHelp(columna.Help)
-            txtAnchoMax.Text = columna.MaxLargo
-            txtAncho.Text = columna.Largo
+                txtFormato.Text = String.Empty
+                TextEdit6.Text = String.Empty
 
-            chkClaveTabla.Checked = columna.Llave
-            chkDrillDown.Checked = columna.DrillD
-            chkHabilita.Checked = columna.Habili
-            chkReemplazoValores.Checked = columna.Reemplazo
-            chkVisABM.Checked = columna.VisABM
-            chkVisGrilla.Checked = columna.Visible
+            Else
+                txtTituloVar.Text = columna.Titulo
+                txtTipo.Text = columna.Tipo
+                cboHelp.Text = GetTextoTipoHelp(columna.Help)
+                txtAnchoMax.Text = columna.MaxLargo
+                txtAncho.Text = columna.Largo
+                'No se que campos es
+                TextEdit6.Text = columna.RutaAyuda
 
-            cmSqlFormula.Text = columna.Formul
-            cmSqlHelp.Text = columna.HelQue
+                chkClaveTabla.Checked = columna.Llave
+                chkDrillDown.Checked = columna.DrillD
+                chkHabilita.Checked = columna.Habili
+                chkReemplazoValores.Checked = columna.Reemplazo
+                chkVisABM.Checked = columna.VisABM
+                chkVisGrilla.Checked = columna.Visible
 
-            If columna.Format.Length >= 8 Then
-                Dim sFormat = columna.Format.Split(";")
-                txtFormato.Text = sFormat(0)
-                pickFondo.Color = ColorTranslator.FromOle(Val(sFormat(1)))
-                pickFrente.Color = ColorTranslator.FromOle(Val(sFormat(2)))
-                Dim f As Font
-                Dim ff As FontStyle
-                If Val(sFormat(4)) Then ff = FontStyle.Bold
-                If Val(sFormat(5)) Then ff = ff And FontStyle.Underline
-                If Val(sFormat(6)) Then ff = ff And FontStyle.Strikeout
+                cmSqlFormula.Text = columna.Formul
+                cmSqlHelp.Text = columna.HelQue
 
-                edFuente.Font = New Font(sFormat(3).ToString, Single.Parse(sFormat(7)), ff)
-                txtAncho.Text = Val(sFormat(8))
-                If UBound(sFormat) = 9 Then
-                    txtCond.Text = sFormat(9)
+                If columna.Format.Length >= 8 Then
+                    Dim sFormat = columna.Format.Split(";")
+                    txtFormato.Text = sFormat(0)
+                    pickFondo.Color = ColorTranslator.FromOle(Val(sFormat(1)))
+                    pickFrente.Color = ColorTranslator.FromOle(Val(sFormat(2)))
+                    Dim f As Font
+                    Dim ff As FontStyle
+                    If Val(sFormat(4)) Then ff = FontStyle.Bold
+                    If Val(sFormat(5)) Then ff = ff And FontStyle.Underline
+                    If Val(sFormat(6)) Then ff = ff And FontStyle.Strikeout
+
+                    edFuente.Font = New Font(sFormat(3).ToString, Single.Parse(sFormat(7)), ff)
+                    txtAncho.Text = Val(sFormat(8))
+                    If UBound(sFormat) = 9 Then
+                        txtValorCond.Text = sFormat(9)
+                    End If
                 End If
+                cmSqlHelp.Enabled = columna.Help = HelpTipo.SQL
             End If
-            cmSqlHelp.Enabled = columna.Help = HelpTipo.SQL
-        End If
-        btnQueryDrillDown.Enabled = chkDrillDown.Checked
+            'Siempre esta en =
+            txtCond.Text = "="
+            btnQueryDrillDown.Enabled = chkDrillDown.Checked
+
+        Finally
+            AddHandler cmSqlFormula.TextChanged, AddressOf CambioSQL
+            AddHandler cmSqlHelp.TextChanged, AddressOf CambioSQL
+        End Try
     End Sub
 
-
     Private Function GetTextoTipoHelp(tipo As HelpTipo) As String
+        If ColSeleccionada Is Nothing Then Return "Utilizar el tipo de dato"
+
         Select Case tipo
             Case HelpTipo.SQL
                 Return "Utilizar Help SQL"
@@ -137,14 +161,53 @@ Public Class ucFrmColumnas
     End Function
 
     Private Function GetTipoHelpTexto(tipo As String) As HelpTipo
+        If ColSeleccionada Is Nothing Then Return HelpTipo.TipoDato
         If tipo = "Utilizar Help SQL" Then Return HelpTipo.SQL
         If tipo = "Utilizar el tipo de dato" Then Return HelpTipo.TipoDato
         Return HelpTipo.TipoDato
     End Function
 
+    Private Sub CambiarOrdenColumna(pos As Integer)
+        ColSeleccionada.Orden = ColSeleccionada.Orden + pos
+
+        Dim l As New List(Of DetSys)
+        For Each item As DetSys In detSys.Where(Function(t) t.Campo <> ColSeleccionada.Orden)
+            If ColSeleccionada.Orden = item.Orden Then
+                item.Orden = item.Orden + pos
+            End If
+            l.Add(item)
+        Next
+        l.Add(ColSeleccionada)
+
+        detSys = l.OrderBy(Function(t) t.Orden).ToList()
+    End Sub
+
+    Private Sub ActualizarFormato()
+        If ColSeleccionada Is Nothing Then Exit Sub
+
+
+        Dim sFormat As String = txtFormato.Text & ";" &
+                  ColorTranslator.ToOle(pickFondo.Color) & ";" &
+                  ColorTranslator.ToOle(pickFrente.Color) & ";" &
+                  edFuente.Font.Name & ";" &
+                  IIf(edFuente.Font.Bold, 1, 0) & ";" &
+                  IIf(edFuente.Font.Underline, 1, 0) & ";" &
+                  IIf(edFuente.Font.Style = FontStyle.Strikeout, 1, 0) & ";" &
+                  Int(Val(edFuente.Font.Size)) & ";" &
+                  Int(Val(txtAncho.Text)) & ";" &
+                  txtValorCond.Text()
+
+        ColSeleccionada.Format = sFormat
+    End Sub
 #End Region
 
 #Region "Eventos"
+    Private Sub CambioSQL(sender As Object, e As EventArgs)
+        If ColSeleccionada Is Nothing Then Exit Sub
+
+        ColSeleccionada.Formul = cmSqlFormula.Text
+        ColSeleccionada.HelQue = cmSqlHelp.Text
+    End Sub
 
     Private Sub SimpleButton1_Click(sender As Object, e As EventArgs) Handles SimpleButton1.Click
         FontDialog1.Font = edFuente.Font
@@ -152,7 +215,7 @@ Public Class ucFrmColumnas
             edFuente.Font = FontDialog1.Font
             edFuente.Size = New Size(edFuente.Size.Width, 20)
         End If
-
+        ActualizarFormato()
     End Sub
 
     Private Sub gridViewColumnas_SelectionChanged(sender As Object, e As DevExpress.Data.SelectionChangedEventArgs) Handles gridViewColumnas.SelectionChanged
@@ -162,6 +225,7 @@ Public Class ucFrmColumnas
     End Sub
 
     Private Sub cboHelp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboHelp.SelectedIndexChanged
+
         cmSqlHelp.Enabled = GetTipoHelpTexto(cboHelp.Text) = HelpTipo.SQL
     End Sub
 
@@ -183,20 +247,6 @@ Public Class ucFrmColumnas
         CambiarOrdenColumna(1)
     End Sub
 
-    Private Sub CambiarOrdenColumna(pos As Integer)
-        ColSeleccionada.Orden = ColSeleccionada.Orden + pos
-
-        Dim l As New List(Of DetSys)
-        For Each item As DetSys In detSys.Where(Function(t) t.Campo <> ColSeleccionada.Orden)
-            If ColSeleccionada.Orden = item.Orden Then
-                item.Orden = item.Orden + pos
-            End If
-            l.Add(item)
-        Next
-        l.Add(ColSeleccionada)
-
-        detSys = l.OrderBy(Function(t) t.Orden).ToList()
-    End Sub
 
     Private Sub chkHabilita_CheckedChanged(sender As Object, e As EventArgs) Handles chkHabilita.CheckedChanged
         If ColSeleccionada Is Nothing Then Exit Sub
@@ -237,6 +287,35 @@ Public Class ucFrmColumnas
                 ColSeleccionada.DriPre = frmDrillDown.INPUT_GENERAL_AUX
             End If
         End If
+    End Sub
+
+    Private Sub TextEdit6_EditValueChanged(sender As Object, e As EventArgs) Handles TextEdit6.EditValueChanged
+        If ColSeleccionada Is Nothing Then Exit Sub
+        ColSeleccionada.RutaAyuda = TextEdit6.Text
+    End Sub
+
+    Private Sub txtTituloVar_TextChanged(sender As Object, e As EventArgs) Handles txtTituloVar.TextChanged
+        If ColSeleccionada Is Nothing Then Exit Sub
+        ColSeleccionada.Titulo = txtTituloVar.Text
+    End Sub
+
+
+    Private Sub txtAnchoMax_TextChanged(sender As Object, e As EventArgs) Handles txtAnchoMax.TextChanged
+        If ColSeleccionada Is Nothing Then Exit Sub
+        ColSeleccionada.MaxLargo = txtAnchoMax.Text
+
+    End Sub
+    Private Sub txtAncho_TextChanged(sender As Object, e As EventArgs) Handles txtAncho.TextChanged, txtFormato.TextChanged, txtValorCond.TextChanged
+        ActualizarFormato()
+    End Sub
+
+    Private Sub pickFondo_ColorChanged(sender As Object, e As EventArgs) Handles pickFondo.ColorChanged, pickFrente.ColorChanged
+        ActualizarFormato()
+    End Sub
+
+    Private Sub chkReemplazoValores_CheckedChanged(sender As Object, e As EventArgs) Handles chkReemplazoValores.CheckedChanged
+        If ColSeleccionada Is Nothing Then Exit Sub
+        ColSeleccionada.Reemplazo = chkReemplazoValores.Checked
     End Sub
 #End Region
 

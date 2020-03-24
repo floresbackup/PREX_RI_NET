@@ -62,6 +62,7 @@ namespace Prex.Utils.Misc.Forms
             //scintilla1.Text = scintilla1.DescribeKeywordSets();
 
             scintilla1.SetKeywords(0, "select where from use go delete update insert group by having drop table exec create view");
+            
         }
 
     }

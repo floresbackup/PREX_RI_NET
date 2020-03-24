@@ -16,7 +16,7 @@ namespace Prex.Utils
         public static bool IsNullOrEmpty(this object o)
         {
             if (o == null) return true;
-            if ((o is string || o is String) && !o.ToString().Any()) return true;
+            if ((o is string || o is String) && !o.ToString().Trim().Any()) return true;
 
             return false;
         }

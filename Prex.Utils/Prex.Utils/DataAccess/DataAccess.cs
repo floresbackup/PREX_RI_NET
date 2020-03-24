@@ -19,7 +19,7 @@ namespace Prex.Utils
         {
             try
             {
-                
+
                 var cmd = new SqlCommand(sql, con);
 
                 if (con.State == System.Data.ConnectionState.Closed) con.Open();
@@ -27,7 +27,7 @@ namespace Prex.Utils
                 cmd.ExecuteNonQuery();
 
                 con.Close();
-                
+
             }
             catch (Exception ex)
             {
@@ -93,9 +93,9 @@ namespace Prex.Utils
                 con.Open();
 
                 var r = cmd.ExecuteReader();
-                
+
                 //con.Close();
-                
+
                 return r;
             }
             catch (Exception ex)
@@ -108,7 +108,7 @@ namespace Prex.Utils
 
         public static long ProximoID(string tabla, string campoClave) => ProximoID(tabla, campoClave, string.Empty);
 
-        public static long  ProximoID(string tabla, string campoClave, string filtro)
+        public static long ProximoID(string tabla, string campoClave, string filtro)
         {
 
             long proximo = 1;
@@ -125,5 +125,17 @@ namespace Prex.Utils
                 throw new Exception($"Error: ProximoID", ex);
             }
         }
+
+        public static string FechaSQL(DateTime fecha)
+        {
+            if (fecha == DateTime.MinValue)
+                return "'" + String.Format(Configuration.PrexConfig.FFECHA, FechaCorrecta(1, 1900)) + "'";
+            return "'" + String.Format(Configuration.PrexConfig.FFECHA, fecha) + "'";
+
+        }
+
+        public static DateTime FechaCorrecta(int mes, int anio) => mes == 12?DateTime.Parse((anio + 1).ToString() + "-01-01").AddDays(-1):DateTime.Parse(anio.ToString() + "-" + (mes + 1).ToString().PadLeft(2, '0') + "-01").AddDays(-1);
+
+        public static string FlotanteSQL(double numero) => Math.Round(numero, 6).ToString().Replace(",", ".");
     }
 }

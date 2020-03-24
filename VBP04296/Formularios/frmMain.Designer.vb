@@ -49,7 +49,7 @@ Partial Class frmMain
         Me.cmdSaveNuevo = New DevExpress.XtraBars.BarButtonItem()
         Me.cmdObtenerCampos = New DevExpress.XtraBars.BarButtonItem()
         Me.cmdCancelar = New DevExpress.XtraBars.BarButtonItem()
-        Me.BarButtonItem1 = New DevExpress.XtraBars.BarButtonItem()
+        Me.cmdGenerarScipt = New DevExpress.XtraBars.BarButtonItem()
         Me.StandaloneBarDockControl1 = New DevExpress.XtraBars.StandaloneBarDockControl()
         Me.Bar1 = New DevExpress.XtraBars.Bar()
         Me.btnNueva = New DevExpress.XtraBars.BarButtonItem()
@@ -99,6 +99,7 @@ Partial Class frmMain
         Me.LabelControl1 = New DevExpress.XtraEditors.LabelControl()
         Me.tabPageQuery = New DevExpress.XtraTab.XtraTabPage()
         Me.tabPageColumnas = New DevExpress.XtraTab.XtraTabPage()
+        Me.UcFrmColumnas1 = New VBP04296.ucFrmColumnas()
         Me.tabPageProcesos = New DevExpress.XtraTab.XtraTabPage()
         Me.gridProc = New DevExpress.XtraGrid.GridControl()
         Me.gridViewProc = New DevExpress.XtraGrid.Views.Grid.GridView()
@@ -112,7 +113,6 @@ Partial Class frmMain
         Me.LabelControl6 = New DevExpress.XtraEditors.LabelControl()
         Me.LabelControl5 = New DevExpress.XtraEditors.LabelControl()
         Me.LabelControl4 = New DevExpress.XtraEditors.LabelControl()
-        Me.UcFrmColumnas1 = New VBP04296.ucFrmColumnas()
         Me.toolMain.SuspendLayout()
         Me.sbMain.SuspendLayout()
         CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -351,7 +351,7 @@ Partial Class frmMain
         Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl2)
         Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl3)
         Me.BarManager1.Form = Me
-        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.cmdSave, Me.cmdSaveNuevo, Me.cmdObtenerCampos, Me.cmdCancelar, Me.BarButtonItem1, Me.btnNueva, Me.btnEliminar, Me.btnEditar, Me.cmdNuevoProceso, Me.cmdEditarProceso, Me.cmdSubirOrdenProceso, Me.cmdBajarOrdenProceso, Me.cmdEliminarProceso})
+        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.cmdSave, Me.cmdSaveNuevo, Me.cmdObtenerCampos, Me.cmdCancelar, Me.cmdGenerarScipt, Me.btnNueva, Me.btnEliminar, Me.btnEditar, Me.cmdNuevoProceso, Me.cmdEditarProceso, Me.cmdSubirOrdenProceso, Me.cmdBajarOrdenProceso, Me.cmdEliminarProceso})
         Me.BarManager1.MainMenu = Me.Bar2
         Me.BarManager1.MaxItemId = 13
         '
@@ -362,7 +362,7 @@ Partial Class frmMain
         Me.Bar2.DockRow = 0
         Me.Bar2.DockStyle = DevExpress.XtraBars.BarDockStyle.Standalone
         Me.Bar2.FloatLocation = New System.Drawing.Point(272, 242)
-        Me.Bar2.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.KeyTip, Me.cmdSave, "", False, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.Standard, "", ""), New DevExpress.XtraBars.LinkPersistInfo(Me.cmdSaveNuevo), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.cmdObtenerCampos, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.cmdCancelar, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.BarButtonItem1, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)})
+        Me.Bar2.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.KeyTip, Me.cmdSave, "", False, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.Standard, "", ""), New DevExpress.XtraBars.LinkPersistInfo(Me.cmdSaveNuevo), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.cmdObtenerCampos, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.cmdCancelar, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.cmdGenerarScipt, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)})
         Me.Bar2.OptionsBar.AllowQuickCustomization = False
         Me.Bar2.OptionsBar.DrawBorder = False
         Me.Bar2.OptionsBar.DrawDragBorder = False
@@ -403,13 +403,13 @@ Partial Class frmMain
         Me.cmdCancelar.ImageOptions.LargeImage = CType(resources.GetObject("cmdCancelar.ImageOptions.LargeImage"), System.Drawing.Image)
         Me.cmdCancelar.Name = "cmdCancelar"
         '
-        'BarButtonItem1
+        'cmdGenerarScipt
         '
-        Me.BarButtonItem1.Caption = "Generar Script"
-        Me.BarButtonItem1.Id = 4
-        Me.BarButtonItem1.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image"), System.Drawing.Image)
-        Me.BarButtonItem1.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.BarButtonItem1.Name = "BarButtonItem1"
+        Me.cmdGenerarScipt.Caption = "Generar Script"
+        Me.cmdGenerarScipt.Id = 4
+        Me.cmdGenerarScipt.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image"), System.Drawing.Image)
+        Me.cmdGenerarScipt.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.cmdGenerarScipt.Name = "cmdGenerarScipt"
         '
         'StandaloneBarDockControl1
         '
@@ -918,7 +918,7 @@ Partial Class frmMain
         Me.tabPageQuery.ImageOptions.Image = CType(resources.GetObject("tabPageQuery.ImageOptions.Image"), System.Drawing.Image)
         Me.tabPageQuery.Margin = New System.Windows.Forms.Padding(0)
         Me.tabPageQuery.Name = "tabPageQuery"
-        Me.tabPageQuery.Size = New System.Drawing.Size(813, 518)
+        Me.tabPageQuery.Size = New System.Drawing.Size(812, 508)
         Me.tabPageQuery.Text = "Query"
         '
         'tabPageColumnas
@@ -929,6 +929,14 @@ Partial Class frmMain
         Me.tabPageColumnas.Name = "tabPageColumnas"
         Me.tabPageColumnas.Size = New System.Drawing.Size(812, 508)
         Me.tabPageColumnas.Text = "Columnas"
+        '
+        'UcFrmColumnas1
+        '
+        Me.UcFrmColumnas1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.UcFrmColumnas1.Location = New System.Drawing.Point(0, 0)
+        Me.UcFrmColumnas1.Name = "UcFrmColumnas1"
+        Me.UcFrmColumnas1.Size = New System.Drawing.Size(812, 508)
+        Me.UcFrmColumnas1.TabIndex = 0
         '
         'tabPageProcesos
         '
@@ -947,7 +955,7 @@ Partial Class frmMain
         Me.tabPageProcesos.ImageOptions.Image = CType(resources.GetObject("tabPageProcesos.ImageOptions.Image"), System.Drawing.Image)
         Me.tabPageProcesos.Margin = New System.Windows.Forms.Padding(0)
         Me.tabPageProcesos.Name = "tabPageProcesos"
-        Me.tabPageProcesos.Size = New System.Drawing.Size(813, 518)
+        Me.tabPageProcesos.Size = New System.Drawing.Size(812, 508)
         Me.tabPageProcesos.Text = "Procesos Previos"
         '
         'gridProc
@@ -1052,14 +1060,6 @@ Partial Class frmMain
         Me.LabelControl4.TabIndex = 0
         Me.LabelControl4.Text = "Orden:"
         '
-        'UcFrmColumnas1
-        '
-        Me.UcFrmColumnas1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.UcFrmColumnas1.Location = New System.Drawing.Point(0, 0)
-        Me.UcFrmColumnas1.Name = "UcFrmColumnas1"
-        Me.UcFrmColumnas1.Size = New System.Drawing.Size(812, 508)
-        Me.UcFrmColumnas1.TabIndex = 0
-        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1157,7 +1157,7 @@ Partial Class frmMain
     Friend WithEvents cmdSaveNuevo As DevExpress.XtraBars.BarButtonItem
     Friend WithEvents cmdObtenerCampos As DevExpress.XtraBars.BarButtonItem
     Friend WithEvents cmdCancelar As DevExpress.XtraBars.BarButtonItem
-    Friend WithEvents BarButtonItem1 As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents cmdGenerarScipt As DevExpress.XtraBars.BarButtonItem
     Friend WithEvents barDockControlTop As DevExpress.XtraBars.BarDockControl
     Friend WithEvents barDockControlBottom As DevExpress.XtraBars.BarDockControl
     Friend WithEvents barDockControlLeft As DevExpress.XtraBars.BarDockControl
