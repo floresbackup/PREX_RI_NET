@@ -79,9 +79,9 @@ Partial Class ucFrmColumnas
         Me.gridViewColumnas = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.BarManager1 = New DevExpress.XtraBars.BarManager(Me.components)
         Me.Bar1 = New DevExpress.XtraBars.Bar()
-        Me.BarButtonItem1 = New DevExpress.XtraBars.BarButtonItem()
-        Me.BarButtonItem3 = New DevExpress.XtraBars.BarButtonItem()
-        Me.BarButtonItem2 = New DevExpress.XtraBars.BarButtonItem()
+        Me.btnEliminarColumna = New DevExpress.XtraBars.BarButtonItem()
+        Me.btnSubirColumna = New DevExpress.XtraBars.BarButtonItem()
+        Me.btnBajarColumna = New DevExpress.XtraBars.BarButtonItem()
         Me.StandaloneBarDockControl1 = New DevExpress.XtraBars.StandaloneBarDockControl()
         Me.barDockControlTop = New DevExpress.XtraBars.BarDockControl()
         Me.barDockControlBottom = New DevExpress.XtraBars.BarDockControl()
@@ -741,7 +741,7 @@ Partial Class ucFrmColumnas
         Me.BarManager1.DockControls.Add(Me.barDockControlRight)
         Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl1)
         Me.BarManager1.Form = Me
-        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.BarButtonItem1, Me.BarButtonItem2, Me.BarButtonItem3})
+        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.btnEliminarColumna, Me.btnBajarColumna, Me.btnSubirColumna})
         Me.BarManager1.MaxItemId = 3
         '
         'Bar1
@@ -751,35 +751,35 @@ Partial Class ucFrmColumnas
         Me.Bar1.DockRow = 0
         Me.Bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Standalone
         Me.Bar1.FloatLocation = New System.Drawing.Point(1098, 149)
-        Me.Bar1.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.BarButtonItem1), New DevExpress.XtraBars.LinkPersistInfo(Me.BarButtonItem3, True), New DevExpress.XtraBars.LinkPersistInfo(Me.BarButtonItem2)})
+        Me.Bar1.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.btnEliminarColumna), New DevExpress.XtraBars.LinkPersistInfo(Me.btnSubirColumna, True), New DevExpress.XtraBars.LinkPersistInfo(Me.btnBajarColumna)})
         Me.Bar1.OptionsBar.AllowQuickCustomization = False
         Me.Bar1.OptionsBar.DrawBorder = False
         Me.Bar1.StandaloneBarDockControl = Me.StandaloneBarDockControl1
         Me.Bar1.Text = "Personalizada 3"
         '
-        'BarButtonItem1
+        'btnEliminarColumna
         '
-        Me.BarButtonItem1.Caption = "BarButtonItem1"
-        Me.BarButtonItem1.Id = 0
-        Me.BarButtonItem1.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image"), System.Drawing.Image)
-        Me.BarButtonItem1.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.BarButtonItem1.Name = "BarButtonItem1"
+        Me.btnEliminarColumna.Caption = "BarButtonItem1"
+        Me.btnEliminarColumna.Id = 0
+        Me.btnEliminarColumna.ImageOptions.Image = CType(resources.GetObject("btnEliminarColumna.ImageOptions.Image"), System.Drawing.Image)
+        Me.btnEliminarColumna.ImageOptions.LargeImage = CType(resources.GetObject("btnEliminarColumna.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.btnEliminarColumna.Name = "btnEliminarColumna"
         '
-        'BarButtonItem3
+        'btnSubirColumna
         '
-        Me.BarButtonItem3.Caption = "Subir"
-        Me.BarButtonItem3.Id = 2
-        Me.BarButtonItem3.ImageOptions.Image = CType(resources.GetObject("BarButtonItem3.ImageOptions.Image"), System.Drawing.Image)
-        Me.BarButtonItem3.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem3.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.BarButtonItem3.Name = "BarButtonItem3"
+        Me.btnSubirColumna.Caption = "Subir"
+        Me.btnSubirColumna.Id = 2
+        Me.btnSubirColumna.ImageOptions.Image = CType(resources.GetObject("btnSubirColumna.ImageOptions.Image"), System.Drawing.Image)
+        Me.btnSubirColumna.ImageOptions.LargeImage = CType(resources.GetObject("btnSubirColumna.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.btnSubirColumna.Name = "btnSubirColumna"
         '
-        'BarButtonItem2
+        'btnBajarColumna
         '
-        Me.BarButtonItem2.Caption = "Bajar"
-        Me.BarButtonItem2.Id = 1
-        Me.BarButtonItem2.ImageOptions.Image = CType(resources.GetObject("BarButtonItem2.ImageOptions.Image"), System.Drawing.Image)
-        Me.BarButtonItem2.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem2.ImageOptions.LargeImage"), System.Drawing.Image)
-        Me.BarButtonItem2.Name = "BarButtonItem2"
+        Me.btnBajarColumna.Caption = "Bajar"
+        Me.btnBajarColumna.Id = 1
+        Me.btnBajarColumna.ImageOptions.Image = CType(resources.GetObject("btnBajarColumna.ImageOptions.Image"), System.Drawing.Image)
+        Me.btnBajarColumna.ImageOptions.LargeImage = CType(resources.GetObject("btnBajarColumna.ImageOptions.LargeImage"), System.Drawing.Image)
+        Me.btnBajarColumna.Name = "btnBajarColumna"
         '
         'StandaloneBarDockControl1
         '
@@ -953,9 +953,9 @@ Partial Class ucFrmColumnas
     Friend WithEvents barDockControlLeft As DevExpress.XtraBars.BarDockControl
     Friend WithEvents barDockControlRight As DevExpress.XtraBars.BarDockControl
     Friend WithEvents Bar1 As DevExpress.XtraBars.Bar
-    Friend WithEvents BarButtonItem1 As DevExpress.XtraBars.BarButtonItem
-    Friend WithEvents BarButtonItem2 As DevExpress.XtraBars.BarButtonItem
-    Friend WithEvents BarButtonItem3 As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents btnEliminarColumna As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents btnBajarColumna As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents btnSubirColumna As DevExpress.XtraBars.BarButtonItem
     Friend WithEvents PanelControl7 As DevExpress.XtraEditors.PanelControl
     Friend WithEvents gridColumnas As DevExpress.XtraGrid.GridControl
     Friend WithEvents gridViewColumnas As DevExpress.XtraGrid.Views.Grid.GridView

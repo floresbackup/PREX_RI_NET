@@ -1,4 +1,5 @@
 ﻿Imports VBP04296.Dominio
+Imports Prex.Utils.ExtensionMehods
 
 Public Class ucFrmColumnas
     Private cmSqlHelp As ScintillaNET.Scintilla
@@ -9,6 +10,17 @@ Public Class ucFrmColumnas
         TipoDato = 0  '"Utilizar el tipo de dato",
         SQL = 1 '"Utilizar Help SQL"
     End Enum
+
+    Private ReadOnly Property ColSeleccionada As DetSys
+        Get
+            If detSys Is Nothing OrElse Not detSys.Any() Then Return Nothing
+
+            Dim llave = gridViewColumnas.FocusedValue()
+            If llave.IsNullOrEmpty() Then detSys.FirstOrDefault()
+
+            Return detSys.FirstOrDefault(Function(t) t.Campo = llave)
+        End Get
+    End Property
 
     Public Sub New()
 
@@ -50,6 +62,9 @@ Public Class ucFrmColumnas
             For Each item As DevExpress.XtraGrid.Columns.GridColumn In gridViewColumnas.Columns
                 item.Visible = item.FieldName.Contains("Campo")
             Next
+            gridViewColumnas.FocusedRowHandle = 0
+            gridViewColumnas.SelectRow(0)
+
             MostrarColumna(tDetSys.OrderBy(Function(c) c.Orden).FirstOrDefault())
         Finally
             AddHandler gridViewColumnas.SelectionChanged, AddressOf gridViewColumnas_SelectionChanged
@@ -129,6 +144,8 @@ Public Class ucFrmColumnas
 
 #End Region
 
+#Region "Eventos"
+
     Private Sub SimpleButton1_Click(sender As Object, e As EventArgs) Handles SimpleButton1.Click
         FontDialog1.Font = edFuente.Font
         If FontDialog1.ShowDialog() = DialogResult.OK Then
@@ -139,7 +156,7 @@ Public Class ucFrmColumnas
     End Sub
 
     Private Sub gridViewColumnas_SelectionChanged(sender As Object, e As DevExpress.Data.SelectionChangedEventArgs) Handles gridViewColumnas.SelectionChanged
-        Dim llave = gridViewColumnas.FocusedValue()
+        Dim llave = ColSeleccionada?.Campo
 
         MostrarColumna(detSys.FirstOrDefault(Function(t) t.Campo = llave))
     End Sub
@@ -147,4 +164,80 @@ Public Class ucFrmColumnas
     Private Sub cboHelp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboHelp.SelectedIndexChanged
         cmSqlHelp.Enabled = GetTipoHelpTexto(cboHelp.Text) = HelpTipo.SQL
     End Sub
+
+    Private Sub btnBajarColumna_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles btnBajarColumna.ItemClick
+        CambiarOrdenColumna(-1)
+    End Sub
+
+    Private Sub btnEliminarColumna_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles btnEliminarColumna.ItemClick
+
+        If ColSeleccionada Is Nothing Then Exit Sub
+        detSys.Remove(ColSeleccionada)
+        gridViewColumnas.FocusedRowHandle = 0
+        gridViewColumnas.SelectRow(0)
+        MostrarColumna(detSys.FirstOrDefault())
+
+    End Sub
+
+    Private Sub btnSubirColumna_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles btnSubirColumna.ItemClick
+        CambiarOrdenColumna(1)
+    End Sub
+
+    Private Sub CambiarOrdenColumna(pos As Integer)
+        ColSeleccionada.Orden = ColSeleccionada.Orden + pos
+
+        Dim l As New List(Of DetSys)
+        For Each item As DetSys In detSys.Where(Function(t) t.Campo <> ColSeleccionada.Orden)
+            If ColSeleccionada.Orden = item.Orden Then
+                item.Orden = item.Orden + pos
+            End If
+            l.Add(item)
+        Next
+        l.Add(ColSeleccionada)
+
+        detSys = l.OrderBy(Function(t) t.Orden).ToList()
+    End Sub
+
+    Private Sub chkHabilita_CheckedChanged(sender As Object, e As EventArgs) Handles chkHabilita.CheckedChanged
+        If ColSeleccionada Is Nothing Then Exit Sub
+        ColSeleccionada.Habili = chkHabilita.Checked
+    End Sub
+
+    Private Sub chkVisGrilla_CheckedChanged(sender As Object, e As EventArgs) Handles chkVisGrilla.CheckedChanged
+        If ColSeleccionada Is Nothing Then Exit Sub
+        ColSeleccionada.Visible = chkVisGrilla.Checked
+    End Sub
+
+    Private Sub chkVisABM_CheckedChanged(sender As Object, e As EventArgs) Handles chkVisABM.CheckedChanged
+        If ColSeleccionada Is Nothing Then Exit Sub
+        ColSeleccionada.VisABM = chkVisABM.Checked
+    End Sub
+
+    Private Sub chkClaveTabla_CheckedChanged(sender As Object, e As EventArgs) Handles chkClaveTabla.CheckedChanged
+        If ColSeleccionada Is Nothing Then Exit Sub
+        ColSeleccionada.Llave = chkClaveTabla.Checked
+    End Sub
+
+    Private Sub chkDrillDown_CheckedChanged(sender As Object, e As EventArgs) Handles chkDrillDown.CheckedChanged
+        If ColSeleccionada Is Nothing Then Exit Sub
+        ColSeleccionada.DrillD = chkDrillDown.Checked
+        btnQueryDrillDown.Enabled = chkDrillDown.Checked
+    End Sub
+
+    Private Sub btnQueryDrillDown_Click(sender As Object, e As EventArgs) Handles btnQueryDrillDown.Click
+        If ColSeleccionada Is Nothing Then Exit Sub
+
+        Dim frmDrill As New frmDrillDown()
+        frmDrill.PasarQuery(ColSeleccionada.DriQue, $"DrillDown {ColSeleccionada.Campo}", sProcesoPrevio:=ColSeleccionada.DriPre)
+        If frmDrill.ShowDialog() = DialogResult.OK Then
+            If frmDrillDown.INPUT_GENERAL <> String.Empty Then
+                ColSeleccionada.DriQue = frmDrillDown.INPUT_GENERAL
+            End If
+            If frmDrillDown.INPUT_GENERAL_AUX <> String.Empty Then
+                ColSeleccionada.DriPre = frmDrillDown.INPUT_GENERAL_AUX
+            End If
+        End If
+    End Sub
+#End Region
+
 End Class
