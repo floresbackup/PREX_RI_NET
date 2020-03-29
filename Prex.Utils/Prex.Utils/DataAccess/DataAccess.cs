@@ -116,7 +116,7 @@ namespace Prex.Utils
             if (filtro.Any()) sSQL += $" where {filtro}";
             try
             {
-                proximo = (long)GetScalar(sSQL) + 1;
+                proximo = long.Parse(GetScalar(sSQL).ToString()) + 1;
                 return proximo;
             }
             catch (Exception ex)
@@ -130,12 +130,88 @@ namespace Prex.Utils
         {
             if (fecha == DateTime.MinValue)
                 return "'" + String.Format(Configuration.PrexConfig.FFECHA, FechaCorrecta(1, 1900)) + "'";
-            return "'" + String.Format(Configuration.PrexConfig.FFECHA, fecha) + "'";
+            return fecha.ToString( Configuration.PrexConfig.FFECHA);
 
         }
 
         public static DateTime FechaCorrecta(int mes, int anio) => mes == 12?DateTime.Parse((anio + 1).ToString() + "-01-01").AddDays(-1):DateTime.Parse(anio.ToString() + "-" + (mes + 1).ToString().PadLeft(2, '0') + "-01").AddDays(-1);
 
         public static string FlotanteSQL(double numero) => Math.Round(numero, 6).ToString().Replace(",", ".");
+
+		public static int TipoDatosRS(string tipo)
+		{
+			switch (tipo.ToLower())
+			{
+				case "datetime": 
+					return 135;
+				case "time":
+					return 134;
+				case "date":
+					return 133;
+				case "smalldatetime":
+					return 135;
+				case "binary":
+					return 123;
+				case "char":
+					return 129;
+				case "nchar":
+					return 130;
+				case "varchar":
+					return 200;
+				case "text":
+					return 201;
+				case "nvarchar":
+					return 202;
+				case "ntext":
+					return 203;
+				case "bigint":
+					return 20;
+				case "bit":
+					return 11;
+				case "money":
+				case "smallmoney":
+					return 6;
+				case "float":
+					return 5;
+				case "decimal":
+				case "numeric":
+					return 131;
+				case "real":
+					return 4;
+				case "smallint":
+					return 2;
+				case "tinyint":
+					return 17;
+				case "int":
+					return 3;
+				default:
+					return 200;
+			}
+
+		}
+
+		public static TipoDatosDAO TipoDatosDao(string tipo)
+		{
+			int i = 0;
+			return TipoDatosDao(tipo, ref i); 
+		}
+		public static TipoDatosDAO TipoDatosDao(string tipo, ref int tipoDato)
+		{
+			switch (tipo.ToLower())
+			{
+				case "datetime": case "time":
+				case "smalldatetime":
+				case "date":
+					return TipoDatosDAO.FechaHora;
+				case "binary":	case "varbinary": case "xml":
+				case "varchar": case "char": case "text":
+				case "nchar": case "nvarchar": case "ntext":
+					tipoDato = 1;
+					return TipoDatosDAO.Texto;
+				default:
+					tipoDato = 0;
+					return TipoDatosDAO.Numerico;
+			}
+		}
     }
 }

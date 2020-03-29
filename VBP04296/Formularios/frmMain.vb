@@ -17,11 +17,15 @@ Public Class frmMain
     Private oDetSys As List(Of DetSys)
     Private cmSql As ScintillaNET.Scintilla
 
-    Public Sub New()
+	Private ucFrmColumnas1 As ucFrmColumnas
 
-        ' Llamada necesaria para el Diseñador de Windows Forms.
-        InitializeComponent()
+	Public Sub New()
+		' Llamada necesaria para el Diseñador de Windows Forms.
+		InitializeComponent()
 
+		ucFrmColumnas1 = New ucFrmColumnas()
+		ucFrmColumnas1.Parent = tabPageColumnas
+		ucFrmColumnas1.Dock = DockStyle.Fill
 	End Sub
 
 	'#Region "Metodos"
@@ -487,20 +491,25 @@ Public Class frmMain
         Dim con As SqlConnection = Nothing
         Try
             Me.Cursor = Cursors.WaitCursor
-            Try
-                If Not VerificacionExistenciaConsulta() Then Exit Sub
-                con = DataAccess.GetConnection()
+			Try
+				tCabSys.CS_NOMBRE = txtNombreCab.Text
+				tCabSys.CS_CODTRA = txtCodTraCab.Text
+				tCabSys.CS_DESCRI = txtDescriCab.Text
 
-                tr = con.BeginTransaction()
-                GuardarEncabezado(con, tr)
-                GuardarVariablesEntrada(con, tr)
-                GuardarProcesosPrevios(con, tr)
-                GuardarColumnas(con, tr)
-                GuardarGraficos(con, tr)
 
-                tr.Commit()
-            Catch ex As Exception
-                If tr IsNot Nothing Then tr.Rollback()
+				If Not VerificacionExistenciaConsulta() Then Exit Sub
+				con = DataAccess.GetConnection()
+
+				tr = con.BeginTransaction()
+				GuardarEncabezado(con, tr)
+				GuardarVariablesEntrada(con, tr)
+				GuardarProcesosPrevios(con, tr)
+				GuardarColumnas(con, tr)
+				GuardarGraficos(con, tr)
+
+				tr.Commit()
+			Catch ex As Exception
+				If tr IsNot Nothing Then tr.Rollback()
                 ManejarErrores.TratarError(ex, "GuardarConsulta")
             End Try
 
@@ -545,15 +554,15 @@ Public Class frmMain
 
     End Sub
 
-    Private Function GetCellBase64Value(row As DataRow, campo As String) As String
-        If row IsNot Nothing Then
-            Return Misc.Encoding.Base64DeCode(row(campo))
-        Else
-            Return String.Empty
-        End If
-    End Function
+	Private Function GetCellBase64Value(row As DataRow, campo As String) As String
+		If row IsNot Nothing Then
+			Return Prex.Utils.Misc.Encoding.Base64DeCode(row(campo).ToString)
+		Else
+			Return String.Empty
+		End If
+	End Function
 
-    Private Sub CargarConsultaSeleccionada()
+	Private Sub CargarConsultaSeleccionada()
 
         NuevaConsulta()
         Dim hdle = GridViewCons.FocusedRowHandle
@@ -667,13 +676,13 @@ Public Class frmMain
         oDetSys.Clear()
         Dim rd As SqlDataReader = DataAccess.GetReader(sSQL)
         While rd.Read
-            oDetSys.Add(New DetSys(Long.Parse(rd("DS_CODCON").ToString), Integer.Parse(rd("DS_ORDEN").ToString), rd("DS_CAMPO").ToString,
-                                   Integer.Parse(rd("DS_TIPO").ToString), Integer.Parse(rd("DS_LARGO").ToString), rd("DS_FORMAT").ToString, rd("DS_TITULO").ToString,
-                                   rd("DS_HELP").ToString, Misc.Encoding.Base64DeCode(rd("DS_HELQUE").ToString), Misc.Encoding.Base64DeCode(rd("DS_FORMUL").ToString),
-                                   Boolean.Parse(rd("DS_HABILI")), Boolean.Parse(rd("DS_VISIBL")), Boolean.Parse(rd("DS_VISABM")), Boolean.Parse(rd("DS_LLAVE")),
-                                   Boolean.Parse(rd("DS_DRILLD")), Misc.Encoding.Base64DeCode(rd("DS_DRIQUE").ToString), Misc.Encoding.Base64DeCode(rd("DS_DRIPRE")),
-                                   Boolean.Parse(rd("DS_REEMPL")), rd("DS_AYUDA").ToString, Integer.Parse(rd("DS_MAXLAR")), "K" & rd("DS_ORDEN").ToString))
-        End While
+			oDetSys.Add(New DetSys(Long.Parse(rd("DS_CODCON").ToString), Integer.Parse(rd("DS_ORDEN").ToString), rd("DS_CAMPO").ToString,
+								   Integer.Parse(rd("DS_TIPO").ToString), Integer.Parse(rd("DS_LARGO").ToString), rd("DS_FORMAT").ToString, rd("DS_TITULO").ToString,
+								   rd("DS_HELP").ToString, Misc.Encoding.Base64DeCode(rd("DS_HELQUE").ToString), Misc.Encoding.Base64DeCode(rd("DS_FORMUL").ToString),
+								   Boolean.Parse(rd("DS_HABILI")), Boolean.Parse(rd("DS_VISIBL")), Boolean.Parse(rd("DS_VISABM")), Boolean.Parse(rd("DS_LLAVE")),
+								   Boolean.Parse(rd("DS_DRILLD")), Misc.Encoding.Base64DeCode(rd("DS_DRIQUE").ToString), IIf(Convert.IsDBNull(rd("DS_DRIPRE")), String.Empty, Misc.Encoding.Base64DeCode(rd("DS_DRIPRE").ToString)),
+								   Boolean.Parse(rd("DS_REEMPL")), IIf(Convert.IsDBNull(rd("DS_AYUDA")), String.Empty, rd("DS_AYUDA").ToString), Integer.Parse(rd("DS_MAXLAR")), "K" & rd("DS_ORDEN").ToString))
+		End While
         rd.Close()
         UcFrmColumnas1.CargarGrillaColumnas(oDetSys)
 
@@ -762,17 +771,13 @@ Public Class frmMain
 	End Sub
 
 	Private Sub btnSalir_Click(sender As Object, e As EventArgs) Handles btnSalir.Click
-        Me.Close()
-    End Sub
-
-    Private Sub TableLayoutPanel2_Paint(sender As Object, e As PaintEventArgs) Handles TableLayoutPanel2.Paint
-
-    End Sub
+		Me.Close()
+	End Sub
 #End Region
 
 #Region "Eventos Controles"
 
-    Private Sub chkABM_CheckedChanged(sender As Object, e As EventArgs) Handles chkABM.CheckedChanged
+	Private Sub chkABM_CheckedChanged(sender As Object, e As EventArgs) Handles chkABM.CheckedChanged
         tCabSys.CS_UPDATE = chkABM.Checked
         cmdQueryUpdate.Enabled = chkABM.Checked
         cmdModValida.Enabled = chkABM.Checked
@@ -865,31 +870,12 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub chkBaja_CheckedChanged(sender As Object, e As EventArgs) Handles chkBaja.CheckedChanged
-        tCabSys.CS_BAJA = chkBaja.Checked
-        cmdBaja.Enabled = tCabSys.CS_BAJA
-    End Sub
+	Private Sub chkBaja_CheckedChanged(sender As Object, e As EventArgs) Handles chkBaja.CheckedChanged
+		tCabSys.CS_BAJA = chkBaja.Checked
+		cmdBaja.Enabled = tCabSys.CS_BAJA
+	End Sub
 
-    ' Private Sub cmdDrill_Click(sender As Object, e As EventArgs) handles cmdDrill.Click
-
-    '        Load frmDrillDown
-    '   frmDrillDown.PasarConsulta tCabSys.CS_CODTRA, oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Campo, oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DriQue, oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DriPre
-    '   frmDrillDown.Show vbModal, Me
-
-    '    If Trim(INPUT_GENERAL) <> "" Then
-    '            oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DriQue = INPUT_GENERAL
-
-    '            If Trim(INPUT_GENERAL_AUX) <> "" Then
-    '                oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).DriPre = INPUT_GENERAL_AUX
-    '            End If
-
-    '        Else
-    '            chkDrill.Value = 0
-    '        End If
-
-    ' End Sub
-
-    Private Sub cmdDrillDown_Click(sender As Object, e As EventArgs) Handles cmdDrillDown.Click
+	Private Sub cmdDrillDown_Click(sender As Object, e As EventArgs) Handles cmdDrillDown.Click
         Dim frmDrill As New frmDrillDown()
         frmDrill.PasarConsulta(tCabSys.CS_CODTRA, "", tCabSys.CS_DRIQUE, tCabSys.CS_DRIPRE)
 
@@ -905,7 +891,7 @@ Public Class frmMain
     End Sub
 
 	Private Sub cmdCancelar_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdCancelar.ItemClick
-		Dim res As MsgBoxResult = MsgBox("¿Esta seguro que desea canceclar los cambios realizados?", vbQuestion + vbYesNo, "Pregunta del sistema")
+		Dim res As MsgBoxResult = MsgBox("¿Esta seguro que desea cancelar los cambios realizados?", vbQuestion + vbYesNo, "Pregunta del sistema")
 		If res = MsgBoxResult.Yes Then
 			NuevaConsulta()
 		End If
@@ -924,105 +910,33 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub btnEliminar_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles btnEliminar.ItemClick
+	Private Sub btnEliminar_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles btnEliminar.ItemClick
 
-        If Prex.Utils.MensajesForms.MostrarPregunta("¿Eliminar la consulta de la base de datos?") = DialogResult.Yes Then
-            EliminarConsulta()
-        End If
+		If Prex.Utils.MensajesForms.MostrarPregunta("¿Eliminar la consulta de la base de datos?") = DialogResult.Yes Then
+			EliminarConsulta()
+		End If
 
-    End Sub
+	End Sub
 
+	Private Sub btnEditar_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles btnEditar.ItemClick
+		EditarConsulta()
+	End Sub
 
-    '    Private Sub cmdFondo_Click()
+	Private Sub btnNuevaConsulta_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles btnNueva.ItemClick
+		Dim res = Prex.Utils.MensajesForms.MostrarPreguntaCancelar("Se perderan los cambios de la consulta actual. ¿Desea guardar los cambios?")
+		Select Case res
+			Case DialogResult.Yes
+				GuardarConsulta()
+			Case DialogResult.No
+				NuevaConsulta()
+			Case DialogResult.Cancel
+				Exit Sub
+			Case Else
+				Exit Sub
+		End Select
+	End Sub
 
-    '        On Error Resume Next
-
-    '        Dim nColor As Long
-
-    '        nColor = picFondo.BackColor
-
-    '        If VBChooseColor(nColor, True, True) Then
-    '            picFondo.BackColor = nColor
-
-    '            Dim sFormat As String
-
-    '            sFormat = txtFormat.Text & ";" &
-    '             picFondo.BackColor & ";" &
-    '             picFrente.BackColor & ";" &
-    '             txtFuente.Font.name & ";" &
-    '             IIf(txtFuente.Font.Bold, 1, 0) & ";" &
-    '             IIf(txtFuente.Font.Underline, 1, 0) & ";" &
-    '             IIf(txtFuente.Font.Strikethrough, 1, 0) & ";" &
-    '             Int(Val(txtFuente.Font.Size)) & ";" &
-    '             Int(Val(txtAncho.Text)) & ";" &
-    '             txtCond
-
-    '            oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Format = sFormat
-
-    '        End If
-
-    '    End Sub
-
-    '    Private Sub cmdFrente_Click()
-
-
-    '        Dim nColor As Long
-
-    '        nColor = picFrente.BackColor
-
-    '        If VBChooseColor(nColor, True, True) Then
-    '            picFrente.BackColor = nColor
-
-    '            Dim sFormat As String
-
-    '            sFormat = txtFormat.Text & ";" &
-    '             picFondo.BackColor & ";" &
-    '             picFrente.BackColor & ";" &
-    '             txtFuente.Font.name & ";" &
-    '             IIf(txtFuente.Font.Bold, 1, 0) & ";" &
-    '             IIf(txtFuente.Font.Underline, 1, 0) & ";" &
-    '             IIf(txtFuente.Font.Strikethrough, 1, 0) & ";" &
-    '             Int(Val(txtFuente.Font.Size)) & ";" &
-    '             Int(Val(txtAncho.Text)) & ";" &
-    '             txtCond
-
-    '            oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Format = sFormat
-
-    '        End If
-
-    '    End Sub
-
-    '    Private Sub cmdFuente_Click()
-
-    '        Dim oFont As StdFont
-
-    '    Set oFont = New StdFont
-    '    Set oFont = txtFuente.Font
-
-    '    If VBChooseFont(oFont) Then
-    '    Set txtFuente.Font = oFont
-
-    '    Dim sFormat As String
-
-    '            sFormat = txtFormat.Text & ";" &
-    '             picFondo.BackColor & ";" &
-    '             picFrente.BackColor & ";" &
-    '             txtFuente.Font.name & ";" &
-    '             IIf(txtFuente.Font.Bold, 1, 0) & ";" &
-    '             IIf(txtFuente.Font.Underline, 1, 0) & ";" &
-    '             IIf(txtFuente.Font.Strikethrough, 1, 0) & ";" &
-    '             Int(Val(txtFuente.Font.Size)) & ";" &
-    '             Int(Val(txtAncho.Text)) & ";" &
-    '             txtCond
-
-    '            oDetSys(GridCols.Value(GridCols.Columns("Key").Index)).Format = sFormat
-
-    '        End If
-
-    '    Set oFont = Nothing
-
-
-    Private Sub cmdModValida_Click() Handles cmdModValida.Click
+	Private Sub cmdModValida_Click() Handles cmdModValida.Click
         Dim frmDrillDown As New frmDrillDown()
         frmDrillDown.PasarQuery(tCabSys.CS_MODVAL)
         If frmDrillDown.ShowDialog = DialogResult.OK Then
@@ -1148,85 +1062,24 @@ Public Class frmMain
         SubirOrdenPro()
     End Sub
 
-    Private Sub cmdBajarOrdenProceso_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdBajarOrdenProceso.ItemClick
-        BajarOrdenPro()
-    End Sub
+	Private Sub cmdBajarOrdenProceso_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdBajarOrdenProceso.ItemClick
+		BajarOrdenPro()
+	End Sub
 
-    '    Private Function cmSQL_RClick(ByVal Control As CodeMaxCtl.ICodeMax) As Boolean
-    '        cmSQL_RClick = True
-    '    End Function
+	Private Sub cmdObtenerCampos_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdObtenerCampos.ItemClick
+		UcFrmColumnas1.ObtenerCampos(tCabSys.CS_CODCON, tCabSys.CS_QUERY, tVarSys)
+		tabPanel.SelectedTabPage = tabPageColumnas
+		tabPageColumnas.Select()
+	End Sub
 
-    '    Private Sub dckCampos_CommandClick(ByVal Command As InnovaDSXP.Command)
-
-    '        Select Case Command.name
-
-    '            Case "btnBaja"
-    '                If Pregunta("¿Eliminar columna?") = vbYes Then
-    '                    EliminarCampo GridCols.Value(GridCols.Columns("Key").Index)
-    '    End If
-
-    '            Case "btnArriba"
-    '                SubirOrdenCol GridCols.Value(GridCols.Columns("Orden").Index)
-
-    '    Case "btnAbajo"
-    '                BajarOrdenCol GridCols.Value(GridCols.Columns("Orden").Index)
-
-    '    End Select
-
-    '    End Sub
-
-    '    Private Sub dckCons_CommandClick(ByVal Command As InnovaDSXP.Command)
-
-    '        Dim oRespuesta As VbMsgBoxResult
-
-    '        Select Case Command.name
-
-    '            Case "btnNuevo"
-
-    '                oRespuesta = MsgBox("Se perderan los cambios de la consulta actual. ¿Desea guardar los cambios?", vbQuestion + vbYesNoCancel, "Preguta del sistema")
-
-    '                If oRespuesta = vbYes Then
-    '                    GuardarConsulta
-    '                ElseIf oRespuesta = vbCancel Then
-    '                    Exit Sub
-    '                Else
-    '                    NuevaConsulta
-    '                End If
-
-    '            Case "btnBaja"
-
-    '                If Pregunta("¿Eliminar la consulta de la base de datos?") = vbYes Then
-    '                    EliminarConsulta
-    '                End If
-
-    '            Case "btnEditar"
-    '                EditarConsulta
-
-    '        End Select
-
-    '    End Sub
-
-    '    Private Sub dckStudio_CommandClick(ByVal Command As InnovaDSXP.Command)
-
-    '        Select Case Command.name
-
-    '            Case "btnAyuda"
-
-    '                Ayuda
-
-    '            Case "btnSalir"
-
-    '                Unload Me
-
-    '    End Select
-
-    '    End Sub
-
-
+	Private Sub cmdSaveNuevo_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdSaveNuevo.ItemClick
+		tCabSys.CS_CODCON = 0
+		GuardarConsulta()
+	End Sub
 #End Region
 
 #Region "Procesos"
-    Private Sub ModificarProceso(esNuevo As Boolean)
+	Private Sub ModificarProceso(esNuevo As Boolean)
         Dim sLlave = gridViewProc.GetFocusedRowCellValue("Llave")
         Dim frmABMPro As New frmABMPro()
         frmABMPro.PasarDatos(IIf(esNuevo, Nothing, tProcesosPrevios.FirstOrDefault(Function(t) t.Llave = sLlave)), tProcesosPrevios)
@@ -1461,50 +1314,49 @@ Public Class frmMain
         Return script
     End Function
 
-    Private Function QueryInsert(ByVal sTabla As String, ByVal reader As SqlDataReader, entidadDestino As String,
-                             Optional ByVal sAdicional As String = "",
-                             Optional ByVal sValorAdic As String = "") As String
+	Private Function QueryInsert(ByVal sTabla As String, ByVal reader As SqlDataReader, entidadDestino As String,
+							 Optional ByVal sAdicional As String = "",
+							 Optional ByVal sValorAdic As String = "") As String
 
-        Dim sSQL As String
-        Dim campos As List(Of String) = Enumerable.Range(0, reader.FieldCount).Select(Function(d) reader.GetName(d)).ToList()
-        Dim camposTipo = Enumerable.Range(0, reader.FieldCount).Select(Function(d) New With {.id = d, .tipo = reader.GetFieldType(d)}).ToList()
+		Dim sSQL As String
+		Dim campos As List(Of String) = Enumerable.Range(0, reader.FieldCount).Select(Function(d) reader.GetName(d)).ToList()
+		Dim camposTipo = Enumerable.Range(0, reader.FieldCount).Select(Function(d) New With {.id = d, .tipo = reader.GetFieldType(d)}).ToList()
 
-        sSQL = "INSERT INTO " & sTabla & " (" & Join(campos.ToArray(), ",")
-        sSQL = IIf(sAdicional.IsNullOrEmpty, sSQL.Trim, sSQL & sAdicional) & ") VALUES ("
+		sSQL = "INSERT INTO " & sTabla & " (" & Join(campos.ToArray(), ",")
+		sSQL = IIf(sAdicional.IsNullOrEmpty, sSQL.Trim, sSQL & sAdicional) & ") VALUES ("
 
-        For Each campoTipo As Object In camposTipo
-            Select Case campoTipo.tipo
-                Case True AndAlso campoTipo.tipo Is GetType(String)
-                    sSQL = sSQL & "'" & Replace("" & reader(campoTipo.id), "'", "") & "',"
-                Case True AndAlso (campoTipo.tipo Is GetType(Date) OrElse campoTipo.tipo Is GetType(DateTime))
-                    sSQL = sSQL & Prex.Utils.DataAccess.FechaSQL(IIf(reader(campoTipo.id).IsNullOrEmpty(), "01/01/1900", reader(campoTipo.id))) & ","
-                Case True AndAlso campoTipo.tipo Is GetType(Boolean)
-                    sSQL = sSQL & IIf(reader(campoTipo.id), "1,", "0,")
-                Case True AndAlso (campoTipo.tipo Is GetType(Integer) OrElse campoTipo.tipo Is GetType(Long))
+		For Each campoTipo As Object In camposTipo
+			Select Case campoTipo.tipo
+				Case True AndAlso campoTipo.tipo Is GetType(String)
+					sSQL = sSQL & "'" & Replace("" & reader(campoTipo.id), "'", "") & "',"
+				Case True AndAlso (campoTipo.tipo Is GetType(Date) OrElse campoTipo.tipo Is GetType(DateTime))
+					sSQL = sSQL & Prex.Utils.DataAccess.FechaSQL(IIf(reader(campoTipo.id).IsNullOrEmpty(), "01/01/1900", reader(campoTipo.id))) & ","
+				Case True AndAlso campoTipo.tipo Is GetType(Boolean)
+					sSQL = sSQL & IIf(reader(campoTipo.id), "1,", "0,")
+				Case True AndAlso (campoTipo.tipo Is GetType(Integer) OrElse campoTipo.tipo Is GetType(Long))
 
-                    If reader.GetName(campoTipo.id).Trim().ToUpper() = "CODCON" Then
-                        sSQL = sSQL & "@CODCON,"
-                    ElseIf reader.GetName(campoTipo.id).Trim().ToUpper() = "CODENT" Then
-                        sSQL = sSQL & entidadDestino & ","
-                    Else
-                        If IsNumeric(reader(campoTipo.id)) Then
-                            sSQL = sSQL & Prex.Utils.DataAccess.FlotanteSQL(reader(campoTipo.id)) & ","
-                        Else
-                            sSQL = sSQL & "0,"
-                        End If
-                    End If
-                Case Else
-                    sSQL = sSQL & "'" & Replace("" & reader(campoTipo.id), "'", "") & "',"
-            End Select
+					If reader.GetName(campoTipo.id).Trim().ToUpper() = "CODCON" Then
+						sSQL = sSQL & "@CODCON,"
+					ElseIf reader.GetName(campoTipo.id).Trim().ToUpper() = "CODENT" Then
+						sSQL = sSQL & entidadDestino & ","
+					Else
+						If IsNumeric(reader(campoTipo.id)) Then
+							sSQL = sSQL & Prex.Utils.DataAccess.FlotanteSQL(reader(campoTipo.id)) & ","
+						Else
+							sSQL = sSQL & "0,"
+						End If
+					End If
+				Case Else
+					sSQL = sSQL & "'" & Replace("" & reader(campoTipo.id), "'", "") & "',"
+			End Select
 
-        Next
+		Next
 
-        sSQL = IIf(sValorAdic.IsNullOrEmpty(), sSQL.Trim, sSQL & sValorAdic) & ") "
+		sSQL = IIf(sValorAdic.IsNullOrEmpty(), sSQL.Trim, sSQL & sValorAdic) & ") "
 
-        Return sSQL
+		Return sSQL
 
-    End Function
-
+	End Function
 #End Region
 
 End Class

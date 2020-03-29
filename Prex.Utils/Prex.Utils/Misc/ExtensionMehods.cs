@@ -13,12 +13,19 @@ namespace Prex.Utils
 
 		public static object ToStringOrEmpty(this string text) => text ?? string.Empty;
 
-        public static bool IsNullOrEmpty(this object o)
-        {
-            if (o == null) return true;
-            if ((o is string || o is String) && !o.ToString().Trim().Any()) return true;
+		public static bool IsNullOrEmpty(this object o)
+		{
+			if (o == null) return true;
+			if ((o is string || o is String) && !o.ToString().Trim().Any()) return true;
 
-            return false;
-        }
+			return false;
+		}
+		public static bool IsNullOrEmpty(this string o)
+		{
+			if (o == null) return true;
+			if ((o is string || o is String) && !o.ToString().Trim().Any()) return true;
+
+			return false;
+		}
 	}
 }
