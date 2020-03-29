@@ -296,3 +296,4 @@ __pycache__/
 *.xsd.cs
 Prex.Utils/Prex.Utils/obj/Debug/Prex.Utils.csproj.FileListAbsolute.txt
 Prex.Utils/Prex.Utils/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+Prex.Utils/Prex.Utils/obj/Release/Prex.Utils.csproj.FileListAbsolute.txt
