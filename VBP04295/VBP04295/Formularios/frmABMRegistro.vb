@@ -312,8 +312,8 @@ Public Class frmABMRegistro
          End If
 
             For Each oCol In oColumnas
-
-                bProcesa = False
+				If Not oCol.VisibleABM Then Continue For
+				bProcesa = False
 
                 For Each oField As DataColumn In ds.Tables(0).Columns
                     If oCol.Campo.ToUpper = oField.ColumnName.ToUpper Then

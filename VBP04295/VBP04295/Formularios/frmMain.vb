@@ -510,18 +510,24 @@ Public Class frmMain
     End Sub
 
     Private Sub btnEjecutar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEjecutar.Click
-        If DatosOK() Then
-            Try
-                bHabilitado = False
-                Me.Cursor = Cursors.WaitCursor
-                Ejecutar()
-                RefreshCombosVariables()
-            Finally
-                Me.Cursor = Cursors.Default
-                bHabilitado = True
-            End Try
-        End If
-    End Sub
+		Try
+			Me.Cursor = Cursors.WaitCursor
+
+			If DatosOK() Then
+				Try
+					bHabilitado = False
+					Me.Cursor = Cursors.WaitCursor
+					Ejecutar()
+					RefreshCombosVariables()
+				Finally
+					Me.Cursor = Cursors.Default
+					bHabilitado = True
+				End Try
+			End If
+		Finally
+			Me.Cursor = Cursors.Default
+		End Try
+	End Sub
 
     Public Sub New()
 
@@ -549,14 +555,18 @@ Public Class frmMain
             oColumna.Width = IIf(oFmt.Ancho = 0, 1000, oFmt.Ancho)
         End If
 
-        If Not (oFmt.Formato Is Nothing) AndAlso (oFmt.Formato.ToLower() <> "standard") Then
-            oColumna.DisplayFormat.FormatString = oFmt.Formato.Replace("mm", "MM")
-            If oFmt.Formato.ToLower.Contains("yyyy") OrElse oFmt.Formato.ToLower.Contains("mm") Then
-                oColumna.DisplayFormat.FormatType = FormatType.DateTime
-            End If
-        End If
+		If Not (oFmt.Formato Is Nothing) AndAlso (oFmt.Formato.ToLower() <> "standard") Then
 
-        If Not bFmtEmb Then
+			If oFmt.Formato.ToLower.Contains("yyyy") OrElse oFmt.Formato.ToLower.Contains("mm") Then
+				oColumna.DisplayFormat.FormatString = oFmt.Formato.Replace("mm", "MM")
+				oColumna.DisplayFormat.FormatType = FormatType.DateTime
+			Else
+				oColumna.DisplayFormat.FormatString = "c2"
+				oColumna.DisplayFormat.FormatType = FormatType.Numeric
+			End If
+		End If
+
+		If Not bFmtEmb Then
             If oFmt.Condicion = "" Then
                 If oFmt.Negrita Then oEstiloFuente = FontStyle.Bold
                 If oFmt.Subrayado Then oEstiloFuente = oEstiloFuente + FontStyle.Underline
@@ -593,10 +603,10 @@ Public Class frmMain
 
         If oFmt.Condicion <> "" Then
 
-            GridView1.FormatConditions.Add(fmt)
-            fmt.Column = GridView1.Columns(sCampo)
+			GridView1.FormatConditions.Add(fmt)
+			fmt.Column = GridView1.Columns(sCampo)
 
-            If oFmt.Condicion.IndexOf("|") > 0 Then
+			If oFmt.Condicion.IndexOf("|") > 0 Then
                 sValor = oFmt.Condicion.Split("|")
 
                 If sValor.Length > 2 Then
@@ -800,8 +810,9 @@ Public Class frmMain
         If Grid.MainView.RowCount > 0 And MODO_APE <> "A" Then
 
             For Each oCol In oColumnas
+				If Not oCol.VisibleABM Then Continue For
 
-                vValor = GetValorSeleccionado(oCol.Campo)
+				vValor = GetValorSeleccionado(oCol.Campo)
 
                 If Not String.IsNullOrEmpty(vValor) Then
                     If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then

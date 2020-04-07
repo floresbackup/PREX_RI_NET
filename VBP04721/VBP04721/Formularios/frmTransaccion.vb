@@ -1,288 +1,252 @@
+Imports System.Data.SqlClient
 Imports System.Windows.Forms
 
 Public Class frmTransaccion
 
-   Private oAdmLocal As New AdmTablas
-   Private bAlta As Boolean = True
+	Private oAdmLocal As New AdmTablas
+	Private bAlta As Boolean = True
 
-   Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+	Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+		Try
+			Me.Cursor = Cursors.WaitCursor
+			If DatosOK() Then
+				If actualizar() Then
+					Me.DialogResult = System.Windows.Forms.DialogResult.OK
+					Me.Close()
+				End If
+			End If
+		Finally
+			Me.Cursor = Cursors.Default
+		End Try
+	End Sub
 
-      If DatosOK() Then
-         If actualizar() Then
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.Close()
-         End If
-      End If
+	Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+		Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+		Me.Close()
+	End Sub
 
-   End Sub
+	Private Sub CargarPerfiles()
 
-   Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-      Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-      Me.Close()
-   End Sub
+		Dim sSQL As String
+		Dim ds As DataSet
+		Dim item As ListViewItem
 
-   Private Sub CargarPerfiles()
+		Try
 
-      Dim sSQL As String
-      Dim ds As DataSet
-      Dim item As ListViewItem
+			sSQL = "SELECT * " &
+				   "FROM   CABPER " &
+				   "ORDER  BY CP_DESCRI ASC"
 
-      Try
+			ds = oAdmLocal.AbrirDataset(sSQL)
 
-         sSQL = "SELECT * " & _
-                "FROM   CABPER " & _
-                "ORDER  BY CP_DESCRI ASC"
+			With ds.Tables(0)
 
-         ds = oAdmLocal.AbrirDataset(sSQL)
+				For Each row As DataRow In .Rows
 
-         With ds.Tables(0)
+					item = lvPerfiles.Items.Add(row("CP_DESCRI"))
+					item.Name = row("CP_CODPER")
+				Next
 
-            For Each row As DataRow In .Rows
+			End With
 
-               item = lvPerfiles.Items.Add(row("CP_DESCRI"))
-               item.Name = row("CP_CODPER")
-            Next
+			ds = Nothing
 
-         End With
+		Catch ex As Exception
+			TratarError(ex, "CargarPerfiles")
+		End Try
 
-         ds = Nothing
+	End Sub
 
-      Catch ex As Exception
-         TratarError(ex, "CargarPerfiles")
-      End Try
+	Public Sub New()
 
-   End Sub
+		' Llamada necesaria para el Diseñador de Windows Forms.
+		InitializeComponent()
 
-   Public Sub New()
+		' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+		oAdmLocal.ConnectionString = CONN_LOCAL
+		CargarPerfiles()
 
-      ' Llamada necesaria para el Diseñador de Windows Forms.
-      InitializeComponent()
+	End Sub
 
-      ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
-      oAdmLocal.ConnectionString = CONN_LOCAL
-      CargarPerfiles()
+	Private Sub cmdCarpeta_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCarpeta.Click
 
-   End Sub
+		Dim oCarpeta As New frmArbolMenu
 
-   Private Sub cmdCarpeta_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCarpeta.Click
+		If oCarpeta.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+			txtCarpeta.Text = oCarpeta.NombreMenu
+			txtCarpeta.Tag = oCarpeta.NumeroMenu
+		End If
 
-      Dim oCarpeta As New frmArbolMenu
+	End Sub
 
-      If oCarpeta.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-         txtCarpeta.Text = oCarpeta.NombreMenu
-         txtCarpeta.Tag = oCarpeta.NumeroMenu
-      End If
+	Private Function DatosOK() As Boolean
 
-   End Sub
+		If Val(txtCodigo.Text) <= 0 Then
+			MensajeError("Código de transacción inválido")
+			Exit Function
+		End If
 
-   Private Function DatosOK() As Boolean
+		If txtNombre.Text.Trim = "" Then
+			MensajeError("Proporcione el nombre de la transacción")
+			txtNombre.Focus()
+			Exit Function
+		End If
 
-      If Val(txtCodigo.Text) <= 0 Then
-         MensajeError("Código de transacción inválido")
-         Exit Function
-      End If
+		If txtPrograma.Text.Trim = "" Then
+			MensajeError("Proporcione el programa de la transacción")
+			txtPrograma.Focus()
+			Exit Function
+		End If
 
-      If txtNombre.Text.Trim = "" Then
-         MensajeError("Proporcione el nombre de la transacción")
-         txtNombre.Focus()
-         Exit Function
-      End If
+		If txtCarpeta.Text.Trim = "" Then
+			MensajeError("Seleccione la carpeta donde debe ser ubicada esta transacción")
+			cmdCarpeta.Focus()
+			Exit Function
+		End If
 
-      If txtPrograma.Text.Trim = "" Then
-         MensajeError("Proporcione el programa de la transacción")
-         txtPrograma.Focus()
-         Exit Function
-      End If
+		If bAlta Then
+			If TransaccionExiste(Val(txtCodigo.Text)) Then
+				MensajeError("El código que intenta asignar ya pertenece a otra transacción")
+				txtCodigo.Focus()
+				Exit Function
+			End If
+		End If
 
-      If txtCarpeta.Text.Trim = "" Then
-         MensajeError("Seleccione la carpeta donde debe ser ubicada esta transacción")
-         cmdCarpeta.Focus()
-         Exit Function
-      End If
+		Return True
 
-      If bAlta Then
-         If TransaccionExiste(Val(txtCodigo.Text)) Then
-            MensajeError("El código que intenta asignar ya pertenece a otra transacción")
-            txtCodigo.Focus()
-            Exit Function
-         End If
-      End If
+	End Function
 
-      Return True
+	Private Function TransaccionExiste(ByVal nCodTra As Long) As Boolean
 
-   End Function
+		Dim nTransa As Long
 
-   Private Function TransaccionExiste(ByVal nCodTra As Long) As Boolean
+		nTransa = oAdmLocal.DevolverValor("MENUES", "MU_CODTRA", "MU_CODTRA = " & nCodTra, 0)
 
-      Dim nTransa As Long
+		If nTransa <> 0 Then
+			Return True
+		End If
 
-      nTransa = oAdmLocal.DevolverValor("MENUES", "MU_CODTRA", "MU_CODTRA = " & nCodTra, 0)
+	End Function
 
-      If nTransa <> 0 Then
-         Return True
-      End If
+	Private Function actualizar() As Boolean
+		Try
+			Dim nProxID As Long
 
-   End Function
+			Dim sqlUpd As String
+			If bAlta Then
+				nProxID = oAdmLocal.ProximoID("MENUES", "MU_NROMEN")
+				sqlUpd = "INSERT INTO MENUES (MU_NROMEN,[MU_CODTRA],[MU_TRANSA],[MU_RELMEN],[MU_COMAND],[MU_DESCRI],[MU_NIVEL]) " &
+							"VALUES (@MU_NROMEN, @MU_CODTRA, @MU_TRANSA, @MU_RELMEN, @MU_COMAND, @MU_DESCRI, @MU_NIVEL)"
+			Else
+				nProxID = oAdmLocal.DevolverValor("MENUES", "MU_NROMEN", "MU_CODTRA = " & Val(txtCodigo.Text), 0)
+				sqlUpd = "UPDATE MENUES SET  " &
+						"	MU_CODTRA = @MU_CODTRA, " &
+						"    MU_TRANSA = @MU_TRANSA, " &
+						"    MU_RELMEN = @MU_RELMEN, " &
+						"	MU_COMAND = @MU_COMAND, " &
+						"    MU_DESCRI = @MU_DESCRI, " &
+						"	MU_NIVEL = @MU_NIVEL " &
+						" WHERE MU_NROMEN = @MU_NROMEN"
+			End If
 
-   Private Function actualizar() As Boolean
+			Dim cmd = New SqlCommand(sqlUpd)
 
-      Dim sSQL As String
-      Dim ds As DataSet
-      Dim cb As OleDb.OleDbCommandBuilder
-      Dim da As OleDb.OleDbDataAdapter
-      Dim row As DataRow
-      Dim nProxID As Long
-      Dim itmX As ListViewItem
+			cmd.Parameters.Add("MU_NROMEN", SqlDbType.Int).Value = nProxID
+			cmd.Parameters.Add("MU_CODTRA", SqlDbType.Int).Value = Integer.Parse(txtCodigo.Text)
+			cmd.Parameters.Add("MU_TRANSA", SqlDbType.VarChar).Value = txtNombre.Text.Trim
+			cmd.Parameters.Add("MU_DESCRI", SqlDbType.VarChar).Value = txtDescripcion.Text.Trim
+			cmd.Parameters.Add("MU_COMAND", SqlDbType.VarChar).Value = txtPrograma.Text.Trim
+			cmd.Parameters.Add("MU_NIVEL", SqlDbType.Int).Value = 0
+			cmd.Parameters.Add("MU_RELMEN", SqlDbType.Int).Value = Integer.Parse(txtCarpeta.Tag)
 
-      Try
+			oAdmLocal.EjecutarComandoSQL(cmd)
 
-         'Transaccion
-         If bAlta Then
-            nProxID = oAdmLocal.ProximoID("MENUES", "MU_NROMEN")
-         Else
-            nProxID = oAdmLocal.DevolverValor("MENUES", "MU_NROMEN", "MU_CODTRA = " & Val(txtCodigo.Text), 0)
-         End If
+			'Perfiles
+			Dim sSQL = "DELETE FROM DETPER WHERE DP_CODTRA = " & Integer.Parse(txtCodigo.Text)
 
-         sSQL = "SELECT    * " & _
-                "FROM      MENUES " & _
-                "WHERE     MU_NROMEN = " & nProxID
-         ds = oAdmLocal.AbrirDataset(sSQL, da)
-         cb = New OleDb.OleDbCommandBuilder(da)
+			If oAdmLocal.EjecutarComandoSQL(sSQL) Then
 
-         With ds.Tables(0)
+				For Each itmX As ListViewItem In lvPerfiles.Items
+					If itmX.Checked Then
+						Dim cmdIns As New SqlCommand("INSERT INTO DETPER (DP_CODPER, DP_CODTRA) VALUES (@DP_CODPER, @DP_CODTRA)")
+						cmdIns.Parameters.Add("DP_CODPER", SqlDbType.Int).Value = Integer.Parse(itmX.Name)
+						cmdIns.Parameters.Add("DP_CODTRA", SqlDbType.Int).Value = Integer.Parse(txtCodigo.Text)
 
-            If bAlta Then
-               row = .NewRow()
-            Else
-               row = .Rows(0)
-            End If
+						oAdmLocal.EjecutarComandoSQL(cmdIns)
+					End If
+				Next
 
-            row("MU_NROMEN") = nProxID
-            row("MU_CODTRA") = Val(txtCodigo.Text)
-            row("MU_TRANSA") = txtNombre.Text.Trim
-            row("MU_DESCRI") = txtDescripcion.Text.Trim
-            row("MU_COMAND") = txtPrograma.Text.Trim
-            row("MU_NIVEL") = 0
-            row("MU_RELMEN") = Val(txtCarpeta.Tag)
+			End If
 
-            If bAlta Then
-               .Rows.Add(row)
-            End If
+			Return True
 
-         End With
+		Catch ex As Exception
+			TratarError(ex, "actualizar")
+		End Try
 
-         da.Update(ds)
-         ds.AcceptChanges()
+	End Function
 
-         ds = Nothing
-         cb = Nothing
-         da = Nothing
+	Public Sub PasarDatos(ByVal nNroMen As Long)
 
-         'Perfiles
-         sSQL = "DELETE    " & _
-                "FROM      DETPER " & _
-                "WHERE     DP_CODTRA = " & Val(txtCodigo.Text)
+		Dim sSQL As String
+		Dim ds As DataSet
+		Dim item As ListViewItem
+		Dim row As DataRow
 
-         If oAdmLocal.EjecutarComandoSQL(sSQL) Then
+		Try
 
-            sSQL = "SELECT    * " & _
-                   "FROM      DETPER " & _
-                   "WHERE     DP_CODTRA = " & Val(txtCodigo.Text)
+			sSQL = "SELECT * " &
+				   "FROM   MENUES " &
+				   "WHERE  MU_NROMEN = " & nNroMen.ToString & " "
+			ds = oAdmLocal.AbrirDataset(sSQL)
 
-            ds = oAdmLocal.AbrirDataset(sSQL, da)
-            cb = New OleDb.OleDbCommandBuilder(da)
+			If ds.Tables(0).Rows.Count > 0 Then
 
-            With ds.Tables(0)
+				row = ds.Tables(0).Rows(0)
 
-               For Each itmX In lvPerfiles.Items
-                  If itmX.Checked Then
-                     row = .NewRow()
-                     row("DP_CODPER") = Val(itmX.Name)
-                     row("DP_CODTRA") = Val(txtCodigo.Text)
-                     .Rows.Add(row)
-                  End If
-               Next
+				txtCodigo.Text = row("MU_CODTRA")
+				txtNombre.Text = row("MU_TRANSA")
+				txtPrograma.Text = row("MU_COMAND")
+				txtDescripcion.Text = row("MU_DESCRI")
 
-            End With
+				If row("MU_RELMEN") = 0 Then
+					txtCarpeta.Text = "Menú"
+				Else
+					txtCarpeta.Text = oAdmLocal.DevolverValor("MENUES", "MU_TRANSA", "MU_NROMEN=" & row("MU_RELMEN"))
+				End If
+				txtCarpeta.Tag = row("MU_RELMEN")
 
-            da.Update(ds)
-            ds.AcceptChanges()
+			End If
 
-            ds = Nothing
-            cb = Nothing
-            da = Nothing
+			ds = Nothing
 
-         End If
+			txtCodigo.Enabled = False
 
-         Return True
+			bAlta = False
 
-      Catch ex As Exception
-         TratarError(ex, "actualizar")
-      End Try
+			sSQL = "SELECT    * " &
+				   "FROM      DETPER " &
+				   "WHERE     DP_CODTRA = " & txtCodigo.Text & " " &
+				   "ORDER BY  DP_CODPER "
+			ds = oAdmLocal.AbrirDataset(sSQL)
 
-   End Function
+			With ds.Tables(0)
 
-   Public Sub PasarDatos(ByVal nNroMen As Long)
+				For Each row In .Rows
 
-      Dim sSQL As String
-      Dim ds As DataSet
-      Dim item As ListViewItem
-      Dim row As DataRow
+					item = lvPerfiles.Items(row("DP_CODPER").ToString)
+					item.Checked = True
 
-      Try
+				Next
 
-         sSQL = "SELECT * " & _
-                "FROM   MENUES " & _
-                "WHERE  MU_NROMEN = " & nNroMen.ToString & " "
-         ds = oAdmLocal.AbrirDataset(sSQL)
+			End With
 
-         If ds.Tables(0).Rows.Count > 0 Then
+			ds = Nothing
 
-            row = ds.Tables(0).Rows(0)
+		Catch ex As Exception
+			TratarError(ex, "PasarDatos")
+		End Try
 
-            txtCodigo.Text = row("MU_CODTRA")
-            txtNombre.Text = row("MU_TRANSA")
-            txtPrograma.Text = row("MU_COMAND")
-            txtDescripcion.Text = row("MU_DESCRI")
-
-            If row("MU_RELMEN") = 0 Then
-               txtCarpeta.Text = "Menú"
-            Else
-               txtCarpeta.Text = oAdmLocal.DevolverValor("MENUES", "MU_TRANSA", "MU_NROMEN=" & row("MU_RELMEN"))
-            End If
-            txtCarpeta.Tag = row("MU_RELMEN")
-
-         End If
-
-         ds = Nothing
-
-         txtCodigo.Enabled = False
-
-         bAlta = False
-
-         sSQL = "SELECT    * " & _
-                "FROM      DETPER " & _
-                "WHERE     DP_CODTRA = " & txtCodigo.Text & " " & _
-                "ORDER BY  DP_CODPER "
-         ds = oAdmLocal.AbrirDataset(sSQL)
-
-         With ds.Tables(0)
-
-            For Each row In .Rows
-
-               item = lvPerfiles.Items(row("DP_CODPER").ToString)
-               item.Checked = True
-
-            Next
-
-         End With
-
-         ds = Nothing
-
-      Catch ex As Exception
-         TratarError(ex, "PasarDatos")
-      End Try
-
-   End Sub
+	End Sub
 
 End Class

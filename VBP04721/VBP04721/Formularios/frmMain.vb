@@ -288,23 +288,24 @@ Public Class frmMain
     End Sub
 
     Private Sub btnPropTrx_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPropTrx.Click
+		Try
+			Me.Cursor = Cursors.WaitCursor
+			Dim oTrx As New frmTransaccion
+			Dim nodo As TreeNode
 
-        Dim oTrx As New frmTransaccion
-        Dim nodo As TreeNode
+			nodo = tvMenu.SelectedNode
 
-        nodo = tvMenu.SelectedNode
+			If Not (nodo Is Nothing) Then
+				oTrx.PasarDatos(Val(nodo.Name))
 
-        If Not (nodo Is Nothing) Then
-
-            oTrx.PasarDatos(Val(nodo.Name))
-
-            If oTrx.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-                CargarArbol()
-            End If
-
-        End If
-
-    End Sub
+				If oTrx.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+					CargarArbol()
+				End If
+			End If
+		Finally
+			Me.Cursor = Cursors.Default
+		End Try
+	End Sub
 
     Private Sub tvMenu_NodeMouseDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs) Handles tvMenu.NodeMouseDoubleClick
 
