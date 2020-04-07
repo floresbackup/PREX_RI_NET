@@ -24,8 +24,8 @@ Public Class ucFrmColumnas
 			If isCargando Then Return Nothing
 			If detSys Is Nothing OrElse Not detSys.Any() Then Return Nothing
 
-			Dim llave = gridViewColumnas.FocusedValue()
-			If llave.IsNullOrEmpty() Then detSys.FirstOrDefault()
+            Dim llave As String = gridViewColumnas.FocusedValue().ToString
+            If llave.IsNullOrEmpty() Then detSys.FirstOrDefault()
 
 			Return detSys.FirstOrDefault(Function(t) t.Campo = llave)
 		End Get
