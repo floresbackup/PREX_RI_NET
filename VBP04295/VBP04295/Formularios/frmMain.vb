@@ -561,7 +561,18 @@ Public Class frmMain
 				oColumna.DisplayFormat.FormatString = oFmt.Formato.Replace("mm", "MM")
 				oColumna.DisplayFormat.FormatType = FormatType.DateTime
 			Else
-				oColumna.DisplayFormat.FormatString = oFmt.Formato '"c2"
+				Dim cultura As New CultureInfo("es-AR")
+				cultura.NumberFormat.CurrencyGroupSeparator = "."
+				cultura.NumberFormat.CurrencyDecimalSeparator = ","
+				cultura.NumberFormat.NumberGroupSeparator = "."
+				cultura.NumberFormat.NumberDecimalSeparator = ","
+				If oFmt.Formato = "#,##0" Then
+					cultura.NumberFormat.NumberDecimalDigits = 0
+					cultura.NumberFormat.CurrencyDecimalDigits = 0
+				End If
+
+				oColumna.DisplayFormat.Format = cultura.NumberFormat
+				oColumna.DisplayFormat.FormatString = oFmt.Formato
 				oColumna.DisplayFormat.FormatType = FormatType.Numeric
 			End If
 		End If
