@@ -561,7 +561,7 @@ Public Class frmMain
 				oColumna.DisplayFormat.FormatString = oFmt.Formato.Replace("mm", "MM")
 				oColumna.DisplayFormat.FormatType = FormatType.DateTime
 			Else
-				oColumna.DisplayFormat.FormatString = "c2"
+				oColumna.DisplayFormat.FormatString = oFmt.Formato '"c2"
 				oColumna.DisplayFormat.FormatType = FormatType.Numeric
 			End If
 		End If
