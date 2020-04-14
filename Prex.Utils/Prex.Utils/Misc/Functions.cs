@@ -29,7 +29,7 @@ namespace Prex.Utils.Misc
 				if (strAssmbName.Name.ToLower().Contains("devexpress"))
 					strTempAssmbPath.Add(strAssmbName.FullName, $"{pathDll}{Path.DirectorySeparatorChar}{strAssmbName.Name}.dll");
 			});
-			strTempAssmbPath.ToList().ForEach(ass => Assembly.LoadFrom(ass.Value));
+			strTempAssmbPath.ToList().ForEach(ass => { if (File.Exists(ass.Value)) Assembly.LoadFrom(ass.Value); });
 			return pathDll;
 		}
 
