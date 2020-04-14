@@ -48,6 +48,7 @@ Module modLocalMain
 		LeerXMLLocal()
 
 		Dim rutaLocalDll = Prex.Utils.Misc.Functions.ValidarYCopiarPathDll(CARPETA_LOCAL, System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies())
+		AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf Prex.Utils.Misc.Functions.LoadFromSameFolder
 
 
 		Dim currentDomain As AppDomain = AppDomain.CurrentDomain

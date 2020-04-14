@@ -21,7 +21,7 @@ namespace Prex.Utils.Misc
 		}
 
 
-		public static string LeerDllDevExpress(string pathDll, AssemblyName[] arrReferencedAssmbNames) 
+		public static string LeerDllDevExpress(string pathDll, AssemblyName[] arrReferencedAssmbNames)
 		{
 			var strTempAssmbPath = new Dictionary<string, string>();
 
@@ -34,13 +34,26 @@ namespace Prex.Utils.Misc
 				if (File.Exists(ass.Value))
 				{
 					var asm = Assembly.LoadFrom(ass.Value);
-				
+
 				}
 			});
 			return pathDll;
 		}
 
 
+		public static Assembly LoadFromSameFolder(object sender, ResolveEventArgs args)
+		{
+			string folderPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+			string assemblyPath;
+			if (args.Name.ToLower().Contains("devexpress"))
+				assemblyPath = Path.Combine(Path.Combine(Configuration.PrexConfig.CARPETA_LOCAL, "Lib"), new AssemblyName(args.Name).Name + ".dll");
+			else
+				assemblyPath = Path.Combine(folderPath, new AssemblyName(args.Name).Name + ".dll");
 
+			if (! File.Exists(assemblyPath)) return null;
+
+			var ass = Assembly.LoadFrom(assemblyPath);
+			return ass;
+		}
 	}
 }

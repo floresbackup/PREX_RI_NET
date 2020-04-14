@@ -5,9 +5,8 @@ Module modLocalMain
 
 	Sub Main()
 
-		Dim currentDomain As AppDomain = AppDomain.CurrentDomain
 		Dim rutaLocalDll = Prex.Utils.Misc.Functions.ValidarYCopiarPathDll(CARPETA_LOCAL, System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies())
-		AddHandler currentDomain.AssemblyResolve, AddressOf LoadFromSameFolder
+		AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf Prex.Utils.Misc.Functions.LoadFromSameFolder
 
 		'Configuración
 		LeerXML()
@@ -23,12 +22,12 @@ Module modLocalMain
 
 
 
-	Public Function LoadFromSameFolder(sender As Object, args As ResolveEventArgs) As Assembly
-		Dim folderPath As String = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
-		Dim assemblyPath As String = Path.Combine(Path.Combine(CARPETA_LOCAL, "Lib"), New AssemblyName(args.Name).Name + ".dll")
-		If Not File.Exists(assemblyPath) Then Return Nothing
+	'Public Function LoadFromSameFolder(sender As Object, args As ResolveEventArgs) As Assembly
+	'	Dim folderPath As String = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
+	'	Dim assemblyPath As String = Path.Combine(Path.Combine(CARPETA_LOCAL, "Lib"), New AssemblyName(args.Name).Name + ".dll")
+	'	If Not File.Exists(assemblyPath) Then Return Nothing
 
-		Dim ass = Assembly.LoadFrom(assemblyPath)
-		Return ass
-	End Function
+	'	Dim ass = Assembly.LoadFrom(assemblyPath)
+	'	Return ass
+	'End Function
 End Module
