@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Prex.Utils.Misc
 {
@@ -16,7 +17,7 @@ namespace Prex.Utils.Misc
 			frm.PathDestino = pathDest;
 			frm.Show();
 			frm.CopiarDlls();
-			return LeerDllDevExpress(frm.PathDestino, arrReferencedAssmbNames) ;
+			return frm.PathDestino; // LeerDllDevExpress(frm.PathDestino, arrReferencedAssmbNames) ;
 		}
 
 
@@ -29,7 +30,13 @@ namespace Prex.Utils.Misc
 				if (strAssmbName.Name.ToLower().Contains("devexpress"))
 					strTempAssmbPath.Add(strAssmbName.FullName, $"{pathDll}{Path.DirectorySeparatorChar}{strAssmbName.Name}.dll");
 			});
-			strTempAssmbPath.ToList().ForEach(ass => { if (File.Exists(ass.Value)) Assembly.LoadFrom(ass.Value); });
+			strTempAssmbPath.ToList().ForEach(ass => {
+				if (File.Exists(ass.Value))
+				{
+					var asm = Assembly.LoadFrom(ass.Value);
+				
+				}
+			});
 			return pathDll;
 		}
 
