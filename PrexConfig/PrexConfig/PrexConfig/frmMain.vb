@@ -10,7 +10,16 @@ Public Class frmMain
     Private oConfig As New dsConfig
     Private oItemSel As ListViewItem
 
-    Function CrearConnString(Optional ByVal parentForm As Form = Nothing) As String
+	Sub New()
+
+		' This call is required by the designer.
+		InitializeComponent()
+
+		' Add any initialization after the InitializeComponent() call.
+
+	End Sub
+
+	Function CrearConnString(Optional ByVal parentForm As Form = Nothing) As String
 
         Dim dataLink As Object = Microsoft.VisualBasic.Interaction.CreateObject("DataLinks")
 
