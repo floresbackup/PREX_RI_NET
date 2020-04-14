@@ -15,6 +15,7 @@ namespace Prex.Utils.Misc
 		{
 			var frm = new Forms.FrmCopyFiles();
 			frm.PathDestino = pathDest;
+			if (Directory.Exists(frm.PathDestino)) return frm.PathDestino;
 			frm.Show();
 			frm.CopiarDlls();
 			return frm.PathDestino; // LeerDllDevExpress(frm.PathDestino, arrReferencedAssmbNames) ;
