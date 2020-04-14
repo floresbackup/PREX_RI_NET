@@ -46,11 +46,6 @@ Module modLocalMain
 		'Configuración
 		LeerXML()
 		LeerXMLLocal()
-
-		Dim rutaLocalDll = Prex.Utils.Misc.Functions.ValidarYCopiarPathDll(CARPETA_LOCAL, System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies())
-		AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf Prex.Utils.Misc.Functions.LoadFromSameFolder
-
-
 		Dim currentDomain As AppDomain = AppDomain.CurrentDomain
 
 		Dim oSplash As New SplashScreen
@@ -58,6 +53,12 @@ Module modLocalMain
 		oSplash.AcercaDe = False
 		oSplash.Show()
 		Application.DoEvents()
+
+		Dim rutaLocalDll = Prex.Utils.Misc.Functions.ValidarYCopiarPathDll(CARPETA_LOCAL, oSplash, System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies())
+		AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf Prex.Utils.Misc.Functions.LoadFromSameFolder
+
+
+
 
 		If UsuarioActual.Codigo = 0 Then
 			If IO.File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then

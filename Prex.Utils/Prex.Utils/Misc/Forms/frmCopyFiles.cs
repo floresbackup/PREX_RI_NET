@@ -42,7 +42,8 @@ namespace Prex.Utils.Misc.Forms
 		{
 			try
 			{
-				
+				//Thread.Sleep(new TimeSpan(0, 0, 0, 5));
+
 				if (!System.IO.Directory.Exists(PathDestino)) System.IO.Directory.CreateDirectory(PathDestino);
 				var directoryFiles = System.IO.Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "*.dll", System.IO.SearchOption.TopDirectoryOnly);
 

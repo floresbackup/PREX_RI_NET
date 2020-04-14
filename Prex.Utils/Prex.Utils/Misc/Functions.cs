@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace Prex.Utils.Misc
 {
@@ -11,12 +12,17 @@ namespace Prex.Utils.Misc
 
 	public static class Functions
 	{
-		public static string ValidarYCopiarPathDll(string pathDest, AssemblyName[] arrReferencedAssmbNames)
+		public static string ValidarYCopiarPathDll(string pathDest, AssemblyName[] arrReferencedAssmbNames) => ValidarYCopiarPathDll(pathDest, null, arrReferencedAssmbNames);
+		public static string ValidarYCopiarPathDll(string pathDest, Form parent, AssemblyName[] arrReferencedAssmbNames)
 		{
 			var frm = new Forms.FrmCopyFiles();
+			if (parent != null) frm.Parent = parent;
+
 			frm.PathDestino = pathDest;
 			if (Directory.Exists(frm.PathDestino)) return frm.PathDestino;
-			frm.Show();
+			if (parent != null) frm.Show(parent);
+			else frm.Show();
+
 			frm.CopiarDlls();
 			return frm.PathDestino; // LeerDllDevExpress(frm.PathDestino, arrReferencedAssmbNames) ;
 		}
