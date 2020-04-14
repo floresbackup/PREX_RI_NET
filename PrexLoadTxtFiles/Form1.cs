@@ -30,7 +30,9 @@ namespace PrexLoadTxtFiles
         private string ConfigFileName => "configuracion.json";
         private string ConfigFilePath => Environment.CurrentDirectory + "\\" + ConfigFileName;
         private string TableName => $"{(txtPrefijoTabla.Text.Trim().Any() ? txtPrefijoTabla.Text.Trim() + "_" : string.Empty)}{Path.GetFileNameWithoutExtension(txtPathBCP.Text)}";
-        private string GetFullConnectionString => $"Password={txtUserPass.Text.Trim()};User Id={txtSQLUser.Text.Trim()};Initial Catalog={txtDataBase.Text.Trim()};Data Source={txtSQLServer.Text.Trim()}".Replace(";;", ";");
+        private string FileName => $"{(txtPrefijoArchivo.Text.Trim().Any() ? txtPrefijoArchivo.Text.Trim() + "_" : string.Empty)}{Path.GetFileNameWithoutExtension(txtPathBCP.Text)}";
+
+		private string GetFullConnectionString => $"Password={txtUserPass.Text.Trim()};User Id={txtSQLUser.Text.Trim()};Initial Catalog={txtDataBase.Text.Trim()};Data Source={txtSQLServer.Text.Trim()}".Replace(";;", ";");
         private Prex.Satelite.Utils.Configuracion ConfiguracionProceso
         {
             get
@@ -43,9 +45,16 @@ namespace PrexLoadTxtFiles
                 _configuracion.Pass             = txtUserPass.Text.Trim();
                 _configuracion.DecimalSeparator = txtDecimalSeparator.Text.Trim();
                 _configuracion.PathBCP          = txtPathBCP.Text.Trim();
-                _configuracion.PrefijoTabla = txtPrefijoTabla.Text.Trim();
+                _configuracion.PrefijoTabla     = txtPrefijoTabla.Text.Trim();
+				_configuracion.PathDestino      = txtPathDestino.Text.Trim();
+				_configuracion.PrefijoArchivo   = txtPrefijoTabla.Text.Trim();
 
-                return _configuracion;
+				if (chkSQL.Checked)
+					_configuracion.ModoDestino = ModoDestino.SQL;
+				if (chkTXT.Checked)
+					_configuracion.ModoDestino = ModoDestino.TXT;
+
+				return _configuracion;
             }  
         }
 
@@ -66,8 +75,9 @@ namespace PrexLoadTxtFiles
         private void btnDialogBCP_Click(object sender, EventArgs e)
         {
             var OpenFileDialog1 = new OpenFileDialog();
-            OpenFileDialog1.InitialDirectory = Path.GetDirectoryName(ConfiguracionProceso.PathBCP);
-            OpenFileDialog1.FileName = "*.txt";
+            OpenFileDialog1.InitialDirectory = Path.GetDirectoryName(ConfiguracionProceso.PathBCP == string.Empty ? "C:\\" : ConfiguracionProceso.PathBCP);
+
+			OpenFileDialog1.FileName = "*.txt";
 
             if (OpenFileDialog1.ShowDialog() == DialogResult.OK)
                 txtPathBCP.Text = OpenFileDialog1.FileName;
@@ -93,15 +103,18 @@ namespace PrexLoadTxtFiles
             {
                 ChangeMyTextDelegate del = new ChangeMyTextDelegate(SetLabelProgreso);
                 ctrl.Invoke(del, ctrl, text);
-            }
-            else
+
+			}
+			else
             {
                 ctrl.Text = text;
-                Thread.Sleep(200);
+				ctrl.Refresh();
+
+				Thread.Sleep(200);
             }
         }
 
-        private async void btnProcesar_Click(object sender, EventArgs e)
+        private  async void btnProcesar_Click(object sender, EventArgs e)
         {
             List<List<string>> lineas = new List<List<string>>();
             try
@@ -111,65 +124,29 @@ namespace PrexLoadTxtFiles
                 progressBar.Visible = true;
                 btnProcesar.Enabled = false;
 
-                SetLabelProgreso(lblProgreso,"Guardando configuración...");
+				SetLabelProgreso(lblProgreso, "Guardando configuración...");
+				this.Refresh();
 
-                Prex.Satelite.Utils.ConfigFile.GuardarConfiguracion(ConfigFilePath, ConfiguracionProceso);
+				Prex.Satelite.Utils.ConfigFile.GuardarConfiguracion(ConfigFilePath, ConfiguracionProceso);
 
-                SetLabelProgreso(lblProgreso, "Cargando diseños...");
+				SetLabelProgreso(lblProgreso, "Cargando diseños...");
+				this.Refresh();
                 CargarFormatos(DisenioTxt.D4305);
                 CargarFormatos(DisenioTxt.D4306);
                 CargarFormatos(DisenioTxt.D4307);
 
-                var conn = new SqlConnection(GetFullConnectionString);
-                SqlTransaction tran = null;
-                try
-                {
-
-                    //tran = conn.BeginTransaction();
-
-                    await Task.Run(() =>
-                    {
-                        SetLabelProgreso(lblProgreso, "Leyendo archivo txt...");
-                        var archivo = File.ReadLines(txtPathBCP.Text);
-                        lineas.AddRange(archivo.Select(l => l.Split(txtDecimalSeparator.Text.Trim().ToCharArray()).ToList()));
-                    });
-
-                    conn.Open();
-                    await Task.Run(() =>
-                    {
-                        SetLabelProgreso(lblProgreso, $"Creando tablas {TableName} ...");
-                        if (chkDiseno4305.Checked)
-                            DropYCrearTabla(DisenioTxt.D4305, conn, tran);
-                        if (chkDiseno4306.Checked)
-                            DropYCrearTabla(DisenioTxt.D4306, conn, tran);
-                        if (chkDiseno4307.Checked)
-                            DropYCrearTabla(DisenioTxt.D4307, conn, tran);
-                    });
-
-                    if (chkDiseno4305.Checked)
-                        await ProcesarFormato(DisenioTxt.D4305, lineas, conn, tran);
-
-                    if (chkDiseno4306.Checked)
-                        await ProcesarFormato(DisenioTxt.D4306, lineas, conn, tran);
-
-                    if (chkDiseno4307.Checked)
-                        await ProcesarFormato(DisenioTxt.D4307, lineas, conn, tran);
-
-
-                    if (tran != null) tran.Commit();
-                    conn.Close();
-                    MessageBox.Show("Proceso finalizado!", "Proceso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                }
-                catch (Exception ex)
-                {
-                    if (tran != null) tran.Rollback();
-
-                    if (conn.State == ConnectionState.Open) conn.Close();
-
-                    MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+				switch (_configuracion.ModoDestino)
+				{
+					case ModoDestino.SQL:
+						await ProcesarDestinoSQL(lineas);
+						break;
+					case ModoDestino.TXT:
+						await ProcesarDestinoTXT(lineas);
+						break;
+					default:
+						break;
+				}
+			}
             finally
             {
                 this.Cursor = Cursors.Default;
@@ -181,6 +158,150 @@ namespace PrexLoadTxtFiles
                 lineas = null;
             }
         }
+
+		#region TXT	
+		private async Task ProcesarDestinoTXT(List<List<string>> lineas)
+		{
+			try
+			{
+
+				SetLabelProgreso(lblProgreso, "Leyendo archivo txt...");
+				var archivo = File.ReadLines(txtPathBCP.Text);
+				var a = archivo.Select(l => l.Split(txtDecimalSeparator.Text.Trim().ToCharArray()).ToList()).ToList();
+				lineas.AddRange(a);
+
+
+					SetLabelProgreso(lblProgreso, $"Creando tablas {TableName} ...");
+					if (chkDiseno4305.Checked)
+						DropYCrearTXT(DisenioTxt.D4305);
+					if (chkDiseno4306.Checked)
+						DropYCrearTXT(DisenioTxt.D4306);
+					if (chkDiseno4307.Checked)
+						DropYCrearTXT(DisenioTxt.D4307);
+
+
+				if (chkDiseno4305.Checked)
+					await ProcesarFormatoTXT(DisenioTxt.D4305, lineas);
+
+				if (chkDiseno4306.Checked)
+					await ProcesarFormatoTXT(DisenioTxt.D4306, lineas);
+
+				if (chkDiseno4307.Checked)
+					await ProcesarFormatoTXT(DisenioTxt.D4307, lineas);
+
+				MessageBox.Show("Proceso finalizado!", "Proceso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		private async Task ProcesarFormatoTXT(DisenioTxt formato, List<List<string>> lineas)
+		{
+			var fn = $"{FileName}_{((int)formato)}.txt";
+			var path = Path.Combine(txtPathDestino.Text, fn);
+
+			List<List<string>> lineasDisenio = new List<List<string>>();
+
+			try
+			{
+
+				await Task.Run(() =>
+				{
+					SetLabelProgreso(lblProgreso, "Obteniendo registros del diseño " + ((int)formato).ToString() + "...");
+					lineasDisenio.AddRange(lineas.Where(l => l[0] == ((int)formato).ToString()));
+				});
+
+				var lineasBulk = lineasDisenio.Partir(10000);
+				progressBar.Maximum = lineasBulk.Count();
+				progressBar.Value = 0;
+				await Task.Run(() =>
+				{
+					SetLabelProgreso(lblProgreso, "Procesando diseño " + ((int)formato).ToString() + "...");
+					lineasBulk.ToList().ForEach(lin => {
+						var ts = lin.Select(s => String.Join(txtDecimalSeparator.Text, s.ToArray()));
+						File.AppendAllLines(path, ts);
+						IncrementarProgress(progressBar, 1);
+					});
+				});
+
+			}
+			finally
+			{
+				lineas.RemoveAll(r => r[0] == ((int)formato).ToString());
+				lineasDisenio.Clear();
+				lineasDisenio = null;
+			}
+		}
+
+		private string DropYCrearTXT(DisenioTxt disenio)
+		{
+			var fn = $"{FileName}_{((int)disenio)}.txt";
+			var path = Path.Combine(txtPathDestino.Text, fn);
+			if (File.Exists(path))
+				File.Delete(path);
+
+			var f = File.CreateText(path);
+			f.Close();
+			return path;
+		}
+		#endregion
+
+		#region SQL
+
+		private async Task ProcesarDestinoSQL(List<List<string>> lineas)
+		{
+			var conn = new SqlConnection(GetFullConnectionString);
+			SqlTransaction tran = null;
+			try
+			{
+
+				//tran = conn.BeginTransaction();
+
+				await Task.Run(() =>
+				{
+					SetLabelProgreso(lblProgreso, "Leyendo archivo txt...");
+					var archivo = File.ReadLines(txtPathBCP.Text);
+					lineas.AddRange(archivo.Select(l => l.Split(txtDecimalSeparator.Text.Trim().ToCharArray()).ToList()));
+				});
+
+				conn.Open();
+				await Task.Run(() =>
+				{
+					SetLabelProgreso(lblProgreso, $"Creando tablas {TableName} ...");
+					if (chkDiseno4305.Checked)
+						DropYCrearTabla(DisenioTxt.D4305, conn, tran);
+					if (chkDiseno4306.Checked)
+						DropYCrearTabla(DisenioTxt.D4306, conn, tran);
+					if (chkDiseno4307.Checked)
+						DropYCrearTabla(DisenioTxt.D4307, conn, tran);
+				});
+
+				if (chkDiseno4305.Checked)
+					await ProcesarFormato(DisenioTxt.D4305, lineas, conn, tran);
+
+				if (chkDiseno4306.Checked)
+					await ProcesarFormato(DisenioTxt.D4306, lineas, conn, tran);
+
+				if (chkDiseno4307.Checked)
+					await ProcesarFormato(DisenioTxt.D4307, lineas, conn, tran);
+
+
+				if (tran != null) tran.Commit();
+				conn.Close();
+				MessageBox.Show("Proceso finalizado!", "Proceso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+			}
+			catch (Exception ex)
+			{
+				if (tran != null) tran.Rollback();
+
+				if (conn.State == ConnectionState.Open) conn.Close();
+
+				MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
 
         private async Task ProcesarFormato(DisenioTxt formato, List<List<string>> lineas, SqlConnection conn, SqlTransaction tran)
         {
@@ -321,10 +442,136 @@ namespace PrexLoadTxtFiles
             return tablaSQL;
         }
 
-        #endregion
+		private void DropYCrearTabla(DisenioTxt disenio, SqlConnection conn, SqlTransaction tran)
+		{
+			var cmdCreateTable = new SqlCommand($"IF OBJECT_ID('dbo.{TableName}_{((int)disenio)}', 'U') IS NOT NULL DROP TABLE {TableName}_{((int)disenio)}", conn);
+			cmdCreateTable.Transaction = tran;
 
-        #region Metodos
-        private void InsertarRegistroDisenio(DisenioTxt disenio, List<string> registro, SqlConnection conn, SqlTransaction tran)
+			cmdCreateTable.ExecuteNonQuery();
+
+			cmdCreateTable.CommandText = $"CREATE TABLE {TableName}_{((int)disenio)} (";
+
+			_formatos[disenio].OrderBy(d => d.Indice).ToList().ForEach(d => {
+				switch (d.TipoDato)
+				{
+					case SqlDbType.BigInt:
+						cmdCreateTable.CommandText += $"{d.Nombre} BIGINT NULL ";
+						break;
+					case SqlDbType.Int:
+						cmdCreateTable.CommandText += $"{d.Nombre} INT NULL ";
+						break;
+					case SqlDbType.Decimal:
+						cmdCreateTable.CommandText += $"{d.Nombre} Decimal(18,4) NULL ";
+						break;
+					case SqlDbType.VarChar:
+						cmdCreateTable.CommandText += $"{d.Nombre} VARCHAR({d.LongitudCampo}) NULL ";
+						break;
+					case SqlDbType.DateTime:
+						cmdCreateTable.CommandText += $"{d.Nombre} DATETIME NULL ";
+						break;
+					default:
+						break;
+				}
+				if (d.Indice < _formatos[disenio].Count())
+					cmdCreateTable.CommandText += ", ";
+			});
+
+			cmdCreateTable.CommandText += ")";
+
+
+			cmdCreateTable.ExecuteNonQuery();
+		}
+
+		#endregion
+
+		private void chkTXT_CheckedChanged(object sender, EventArgs e)
+		{
+			ConfiguracionProceso.ModoDestino = ModoDestino.TXT;
+			HabilitarTXT();
+		}
+
+		private void chkSQL_CheckedChanged(object sender, EventArgs e)
+		{
+			ConfiguracionProceso.ModoDestino = ModoDestino.SQL;
+			HabilitarSQL();
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+				txtPathDestino.Text = folderBrowserDialog1.SelectedPath;
+			
+		}
+		#endregion
+
+		#region Metodos
+		private void HabilitarTXT()
+		{
+			try
+			{
+				chkTXT.CheckedChanged += null;
+				chkSQL.CheckedChanged += null;
+				chkTXT.Checked = true;
+				LimpiarDestinoSQL();
+				HabilitarControlesDestino();
+			}
+			finally
+			{
+				chkSQL.CheckedChanged += new System.EventHandler(chkSQL_CheckedChanged);
+				chkTXT.CheckedChanged += new System.EventHandler(chkTXT_CheckedChanged);
+			}
+		}
+
+		private void HabilitarSQL()
+		{
+			try
+			{
+				chkSQL.CheckedChanged += null;
+				chkTXT.CheckedChanged += null;
+				chkSQL.Checked = true;
+
+				LimpiarDestinoTXT();
+				HabilitarControlesDestino();
+			}
+			finally
+			{
+				chkSQL.CheckedChanged += new System.EventHandler(chkSQL_CheckedChanged);
+				chkTXT.CheckedChanged += new System.EventHandler(chkTXT_CheckedChanged);
+			}
+		}
+
+		private void LimpiarDestinoSQL()
+		{
+			chkSQL.Checked       = false;
+			txtSQLServer.Text    = string.Empty;
+			txtSQLUser.Text      = string.Empty;
+			txtUserPass.Text     = string.Empty;
+			txtDataBase.Text     = string.Empty;
+			txtPrefijoTabla.Text = string.Empty;
+
+		}
+
+		private void LimpiarDestinoTXT()
+		{
+			chkTXT.Checked = false;
+			txtPathDestino.Text = string.Empty;
+			txtPrefijoArchivo.Text = string.Empty;
+
+		}
+
+		private void HabilitarControlesDestino()
+		{
+			btnDialogDestino.Enabled = chkTXT.Checked;
+			txtPathDestino.Enabled = chkTXT.Checked;
+			txtPrefijoArchivo.Enabled = chkTXT.Checked;
+			txtSQLServer.Enabled = chkSQL.Checked;
+			txtSQLUser.Enabled = chkSQL.Checked;
+			txtUserPass.Enabled = chkSQL.Checked;
+			txtDataBase.Enabled = chkSQL.Checked;
+			txtPrefijoTabla.Enabled = chkSQL.Checked;
+		}
+
+		private void InsertarRegistroDisenio(DisenioTxt disenio, List<string> registro, SqlConnection conn, SqlTransaction tran)
         {
             var cmdInsert = new SqlCommand("");
             cmdInsert.Connection = conn;
@@ -395,56 +642,33 @@ namespace PrexLoadTxtFiles
             _configuracion = Prex.Satelite.Utils.ConfigFile.GetConfiguracion(ConfigFilePath);
             if (_configuracion == null) return false;
 
-            txtDataBase.Text  = _configuracion.DB;
-            txtSQLServer.Text = _configuracion.Servidor;
-            txtSQLUser.Text   = _configuracion.Usuario;
-            txtUserPass.Text  = _configuracion.Pass;
-            txtPathBCP.Text   = _configuracion.PathBCP;
+            txtDataBase.Text         = _configuracion.DB;
+            txtSQLServer.Text        = _configuracion.Servidor;
+            txtSQLUser.Text          = _configuracion.Usuario;
+            txtUserPass.Text         = _configuracion.Pass;
+            txtPathBCP.Text          = _configuracion.PathBCP;
             txtDecimalSeparator.Text = _configuracion.DecimalSeparator;
             txtPrefijoTabla.Text     = _configuracion.PrefijoTabla;
+			txtPrefijoArchivo.Text   = _configuracion.PrefijoArchivo;
+			txtPathDestino.Text      = _configuracion.PathDestino;
 
-            return true;
-        }
+			switch (_configuracion.ModoDestino)
+			{
+				case ModoDestino.SQL:
+					HabilitarSQL();
+					pgSQL.Select();
+					TabControl1.SelectedTab = pgSQL;
+					break;
+				case ModoDestino.TXT:
+					HabilitarTXT();
+					pgTXT.Select();
+					TabControl1.SelectedTab = pgTXT;
+					break;
+				default:
+					break;
+			}
 
-
-        private void DropYCrearTabla(DisenioTxt disenio, SqlConnection conn, SqlTransaction tran)
-        {
-            var cmdCreateTable = new SqlCommand($"IF OBJECT_ID('dbo.{TableName}_{((int)disenio)}', 'U') IS NOT NULL DROP TABLE {TableName}_{((int)disenio)}", conn);
-            cmdCreateTable.Transaction = tran;
-
-            cmdCreateTable.ExecuteNonQuery();
-
-            cmdCreateTable.CommandText = $"CREATE TABLE {TableName}_{((int)disenio)} (";
-
-            _formatos[disenio].OrderBy(d => d.Indice).ToList().ForEach(d => {
-                switch (d.TipoDato)
-                {
-                    case SqlDbType.BigInt:
-                        cmdCreateTable.CommandText += $"{d.Nombre} BIGINT NULL ";
-                        break;
-                    case SqlDbType.Int:
-                        cmdCreateTable.CommandText += $"{d.Nombre} INT NULL ";
-                        break;
-                    case SqlDbType.Decimal:
-                        cmdCreateTable.CommandText += $"{d.Nombre} Decimal(18,4) NULL ";
-                        break;
-                    case SqlDbType.VarChar:
-                        cmdCreateTable.CommandText += $"{d.Nombre} VARCHAR({d.LongitudCampo}) NULL ";
-                        break;
-                    case SqlDbType.DateTime:
-                        cmdCreateTable.CommandText += $"{d.Nombre} DATETIME NULL ";
-                        break;
-                    default:
-                        break;
-                }
-                if (d.Indice < _formatos[disenio].Count())
-                    cmdCreateTable.CommandText += ", ";
-            });
-
-            cmdCreateTable.CommandText += ")";
-
-
-            cmdCreateTable.ExecuteNonQuery();
+			return true;
         }
 
 
@@ -532,11 +756,13 @@ namespace PrexLoadTxtFiles
             }
 
         }
-        #endregion
-        
-    }
 
-    public class Columna
+
+		#endregion
+
+	}
+
+	public class Columna
     {
         public string Nombre { get; set; }
         public SqlDbType TipoDato { get; set; }
