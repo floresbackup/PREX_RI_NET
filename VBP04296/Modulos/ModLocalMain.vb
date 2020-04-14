@@ -29,7 +29,7 @@ Module ModLocalMain
 		'Configuración
 
 		Configuration.LeerXML()
-		Dim rutaLocalDll = Prex.Utils.Misc.Functions.ValidarYCopiarPathDll(Configuration.PrexConfig.CARPETA_LOCAL, System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies())
+		'Dim rutaLocalDll = Prex.Utils.Misc.Functions.ValidarYCopiarPathDll(Configuration.PrexConfig.CARPETA_LOCAL, System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies())
 		AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf Prex.Utils.Misc.Functions.LoadFromSameFolder
 
 		Configuration.PrexConfig.CulturaActual = System.Threading.Thread.CurrentThread.CurrentCulture

@@ -57,7 +57,7 @@ namespace Prex.Utils.Misc.Forms
 						SetProgreso(Path.GetFileName(item), $"{i}/{files.Count()}");
 						if (!File.Exists($"{PathDestino}\\{Path.GetFileName(item)}"))
 						{
-							Thread.Sleep(new TimeSpan(0, 0, 0, 0, 500));
+							Thread.Sleep(new TimeSpan(0, 0, 0, 0, 200));
 
 							File.Copy(item, $"{PathDestino}\\{Path.GetFileName(item)}");
 						}
