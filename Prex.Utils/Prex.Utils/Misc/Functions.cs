@@ -53,7 +53,7 @@ namespace Prex.Utils.Misc
 			string folderPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			string assemblyPath;
 			if (args.Name.ToLower().Contains("devexpress"))
-				assemblyPath = Path.Combine(Path.Combine(Configuration.PrexConfig.CARPETA_LOCAL, "Lib"), new AssemblyName(args.Name).Name + ".dll");
+				assemblyPath = Path.Combine(Path.Combine(Configuration.PrexConfig.CARPETA_LOCAL, "LIB"), new AssemblyName(args.Name).Name + ".dll");
 			else
 				assemblyPath = Path.Combine(folderPath, new AssemblyName(args.Name).Name + ".dll");
 

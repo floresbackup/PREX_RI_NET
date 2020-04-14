@@ -40,33 +40,35 @@ Module modLocalMain
 		Dim bIniciar As Boolean = True
 
 		PrevInstance()
-		'NUEVA FUNCIONA DE LEER XML
-		'Prex.Utils.Configuration.LeerXML()
-
-		'Configuración
-		LeerXML()
-		LeerXMLLocal()
-		Dim currentDomain As AppDomain = AppDomain.CurrentDomain
-
-		Dim oSplash As New SplashScreen
-
-		oSplash.AcercaDe = False
-		oSplash.Show()
-		Application.DoEvents()
-
-		Dim rutaLocalDll = Prex.Utils.Misc.Functions.ValidarYCopiarPathDll(CARPETA_LOCAL, oSplash, System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies())
-		AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf Prex.Utils.Misc.Functions.LoadFromSameFolder
+        'NUEVA FUNCIONA DE LEER XML
+        'Prex.Utils.Configuration.LeerXML()
 
 
+        'Configuración
+        LeerXML()
+        LeerXMLLocal()
+        Dim currentDomain As AppDomain = AppDomain.CurrentDomain
+
+        Dim oSplash As New SplashScreen
+
+        oSplash.AcercaDe = False
+        oSplash.Show()
+        Application.DoEvents()
 
 
-		If UsuarioActual.Codigo = 0 Then
-			If IO.File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
-				IO.File.Delete(CARPETA_LOCAL & "TEMP\conn.enc")
-			End If
-		End If
+        Dim rutaLocalDll = Prex.Utils.Misc.Functions.ValidarYCopiarPathDll(CARPETA_LOCAL, System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies())
+        AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf Prex.Utils.Misc.Functions.LoadFromSameFolder
 
-		If Right(Command, 3) = "IDE" Then
+
+
+
+        If UsuarioActual.Codigo = 0 Then
+            If IO.File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
+                IO.File.Delete(CARPETA_LOCAL & "TEMP\conn.enc")
+            End If
+        End If
+
+        If Right(Command, 3) = "IDE" Then
 			RUTA_BIN = ConfigurationManager.AppSettings.Item("PATHDEBUG")
 		Else
 			RUTA_BIN = NormalizarRuta(Application.StartupPath)
