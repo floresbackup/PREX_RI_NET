@@ -136,6 +136,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entidades\CabSys.vb" />
+    <Compile Include="Formularios\frmABMVar.Designer.vb">
+      <DependentUpon>frmABMVar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\frmABMVar.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\frmABMPro.Designer.vb">
       <DependentUpon>frmABMPro.vb</DependentUpon>
     </Compile>
@@ -179,6 +185,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Formularios\frmABMVar.resx">
+      <DependentUpon>frmABMVar.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmABMPro.resx">
       <DependentUpon>frmABMPro.vb</DependentUpon>
     </EmbeddedResource>

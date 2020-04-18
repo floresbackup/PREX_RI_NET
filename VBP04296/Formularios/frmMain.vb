@@ -629,7 +629,7 @@ Public Class frmMain
 		End While
 		rd.Close()
 
-		'nLlave = oVarSys.Count
+		CargarGrillaVariables(tVarSys.FirstOrDefault()?.Llave)
 
 	End Sub
 
@@ -742,7 +742,7 @@ Public Class frmMain
 		If AnalizarCommand() Then
 
 			cmSql = New ScintillaNET.Scintilla()
-			tabPageQuery.Controls.Add(cmSql)
+			pnlQuery.Controls.Add(cmSql)
 			cmSql.Dock = DockStyle.Fill
 			Prex.Utils.Misc.Forms.ScintillaSQL.InitialiseScintilla(cmSql)
 
@@ -1030,6 +1030,21 @@ Public Class frmMain
 
 	End Sub
 
+	Private Sub gridViewVariables_SelectionChanged(sender As Object, e As DevExpress.Data.SelectionChangedEventArgs) Handles gridViewVariables.SelectionChanged
+		MostrarVariable(gridViewVariables.GetFocusedRowCellValue("Llave"))
+	End Sub
+	Private Sub gridViewVariables_DoubleClick(sender As Object, e As EventArgs) Handles gridViewVariables.DoubleClick
+
+
+		Dim ea As DXMouseEventArgs = CType(e, DXMouseEventArgs)
+		Dim hitInfo As GridHitInfo = gridViewVariables.CalcHitInfo(ea.Location)
+		If hitInfo.InRowCell Then
+			ModificarVariable(False)
+			gridViewVariables.LayoutChanged()
+		End If
+
+	End Sub
+
 	Private Sub gridViewProc_SelectionChanged(sender As Object, e As DevExpress.Data.SelectionChangedEventArgs) Handles gridViewProc.SelectionChanged
 		MostrarProceso(gridViewProc.GetFocusedRowCellValue("Llave"))
 	End Sub
@@ -1077,6 +1092,131 @@ Public Class frmMain
 		tCabSys.CS_CODCON = 0
 		GuardarConsulta()
 	End Sub
+
+	Private Sub btnEliminarVariable_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles btnEliminarVariable.ItemClick
+		Try
+			Dim sLlave = gridViewVariables.GetFocusedRowCellValue("Llave")
+			Dim variable = tVarSys.FirstOrDefault(Function(t) t.Llave = sLlave)
+
+			For Each item As VarSys In tVarSys
+				If item.Orden > variable.Orden Then
+					item.Orden = item.Orden - 1
+				End If
+			Next
+
+			tVarSys.Remove(variable)
+			CargarGrillaVariables(tVarSys.FirstOrDefault()?.Llave)
+		Catch ex As Exception
+			ManejarErrores.TratarError(ex, "EliminarVariable")
+		End Try
+
+	End Sub
+
+	Private Sub BarButtonItem1_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles btnNuevaVariable.ItemClick
+		ModificarVariable(True)
+	End Sub
+
+	Private Sub btnEditarVariable_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles btnEditarVariable.ItemClick
+		ModificarVariable(False)
+	End Sub
+
+	Private Sub btnSubirVariable_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles btnSubirVariable.ItemClick
+		Dim sLlave = gridViewVariables.GetFocusedRowCellValue("Llave")
+		Dim variable As VarSys = tVarSys.FirstOrDefault(Function(t) t.Llave = sLlave)
+		variable.Orden -= 1
+
+		Dim l As New List(Of VarSys)
+		For Each item As VarSys In tVarSys.Where(Function(t) t.Llave <> variable.Llave)
+			If variable.Orden = item.Orden Then
+				item.Orden += 1
+			End If
+			l.Add(item)
+		Next
+		l.Add(variable)
+
+		tVarSys = l.OrderBy(Function(t) t.Orden).ToList()
+		CargarGrillaVariables(variable.Llave)
+	End Sub
+
+	Private Sub btnVariableBajarOrden_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles btnVariableBajarOrden.ItemClick
+		Dim sLlave = gridViewVariables.GetFocusedRowCellValue("Llave")
+		Dim variable As VarSys = tVarSys.FirstOrDefault(Function(t) t.Llave = sLlave)
+		variable.Orden += 1
+
+		Dim l As New List(Of VarSys)
+		For Each item As VarSys In tVarSys.Where(Function(t) t.Llave <> variable.Llave)
+			If variable.Orden = item.Orden Then
+				item.Orden -= 1
+			End If
+			l.Add(item)
+		Next
+		l.Add(variable)
+
+		tVarSys = l.OrderBy(Function(t) t.Orden).ToList()
+		CargarGrillaVariables(variable.Llave)
+	End Sub
+#End Region
+
+#Region "Variables"
+
+
+	Private Sub ModificarVariable(esNuevo As Boolean)
+		Dim sLlave = gridViewVariables.GetFocusedRowCellValue("Llave")
+		Dim frmABMVar As New frmABMVar()
+		frmABMVar.PasarDatos(IIf(esNuevo, Nothing, tVarSys.FirstOrDefault(Function(t) t.Llave = sLlave)), tVarSys)
+		If frmABMVar.ShowDialog() = DialogResult.OK Then
+			If esNuevo Then
+				tVarSys.Add(frmABMVar.Variable)
+				sLlave = frmABMVar.Variable.Llave
+			End If
+			CargarGrillaVariables(sLlave)
+		End If
+	End Sub
+
+	Private Sub RefrescarGrillaVariables()
+		Try
+			RemoveHandler gridViewVariables.SelectionChanged, AddressOf gridViewVariables_SelectionChanged
+
+			gridVariables.DataSource = tVarSys.OrderBy(Function(c) c.Orden).Select(Function(c) New With {c.Nombre, c.Llave}).ToList()
+			For Each item As DevExpress.XtraGrid.Columns.GridColumn In gridViewVariables.Columns
+				item.Visible = item.FieldName.Contains("Nombre")
+			Next
+		Finally
+			AddHandler gridViewVariables.SelectionChanged, AddressOf gridViewVariables_SelectionChanged
+		End Try
+	End Sub
+
+	Private Sub CargarGrillaVariables(llave As String)
+		RefrescarGrillaVariables()
+		MostrarVariable(llave)
+	End Sub
+
+	Private Sub MostrarVariable(ByVal sLlave As String)
+		Try
+			RemoveHandler gridViewVariables.SelectionChanged, AddressOf gridViewVariables_SelectionChanged
+
+			If Not tVarSys.Any() Then Exit Sub
+			Dim variable As VarSys = tVarSys.FirstOrDefault(Function(p) p.Llave = sLlave)
+			If variable IsNot Nothing Then
+				txtVarDato.Text = variable.Tipo.ToString()
+				txtVarHelp.Text = variable.Help.ToString().Replace("_", " ")
+				txtVarNombre.Text = variable.Nombre
+				txtVarOrden.Text = variable.Orden
+				txtVarTitulo.Text = variable.Titulo
+				Dim rh = gridViewVariables.GetRowHandle(variable.Orden - 1)
+				gridViewVariables.SelectRow(rh)
+			Else
+				txtVarDato.Text = String.Empty
+				txtVarHelp.Text = String.Empty
+				txtVarNombre.Text = String.Empty
+				txtVarOrden.Text = String.Empty
+				txtVarTitulo.Text = String.Empty
+			End If
+
+		Finally
+			AddHandler gridViewVariables.SelectionChanged, AddressOf gridViewVariables_SelectionChanged
+		End Try
+	End Sub
 #End Region
 
 #Region "Procesos"
@@ -1111,7 +1251,6 @@ Public Class frmMain
 		RefrescarGrillaProcesos()
 		MostrarProceso(tProcesosPrevios.FirstOrDefault()?.Llave)
 	End Sub
-
 
 	Private Sub EliminarProceso()
 		Try
@@ -1194,7 +1333,7 @@ Public Class frmMain
 		cmdSubirOrdenProceso.Enabled = tProcesosPrevios.Count() > 1
 		cmdBajarOrdenProceso.Enabled = tProcesosPrevios.Count() > 1
 	End Sub
-
+#End Region
 
 	Private Sub cmdGenerarScipt_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdGenerarScipt.ItemClick
 
@@ -1358,6 +1497,6 @@ Public Class frmMain
 		Return sSQL
 
 	End Function
-#End Region
+
 
 End Class

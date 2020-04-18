@@ -68,31 +68,51 @@ Namespace Dominio
         End Sub
     End Class
 
-    Public Class VarSys
+	Public Enum eTipoVariable
+		Numero = 0
+		Texto = 1
+		Fecha = 2
+	End Enum
+
+	Public Enum eVarHelp
+		[Utilizar_el_tipo_de_dato] = 0
+		[Utilizar_Help_SQL] = 1
+		[Utilizar_código_de_entidad] = 2
+		[Utilizar_código_de_cuadro] = 3
+		[Utilizar_Condicional] = 4
+		[Utilizar_codigo_de_usuario] = 5
+	End Enum
+
+	Public Class VarSys
         Public Nombre As String
-        Public Tipo As String
-        Public Titulo As String
-        Public Help As String
-        Public HelQue As String
+		Public Tipo As eTipoVariable
+		Public Titulo As String
+		Public Help As eVarHelp
+		Public HelQue As String
         Public Orden As Integer
         Public Llave As String
         Public CodCon As Long
 
-        Public Sub New()
+		Public Sub New()
 
-        End Sub
+		End Sub
+		Public Sub New(Llave As String)
+			Me.Llave = Llave
 
-        Public Sub New(codCon As Long, orden As Integer, nombre As String, tipo As String, titulo As String, help As String, helpque As String, llave As String)
-            Me.Orden = orden
-            Me.Nombre = nombre
-            Me.Tipo = tipo
-            Me.Titulo = titulo
-            Me.Help = help
-            Me.HelQue = helpque
-            Me.Llave = llave
-            Me.CodCon = codCon
-        End Sub
-    End Class
+		End Sub
+
+		Public Sub New(codCon As Long, orden As Integer, nombre As String, tipo As String, titulo As String, help As String, helpque As String, llave As String)
+			Me.Llave = llave
+
+			Me.Orden = orden
+			Me.Nombre = nombre
+			Me.Tipo = Integer.Parse(tipo)
+			Me.Titulo = titulo
+			Me.Help = Integer.Parse(help)
+			Me.HelQue = helpque
+			Me.CodCon = codCon
+		End Sub
+	End Class
     Public Enum eProcesos
         ConsFechaFinMes = 0
         ConsValidarPeriodo = 1
