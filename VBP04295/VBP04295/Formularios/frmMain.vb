@@ -818,31 +818,31 @@ Public Class frmMain
             sSQL = oConsulta.ActualizaQuery
         End If
 
-        If Grid.MainView.RowCount > 0 And MODO_APE <> "A" Then
+		If Grid.MainView.RowCount > 0 AndAlso MODO_APE <> "A" Then
 
-            For Each oCol In oColumnas
-				If Not oCol.VisibleABM Then Continue For
+			For Each oCol In oColumnas
+				'If Not oCol.VisibleABM Then Continue For
 
 				vValor = GetValorSeleccionado(oCol.Campo)
 
-                If Not String.IsNullOrEmpty(vValor) Then
-                    If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
-                        vValor = FechaSQL(vValor)
-                    ElseIf TipoDatosADO(oCol.Tipo) = "Numérico" Then
-                        vValor = FlotanteSQL(vValor)
-                    Else
-                        vValor = "'" & vValor & "'"
-                    End If
-                Else
-                    vValor = "NULL"
-                End If
+				If Not String.IsNullOrEmpty(vValor) Then
+					If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
+						vValor = FechaSQL(vValor)
+					ElseIf TipoDatosADO(oCol.Tipo) = "Numérico" Then
+						vValor = FlotanteSQL(vValor)
+					Else
+						vValor = "'" & vValor & "'"
+					End If
+				Else
+					vValor = "NULL"
+				End If
 
-                sSQL = sSQL.Replace("@" & oCol.Campo, vValor)
+				sSQL = sSQL.Replace("@" & oCol.Campo, vValor)
 
-            Next
-        End If
+			Next
+		End If
 
-        sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
+		sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
 
         Me.Enabled = True
 

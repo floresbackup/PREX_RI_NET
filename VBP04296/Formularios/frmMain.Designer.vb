@@ -66,6 +66,7 @@ Partial Class frmMain
 		Me.barDockControlBottom = New DevExpress.XtraBars.BarDockControl()
 		Me.barDockControlLeft = New DevExpress.XtraBars.BarDockControl()
 		Me.barDockControlRight = New DevExpress.XtraBars.BarDockControl()
+		Me.StandaloneBarDockControl4 = New DevExpress.XtraBars.StandaloneBarDockControl()
 		Me.GridCons = New DevExpress.XtraGrid.GridControl()
 		Me.GridViewCons = New DevExpress.XtraGrid.Views.Grid.GridView()
 		Me.colNombreConsulta = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -98,6 +99,26 @@ Partial Class frmMain
 		Me.LabelControl2 = New DevExpress.XtraEditors.LabelControl()
 		Me.LabelControl1 = New DevExpress.XtraEditors.LabelControl()
 		Me.tabPageQuery = New DevExpress.XtraTab.XtraTabPage()
+		Me.lyVariables = New System.Windows.Forms.TableLayoutPanel()
+		Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+		Me.PanelControl1 = New DevExpress.XtraEditors.PanelControl()
+		Me.gridVariables = New DevExpress.XtraGrid.GridControl()
+		Me.gridViewVariables = New DevExpress.XtraGrid.Views.Grid.GridView()
+		Me.Panel1 = New System.Windows.Forms.Panel()
+		Me.LabelControl16 = New DevExpress.XtraEditors.LabelControl()
+		Me.PanelControl6 = New DevExpress.XtraEditors.PanelControl()
+		Me.PanelControl7 = New DevExpress.XtraEditors.PanelControl()
+		Me.txtVarOrden = New DevExpress.XtraEditors.TextEdit()
+		Me.LabelControl21 = New DevExpress.XtraEditors.LabelControl()
+		Me.txtVarNombre = New DevExpress.XtraEditors.TextEdit()
+		Me.LabelControl20 = New DevExpress.XtraEditors.LabelControl()
+		Me.txtVarTitulo = New DevExpress.XtraEditors.TextEdit()
+		Me.LabelControl19 = New DevExpress.XtraEditors.LabelControl()
+		Me.txtVarDato = New DevExpress.XtraEditors.TextEdit()
+		Me.LabelControl18 = New DevExpress.XtraEditors.LabelControl()
+		Me.txtVarHelp = New DevExpress.XtraEditors.TextEdit()
+		Me.LabelControl17 = New DevExpress.XtraEditors.LabelControl()
+		Me.pnlQuery = New System.Windows.Forms.Panel()
 		Me.tabPageColumnas = New DevExpress.XtraTab.XtraTabPage()
 		Me.tabPageProcesos = New DevExpress.XtraTab.XtraTabPage()
 		Me.gridProc = New DevExpress.XtraGrid.GridControl()
@@ -112,6 +133,12 @@ Partial Class frmMain
 		Me.LabelControl6 = New DevExpress.XtraEditors.LabelControl()
 		Me.LabelControl5 = New DevExpress.XtraEditors.LabelControl()
 		Me.LabelControl4 = New DevExpress.XtraEditors.LabelControl()
+		Me.Bar3 = New DevExpress.XtraBars.Bar()
+		Me.btnNuevaVariable = New DevExpress.XtraBars.BarButtonItem()
+		Me.btnEditarVariable = New DevExpress.XtraBars.BarButtonItem()
+		Me.btnEliminarVariable = New DevExpress.XtraBars.BarButtonItem()
+		Me.btnSubirVariable = New DevExpress.XtraBars.BarButtonItem()
+		Me.btnVariableBajarOrden = New DevExpress.XtraBars.BarButtonItem()
 		Me.toolMain.SuspendLayout()
 		Me.sbMain.SuspendLayout()
 		CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -138,6 +165,23 @@ Partial Class frmMain
 		CType(Me.txtDescriCab.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.txtCodTraCab.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.txtNombreCab.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+		Me.tabPageQuery.SuspendLayout()
+		Me.lyVariables.SuspendLayout()
+		Me.TableLayoutPanel3.SuspendLayout()
+		CType(Me.PanelControl1, System.ComponentModel.ISupportInitialize).BeginInit()
+		Me.PanelControl1.SuspendLayout()
+		CType(Me.gridVariables, System.ComponentModel.ISupportInitialize).BeginInit()
+		CType(Me.gridViewVariables, System.ComponentModel.ISupportInitialize).BeginInit()
+		Me.Panel1.SuspendLayout()
+		CType(Me.PanelControl6, System.ComponentModel.ISupportInitialize).BeginInit()
+		Me.PanelControl6.SuspendLayout()
+		CType(Me.PanelControl7, System.ComponentModel.ISupportInitialize).BeginInit()
+		Me.PanelControl7.SuspendLayout()
+		CType(Me.txtVarOrden.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+		CType(Me.txtVarNombre.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+		CType(Me.txtVarTitulo.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+		CType(Me.txtVarDato.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+		CType(Me.txtVarHelp.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
 		Me.tabPageProcesos.SuspendLayout()
 		CType(Me.gridProc, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.gridViewProc, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -154,7 +198,7 @@ Partial Class frmMain
 		Me.toolMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblTransaccion, Me.btnSalir, Me.tsSep1, Me.btnAyuda, Me.tsSep2, Me.lblVersion, Me.ToolStripSeparator6})
 		Me.toolMain.Location = New System.Drawing.Point(0, 0)
 		Me.toolMain.Name = "toolMain"
-		Me.toolMain.Size = New System.Drawing.Size(1413, 27)
+		Me.toolMain.Size = New System.Drawing.Size(1413, 31)
 		Me.toolMain.TabIndex = 10
 		Me.toolMain.Text = "ToolStrip1"
 		'
@@ -174,14 +218,14 @@ Partial Class frmMain
 		Me.btnSalir.Image = Global.VBP04296.My.Resources.Resources.Cross
 		Me.btnSalir.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnSalir.Name = "btnSalir"
-		Me.btnSalir.Size = New System.Drawing.Size(66, 24)
+		Me.btnSalir.Size = New System.Drawing.Size(66, 28)
 		Me.btnSalir.Text = " Salir"
 		'
 		'tsSep1
 		'
 		Me.tsSep1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
 		Me.tsSep1.Name = "tsSep1"
-		Me.tsSep1.Size = New System.Drawing.Size(6, 27)
+		Me.tsSep1.Size = New System.Drawing.Size(6, 31)
 		'
 		'btnAyuda
 		'
@@ -189,27 +233,27 @@ Partial Class frmMain
 		Me.btnAyuda.Image = Global.VBP04296.My.Resources.Resources.Help_2
 		Me.btnAyuda.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnAyuda.Name = "btnAyuda"
-		Me.btnAyuda.Size = New System.Drawing.Size(79, 24)
+		Me.btnAyuda.Size = New System.Drawing.Size(79, 28)
 		Me.btnAyuda.Text = " Ayuda"
 		'
 		'tsSep2
 		'
 		Me.tsSep2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
 		Me.tsSep2.Name = "tsSep2"
-		Me.tsSep2.Size = New System.Drawing.Size(6, 27)
+		Me.tsSep2.Size = New System.Drawing.Size(6, 31)
 		'
 		'lblVersion
 		'
 		Me.lblVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
 		Me.lblVersion.Name = "lblVersion"
-		Me.lblVersion.Size = New System.Drawing.Size(94, 24)
+		Me.lblVersion.Size = New System.Drawing.Size(94, 28)
 		Me.lblVersion.Text = "Versión: 1.0.0"
 		'
 		'ToolStripSeparator6
 		'
 		Me.ToolStripSeparator6.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
 		Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-		Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 27)
+		Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 31)
 		'
 		'sbMain
 		'
@@ -252,7 +296,7 @@ Partial Class frmMain
 		Me.PanTop.Controls.Add(Me.lblTitulo)
 		Me.PanTop.Controls.Add(Me.picLogo)
 		Me.PanTop.Dock = System.Windows.Forms.DockStyle.Top
-		Me.PanTop.Location = New System.Drawing.Point(0, 27)
+		Me.PanTop.Location = New System.Drawing.Point(0, 31)
 		Me.PanTop.LookAndFeel.UseDefaultLookAndFeel = False
 		Me.PanTop.Margin = New System.Windows.Forms.Padding(4)
 		Me.PanTop.Name = "PanTop"
@@ -297,10 +341,10 @@ Partial Class frmMain
 		'
 		Me.pnlMain.Controls.Add(Me.SplitContainerControl1)
 		Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
-		Me.pnlMain.Location = New System.Drawing.Point(0, 93)
+		Me.pnlMain.Location = New System.Drawing.Point(0, 97)
 		Me.pnlMain.Margin = New System.Windows.Forms.Padding(4)
 		Me.pnlMain.Name = "pnlMain"
-		Me.pnlMain.Size = New System.Drawing.Size(1413, 710)
+		Me.pnlMain.Size = New System.Drawing.Size(1413, 706)
 		Me.pnlMain.TabIndex = 13
 		'
 		'SplitContainerControl1
@@ -313,7 +357,7 @@ Partial Class frmMain
 		Me.SplitContainerControl1.Panel1.Text = "Panel1"
 		Me.SplitContainerControl1.Panel2.Controls.Add(Me.TableLayoutPanel2)
 		Me.SplitContainerControl1.Panel2.Text = "Panel2"
-		Me.SplitContainerControl1.Size = New System.Drawing.Size(1409, 706)
+		Me.SplitContainerControl1.Size = New System.Drawing.Size(1409, 702)
 		Me.SplitContainerControl1.SplitterPosition = 311
 		Me.SplitContainerControl1.TabIndex = 0
 		Me.SplitContainerControl1.Text = "SplitContainerControl1"
@@ -331,7 +375,7 @@ Partial Class frmMain
 		Me.TableLayoutPanel1.RowCount = 2
 		Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
 		Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-		Me.TableLayoutPanel1.Size = New System.Drawing.Size(311, 706)
+		Me.TableLayoutPanel1.Size = New System.Drawing.Size(311, 702)
 		Me.TableLayoutPanel1.TabIndex = 0
 		'
 		'StandaloneBarDockControl2
@@ -347,7 +391,7 @@ Partial Class frmMain
 		'
 		'BarManager1
 		'
-		Me.BarManager1.Bars.AddRange(New DevExpress.XtraBars.Bar() {Me.Bar2, Me.Bar1, Me.barProcesos})
+		Me.BarManager1.Bars.AddRange(New DevExpress.XtraBars.Bar() {Me.Bar2, Me.Bar1, Me.barProcesos, Me.Bar3})
 		Me.BarManager1.DockControls.Add(Me.barDockControlTop)
 		Me.BarManager1.DockControls.Add(Me.barDockControlBottom)
 		Me.BarManager1.DockControls.Add(Me.barDockControlLeft)
@@ -355,10 +399,11 @@ Partial Class frmMain
 		Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl1)
 		Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl2)
 		Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl3)
+		Me.BarManager1.DockControls.Add(Me.StandaloneBarDockControl4)
 		Me.BarManager1.Form = Me
-		Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.cmdSave, Me.cmdSaveNuevo, Me.cmdObtenerCampos, Me.cmdCancelar, Me.cmdGenerarScipt, Me.btnNueva, Me.btnEliminar, Me.btnEditar, Me.cmdNuevoProceso, Me.cmdEditarProceso, Me.cmdSubirOrdenProceso, Me.cmdBajarOrdenProceso, Me.cmdEliminarProceso})
+		Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.cmdSave, Me.cmdSaveNuevo, Me.cmdObtenerCampos, Me.cmdCancelar, Me.cmdGenerarScipt, Me.btnNueva, Me.btnEliminar, Me.btnEditar, Me.cmdNuevoProceso, Me.cmdEditarProceso, Me.cmdSubirOrdenProceso, Me.cmdBajarOrdenProceso, Me.cmdEliminarProceso, Me.btnNuevaVariable, Me.btnEditarVariable, Me.btnEliminarVariable, Me.btnSubirVariable, Me.btnVariableBajarOrden})
 		Me.BarManager1.MainMenu = Me.Bar2
-		Me.BarManager1.MaxItemId = 13
+		Me.BarManager1.MaxItemId = 18
 		'
 		'Bar2
 		'
@@ -574,6 +619,17 @@ Partial Class frmMain
 		Me.barDockControlRight.Margin = New System.Windows.Forms.Padding(4)
 		Me.barDockControlRight.Size = New System.Drawing.Size(0, 833)
 		'
+		'StandaloneBarDockControl4
+		'
+		Me.StandaloneBarDockControl4.CausesValidation = False
+		Me.StandaloneBarDockControl4.Dock = System.Windows.Forms.DockStyle.Top
+		Me.StandaloneBarDockControl4.Location = New System.Drawing.Point(3, 3)
+		Me.StandaloneBarDockControl4.Manager = Me.BarManager1
+		Me.StandaloneBarDockControl4.Margin = New System.Windows.Forms.Padding(4)
+		Me.StandaloneBarDockControl4.Name = "StandaloneBarDockControl4"
+		Me.StandaloneBarDockControl4.Size = New System.Drawing.Size(244, 34)
+		Me.StandaloneBarDockControl4.Text = "StandaloneBarDockControl4"
+		'
 		'GridCons
 		'
 		Me.GridCons.Dock = System.Windows.Forms.DockStyle.Fill
@@ -582,7 +638,7 @@ Partial Class frmMain
 		Me.GridCons.MainView = Me.GridViewCons
 		Me.GridCons.Margin = New System.Windows.Forms.Padding(0, 4, 0, 0)
 		Me.GridCons.Name = "GridCons"
-		Me.GridCons.Size = New System.Drawing.Size(311, 672)
+		Me.GridCons.Size = New System.Drawing.Size(311, 668)
 		Me.GridCons.TabIndex = 0
 		Me.GridCons.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.GridViewCons})
 		'
@@ -650,7 +706,7 @@ Partial Class frmMain
 		Me.TableLayoutPanel2.RowCount = 2
 		Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
 		Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-		Me.TableLayoutPanel2.Size = New System.Drawing.Size(1092, 706)
+		Me.TableLayoutPanel2.Size = New System.Drawing.Size(1092, 702)
 		Me.TableLayoutPanel2.TabIndex = 2
 		'
 		'tabPanel
@@ -661,7 +717,7 @@ Partial Class frmMain
 		Me.tabPanel.Margin = New System.Windows.Forms.Padding(0)
 		Me.tabPanel.Name = "tabPanel"
 		Me.tabPanel.SelectedTabPage = Me.tabPageFormulario
-		Me.tabPanel.Size = New System.Drawing.Size(1092, 676)
+		Me.tabPanel.Size = New System.Drawing.Size(1092, 672)
 		Me.tabPanel.TabIndex = 1
 		Me.tabPanel.TabPages.AddRange(New DevExpress.XtraTab.XtraTabPage() {Me.tabPageFormulario, Me.tabPageQuery, Me.tabPageColumnas, Me.tabPageProcesos})
 		'
@@ -937,18 +993,298 @@ Partial Class frmMain
 		'
 		'tabPageQuery
 		'
+		Me.tabPageQuery.Controls.Add(Me.lyVariables)
 		Me.tabPageQuery.ImageOptions.Image = CType(resources.GetObject("tabPageQuery.ImageOptions.Image"), System.Drawing.Image)
 		Me.tabPageQuery.Margin = New System.Windows.Forms.Padding(0)
 		Me.tabPageQuery.Name = "tabPageQuery"
-		Me.tabPageQuery.Size = New System.Drawing.Size(1085, 642)
+		Me.tabPageQuery.Size = New System.Drawing.Size(1085, 638)
 		Me.tabPageQuery.Text = "Query"
+		'
+		'lyVariables
+		'
+		Me.lyVariables.ColumnCount = 2
+		Me.lyVariables.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+		Me.lyVariables.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 250.0!))
+		Me.lyVariables.Controls.Add(Me.TableLayoutPanel3, 1, 0)
+		Me.lyVariables.Controls.Add(Me.pnlQuery, 0, 0)
+		Me.lyVariables.Dock = System.Windows.Forms.DockStyle.Fill
+		Me.lyVariables.Location = New System.Drawing.Point(0, 0)
+		Me.lyVariables.Margin = New System.Windows.Forms.Padding(0)
+		Me.lyVariables.Name = "lyVariables"
+		Me.lyVariables.RowCount = 1
+		Me.lyVariables.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+		Me.lyVariables.Size = New System.Drawing.Size(1085, 638)
+		Me.lyVariables.TabIndex = 0
+		'
+		'TableLayoutPanel3
+		'
+		Me.TableLayoutPanel3.ColumnCount = 1
+		Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+		Me.TableLayoutPanel3.Controls.Add(Me.PanelControl1, 0, 2)
+		Me.TableLayoutPanel3.Controls.Add(Me.Panel1, 0, 0)
+		Me.TableLayoutPanel3.Controls.Add(Me.PanelControl6, 0, 1)
+		Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
+		Me.TableLayoutPanel3.Location = New System.Drawing.Point(835, 0)
+		Me.TableLayoutPanel3.Margin = New System.Windows.Forms.Padding(0)
+		Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
+		Me.TableLayoutPanel3.RowCount = 3
+		Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28.0!))
+		Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 220.0!))
+		Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+		Me.TableLayoutPanel3.Size = New System.Drawing.Size(250, 638)
+		Me.TableLayoutPanel3.TabIndex = 2
+		'
+		'PanelControl1
+		'
+		Me.PanelControl1.Appearance.BackColor = System.Drawing.Color.White
+		Me.PanelControl1.Appearance.Options.UseBackColor = True
+		Me.PanelControl1.Controls.Add(Me.gridVariables)
+		Me.PanelControl1.Dock = System.Windows.Forms.DockStyle.Fill
+		Me.PanelControl1.Location = New System.Drawing.Point(4, 252)
+		Me.PanelControl1.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat
+		Me.PanelControl1.LookAndFeel.UseDefaultLookAndFeel = False
+		Me.PanelControl1.Margin = New System.Windows.Forms.Padding(4)
+		Me.PanelControl1.Name = "PanelControl1"
+		Me.PanelControl1.Size = New System.Drawing.Size(242, 382)
+		Me.PanelControl1.TabIndex = 0
+		'
+		'gridVariables
+		'
+		Me.gridVariables.Dock = System.Windows.Forms.DockStyle.Fill
+		Me.gridVariables.EmbeddedNavigator.Margin = New System.Windows.Forms.Padding(4)
+		Me.gridVariables.Location = New System.Drawing.Point(3, 3)
+		Me.gridVariables.MainView = Me.gridViewVariables
+		Me.gridVariables.Margin = New System.Windows.Forms.Padding(0)
+		Me.gridVariables.MenuManager = Me.BarManager1
+		Me.gridVariables.Name = "gridVariables"
+		Me.gridVariables.Size = New System.Drawing.Size(236, 376)
+		Me.gridVariables.TabIndex = 3
+		Me.gridVariables.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gridViewVariables})
+		'
+		'gridViewVariables
+		'
+		Me.gridViewVariables.Appearance.FocusedRow.BackColor = System.Drawing.Color.LightSkyBlue
+		Me.gridViewVariables.Appearance.FocusedRow.BackColor2 = System.Drawing.Color.LightSkyBlue
+		Me.gridViewVariables.Appearance.FocusedRow.Options.UseBackColor = True
+		Me.gridViewVariables.GridControl = Me.gridVariables
+		Me.gridViewVariables.Name = "gridViewVariables"
+		Me.gridViewVariables.OptionsBehavior.Editable = False
+		Me.gridViewVariables.OptionsSelection.MultiSelect = True
+		Me.gridViewVariables.OptionsView.ShowGroupPanel = False
+		'
+		'Panel1
+		'
+		Me.Panel1.BackColor = System.Drawing.SystemColors.ActiveCaption
+		Me.Panel1.Controls.Add(Me.LabelControl16)
+		Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
+		Me.Panel1.Location = New System.Drawing.Point(4, 4)
+		Me.Panel1.Margin = New System.Windows.Forms.Padding(4)
+		Me.Panel1.Name = "Panel1"
+		Me.Panel1.Size = New System.Drawing.Size(242, 20)
+		Me.Panel1.TabIndex = 1
+		'
+		'LabelControl16
+		'
+		Me.LabelControl16.Location = New System.Drawing.Point(13, 2)
+		Me.LabelControl16.Margin = New System.Windows.Forms.Padding(4)
+		Me.LabelControl16.Name = "LabelControl16"
+		Me.LabelControl16.Size = New System.Drawing.Size(119, 16)
+		Me.LabelControl16.TabIndex = 0
+		Me.LabelControl16.Text = "Variables de entrada"
+		'
+		'PanelControl6
+		'
+		Me.PanelControl6.Appearance.BackColor = System.Drawing.Color.White
+		Me.PanelControl6.Appearance.Options.UseBackColor = True
+		Me.PanelControl6.Controls.Add(Me.PanelControl7)
+		Me.PanelControl6.Controls.Add(Me.StandaloneBarDockControl4)
+		Me.PanelControl6.Dock = System.Windows.Forms.DockStyle.Fill
+		Me.PanelControl6.Location = New System.Drawing.Point(0, 28)
+		Me.PanelControl6.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat
+		Me.PanelControl6.LookAndFeel.UseDefaultLookAndFeel = False
+		Me.PanelControl6.Margin = New System.Windows.Forms.Padding(0)
+		Me.PanelControl6.Name = "PanelControl6"
+		Me.PanelControl6.Size = New System.Drawing.Size(250, 220)
+		Me.PanelControl6.TabIndex = 2
+		'
+		'PanelControl7
+		'
+		Me.PanelControl7.Appearance.BackColor = System.Drawing.Color.White
+		Me.PanelControl7.Appearance.Options.UseBackColor = True
+		Me.PanelControl7.Controls.Add(Me.txtVarOrden)
+		Me.PanelControl7.Controls.Add(Me.LabelControl21)
+		Me.PanelControl7.Controls.Add(Me.txtVarNombre)
+		Me.PanelControl7.Controls.Add(Me.LabelControl20)
+		Me.PanelControl7.Controls.Add(Me.txtVarTitulo)
+		Me.PanelControl7.Controls.Add(Me.LabelControl19)
+		Me.PanelControl7.Controls.Add(Me.txtVarDato)
+		Me.PanelControl7.Controls.Add(Me.LabelControl18)
+		Me.PanelControl7.Controls.Add(Me.txtVarHelp)
+		Me.PanelControl7.Controls.Add(Me.LabelControl17)
+		Me.PanelControl7.Dock = System.Windows.Forms.DockStyle.Fill
+		Me.PanelControl7.Location = New System.Drawing.Point(3, 37)
+		Me.PanelControl7.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat
+		Me.PanelControl7.LookAndFeel.UseDefaultLookAndFeel = False
+		Me.PanelControl7.Margin = New System.Windows.Forms.Padding(4)
+		Me.PanelControl7.Name = "PanelControl7"
+		Me.PanelControl7.Size = New System.Drawing.Size(244, 180)
+		Me.PanelControl7.TabIndex = 1
+		'
+		'txtVarOrden
+		'
+		Me.txtVarOrden.Location = New System.Drawing.Point(74, 8)
+		Me.txtVarOrden.Margin = New System.Windows.Forms.Padding(4)
+		Me.txtVarOrden.MaximumSize = New System.Drawing.Size(99, 25)
+		Me.txtVarOrden.MinimumSize = New System.Drawing.Size(150, 25)
+		Me.txtVarOrden.Name = "txtVarOrden"
+		Me.txtVarOrden.Properties.Appearance.Options.UseTextOptions = True
+		Me.txtVarOrden.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap
+		Me.txtVarOrden.Properties.AppearanceReadOnly.BackColor = System.Drawing.Color.White
+		Me.txtVarOrden.Properties.AppearanceReadOnly.Options.UseBackColor = True
+		Me.txtVarOrden.Properties.AppearanceReadOnly.Options.UseTextOptions = True
+		Me.txtVarOrden.Properties.AppearanceReadOnly.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap
+		Me.txtVarOrden.Properties.AutoHeight = False
+		Me.txtVarOrden.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Office2003
+		Me.txtVarOrden.Properties.ReadOnly = True
+		Me.txtVarOrden.Size = New System.Drawing.Size(150, 25)
+		Me.txtVarOrden.TabIndex = 24
+		'
+		'LabelControl21
+		'
+		Me.LabelControl21.Location = New System.Drawing.Point(25, 12)
+		Me.LabelControl21.Margin = New System.Windows.Forms.Padding(4)
+		Me.LabelControl21.Name = "LabelControl21"
+		Me.LabelControl21.Size = New System.Drawing.Size(40, 16)
+		Me.LabelControl21.TabIndex = 23
+		Me.LabelControl21.Text = "Orden:"
+		'
+		'txtVarNombre
+		'
+		Me.txtVarNombre.Location = New System.Drawing.Point(74, 41)
+		Me.txtVarNombre.Margin = New System.Windows.Forms.Padding(4)
+		Me.txtVarNombre.MaximumSize = New System.Drawing.Size(99, 25)
+		Me.txtVarNombre.MinimumSize = New System.Drawing.Size(150, 25)
+		Me.txtVarNombre.Name = "txtVarNombre"
+		Me.txtVarNombre.Properties.Appearance.Options.UseTextOptions = True
+		Me.txtVarNombre.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap
+		Me.txtVarNombre.Properties.AppearanceReadOnly.BackColor = System.Drawing.Color.White
+		Me.txtVarNombre.Properties.AppearanceReadOnly.Options.UseBackColor = True
+		Me.txtVarNombre.Properties.AppearanceReadOnly.Options.UseTextOptions = True
+		Me.txtVarNombre.Properties.AppearanceReadOnly.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap
+		Me.txtVarNombre.Properties.AutoHeight = False
+		Me.txtVarNombre.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Office2003
+		Me.txtVarNombre.Properties.ReadOnly = True
+		Me.txtVarNombre.Size = New System.Drawing.Size(150, 25)
+		Me.txtVarNombre.TabIndex = 22
+		'
+		'LabelControl20
+		'
+		Me.LabelControl20.Location = New System.Drawing.Point(15, 45)
+		Me.LabelControl20.Margin = New System.Windows.Forms.Padding(4)
+		Me.LabelControl20.Name = "LabelControl20"
+		Me.LabelControl20.Size = New System.Drawing.Size(50, 16)
+		Me.LabelControl20.TabIndex = 21
+		Me.LabelControl20.Text = "Nombre:"
+		'
+		'txtVarTitulo
+		'
+		Me.txtVarTitulo.Location = New System.Drawing.Point(74, 74)
+		Me.txtVarTitulo.Margin = New System.Windows.Forms.Padding(4)
+		Me.txtVarTitulo.MaximumSize = New System.Drawing.Size(99, 25)
+		Me.txtVarTitulo.MinimumSize = New System.Drawing.Size(150, 25)
+		Me.txtVarTitulo.Name = "txtVarTitulo"
+		Me.txtVarTitulo.Properties.Appearance.Options.UseTextOptions = True
+		Me.txtVarTitulo.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap
+		Me.txtVarTitulo.Properties.AppearanceReadOnly.BackColor = System.Drawing.Color.White
+		Me.txtVarTitulo.Properties.AppearanceReadOnly.Options.UseBackColor = True
+		Me.txtVarTitulo.Properties.AppearanceReadOnly.Options.UseTextOptions = True
+		Me.txtVarTitulo.Properties.AppearanceReadOnly.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap
+		Me.txtVarTitulo.Properties.AutoHeight = False
+		Me.txtVarTitulo.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Office2003
+		Me.txtVarTitulo.Properties.ReadOnly = True
+		Me.txtVarTitulo.Size = New System.Drawing.Size(150, 25)
+		Me.txtVarTitulo.TabIndex = 20
+		'
+		'LabelControl19
+		'
+		Me.LabelControl19.Location = New System.Drawing.Point(28, 78)
+		Me.LabelControl19.Margin = New System.Windows.Forms.Padding(4)
+		Me.LabelControl19.Name = "LabelControl19"
+		Me.LabelControl19.Size = New System.Drawing.Size(37, 16)
+		Me.LabelControl19.TabIndex = 19
+		Me.LabelControl19.Text = "Título:"
+		'
+		'txtVarDato
+		'
+		Me.txtVarDato.Location = New System.Drawing.Point(74, 107)
+		Me.txtVarDato.Margin = New System.Windows.Forms.Padding(4)
+		Me.txtVarDato.MaximumSize = New System.Drawing.Size(99, 25)
+		Me.txtVarDato.MinimumSize = New System.Drawing.Size(150, 25)
+		Me.txtVarDato.Name = "txtVarDato"
+		Me.txtVarDato.Properties.Appearance.Options.UseTextOptions = True
+		Me.txtVarDato.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap
+		Me.txtVarDato.Properties.AppearanceReadOnly.BackColor = System.Drawing.Color.White
+		Me.txtVarDato.Properties.AppearanceReadOnly.Options.UseBackColor = True
+		Me.txtVarDato.Properties.AppearanceReadOnly.Options.UseTextOptions = True
+		Me.txtVarDato.Properties.AppearanceReadOnly.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap
+		Me.txtVarDato.Properties.AutoHeight = False
+		Me.txtVarDato.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Office2003
+		Me.txtVarDato.Properties.ReadOnly = True
+		Me.txtVarDato.Size = New System.Drawing.Size(150, 25)
+		Me.txtVarDato.TabIndex = 18
+		'
+		'LabelControl18
+		'
+		Me.LabelControl18.Location = New System.Drawing.Point(34, 111)
+		Me.LabelControl18.Margin = New System.Windows.Forms.Padding(4)
+		Me.LabelControl18.Name = "LabelControl18"
+		Me.LabelControl18.Size = New System.Drawing.Size(31, 16)
+		Me.LabelControl18.TabIndex = 17
+		Me.LabelControl18.Text = "Dato:"
+		'
+		'txtVarHelp
+		'
+		Me.txtVarHelp.Location = New System.Drawing.Point(75, 140)
+		Me.txtVarHelp.Margin = New System.Windows.Forms.Padding(4)
+		Me.txtVarHelp.MaximumSize = New System.Drawing.Size(99, 25)
+		Me.txtVarHelp.MinimumSize = New System.Drawing.Size(150, 25)
+		Me.txtVarHelp.Name = "txtVarHelp"
+		Me.txtVarHelp.Properties.Appearance.Options.UseTextOptions = True
+		Me.txtVarHelp.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap
+		Me.txtVarHelp.Properties.AppearanceReadOnly.BackColor = System.Drawing.Color.White
+		Me.txtVarHelp.Properties.AppearanceReadOnly.Options.UseBackColor = True
+		Me.txtVarHelp.Properties.AppearanceReadOnly.Options.UseTextOptions = True
+		Me.txtVarHelp.Properties.AppearanceReadOnly.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap
+		Me.txtVarHelp.Properties.AutoHeight = False
+		Me.txtVarHelp.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Office2003
+		Me.txtVarHelp.Properties.ReadOnly = True
+		Me.txtVarHelp.Size = New System.Drawing.Size(150, 25)
+		Me.txtVarHelp.TabIndex = 16
+		'
+		'LabelControl17
+		'
+		Me.LabelControl17.Location = New System.Drawing.Point(35, 144)
+		Me.LabelControl17.Margin = New System.Windows.Forms.Padding(4)
+		Me.LabelControl17.Name = "LabelControl17"
+		Me.LabelControl17.Size = New System.Drawing.Size(30, 16)
+		Me.LabelControl17.TabIndex = 15
+		Me.LabelControl17.Text = "Help:"
+		'
+		'pnlQuery
+		'
+		Me.pnlQuery.Dock = System.Windows.Forms.DockStyle.Fill
+		Me.pnlQuery.Location = New System.Drawing.Point(0, 0)
+		Me.pnlQuery.Margin = New System.Windows.Forms.Padding(0)
+		Me.pnlQuery.Name = "pnlQuery"
+		Me.pnlQuery.Size = New System.Drawing.Size(835, 638)
+		Me.pnlQuery.TabIndex = 0
 		'
 		'tabPageColumnas
 		'
 		Me.tabPageColumnas.ImageOptions.Image = CType(resources.GetObject("tabPageColumnas.ImageOptions.Image"), System.Drawing.Image)
 		Me.tabPageColumnas.Margin = New System.Windows.Forms.Padding(0)
 		Me.tabPageColumnas.Name = "tabPageColumnas"
-		Me.tabPageColumnas.Size = New System.Drawing.Size(1090, 649)
+		Me.tabPageColumnas.Size = New System.Drawing.Size(1085, 638)
 		Me.tabPageColumnas.Text = "Columnas"
 		'
 		'tabPageProcesos
@@ -968,7 +1304,7 @@ Partial Class frmMain
 		Me.tabPageProcesos.ImageOptions.Image = CType(resources.GetObject("tabPageProcesos.ImageOptions.Image"), System.Drawing.Image)
 		Me.tabPageProcesos.Margin = New System.Windows.Forms.Padding(0)
 		Me.tabPageProcesos.Name = "tabPageProcesos"
-		Me.tabPageProcesos.Size = New System.Drawing.Size(1085, 642)
+		Me.tabPageProcesos.Size = New System.Drawing.Size(1085, 638)
 		Me.tabPageProcesos.Text = "Procesos Previos"
 		'
 		'gridProc
@@ -1085,6 +1421,58 @@ Partial Class frmMain
 		Me.LabelControl4.TabIndex = 0
 		Me.LabelControl4.Text = "Orden:"
 		'
+		'Bar3
+		'
+		Me.Bar3.BarName = "barVariables"
+		Me.Bar3.DockCol = 0
+		Me.Bar3.DockRow = 0
+		Me.Bar3.DockStyle = DevExpress.XtraBars.BarDockStyle.Standalone
+		Me.Bar3.FloatLocation = New System.Drawing.Point(1237, 313)
+		Me.Bar3.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.btnEditarVariable, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.btnNuevaVariable, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.btnEliminarVariable, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(Me.btnSubirVariable, True), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.btnVariableBajarOrden, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)})
+		Me.Bar3.OptionsBar.AllowQuickCustomization = False
+		Me.Bar3.OptionsBar.DrawDragBorder = False
+		Me.Bar3.StandaloneBarDockControl = Me.StandaloneBarDockControl4
+		Me.Bar3.Text = "barVariables"
+		'
+		'btnNuevaVariable
+		'
+		Me.btnNuevaVariable.Hint = "Nueva Variable"
+		Me.btnNuevaVariable.Id = 13
+		Me.btnNuevaVariable.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image"), System.Drawing.Image)
+		Me.btnNuevaVariable.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage"), System.Drawing.Image)
+		Me.btnNuevaVariable.Name = "btnNuevaVariable"
+		'
+		'btnEditarVariable
+		'
+		Me.btnEditarVariable.Hint = "Editar Variable"
+		Me.btnEditarVariable.Id = 14
+		Me.btnEditarVariable.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image1"), System.Drawing.Image)
+		Me.btnEditarVariable.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage1"), System.Drawing.Image)
+		Me.btnEditarVariable.Name = "btnEditarVariable"
+		'
+		'btnEliminarVariable
+		'
+		Me.btnEliminarVariable.Id = 15
+		Me.btnEliminarVariable.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image"), System.Drawing.Image)
+		Me.btnEliminarVariable.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage"), System.Drawing.Image)
+		Me.btnEliminarVariable.Name = "btnEliminarVariable"
+		'
+		'btnSubirVariable
+		'
+		Me.btnSubirVariable.Hint = "Subir orden"
+		Me.btnSubirVariable.Id = 16
+		Me.btnSubirVariable.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image3"), System.Drawing.Image)
+		Me.btnSubirVariable.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage2"), System.Drawing.Image)
+		Me.btnSubirVariable.Name = "btnSubirVariable"
+		'
+		'btnVariableBajarOrden
+		'
+		Me.btnVariableBajarOrden.Hint = "Bajar orden"
+		Me.btnVariableBajarOrden.Id = 17
+		Me.btnVariableBajarOrden.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image4"), System.Drawing.Image)
+		Me.btnVariableBajarOrden.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage3"), System.Drawing.Image)
+		Me.btnVariableBajarOrden.Name = "btnVariableBajarOrden"
+		'
 		'frmMain
 		'
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -1132,6 +1520,25 @@ Partial Class frmMain
 		CType(Me.txtDescriCab.Properties, System.ComponentModel.ISupportInitialize).EndInit()
 		CType(Me.txtCodTraCab.Properties, System.ComponentModel.ISupportInitialize).EndInit()
 		CType(Me.txtNombreCab.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+		Me.tabPageQuery.ResumeLayout(False)
+		Me.lyVariables.ResumeLayout(False)
+		Me.TableLayoutPanel3.ResumeLayout(False)
+		CType(Me.PanelControl1, System.ComponentModel.ISupportInitialize).EndInit()
+		Me.PanelControl1.ResumeLayout(False)
+		CType(Me.gridVariables, System.ComponentModel.ISupportInitialize).EndInit()
+		CType(Me.gridViewVariables, System.ComponentModel.ISupportInitialize).EndInit()
+		Me.Panel1.ResumeLayout(False)
+		Me.Panel1.PerformLayout()
+		CType(Me.PanelControl6, System.ComponentModel.ISupportInitialize).EndInit()
+		Me.PanelControl6.ResumeLayout(False)
+		CType(Me.PanelControl7, System.ComponentModel.ISupportInitialize).EndInit()
+		Me.PanelControl7.ResumeLayout(False)
+		Me.PanelControl7.PerformLayout()
+		CType(Me.txtVarOrden.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+		CType(Me.txtVarNombre.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+		CType(Me.txtVarTitulo.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+		CType(Me.txtVarDato.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+		CType(Me.txtVarHelp.Properties, System.ComponentModel.ISupportInitialize).EndInit()
 		Me.tabPageProcesos.ResumeLayout(False)
 		Me.tabPageProcesos.PerformLayout()
 		CType(Me.gridProc, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1234,4 +1641,31 @@ Partial Class frmMain
     Friend WithEvents cmdSubirOrdenProceso As DevExpress.XtraBars.BarButtonItem
     Friend WithEvents cmdBajarOrdenProceso As DevExpress.XtraBars.BarButtonItem
 	Friend WithEvents StandaloneBarDockControl3 As DevExpress.XtraBars.StandaloneBarDockControl
+	Friend WithEvents lyVariables As TableLayoutPanel
+	Friend WithEvents pnlQuery As Panel
+	Friend WithEvents StandaloneBarDockControl4 As DevExpress.XtraBars.StandaloneBarDockControl
+	Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
+	Friend WithEvents PanelControl1 As DevExpress.XtraEditors.PanelControl
+	Friend WithEvents gridVariables As DevExpress.XtraGrid.GridControl
+	Friend WithEvents gridViewVariables As DevExpress.XtraGrid.Views.Grid.GridView
+	Friend WithEvents Panel1 As Panel
+	Friend WithEvents LabelControl16 As DevExpress.XtraEditors.LabelControl
+	Friend WithEvents PanelControl6 As DevExpress.XtraEditors.PanelControl
+	Friend WithEvents PanelControl7 As DevExpress.XtraEditors.PanelControl
+	Friend WithEvents txtVarOrden As DevExpress.XtraEditors.TextEdit
+	Friend WithEvents LabelControl21 As DevExpress.XtraEditors.LabelControl
+	Friend WithEvents txtVarNombre As DevExpress.XtraEditors.TextEdit
+	Friend WithEvents LabelControl20 As DevExpress.XtraEditors.LabelControl
+	Friend WithEvents txtVarTitulo As DevExpress.XtraEditors.TextEdit
+	Friend WithEvents LabelControl19 As DevExpress.XtraEditors.LabelControl
+	Friend WithEvents txtVarDato As DevExpress.XtraEditors.TextEdit
+	Friend WithEvents LabelControl18 As DevExpress.XtraEditors.LabelControl
+	Friend WithEvents txtVarHelp As DevExpress.XtraEditors.TextEdit
+	Friend WithEvents LabelControl17 As DevExpress.XtraEditors.LabelControl
+	Friend WithEvents Bar3 As DevExpress.XtraBars.Bar
+	Friend WithEvents btnNuevaVariable As DevExpress.XtraBars.BarButtonItem
+	Friend WithEvents btnEditarVariable As DevExpress.XtraBars.BarButtonItem
+	Friend WithEvents btnEliminarVariable As DevExpress.XtraBars.BarButtonItem
+	Friend WithEvents btnSubirVariable As DevExpress.XtraBars.BarButtonItem
+	Friend WithEvents btnVariableBajarOrden As DevExpress.XtraBars.BarButtonItem
 End Class
