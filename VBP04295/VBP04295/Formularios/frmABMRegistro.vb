@@ -330,12 +330,20 @@ Public Class frmABMRegistro
                             sValor = "NULL"
                         Else
                             Select Case TipoDatosADO(oCol.Tipo)
-                                Case "Numérico"
-                                    sValor = FlotanteSQL(oCol.Valor)
-                                Case "Fecha/Hora"
-                                    sValor = FechaSQL(oCol.Valor)
+								Case "Numérico"
+									If oCol.Valor.ToString().Trim() = String.Empty Then
+										sValor = FlotanteSQL(0)
+									Else
+										sValor = FlotanteSQL(oCol.Valor)
+									End If
+								Case "Fecha/Hora"
+									If oCol.Valor.ToString().Trim() = String.Empty Then
+										sValor = FechaSQL(Date.MinValue)
+									Else
+										sValor = FechaSQL(oCol.Valor)
+									End If
 
-                                Case Else
+								Case Else
                                     sValor = "'" & oCol.Valor & "'"
                             End Select
                         End If
