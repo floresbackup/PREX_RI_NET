@@ -197,7 +197,7 @@ Public Class frmInicioSesion
          cboEntidad.Items.Clear()
 
          For Each dr In dt.Rows
-            cboEntidad.Items.Add(New clsItem.Item(Convert.ToInt64(dr(0).ToString), dr(1).ToString))
+            cboEntidad.Items.Add(New Prex.Utils.Entities.clsItem(Convert.ToInt64(dr(0).ToString), dr(1).ToString))
          Next
 
          Application.DoEvents()

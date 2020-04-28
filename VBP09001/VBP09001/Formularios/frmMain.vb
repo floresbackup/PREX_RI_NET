@@ -14,14 +14,14 @@ Public Class frmMain
 
     Private ReadOnly Property IsArchivoPorDia As Boolean
         Get
-            Return CType(cboArchivos.SelectedItem, clsItem.Item).Periodo = "D"
-        End Get
+			Return CType(cboArchivos.SelectedItem, Prex.Utils.Entities.clsItem).Periodo = "D"
+		End Get
     End Property
 
     Private ReadOnly Property MesSeleccionado As Integer
         Get
-            Return CType(cboMes.SelectedItem, clsItem.Item).Valor
-        End Get
+			Return CType(cboMes.SelectedItem, Prex.Utils.Entities.clsItem).Valor
+		End Get
     End Property
 
     Public Sub AnalizarCommand()
@@ -869,16 +869,16 @@ Public Class frmMain
 
                 ds = oAdmLocal.AbrirDataset(sSQL)
                 cboArchivos.Items.Clear()
-                cboArchivos.Items.Add(New clsItem.Item("", "<Seleccionar ...>"))
-                Dim listNombres As New List(Of String)
+				cboArchivos.Items.Add(New Prex.Utils.Entities.clsItem("", "<Seleccionar ...>"))
+				Dim listNombres As New List(Of String)
                 With ds.Tables(0)
 
                     For Each row As DataRow In .Rows
                         If listNombres.Contains(row("TN_NOMBRETXT").ToString) Then
                             Continue For
                         End If
-                        Dim item As New clsItem.Item(row("TN_CODIGO"), row("TN_NOMBRETXT"))
-                        If Not row("TN_PERIOD") Is DBNull.Value Then item.Periodo = row("TN_PERIOD").ToString
+						Dim item As New Prex.Utils.Entities.clsItem(row("TN_CODIGO"), row("TN_NOMBRETXT"))
+						If Not row("TN_PERIOD") Is DBNull.Value Then item.Periodo = row("TN_PERIOD").ToString
 
                         cboArchivos.Items.Add(item)
                         listNombres.Add(item.Nombre)
@@ -907,17 +907,17 @@ Public Class frmMain
         Dim oFecha As Date = Date.Today
 
         For i = 1 To 31
-            cboDia.Items.Add(New clsItem.Item(i, i))
-        Next
+			cboDia.Items.Add(New Prex.Utils.Entities.clsItem(i, i))
+		Next
         cboDia.SelectedIndex = 0
 
         For i = 1 To 12
-            cboMes.Items.Add(New clsItem.Item(i, MonthName(i).ToUpper))
-        Next
+			cboMes.Items.Add(New Prex.Utils.Entities.clsItem(i, MonthName(i).ToUpper))
+		Next
 
         For i = oFecha.Year - 10 To oFecha.Year + 10
-            cboAno.Items.Add(New clsItem.Item(i, i.ToString))
-        Next
+			cboAno.Items.Add(New Prex.Utils.Entities.clsItem(i, i.ToString))
+		Next
 
         ResetFecha(oFecha)
     End Sub
@@ -949,8 +949,8 @@ Public Class frmMain
 
     Private Sub cmdGenerar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdGenerar.Click
 
-        Dim oItem As clsItem.Item
-        Dim sSQL As String
+		Dim oItem As Prex.Utils.Entities.clsItem
+		Dim sSQL As String
         Dim nCont As Integer
         Try
             Me.Cursor = Cursors.WaitCursor
@@ -1828,9 +1828,9 @@ Salir:
                              Optional ByVal sTabla As String = "",
                              Optional ByVal nCod As Long = 0) As Boolean
 
-        Dim oItem As clsItem.Item
+		Dim oItem As Prex.Utils.Entities.clsItem
 
-        oItem = cboArchivos.SelectedItem
+		oItem = cboArchivos.SelectedItem
 
         Select Case oItem.Valor
 
@@ -1974,9 +1974,9 @@ Salir:
         End If
 
 
-        Dim sRutaDefault As String = CType(NoNulo(oAdmLocal.DevolverValor("TXTNOM", "TN_RUTA", $"TN_NOMBRETXT='{CType(cboArchivos.SelectedItem, clsItem.Item).Nombre}'", String.Empty), True), String)
+		Dim sRutaDefault As String = CType(NoNulo(oAdmLocal.DevolverValor("TXTNOM", "TN_RUTA", $"TN_NOMBRETXT='{CType(cboArchivos.SelectedItem, Prex.Utils.Entities.clsItem).Nombre}'", String.Empty), True), String)
 
-        If (sRutaDefault.Length() > 0) Then
+		If (sRutaDefault.Length() > 0) Then
             txtCarpeta.Text = NormalizarRuta(sRutaDefault)
             txtCarpeta.Enabled = False
         Else

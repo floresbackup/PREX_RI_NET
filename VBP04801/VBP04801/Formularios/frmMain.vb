@@ -224,8 +224,8 @@ Public Class frmMain
         tabDatos.Enabled = False
 
         cboTipo.Items.Clear()
-        cboTipo.Items.Add(New clsItem.Item("K1", "Ancho fijo"))
-        cboTipo.Items.Add(New clsItem.Item("K2", "Delimitado por caracter"))
+        cboTipo.Items.Add(New Prex.Utils.Entities.clsItem("K1", "Ancho fijo"))
+        cboTipo.Items.Add(New Prex.Utils.Entities.clsItem("K2", "Delimitado por caracter"))
         cboTipo.SelectedIndex = 0
 
         'SelComboBox(cboTipo, "K1")
@@ -261,16 +261,16 @@ Public Class frmMain
             ds = oAdmlocal.AbrirDataset(sSQL)
 
             cboTabla1.Items.Clear()
-            cboTabla1.Items.Add(New clsItem.Item("SELECCIONAR", "<Seleccionar...>"))
+            cboTabla1.Items.Add(New Prex.Utils.Entities.clsItem("SELECCIONAR", "<Seleccionar...>"))
             With ds.Tables(0)
                 For Each row As DataRow In .Rows
-                    cboTabla1.Items.Add(New clsItem.Item("K" & row("DN_TABLA"), row("DN_NOMBRE")))
+                    cboTabla1.Items.Add(New Prex.Utils.Entities.clsItem("K" & row("DN_TABLA"), row("DN_NOMBRE")))
                 Next
             End With
 
             ds = Nothing
 
-            cboTabla1.Items.Add(New clsItem.Item("NUEVA", "Nueva tabla..."))
+            cboTabla1.Items.Add(New Prex.Utils.Entities.clsItem("NUEVA", "Nueva tabla..."))
 
             If sSeleccion <> "" Then
                 SelComboBox(cboTabla1, sSeleccion)
@@ -384,7 +384,7 @@ Public Class frmMain
 
     Private Sub CargarTabla()
 
-        Dim oItem As clsItem.Item
+        Dim oItem As Prex.Utils.Entities.clsItem
 
         If Not cboTabla1.SelectedItem Is Nothing Then
 
@@ -402,7 +402,7 @@ Public Class frmMain
                     cboTabla1.SelectedItem = Nothing
                     cboTabla1.Text = "<Seleccionar...>"
                 Else
-                    cboTabla1.Items.Add(New clsItem.Item("K" & NOMBRE_NUEVA_TABLA, DESCRIPCION_NUEVA_TABLA))
+                    cboTabla1.Items.Add(New Prex.Utils.Entities.clsItem("K" & NOMBRE_NUEVA_TABLA, DESCRIPCION_NUEVA_TABLA))
                     SelCombo(cboTabla1, "K" & NOMBRE_NUEVA_TABLA)
                     RefrescarEstructura()
                     cboTabla1.Enabled = False
@@ -441,7 +441,7 @@ Public Class frmMain
 
          With ds.Tables(0)
             For Each row As DataRow In .Rows
-                    cboPeriodo1.Items.Add(New clsItem.Item("K" & Format(row("DN_FECHAVIG"), "yyyyMMdd"), row("DN_FECHAVIG")))
+                    cboPeriodo1.Items.Add(New Prex.Utils.Entities.clsItem("K" & Format(row("DN_FECHAVIG"), "yyyyMMdd"), row("DN_FECHAVIG")))
                 Next
          End With
 
@@ -526,7 +526,7 @@ Public Class frmMain
 
     Private Sub cboTabla1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboTabla1.SelectedIndexChanged
 
-        Dim cboX As clsItem.Item
+        Dim cboX As Prex.Utils.Entities.clsItem
         Dim bExisteCbo As Boolean
 
         If Not cboTabla1.SelectedItem Is Nothing Then
@@ -560,7 +560,7 @@ Public Class frmMain
                     Next
 
                     If Not bExisteCbo Then
-                        cboTabla1.Items.Add(New clsItem.Item("K" & NOMBRE_NUEVA_TABLA, DESCRIPCION_NUEVA_TABLA))
+                        cboTabla1.Items.Add(New Prex.Utils.Entities.clsItem("K" & NOMBRE_NUEVA_TABLA, DESCRIPCION_NUEVA_TABLA))
                     End If
 
                     'SelCombo(cboTabla1, "K" & NOMBRE_NUEVA_TABLA)
@@ -573,8 +573,8 @@ Public Class frmMain
                 CargarPeriodos()
 
             End If
-            If Not (cboTabla1.SelectedItem Is Nothing) AndAlso cboTabla1.SelectedItem.GetType() Is GetType(clsItem.Item) _
-                AndAlso CType(cboTabla1.SelectedItem, clsItem.Item).Valor.ToString(0) = "K" Then
+            If Not (cboTabla1.SelectedItem Is Nothing) AndAlso cboTabla1.SelectedItem.GetType() Is GetType(Prex.Utils.Entities.clsItem) _
+                AndAlso CType(cboTabla1.SelectedItem, Prex.Utils.Entities.clsItem).Valor.ToString(0) = "K" Then
                 CargarRutasFijas(Llave(cboTabla1))
             End If
         End If
@@ -1090,7 +1090,7 @@ Public Class frmMain
          For Each row As DataRow In dt.Rows
 
             If row("TABLE_TYPE") = "TABLE" Then
-               cboTipo.Items.Add(New clsItem.Item(row("TABLE_NAME"), row("TABLE_NAME")))
+               cboTipo.Items.Add(New Prex.Utils.Entities.clsItem(row("TABLE_NAME"), row("TABLE_NAME")))
             End If
          Next
 
@@ -1125,7 +1125,7 @@ Public Class frmMain
          cboTipo.Items.Clear()
 
          For Each oSht In oBook.Sheets
-            cboTipo.Items.Add(New clsItem.Item("K" & oSht.Name, oSht.Name))
+            cboTipo.Items.Add(New Prex.Utils.Entities.clsItem("K" & oSht.Name, oSht.Name))
          Next
 
          If cboTipo.Items.Count > 0 Then
@@ -1158,8 +1158,8 @@ Public Class frmMain
         'If optTexto.Checked Then
         Label3.Text = "Tipo de archivo:"
             cboTipo.Enabled = True
-            cboTipo.Items.Add(New clsItem.Item("K1", "Ancho fijo"))
-            cboTipo.Items.Add(New clsItem.Item("K2", "Delimitado por caracter"))
+            cboTipo.Items.Add(New Prex.Utils.Entities.clsItem("K1", "Ancho fijo"))
+            cboTipo.Items.Add(New Prex.Utils.Entities.clsItem("K2", "Delimitado por caracter"))
             cboTipo.SelectedIndex = 0
         'End If
 

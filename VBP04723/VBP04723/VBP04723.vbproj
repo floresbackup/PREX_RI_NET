@@ -197,7 +197,6 @@
     <Compile Include="..\..\COMMON\MODUL\modFunciones.vb">
       <Link>Modulos\modFunciones.vb</Link>
     </Compile>
-    <Compile Include="Clases\clsItem.vb" />
     <Compile Include="Formularios\frmCarpeta.Designer.vb">
       <DependentUpon>frmCarpeta.vb</DependentUpon>
     </Compile>

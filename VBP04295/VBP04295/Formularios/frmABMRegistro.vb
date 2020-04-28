@@ -424,8 +424,8 @@ GuardaDataRow:
 
    Private Sub cboInput_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-      Dim oItem As clsItem.Item
-      Dim oCol As clsColumnas
+		Dim oItem As Prex.Utils.Entities.clsItem
+		Dim oCol As clsColumnas
 
       oCol = oColumnas(sender.tag)
       oItem = sender.SelectedItem

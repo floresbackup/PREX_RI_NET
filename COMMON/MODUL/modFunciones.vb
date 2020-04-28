@@ -348,9 +348,9 @@ Module modFunciones
     'Seleccióna un campo especificado de un ImageCombo a partir de la "Key".
     Public Sub SelCombo(ByVal oCombo As Object, ByVal sCadena As String)
 
-        Dim oItem As clsItem.Item
+		Dim oItem As Prex.Utils.Entities.clsItem
 
-        For Each oItem In oCombo.Items
+		For Each oItem In oCombo.Items
             If oItem.Nombre.ToUpper = sCadena.ToUpper Then
                 oCombo.SelectedItem = oItem
             End If
@@ -361,9 +361,9 @@ Module modFunciones
     'Seleccióna un campo especificado de un ImageCombo a partir de la "Key".
     Public Sub SelComboDevExpress(ByVal oCombo As DevExpress.XtraEditors.ComboBoxEdit, ByVal sCadena As String)
 
-        Dim oItem As clsItem.Item
+		Dim oItem As Prex.Utils.Entities.clsItem
 
-        For Each oItem In oCombo.Properties.Items
+		For Each oItem In oCombo.Properties.Items
             If "K" & oItem.Valor.ToString.ToUpper = sCadena.ToUpper Then
                 oCombo.SelectedItem = oItem
             End If
@@ -374,9 +374,9 @@ Module modFunciones
     'Seleccióna un item de un combo box o list box
     Public Sub SelComboBox(ByVal oCombo_List As Object, ByVal sCadena As String)
 
-        Dim oItem As clsItem.Item
+		Dim oItem As Prex.Utils.Entities.clsItem
 
-        For Each oItem In oCombo_List.Items
+		For Each oItem In oCombo_List.Items
             If oItem.Valor.ToUpper = sCadena.ToUpper Then
                 oCombo_List.SelectedItem = oItem
             End If
@@ -386,9 +386,9 @@ Module modFunciones
 
     Public Sub SelItemCombo(ByVal oCombo As Object, ByVal nCodigo As Long)
 
-        Dim oItem As clsItem.Item
+		Dim oItem As Prex.Utils.Entities.clsItem
 
-        For Each oItem In oCombo.Items
+		For Each oItem In oCombo.Items
             If oItem.Valor = nCodigo Then
                 oCombo.SelectedItem = oItem
             End If
@@ -413,8 +413,8 @@ Module modFunciones
             oCombo.Items.Clear()
 
             For Each dr In dt.Rows
-                oCombo.Items.Add(New clsItem.Item(dr(0).ToString, dr(1).ToString))
-            Next
+				oCombo.Items.Add(New Prex.Utils.Entities.clsItem(dr(0).ToString, dr(1).ToString))
+			Next
 
             Application.DoEvents()
 
@@ -428,9 +428,9 @@ Module modFunciones
 
         Try
 
-            oCombo.Items.Add(New clsItem.Item(nCodigo, sDescripcion))
+			oCombo.Items.Add(New Prex.Utils.Entities.clsItem(nCodigo, sDescripcion))
 
-        Catch ex As Exception
+		Catch ex As Exception
             TratarError(ex, "AgregarItemCombo")
         End Try
 
@@ -440,14 +440,14 @@ Module modFunciones
 
         Try
 
-            For Each item As clsItem.Item In oCombo.Items
-                If item.Valor = nCodigo Then
-                    oCombo.Items.Remove(item)
-                    Exit For
-                End If
-            Next
+			For Each item As Prex.Utils.Entities.clsItem In oCombo.Items
+				If item.Valor = nCodigo Then
+					oCombo.Items.Remove(item)
+					Exit For
+				End If
+			Next
 
-        Catch ex As Exception
+		Catch ex As Exception
             TratarError(ex, "QuitarItemCombo")
         End Try
 
@@ -462,42 +462,42 @@ Module modFunciones
         End If
 
     End Function
+	Public Sub CargarComboDevExpress(ByVal oCombo As DevExpress.XtraEditors.ComboBoxEdit, ByVal sSQL As String)
+		CargarComboDevExpress(oCombo, sSQL, False)
+	End Sub
+	Public Sub CargarComboDevExpress(ByVal oCombo As DevExpress.XtraEditors.ComboBoxEdit, ByVal sSQL As String, ByVal formatearFecha As Boolean)
 
-    Public Sub CargarComboDevExpress(ByVal oCombo As DevExpress.XtraEditors.ComboBoxEdit, ByVal sSQL As String)
+		Dim ad As OleDb.OleDbDataAdapter
+		Dim dt As DataTable
+		Dim oRow As DataRow
 
-        Dim ad As OleDb.OleDbDataAdapter
-        Dim dt As DataTable
-        Dim oRow As DataRow
-        Dim oItem As clsItem.Item
+		Try
+			oCombo.Properties.Items.Clear()
 
-        Try
-            oCombo.Properties.Items.Clear()
+			ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
+			dt = New DataTable
 
-            ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
-            dt = New DataTable
+			ad.Fill(dt)
 
-            ad.Fill(dt)
+			For Each oRow In dt.Rows
+				Dim oItem As New Prex.Utils.Entities.clsItem(oRow(0), oRow(1).ToString, formatearFecha)
 
-            For Each oRow In dt.Rows
+				oCombo.Properties.Items.Add(oItem)
 
-                oItem.Valor = oRow(0)
-                oItem.Nombre = oRow(1).ToString
-                oCombo.Properties.Items.Add(oItem)
+			Next
 
-            Next
+		Catch ex As Exception
+			'nada
+		End Try
 
-        Catch ex As Exception
-            'nada
-        End Try
+	End Sub
 
-    End Sub
+	'Obtiene el Key de un ImageCombo o ListView.
+	Public Function Llave(ByVal oLlave As Object) As String
 
-    'Obtiene el Key de un ImageCombo o ListView.
-    Public Function Llave(ByVal oLlave As Object) As String
+		Dim oItem As Prex.Utils.Entities.clsItem
 
-        Dim oItem As clsItem.Item
-
-        If Not (oLlave.SelectedItem Is Nothing) Then
+		If Not (oLlave.SelectedItem Is Nothing) Then
             oItem = oLlave.SelectedItem
             Return oItem.Valor.ToString.TrimEnd.Substring(1)
         Else
@@ -509,9 +509,9 @@ Module modFunciones
     'Obtiene el Key de un ImageCombo o ListView.
     Public Function LlaveCombo(ByVal oLlave As Object) As Object
 
-        Dim oItem As clsItem.Item
+		Dim oItem As Prex.Utils.Entities.clsItem
 
-        If Not (oLlave.SelectedItem Is Nothing) Then
+		If Not (oLlave.SelectedItem Is Nothing) Then
             oItem = oLlave.SelectedItem
             Return oItem.Valor
         Else
@@ -809,9 +809,9 @@ Module modFunciones
 
         Dim oCtl As Windows.Forms.Control
         Dim sValor As String
-        Dim oItem As clsItem.Item
+		Dim oItem As Prex.Utils.Entities.clsItem
 
-        For Each oCtl In controls
+		For Each oCtl In controls
 
             Select Case oCtl.GetType.ToString.Substring(oCtl.GetType.ToString.LastIndexOf(".") + 1)
                 Case "ComboBox"

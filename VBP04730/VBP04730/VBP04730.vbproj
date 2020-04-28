@@ -213,7 +213,6 @@
     <Compile Include="..\..\COMMON\MODUL\modGlobalBase64.vb">
       <Link>Modulos\modGlobalBase64.vb</Link>
     </Compile>
-    <Compile Include="Clases\clsItem.vb" />
     <Compile Include="Formularios\frmABMFuentes.Designer.vb">
       <DependentUpon>frmABMFuentes.vb</DependentUpon>
     </Compile>

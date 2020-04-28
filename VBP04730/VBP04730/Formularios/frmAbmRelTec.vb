@@ -151,7 +151,7 @@ Public Class frmAbmRelTec
 
       With ds.Tables(0)
          For Each row As DataRow In .Rows
-            cboFecVig.Items.Add(New clsItem.Item(row("TK_FECVIG"), row("TK_FECVIG")))
+            cboFecVig.Items.Add(New Prex.Utils.Entities.clsItem(row("TK_FECVIG"), row("TK_FECVIG")))
          Next
       End With
 
@@ -173,7 +173,7 @@ Public Class frmAbmRelTec
 
       With ds.Tables(0)
          For Each row As DataRow In .Rows
-            cboCodEnt.Items.Add(New clsItem.Item(row("TG_CODCON"), row("TG_DESCRI")))
+            cboCodEnt.Items.Add(New Prex.Utils.Entities.clsItem(row("TG_CODCON"), row("TG_DESCRI")))
          Next
       End With
 
@@ -193,7 +193,7 @@ Public Class frmAbmRelTec
 
       With ds.Tables(0)
          For Each row As DataRow In .Rows
-            cboCuadro.Items.Add(New clsItem.Item(row("TG_CODCON"), row("TG_DESCRI")))
+            cboCuadro.Items.Add(New Prex.Utils.Entities.clsItem(row("TG_CODCON"), row("TG_DESCRI")))
          Next
       End With
 

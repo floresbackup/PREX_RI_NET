@@ -184,7 +184,7 @@ Public Class frmMain
 
             With ds.Tables(0)
                 For Each row As DataRow In .Rows
-                    cboTabla.Items.Add(New clsItem.Item(row(0), row(1), "" & row(2)))
+                    cboTabla.Items.Add(New Prex.Utils.Entities.clsItem(row(0), row(1), "" & row(2)))
                 Next
             End With
 
@@ -204,7 +204,7 @@ Public Class frmMain
 
         If Not (cboTabla.SelectedItem Is Nothing) Then
 
-            Dim item As clsItem.Item
+            Dim item As Prex.Utils.Entities.clsItem
 
             item = cboTabla.SelectedItem
             presentarTabla(item.Valor)
@@ -310,7 +310,7 @@ Public Class frmMain
         nuevoRegistro = True
         gUsuarios.OptionsBehavior.Editable = True
         If tieneRegistros Then
-            gUsuarios.SetFocusedRowCellValue(gUsuarios.Columns.Item("TG_CODTAB"), CType(cboTabla.SelectedItem, clsItem.Item).Valor)
+            gUsuarios.SetFocusedRowCellValue(gUsuarios.Columns.Item("TG_CODTAB"), CType(cboTabla.SelectedItem, Prex.Utils.Entities.clsItem).Valor)
         End If
         gUsuarios.SetFocusedRowModified()
     End Sub
@@ -324,7 +324,7 @@ Public Class frmMain
         Try
             Me.Cursor = Cursors.WaitCursor
             Try
-                Dim nCodigoTabla As String = CType(cboTabla.SelectedItem, clsItem.Item).Valor.ToString
+                Dim nCodigoTabla As String = CType(cboTabla.SelectedItem, Prex.Utils.Entities.clsItem).Valor.ToString
                 Try
                     If VerificaDuplicado() Then
                         Dim sql As String = "DELETE TABGEN WHERE TG_CODTAB = @TG_CODTAB and TG_CODCON = @TG_CODCON "
@@ -381,7 +381,7 @@ Public Class frmMain
                 '    Exit Sub
                 'End If
 
-                Dim nCodigoTabla As String = CType(cboTabla.SelectedItem, clsItem.Item).Valor.ToString
+                Dim nCodigoTabla As String = CType(cboTabla.SelectedItem, Prex.Utils.Entities.clsItem).Valor.ToString
 
                 Dim Sql As String = "UPDATE TABGEN SET TG_DESCRI='@TG_DESCRI', TG_NUME01=@TG_NUME01, " &
                 " TG_NUME02 = @TG_NUME02, TG_ALFA01 = '@TG_ALFA01', " &
@@ -417,7 +417,7 @@ Public Class frmMain
                     Exit Sub
                 End If
 
-                Dim nCodigoTabla As String = CType(cboTabla.SelectedItem, clsItem.Item).Valor.ToString
+                Dim nCodigoTabla As String = CType(cboTabla.SelectedItem, Prex.Utils.Entities.clsItem).Valor.ToString
 
                 Dim Sql As String = "INSERT INTO TABGEN (TG_CODTAB,TG_CODCON,TG_DESCRI,TG_NUME01,TG_NUME02,TG_ALFA01, " &
                   " TG_ALFA02,TG_FECH01,TG_FECH02,TG_ALFA03) " &

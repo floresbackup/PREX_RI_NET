@@ -174,9 +174,6 @@
     <Compile Include="..\COMMON\CLASS\clsCampos.vb">
       <Link>Clases\clsCampos.vb</Link>
     </Compile>
-    <Compile Include="..\COMMON\CLASS\clsItem.vb">
-      <Link>Clases\clsItem.vb</Link>
-    </Compile>
     <Compile Include="Formularios\frmErrores.Designer.vb">
       <DependentUpon>frmErrores.vb</DependentUpon>
     </Compile>

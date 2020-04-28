@@ -34,7 +34,7 @@ Public Class frmSincronizar
       With ds.Tables(0)
 
          For Each row As DataRow In .Rows
-            cboFecPro.Items.Add(New clsItem.Item(row("DC_FECVIG"), row("DC_FECVIG")))
+            cboFecPro.Items.Add(New Prex.Utils.Entities.clsItem(row("DC_FECVIG"), row("DC_FECVIG")))
          Next
       End With
 

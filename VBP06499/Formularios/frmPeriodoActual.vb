@@ -18,12 +18,9 @@
         Dim nC As Long
 
         If cboFECACT.Properties.Items.Count = 0 Then
-            Dim itemSel As New clsItem.Item With {
-                .Nombre = "<Seleccionar...>",
-                .Valor = "K_Seleccionar"
-            }
+			Dim itemSel As New Prex.Utils.Entities.clsItem("K_Seleccionar", "<Seleccionar...>")
 
-            cboFECACT.Properties.Items.Add(itemSel)
+			cboFECACT.Properties.Items.Add(itemSel)
 
             sSQL = "SELECT    DISTINCT DC_FECVIG " &
                    "FROM      DATCUA " &
@@ -39,7 +36,7 @@
 
                 If DateTime.TryParse(row("DC_FECVIG"), sFecha) Then
                     nC = nC + 1
-                    cboFECACT.Properties.Items.Add(New clsItem.Item("K" & row("DC_FECVIG"), row("DC_FECVIG")))
+                    cboFECACT.Properties.Items.Add(New Prex.Utils.Entities.clsItem("K" & row("DC_FECVIG"), row("DC_FECVIG")))
                 End If
             Next
 

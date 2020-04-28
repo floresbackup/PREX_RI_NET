@@ -59,6 +59,7 @@
     <Compile Include="Configuration\ConfiguracionCultura.cs" />
     <Compile Include="Configuration\TablasGenerales.cs" />
     <Compile Include="DataAccess\DataAccess.cs" />
+    <Compile Include="Entities\clsItem.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Misc\Encoding.cs" />
     <Compile Include="Misc\ExtensionMehods.cs" />

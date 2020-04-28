@@ -248,7 +248,6 @@
     <Compile Include="..\..\COMMON\MODUL\modGlobalFileToDB.vb">
       <Link>Modulos\modGlobalFileToDB.vb</Link>
     </Compile>
-    <Compile Include="Clases\clsItem.vb" />
     <Compile Include="Formularios\frmAdjuntos.Designer.vb">
       <DependentUpon>frmAdjuntos.vb</DependentUpon>
     </Compile>

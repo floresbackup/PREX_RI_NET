@@ -236,7 +236,7 @@ Public Class frmMain
 
       With ds.Tables(0)
          For Each row As DataRow In .Rows
-            cboFecVigPartida.Items.Add(New clsItem.Item(row("TK_FECVIG"), row("TK_FECVIG")))
+            cboFecVigPartida.Items.Add(New Prex.Utils.Entities.clsItem(row("TK_FECVIG"), row("TK_FECVIG")))
          Next
       End With
 
@@ -498,7 +498,7 @@ Public Class frmMain
 
       With ds.Tables(0)
          For Each row As DataRow In .Rows
-            cboTablaFuentes.Items.Add(New clsItem.Item(row("DN_TABLA"), row("DN_NOMBRE")))
+            cboTablaFuentes.Items.Add(New Prex.Utils.Entities.clsItem(row("DN_TABLA"), row("DN_NOMBRE")))
          Next
       End With
 
@@ -517,7 +517,7 @@ Public Class frmMain
 
       With ds.Tables(0)
          For Each row As DataRow In .Rows
-            cboFecVigFuentes.Items.Add(New clsItem.Item(row("TK_FECVIG"), row("TK_FECVIG")))
+            cboFecVigFuentes.Items.Add(New Prex.Utils.Entities.clsItem(row("TK_FECVIG"), row("TK_FECVIG")))
          Next
       End With
 
@@ -664,7 +664,7 @@ Public Class frmMain
 
       With ds.Tables(0)
          For Each row As DataRow In .Rows
-            cboFecVigRel.Items.Add(New clsItem.Item(row("TK_FECVIG"), row("TK_FECVIG")))
+            cboFecVigRel.Items.Add(New Prex.Utils.Entities.clsItem(row("TK_FECVIG"), row("TK_FECVIG")))
          Next
       End With
 
@@ -701,7 +701,7 @@ Public Class frmMain
 
          With ds.Tables(0)
             For Each row As DataRow In .Rows
-               cboCuadroRel.Items.Add(New clsItem.Item(row("TG_CODCON"), row("TG_DESCRI")))
+               cboCuadroRel.Items.Add(New Prex.Utils.Entities.clsItem(row("TG_CODCON"), row("TG_DESCRI")))
             Next
          End With
 
@@ -745,7 +745,7 @@ Public Class frmMain
 
          With ds.Tables(0)
             For Each row As DataRow In .Rows
-               cboCodParRel.Items.Add(New clsItem.Item(row("TK_CODPAR"), row("DCORTA")))
+               cboCodParRel.Items.Add(New Prex.Utils.Entities.clsItem(row("TK_CODPAR"), row("DCORTA")))
             Next
          End With
 
@@ -789,7 +789,7 @@ Public Class frmMain
 
          With ds.Tables(0)
             For Each row As DataRow In .Rows
-               cboCampo8Rel.Items.Add(New clsItem.Item(row("TG_NUME02"), row("TG_DESCRI")))
+               cboCampo8Rel.Items.Add(New Prex.Utils.Entities.clsItem(row("TG_NUME02"), row("TG_DESCRI")))
             Next
          End With
 
@@ -804,7 +804,7 @@ Public Class frmMain
          cboTablaRel.Enabled = False
 
          If cboCampo8Rel.Items.Count = 0 Then
-            cboCampo8Rel.Items.Add(New clsItem.Item("0", "No Aplica"))
+            cboCampo8Rel.Items.Add(New Prex.Utils.Entities.clsItem("0", "No Aplica"))
             cboCampo8Rel.SelectedIndex = 0
             cboCampo8Rel_SelectedIndexChanged(sender, e)
          End If
@@ -835,7 +835,7 @@ Public Class frmMain
 
          With ds.Tables(0)
             For Each row As DataRow In .Rows
-               cboTablaRel.Items.Add(New clsItem.Item(row("DN_TABLA"), row("DN_NOMBRE")))
+               cboTablaRel.Items.Add(New Prex.Utils.Entities.clsItem(row("DN_TABLA"), row("DN_NOMBRE")))
             Next
          End With
 
@@ -1422,7 +1422,7 @@ Public Class frmMain
 
       With ds.Tables(0)
          For Each row As DataRow In .Rows
-            cboFecVigEstructura.Items.Add(New clsItem.Item(row("TK_FECVIG"), row("TK_FECVIG")))
+            cboFecVigEstructura.Items.Add(New Prex.Utils.Entities.clsItem(row("TK_FECVIG"), row("TK_FECVIG")))
          Next
       End With
 
@@ -1672,7 +1672,7 @@ Public Class frmMain
 
       With ds.Tables(0)
          For Each row As DataRow In .Rows
-            cboFecVigRdo.Items.Add(New clsItem.Item(row("TK_FECVIG"), row("TK_FECVIG")))
+            cboFecVigRdo.Items.Add(New Prex.Utils.Entities.clsItem(row("TK_FECVIG"), row("TK_FECVIG")))
          Next
       End With
 
@@ -1692,7 +1692,7 @@ Public Class frmMain
 
       With ds.Tables(0)
          For Each row As DataRow In .Rows
-            cboCodParRdo.Items.Add(New clsItem.Item(row("TK_CODPAR"), row("TK_CODPAR") & " - " & row("TK_DESCRI")))
+            cboCodParRdo.Items.Add(New Prex.Utils.Entities.clsItem(row("TK_CODPAR"), row("TK_CODPAR") & " - " & row("TK_DESCRI")))
          Next
       End With
 
@@ -1972,7 +1972,7 @@ Public Class frmMain
 
       With ds.Tables(0)
          For Each row As DataRow In .Rows
-            cboFecVigRelTec.Items.Add(New clsItem.Item(row("TK_FECVIG"), row("TK_FECVIG")))
+            cboFecVigRelTec.Items.Add(New Prex.Utils.Entities.clsItem(row("TK_FECVIG"), row("TK_FECVIG")))
          Next
       End With
 

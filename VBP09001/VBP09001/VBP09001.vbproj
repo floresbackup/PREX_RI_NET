@@ -125,9 +125,6 @@
     <Compile Include="..\..\COMMON\CLASS\clsAdmTablas.vb">
       <Link>Clases\clsAdmTablas.vb</Link>
     </Compile>
-    <Compile Include="..\..\COMMON\CLASS\clsItem.vb">
-      <Link>Clases\clsItem.vb</Link>
-    </Compile>
     <Compile Include="..\..\COMMON\CLASS\CULTURE\cBarsLocalizer.vb">
       <Link>Cultura\cBarsLocalizer.vb</Link>
     </Compile>

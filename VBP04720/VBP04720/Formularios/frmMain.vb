@@ -502,7 +502,7 @@ Public Class frmMain
             Cursor = Cursors.WaitCursor
 
             SuspendLayout()
-            Dim item As clsItem.Item
+            Dim item As Prex.Utils.Entities.clsItem
 
             item = cboPerfilPerfiles.SelectedItem
 
@@ -1207,7 +1207,7 @@ Public Class frmMain
 
          With ds.Tables(0)
             For Each row As DataRow In .Rows
-               cboGrupoAsig.Items.Add(New clsItem.Item("G" & row("GR_CODGRU"), row("GR_DESCRI")))
+               cboGrupoAsig.Items.Add(New Prex.Utils.Entities.clsItem("G" & row("GR_CODGRU"), row("GR_DESCRI")))
             Next
          End With
 
@@ -1220,7 +1220,7 @@ Public Class frmMain
 
          With ds.Tables(0)
             For Each row As DataRow In .Rows
-               cboGrupoAsig.Items.Add(New clsItem.Item("U" & row("US_CODUSU"), row("US_DESCRI")))
+               cboGrupoAsig.Items.Add(New Prex.Utils.Entities.clsItem("U" & row("US_CODUSU"), row("US_DESCRI")))
             Next
          End With
 
@@ -1235,7 +1235,7 @@ Public Class frmMain
 
          With ds.Tables(0)
             For Each row As DataRow In .Rows
-               cboPerfilAsig.Items.Add(New clsItem.Item(row("CP_CODPER"), row("CP_DESCRI")))
+               cboPerfilAsig.Items.Add(New Prex.Utils.Entities.clsItem(row("CP_CODPER"), row("CP_DESCRI")))
             Next
          End With
 
@@ -1292,7 +1292,7 @@ Public Class frmMain
       Dim nCodObj As Long
       Dim nCodPerfil As Long
       Dim sMotivoError As String = ""
-      Dim item As clsItem.Item
+      Dim item As Prex.Utils.Entities.clsItem
       Dim oAdmUsuarios As New AdmUsuarios
 
       Try

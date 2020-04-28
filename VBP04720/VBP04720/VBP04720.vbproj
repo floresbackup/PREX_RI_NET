@@ -207,7 +207,6 @@
     <Compile Include="..\..\COMMON\MODUL\modGlobalBase64.vb">
       <Link>Modulos\modGlobalBase64.vb</Link>
     </Compile>
-    <Compile Include="Clases\clsItem.vb" />
     <Compile Include="Clases\clsSeguridad.vb" />
     <Compile Include="Formularios\frmAbmDirSeg.Designer.vb">
       <DependentUpon>frmAbmDirSeg.vb</DependentUpon>

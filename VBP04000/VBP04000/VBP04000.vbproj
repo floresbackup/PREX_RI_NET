@@ -166,7 +166,6 @@
     <Compile Include="..\..\COMMON\MODUL\modFunciones.vb">
       <Link>Modulos\modFunciones.vb</Link>
     </Compile>
-    <Compile Include="Clases\clsItem.vb" />
     <Compile Include="Formularios\frmConsultas.Designer.vb">
       <DependentUpon>frmConsultas.vb</DependentUpon>
     </Compile>

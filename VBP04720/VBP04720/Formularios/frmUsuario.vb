@@ -401,7 +401,7 @@ Public Class frmUsuario
    Private Sub btnAgregar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAgregar.Click
 
       Dim item As ListViewItem
-      Dim itemCombo As clsItem.Item
+      Dim itemCombo As Prex.Utils.Entities.clsItem
 
       If Not (cboGrupos.SelectedItem Is Nothing) Then
 
@@ -424,7 +424,7 @@ Public Class frmUsuario
       If Not (lvGrupos.SelectedItems(0) Is Nothing) Then
 
          item = lvGrupos.SelectedItems(0)
-         cboGrupos.Items.Add(New clsItem.Item(item.Name, item.Text))
+         cboGrupos.Items.Add(New Prex.Utils.Entities.clsItem(item.Name, item.Text))
          lvGrupos.SelectedItems(0).Remove()
 
       End If
@@ -434,7 +434,7 @@ Public Class frmUsuario
    Private Sub cmdAgregarHab_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAgregarHab.Click
 
       Dim item As ListViewItem
-      Dim itemCombo As clsItem.Item
+      Dim itemCombo As Prex.Utils.Entities.clsItem
       Dim items() As ListViewItem
 
       If Not (cboHab.SelectedItem Is Nothing) Then
@@ -461,7 +461,7 @@ Public Class frmUsuario
    Private Sub cmdAgregarDeshab_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAgregarDeshab.Click
 
       Dim item As ListViewItem
-      Dim itemCombo As clsItem.Item
+      Dim itemCombo As Prex.Utils.Entities.clsItem
       Dim items() As ListViewItem
 
       If Not (cboDesHab.SelectedItem Is Nothing) Then

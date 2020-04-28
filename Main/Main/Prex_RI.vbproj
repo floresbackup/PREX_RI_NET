@@ -134,9 +134,6 @@
     <Compile Include="..\..\COMMON\CLASS\clsAdmUsuarios.vb">
       <Link>Clases\clsAdmUsuarios.vb</Link>
     </Compile>
-    <Compile Include="..\..\COMMON\CLASS\clsItem.vb">
-      <Link>Clases\clsItem.vb</Link>
-    </Compile>
     <Compile Include="..\..\COMMON\CLASS\clsProcEmbSistema.vb">
       <Link>Clases\clsProcEmbSistema.vb</Link>
     </Compile>

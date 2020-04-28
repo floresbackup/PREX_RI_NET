@@ -402,343 +402,343 @@ Public Class frmMain
     Private Function ValorVariable(ByVal oVar As clsVariables) As Object
 
         Dim vReemplazo As Object = Nothing
-        Dim oItem As clsItem.Item
-
-        Select Case oVar.Tipo
-            Case 0
-                If oVar.Help = 1 Then
-                    oItem = CType(Controles("_" & oVar.Nombre), ComboBox).SelectedItem
-                    vReemplazo = oItem.Valor
-                ElseIf oVar.Help = 2 Then
-                    vReemplazo = Val(Controles("_" & oVar.Nombre).Text)
-                ElseIf oVar.Help = 3 Then
-                    vReemplazo = Val(Controles("_" & oVar.Nombre).Text)
-                ElseIf oVar.Help = 4 Then
-                    vReemplazo = Controles("_" & oVar.Nombre).Tag
-                Else
-                    vReemplazo = Val(Controles("_" & oVar.Nombre).Text)
-                End If
-
-            Case 1
-                If oVar.Help Then
-                    oItem = CType(Controles("_" & oVar.Nombre), ComboBox).SelectedItem
-                    vReemplazo = oItem.Valor
-                Else
-                    vReemplazo = Controles("_" & oVar.Nombre).Text
-                End If
-
-            Case 2
-                vReemplazo = CType(Controles("_" & oVar.Nombre), DateTimePicker).Value
-
-        End Select
-
-        Return vReemplazo
-
-    End Function
-
-    'Parametros= sParam(0)=Periodo
-    Public Function ConsFechaFinMes(ByVal sParametros As String) As Boolean
-        Dim sParam() As String
-        sParam = Split(sParametros, "|")
-
-        Dim fechaFinDeMes As DateTime
-        If Month(sParam(0)) = 12 Then
-            fechaFinDeMes = DateTime.Parse((Year(sParam(0)) + 1).ToString() & "-" & Format(1, "00") & "-01").AddDays(-1)
-        Else
-            fechaFinDeMes = DateTime.Parse(Year(sParam(0)).ToString() & "-" & Format(IIf(Month(sParam(0)) = 12, 1, Month(sParam(0)) + 1), "00") & "-01").AddDays(-1)
-        End If
-
-        Dim fecha As DateTime
-        If DateTime.TryParse(sParametros, fecha) Then
-            If fecha.Equals(fechaFinDeMes) Then
-                Return True
-            Else
-                MensajeError("La fecha establecida no es fin de mes")
-            End If
-        Else
-            MensajeError("La fecha establecida no es fin de mes")
-        End If
-
-        'Dim i As Integer
-        'Dim sTemp As String
-        'Dim sParam() As String
-
-        'sParam = Split(sParametros, "|")
-
-        'For i = 31 To 28 Step -1
-
-        '   sTemp = Format(i, "00") & "-" & Format(Month(sParam(0)), "00") & "-" & Year(sParam(0))
-
-        '   If IsDate(sTemp) Then
-
-        '      If CDate(sParam(0)) <> CDate(sTemp) Then
-        '         MensajeError("La fecha establecida no es fin de mes")
-        '      Else
-        '         ConsFechaFinMes = True
-        '      End If
-
-        '      Exit For
-
-        '   End If
-
-        'Next
-
-    End Function
-
-    Private Sub cmdProcesar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdProcesar.Click
-
-        If cmdProcesar.Text = "&Procesar" Then
-            If DatosOK() Then
-                cmdProcesar.Text = "&Cancelar"
-                bCancelProcAsinc = False
-                Ejecutar()
-                cmdProcesar.Text = "&Procesar"
-            End If
-        Else
-            bCancelProcAsinc = True
-        End If
-
-    End Sub
-
-    Private Function ObtenerFechaVigencia() As Date
-        Dim d = Date.MinValue
-        Dim paso = False
-        For Each control As Control In panControles.Controls
-            Select Case control.GetType.ToString.Substring(control.GetType.ToString.LastIndexOf(".") + 1)
-                Case "DateTimePicker"
-                    d = IIf(paso, DateTime.MinValue, DateTime.Parse(FechaSQL(DirectCast(control, DateTimePicker).Value).Replace("'", String.Empty)))
-                    paso = True
-                Case "DateEdit"
-                    d = IIf(paso, Date.MinValue, Date.Parse(FechaSQL(DirectCast(control, DevExpress.XtraEditors.DateEdit).DateTime).Replace("'", String.Empty)))
-                    paso = True
-                Case Else
-                    Continue For
-            End Select
-        Next
-        Return d
-    End Function
+		Dim oItem As Prex.Utils.Entities.clsItem
+
+		Select Case oVar.Tipo
+			Case 0
+				If oVar.Help = 1 Then
+					oItem = CType(Controles("_" & oVar.Nombre), ComboBox).SelectedItem
+					vReemplazo = oItem.Valor
+				ElseIf oVar.Help = 2 Then
+					vReemplazo = Val(Controles("_" & oVar.Nombre).Text)
+				ElseIf oVar.Help = 3 Then
+					vReemplazo = Val(Controles("_" & oVar.Nombre).Text)
+				ElseIf oVar.Help = 4 Then
+					vReemplazo = Controles("_" & oVar.Nombre).Tag
+				Else
+					vReemplazo = Val(Controles("_" & oVar.Nombre).Text)
+				End If
+
+			Case 1
+				If oVar.Help Then
+					oItem = CType(Controles("_" & oVar.Nombre), ComboBox).SelectedItem
+					vReemplazo = oItem.Valor
+				Else
+					vReemplazo = Controles("_" & oVar.Nombre).Text
+				End If
+
+			Case 2
+				vReemplazo = CType(Controles("_" & oVar.Nombre), DateTimePicker).Value
+
+		End Select
+
+		Return vReemplazo
+
+	End Function
+
+	'Parametros= sParam(0)=Periodo
+	Public Function ConsFechaFinMes(ByVal sParametros As String) As Boolean
+		Dim sParam() As String
+		sParam = Split(sParametros, "|")
+
+		Dim fechaFinDeMes As DateTime
+		If Month(sParam(0)) = 12 Then
+			fechaFinDeMes = DateTime.Parse((Year(sParam(0)) + 1).ToString() & "-" & Format(1, "00") & "-01").AddDays(-1)
+		Else
+			fechaFinDeMes = DateTime.Parse(Year(sParam(0)).ToString() & "-" & Format(IIf(Month(sParam(0)) = 12, 1, Month(sParam(0)) + 1), "00") & "-01").AddDays(-1)
+		End If
+
+		Dim fecha As DateTime
+		If DateTime.TryParse(sParametros, fecha) Then
+			If fecha.Equals(fechaFinDeMes) Then
+				Return True
+			Else
+				MensajeError("La fecha establecida no es fin de mes")
+			End If
+		Else
+			MensajeError("La fecha establecida no es fin de mes")
+		End If
+
+		'Dim i As Integer
+		'Dim sTemp As String
+		'Dim sParam() As String
+
+		'sParam = Split(sParametros, "|")
+
+		'For i = 31 To 28 Step -1
+
+		'   sTemp = Format(i, "00") & "-" & Format(Month(sParam(0)), "00") & "-" & Year(sParam(0))
+
+		'   If IsDate(sTemp) Then
+
+		'      If CDate(sParam(0)) <> CDate(sTemp) Then
+		'         MensajeError("La fecha establecida no es fin de mes")
+		'      Else
+		'         ConsFechaFinMes = True
+		'      End If
+
+		'      Exit For
+
+		'   End If
+
+		'Next
+
+	End Function
+
+	Private Sub cmdProcesar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdProcesar.Click
+
+		If cmdProcesar.Text = "&Procesar" Then
+			If DatosOK() Then
+				cmdProcesar.Text = "&Cancelar"
+				bCancelProcAsinc = False
+				Ejecutar()
+				cmdProcesar.Text = "&Procesar"
+			End If
+		Else
+			bCancelProcAsinc = True
+		End If
+
+	End Sub
+
+	Private Function ObtenerFechaVigencia() As Date
+		Dim d = Date.MinValue
+		Dim paso = False
+		For Each control As Control In panControles.Controls
+			Select Case control.GetType.ToString.Substring(control.GetType.ToString.LastIndexOf(".") + 1)
+				Case "DateTimePicker"
+					d = IIf(paso, DateTime.MinValue, DateTime.Parse(FechaSQL(DirectCast(control, DateTimePicker).Value).Replace("'", String.Empty)))
+					paso = True
+				Case "DateEdit"
+					d = IIf(paso, Date.MinValue, Date.Parse(FechaSQL(DirectCast(control, DevExpress.XtraEditors.DateEdit).DateTime).Replace("'", String.Empty)))
+					paso = True
+				Case Else
+					Continue For
+			End Select
+		Next
+		Return d
+	End Function
 
-    Private Sub GuardarControlSubProceso(ByVal subProceso As clsSubProcesosSistema, ByVal estado As Integer, ByVal observacion As String)
-        If oAdmlocal.ExisteTabla("CTLPRO") Then
-
-            Dim sSQL1 = "INSERT INTO CTLPRO " &
-                       "SELECT " & CODIGO_ENTIDAD & " AS CP_CODENT, " &
-                       FechaSQL(ObtenerFechaVigencia()) & " AS CP_FECVIG, " &
-                       subProceso.CodPro.ToString & " AS CP_PROCES, " &
-                       "'" & subProceso.Nombre.ToUpper & "' AS CP_SUBPRO, " &
-                       FechaSQL(Date.Now) & " AS CP_DIAPRO, " &
-                       FechaYHoraSQL(DateTime.Now) & " AS CP_HORAPRO, " &
-                       estado.ToString & " AS CP_ESTADO, " &
-                       "'" & observacion.ToUpper & "' AS CP_OBSERV "
+	Private Sub GuardarControlSubProceso(ByVal subProceso As clsSubProcesosSistema, ByVal estado As Integer, ByVal observacion As String)
+		If oAdmlocal.ExisteTabla("CTLPRO") Then
+
+			Dim sSQL1 = "INSERT INTO CTLPRO " &
+					   "SELECT " & CODIGO_ENTIDAD & " AS CP_CODENT, " &
+					   FechaSQL(ObtenerFechaVigencia()) & " AS CP_FECVIG, " &
+					   subProceso.CodPro.ToString & " AS CP_PROCES, " &
+					   "'" & subProceso.Nombre.ToUpper & "' AS CP_SUBPRO, " &
+					   FechaSQL(Date.Now) & " AS CP_DIAPRO, " &
+					   FechaYHoraSQL(DateTime.Now) & " AS CP_HORAPRO, " &
+					   estado.ToString & " AS CP_ESTADO, " &
+					   "'" & observacion.ToUpper & "' AS CP_OBSERV "
 
-            oAdmlocal.EjecutarComandoSQL(sSQL1)
-
-        End If
-
-    End Sub
-
-    Private Sub Ejecutar()
+			oAdmlocal.EjecutarComandoSQL(sSQL1)
+
+		End If
+
+	End Sub
+
+	Private Sub Ejecutar()
 
-        Dim sSQL As String
-        Dim oItem As ListViewItem
-        Dim oSubItem As ListViewItem.ListViewSubItem
-        Dim bResult As Boolean
-
-        For Each oItem In lvSel.Items
-            oSubItem = oItem.SubItems(1)
-            oSubItem.Text = ""
-        Next
-
-        oSubItem = Nothing
-        oItem = Nothing
-
-        If ProcesoEnEjecucion() Then
-            Exit Sub
-        End If
-
-        If Not ProcesosPrevios() Then
-            Exit Sub
-        End If
-
-        Dim uncheckAll = True
+		Dim sSQL As String
+		Dim oItem As ListViewItem
+		Dim oSubItem As ListViewItem.ListViewSubItem
+		Dim bResult As Boolean
+
+		For Each oItem In lvSel.Items
+			oSubItem = oItem.SubItems(1)
+			oSubItem.Text = ""
+		Next
+
+		oSubItem = Nothing
+		oItem = Nothing
+
+		If ProcesoEnEjecucion() Then
+			Exit Sub
+		End If
+
+		If Not ProcesosPrevios() Then
+			Exit Sub
+		End If
+
+		Dim uncheckAll = True
 
-        For Each oItem In lvSel.Items
-
-            oSubItem = oItem.SubItems(1)
-
-            If oItem.Checked Then
-                uncheckAll = False
-                oSubItem.Text = "Procesando..."
-
-                Application.DoEvents()
-
-                GuardarLOG(AccionesLOG.EjecucionSubProceso, "Sub Proceso: " + oSubProcesos(oItem.Tag).CodPro.ToString + " - " + oSubProcesos(oItem.Tag).Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+		For Each oItem In lvSel.Items
+
+			oSubItem = oItem.SubItems(1)
+
+			If oItem.Checked Then
+				uncheckAll = False
+				oSubItem.Text = "Procesando..."
+
+				Application.DoEvents()
+
+				GuardarLOG(AccionesLOG.EjecucionSubProceso, "Sub Proceso: " + oSubProcesos(oItem.Tag).CodPro.ToString + " - " + oSubProcesos(oItem.Tag).Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
 
-                'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
-                GuardarControlSubProceso(oSubProcesos(oItem.Tag), 1, "INICIADO")
-
-                sSQL = ReemplazarVariables(oSubProcesos(oItem.Tag).Query.ToString.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro)
-                sSQL = ProcesosEmbebidos(ReemplazarVariables(oProcesos.Query.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro) & sSQL)
-
-                bResult = ProcesoAsincrono(sSQL)
-
-                If bResult Then
-                    If bCancelProcAsinc Then
-                        oSubItem.Text = "Cancelado"
-
-                        If Pregunta("¿Desea continuar con el resto de los procesos?") = Windows.Forms.DialogResult.No Then
-                            Exit For
-                        End If
-                    Else
-                        oSubItem.Text = "Finalizado"
-                        GuardarLOG(AccionesLOG.FinSubProceso, "Sub Proceso: " + oSubProcesos(oItem.Tag).CodPro.ToString + " - " + oSubProcesos(oItem.Tag).Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
-
-                        'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
-                        GuardarControlSubProceso(oSubProcesos(oItem.Tag), 2, "FINALIZADO")
-                    End If
-                Else
-                    oSubItem.Text = "Error"
+				'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
+				GuardarControlSubProceso(oSubProcesos(oItem.Tag), 1, "INICIADO")
+
+				sSQL = ReemplazarVariables(oSubProcesos(oItem.Tag).Query.ToString.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro)
+				sSQL = ProcesosEmbebidos(ReemplazarVariables(oProcesos.Query.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro) & sSQL)
+
+				bResult = ProcesoAsincrono(sSQL)
+
+				If bResult Then
+					If bCancelProcAsinc Then
+						oSubItem.Text = "Cancelado"
+
+						If Pregunta("¿Desea continuar con el resto de los procesos?") = Windows.Forms.DialogResult.No Then
+							Exit For
+						End If
+					Else
+						oSubItem.Text = "Finalizado"
+						GuardarLOG(AccionesLOG.FinSubProceso, "Sub Proceso: " + oSubProcesos(oItem.Tag).CodPro.ToString + " - " + oSubProcesos(oItem.Tag).Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+
+						'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
+						GuardarControlSubProceso(oSubProcesos(oItem.Tag), 2, "FINALIZADO")
+					End If
+				Else
+					oSubItem.Text = "Error"
 
-                    GuardarLOG(AccionesLOG.ErrorSubProceso, "Sub Proceso: " + oSubProcesos(oItem.Tag).CodPro.ToString + " - " + oSubProcesos(oItem.Tag).Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
-
-                    'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
-                    GuardarControlSubProceso(oSubProcesos(oItem.Tag), 3, "ERROR")
-
-                    Exit For
-                End If
+					GuardarLOG(AccionesLOG.ErrorSubProceso, "Sub Proceso: " + oSubProcesos(oItem.Tag).CodPro.ToString + " - " + oSubProcesos(oItem.Tag).Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+
+					'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
+					GuardarControlSubProceso(oSubProcesos(oItem.Tag), 3, "ERROR")
+
+					Exit For
+				End If
 
-            Else
-                oSubItem.Text = "Omitido"
-            End If
-
-            Application.DoEvents()
-        Next
-
-        ProcesoEnEjecucion(True)
-        If uncheckAll Then
-            MensajeInformacion("ATENCION! Proceso Finalizado sin tareas selecciondas.")
-        Else
-            If bResult Then
-                MensajeInformacion("Proceso Finalizado")
-            Else
-                MensajeError("Se produjo un error durante el proceso y el mismo fué abortado.")
-            End If
-        End If
-
-    End Sub
-
-    Private Function ProcesoEnEjecucion(Optional ByVal bFinProceso As Boolean = False) As Boolean
-
-        Dim ds As DataSet
-        Dim row As DataRow
-        Dim cb As OleDb.OleDbCommandBuilder
-        Dim da As OleDb.OleDbDataAdapter
-        Dim sSQL As String
-        Dim bTemp As Boolean
-
-        Try
-
-            sSQL = "SELECT       * " &
-                "FROM         PROEXE " &
-                "WHERE        PE_CODPRO=" & oProcesos.CodPro
-            ds = oAdmlocal.AbrirDataset(sSQL, da)
-            cb = New OleDb.OleDbCommandBuilder(da)
-
-            With ds.Tables(0)
-
-                If .Rows.Count = 0 Then
-                    row = .NewRow()
-
-                    row("PE_CODPRO") = oProcesos.CodPro
-                    row("PE_ESTADO") = 0
-                    row("PE_DESCRI") = " "
-                    row("PE_FECPRO") = DateTime.Now
-                    row("PE_CODUSU") = UsuarioActual.Codigo
-
-                    ds.Tables(0).Rows.Add(row)
-                    da.Update(ds)
-                    ds.AcceptChanges()
-
-                Else
-
-                    If bFinProceso Then
-                        .Rows(0).Item("PE_ESTADO") = 0
-                        .Rows(0).Item("PE_DESCRI") = " "
-                        .Rows(0).Item("PE_FECPRO") = DateTime.Now
-                        .Rows(0).Item("PE_CODUSU") = UsuarioActual.Codigo
-                        da.Update(ds)
-                        ds.AcceptChanges()
-
-                    End If
-
-                    bTemp = (.Rows(0).Item("PE_ESTADO") <> 0)
-
-                    If bTemp Then
-                        If Pregunta("El proceso se encuentra en ejecución por " & oAdmlocal.DevolverValor("USUARI", "US_DESCRI", "US_CODUSU=" & .Rows(0).Item("PE_CODUSU")) & " desde " & .Rows(0).Item("PE_FECPRO") & "." & vbCrLf & "Forzar el inicio puede generar inconsistencia en los datos." & vbCrLf & "¿Desea Forzar el inicio de proceso?") = vbYes Then
-                            bTemp = False
-                            .Rows(0).Item("PE_ESTADO") = 0
-                            .Rows(0).Item("PE_DESCRI") = " "
-                            .Rows(0).Item("PE_FECPRO") = DateTime.Now
-                            .Rows(0).Item("PE_CODUSU") = UsuarioActual.Codigo
-                            da.Update(ds)
-                            ds.AcceptChanges()
-                        End If
-                    End If
-
-                End If
-            End With
-
-            Return bTemp
-
-        Catch ex As Exception
-            ex = Nothing
-        End Try
-
-    End Function
-
-    'Public Function ReemplazarVariables(ByVal sSQL As String) As String
-
-    '     Dim oCtl As Windows.Forms.Control
-    '   Dim sValor As String
-    '   Dim oItem As clsItem.Item
-
-    '   For Each oCtl In panControles.Controls
-
-    '      Select Case oCtl.GetType.ToString.Substring(oCtl.GetType.ToString.LastIndexOf(".") + 1)
-    '         Case "ComboBox"
-    '                 oItem = CType(oCtl, ComboBox).SelectedItem
-    '                 sValor = "'" + oItem.Valor.ToString + "'"
-    '             Case "ComboBoxEdit"
-    '                 oItem = CType(oCtl, DevExpress.XtraEditors.ComboBoxEdit).SelectedItem
-    '                 sValor = "'" + oItem.Valor.ToString + "'"
-    '             Case "CheckBox"
-    '                 sValor = IIf(CType(oCtl, CheckBox).Checked, oCtl.Tag, "")
-    '             Case "CheckEdit"
-    '                 sValor = IIf(CType(oCtl, DevExpress.XtraEditors.CheckEdit).Checked, oCtl.Tag, "")
-    '             Case "DateTimePicker"
-    '                 sValor = FechaSQL(DirectCast(oCtl, DateTimePicker).Value)
-    '             Case "DateEdit"
-    '                 sValor = FechaSQL(DirectCast(oCtl, DevExpress.XtraEditors.DateEdit).DateTime)
-    '             Case Else
-    '            sValor = oCtl.Text
-    '      End Select
-
-    '      If oCtl.Name.Substring(0, 1) = "_" Then
-    '         sSQL = sSQL.Replace(oCtl.Name.Substring(1), sValor)
-    '      End If
-
-    '   Next
-
-    '   sSQL = Replace(sSQL, "@CODPRO", oProcesos.CodPro.ToString, , , vbTextCompare)
-    '   sSQL = Replace(sSQL, "@CODUSU", UsuarioActual.Codigo, , , vbTextCompare)
-    '   sSQL = Replace(sSQL, "@CODIGO_ENTIDAD", CODIGO_ENTIDAD.ToString, , , vbTextCompare)
-    '   sSQL = Replace(sSQL, "@CODIGO_TRANSACCION", CODIGO_TRANSACCION.ToString, , , vbTextCompare)
-
-    '   Return sSQL
-
-    'End Function
-
-    Private Function ProcesoAsincrono(ByVal sSQL As String) As Boolean
+			Else
+				oSubItem.Text = "Omitido"
+			End If
+
+			Application.DoEvents()
+		Next
+
+		ProcesoEnEjecucion(True)
+		If uncheckAll Then
+			MensajeInformacion("ATENCION! Proceso Finalizado sin tareas selecciondas.")
+		Else
+			If bResult Then
+				MensajeInformacion("Proceso Finalizado")
+			Else
+				MensajeError("Se produjo un error durante el proceso y el mismo fué abortado.")
+			End If
+		End If
+
+	End Sub
+
+	Private Function ProcesoEnEjecucion(Optional ByVal bFinProceso As Boolean = False) As Boolean
+
+		Dim ds As DataSet
+		Dim row As DataRow
+		Dim cb As OleDb.OleDbCommandBuilder
+		Dim da As OleDb.OleDbDataAdapter
+		Dim sSQL As String
+		Dim bTemp As Boolean
+
+		Try
+
+			sSQL = "SELECT       * " &
+				"FROM         PROEXE " &
+				"WHERE        PE_CODPRO=" & oProcesos.CodPro
+			ds = oAdmlocal.AbrirDataset(sSQL, da)
+			cb = New OleDb.OleDbCommandBuilder(da)
+
+			With ds.Tables(0)
+
+				If .Rows.Count = 0 Then
+					row = .NewRow()
+
+					row("PE_CODPRO") = oProcesos.CodPro
+					row("PE_ESTADO") = 0
+					row("PE_DESCRI") = " "
+					row("PE_FECPRO") = DateTime.Now
+					row("PE_CODUSU") = UsuarioActual.Codigo
+
+					ds.Tables(0).Rows.Add(row)
+					da.Update(ds)
+					ds.AcceptChanges()
+
+				Else
+
+					If bFinProceso Then
+						.Rows(0).Item("PE_ESTADO") = 0
+						.Rows(0).Item("PE_DESCRI") = " "
+						.Rows(0).Item("PE_FECPRO") = DateTime.Now
+						.Rows(0).Item("PE_CODUSU") = UsuarioActual.Codigo
+						da.Update(ds)
+						ds.AcceptChanges()
+
+					End If
+
+					bTemp = (.Rows(0).Item("PE_ESTADO") <> 0)
+
+					If bTemp Then
+						If Pregunta("El proceso se encuentra en ejecución por " & oAdmlocal.DevolverValor("USUARI", "US_DESCRI", "US_CODUSU=" & .Rows(0).Item("PE_CODUSU")) & " desde " & .Rows(0).Item("PE_FECPRO") & "." & vbCrLf & "Forzar el inicio puede generar inconsistencia en los datos." & vbCrLf & "¿Desea Forzar el inicio de proceso?") = vbYes Then
+							bTemp = False
+							.Rows(0).Item("PE_ESTADO") = 0
+							.Rows(0).Item("PE_DESCRI") = " "
+							.Rows(0).Item("PE_FECPRO") = DateTime.Now
+							.Rows(0).Item("PE_CODUSU") = UsuarioActual.Codigo
+							da.Update(ds)
+							ds.AcceptChanges()
+						End If
+					End If
+
+				End If
+			End With
+
+			Return bTemp
+
+		Catch ex As Exception
+			ex = Nothing
+		End Try
+
+	End Function
+
+	'Public Function ReemplazarVariables(ByVal sSQL As String) As String
+
+	'     Dim oCtl As Windows.Forms.Control
+	'   Dim sValor As String
+	'   Dim oItem As Prex.Utils.Entities.clsItem
+
+	'   For Each oCtl In panControles.Controls
+
+	'      Select Case oCtl.GetType.ToString.Substring(oCtl.GetType.ToString.LastIndexOf(".") + 1)
+	'         Case "ComboBox"
+	'                 oItem = CType(oCtl, ComboBox).SelectedItem
+	'                 sValor = "'" + oItem.Valor.ToString + "'"
+	'             Case "ComboBoxEdit"
+	'                 oItem = CType(oCtl, DevExpress.XtraEditors.ComboBoxEdit).SelectedItem
+	'                 sValor = "'" + oItem.Valor.ToString + "'"
+	'             Case "CheckBox"
+	'                 sValor = IIf(CType(oCtl, CheckBox).Checked, oCtl.Tag, "")
+	'             Case "CheckEdit"
+	'                 sValor = IIf(CType(oCtl, DevExpress.XtraEditors.CheckEdit).Checked, oCtl.Tag, "")
+	'             Case "DateTimePicker"
+	'                 sValor = FechaSQL(DirectCast(oCtl, DateTimePicker).Value)
+	'             Case "DateEdit"
+	'                 sValor = FechaSQL(DirectCast(oCtl, DevExpress.XtraEditors.DateEdit).DateTime)
+	'             Case Else
+	'            sValor = oCtl.Text
+	'      End Select
+
+	'      If oCtl.Name.Substring(0, 1) = "_" Then
+	'         sSQL = sSQL.Replace(oCtl.Name.Substring(1), sValor)
+	'      End If
+
+	'   Next
+
+	'   sSQL = Replace(sSQL, "@CODPRO", oProcesos.CodPro.ToString, , , vbTextCompare)
+	'   sSQL = Replace(sSQL, "@CODUSU", UsuarioActual.Codigo, , , vbTextCompare)
+	'   sSQL = Replace(sSQL, "@CODIGO_ENTIDAD", CODIGO_ENTIDAD.ToString, , , vbTextCompare)
+	'   sSQL = Replace(sSQL, "@CODIGO_TRANSACCION", CODIGO_TRANSACCION.ToString, , , vbTextCompare)
+
+	'   Return sSQL
+
+	'End Function
+
+	Private Function ProcesoAsincrono(ByVal sSQL As String) As Boolean
 
         Dim oConnection As ADODB.Connection
         Dim oCommand As ADODB.Command

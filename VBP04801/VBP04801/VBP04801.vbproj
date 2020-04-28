@@ -240,7 +240,6 @@
     <Compile Include="..\..\COMMON\MODUL\modGlobalBase64.vb">
       <Link>Modulos\modGlobalBase64.vb</Link>
     </Compile>
-    <Compile Include="Clases\clsItem.vb" />
     <Compile Include="Clases\clsCampos.vb" />
     <Compile Include="DataSets\dsTabla.Designer.vb">
       <AutoGen>True</AutoGen>
