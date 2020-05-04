@@ -1204,7 +1204,8 @@ Public Class frmMain
 				txtVarOrden.Text = variable.Orden
 				txtVarTitulo.Text = variable.Titulo
 				Dim rh = gridViewVariables.GetRowHandle(variable.Orden - 1)
-				gridViewVariables.SelectRow(rh)
+				gridViewVariables.FocusedRowHandle = rh
+				'gridViewVariables.SelectRow(rh)
 			Else
 				txtVarDato.Text = String.Empty
 				txtVarHelp.Text = String.Empty

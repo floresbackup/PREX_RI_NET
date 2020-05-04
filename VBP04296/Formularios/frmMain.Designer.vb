@@ -62,11 +62,17 @@ Partial Class frmMain
 		Me.cmdSubirOrdenProceso = New DevExpress.XtraBars.BarButtonItem()
 		Me.cmdBajarOrdenProceso = New DevExpress.XtraBars.BarButtonItem()
 		Me.StandaloneBarDockControl3 = New DevExpress.XtraBars.StandaloneBarDockControl()
+		Me.Bar3 = New DevExpress.XtraBars.Bar()
+		Me.btnEditarVariable = New DevExpress.XtraBars.BarButtonItem()
+		Me.btnNuevaVariable = New DevExpress.XtraBars.BarButtonItem()
+		Me.btnEliminarVariable = New DevExpress.XtraBars.BarButtonItem()
+		Me.btnSubirVariable = New DevExpress.XtraBars.BarButtonItem()
+		Me.btnVariableBajarOrden = New DevExpress.XtraBars.BarButtonItem()
+		Me.StandaloneBarDockControl4 = New DevExpress.XtraBars.StandaloneBarDockControl()
 		Me.barDockControlTop = New DevExpress.XtraBars.BarDockControl()
 		Me.barDockControlBottom = New DevExpress.XtraBars.BarDockControl()
 		Me.barDockControlLeft = New DevExpress.XtraBars.BarDockControl()
 		Me.barDockControlRight = New DevExpress.XtraBars.BarDockControl()
-		Me.StandaloneBarDockControl4 = New DevExpress.XtraBars.StandaloneBarDockControl()
 		Me.GridCons = New DevExpress.XtraGrid.GridControl()
 		Me.GridViewCons = New DevExpress.XtraGrid.Views.Grid.GridView()
 		Me.colNombreConsulta = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -133,12 +139,6 @@ Partial Class frmMain
 		Me.LabelControl6 = New DevExpress.XtraEditors.LabelControl()
 		Me.LabelControl5 = New DevExpress.XtraEditors.LabelControl()
 		Me.LabelControl4 = New DevExpress.XtraEditors.LabelControl()
-		Me.Bar3 = New DevExpress.XtraBars.Bar()
-		Me.btnNuevaVariable = New DevExpress.XtraBars.BarButtonItem()
-		Me.btnEditarVariable = New DevExpress.XtraBars.BarButtonItem()
-		Me.btnEliminarVariable = New DevExpress.XtraBars.BarButtonItem()
-		Me.btnSubirVariable = New DevExpress.XtraBars.BarButtonItem()
-		Me.btnVariableBajarOrden = New DevExpress.XtraBars.BarButtonItem()
 		Me.toolMain.SuspendLayout()
 		Me.sbMain.SuspendLayout()
 		CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -198,7 +198,7 @@ Partial Class frmMain
 		Me.toolMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lblTransaccion, Me.btnSalir, Me.tsSep1, Me.btnAyuda, Me.tsSep2, Me.lblVersion, Me.ToolStripSeparator6})
 		Me.toolMain.Location = New System.Drawing.Point(0, 0)
 		Me.toolMain.Name = "toolMain"
-		Me.toolMain.Size = New System.Drawing.Size(1413, 31)
+		Me.toolMain.Size = New System.Drawing.Size(1413, 27)
 		Me.toolMain.TabIndex = 10
 		Me.toolMain.Text = "ToolStrip1"
 		'
@@ -218,14 +218,14 @@ Partial Class frmMain
 		Me.btnSalir.Image = Global.VBP04296.My.Resources.Resources.Cross
 		Me.btnSalir.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnSalir.Name = "btnSalir"
-		Me.btnSalir.Size = New System.Drawing.Size(66, 28)
+		Me.btnSalir.Size = New System.Drawing.Size(66, 24)
 		Me.btnSalir.Text = " Salir"
 		'
 		'tsSep1
 		'
 		Me.tsSep1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
 		Me.tsSep1.Name = "tsSep1"
-		Me.tsSep1.Size = New System.Drawing.Size(6, 31)
+		Me.tsSep1.Size = New System.Drawing.Size(6, 27)
 		'
 		'btnAyuda
 		'
@@ -233,27 +233,27 @@ Partial Class frmMain
 		Me.btnAyuda.Image = Global.VBP04296.My.Resources.Resources.Help_2
 		Me.btnAyuda.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnAyuda.Name = "btnAyuda"
-		Me.btnAyuda.Size = New System.Drawing.Size(79, 28)
+		Me.btnAyuda.Size = New System.Drawing.Size(79, 24)
 		Me.btnAyuda.Text = " Ayuda"
 		'
 		'tsSep2
 		'
 		Me.tsSep2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
 		Me.tsSep2.Name = "tsSep2"
-		Me.tsSep2.Size = New System.Drawing.Size(6, 31)
+		Me.tsSep2.Size = New System.Drawing.Size(6, 27)
 		'
 		'lblVersion
 		'
 		Me.lblVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
 		Me.lblVersion.Name = "lblVersion"
-		Me.lblVersion.Size = New System.Drawing.Size(94, 28)
+		Me.lblVersion.Size = New System.Drawing.Size(94, 24)
 		Me.lblVersion.Text = "Versión: 1.0.0"
 		'
 		'ToolStripSeparator6
 		'
 		Me.ToolStripSeparator6.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
 		Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-		Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 31)
+		Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 27)
 		'
 		'sbMain
 		'
@@ -296,7 +296,7 @@ Partial Class frmMain
 		Me.PanTop.Controls.Add(Me.lblTitulo)
 		Me.PanTop.Controls.Add(Me.picLogo)
 		Me.PanTop.Dock = System.Windows.Forms.DockStyle.Top
-		Me.PanTop.Location = New System.Drawing.Point(0, 31)
+		Me.PanTop.Location = New System.Drawing.Point(0, 27)
 		Me.PanTop.LookAndFeel.UseDefaultLookAndFeel = False
 		Me.PanTop.Margin = New System.Windows.Forms.Padding(4)
 		Me.PanTop.Name = "PanTop"
@@ -341,10 +341,10 @@ Partial Class frmMain
 		'
 		Me.pnlMain.Controls.Add(Me.SplitContainerControl1)
 		Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
-		Me.pnlMain.Location = New System.Drawing.Point(0, 97)
+		Me.pnlMain.Location = New System.Drawing.Point(0, 93)
 		Me.pnlMain.Margin = New System.Windows.Forms.Padding(4)
 		Me.pnlMain.Name = "pnlMain"
-		Me.pnlMain.Size = New System.Drawing.Size(1413, 706)
+		Me.pnlMain.Size = New System.Drawing.Size(1413, 710)
 		Me.pnlMain.TabIndex = 13
 		'
 		'SplitContainerControl1
@@ -357,7 +357,7 @@ Partial Class frmMain
 		Me.SplitContainerControl1.Panel1.Text = "Panel1"
 		Me.SplitContainerControl1.Panel2.Controls.Add(Me.TableLayoutPanel2)
 		Me.SplitContainerControl1.Panel2.Text = "Panel2"
-		Me.SplitContainerControl1.Size = New System.Drawing.Size(1409, 702)
+		Me.SplitContainerControl1.Size = New System.Drawing.Size(1409, 706)
 		Me.SplitContainerControl1.SplitterPosition = 311
 		Me.SplitContainerControl1.TabIndex = 0
 		Me.SplitContainerControl1.Text = "SplitContainerControl1"
@@ -375,7 +375,7 @@ Partial Class frmMain
 		Me.TableLayoutPanel1.RowCount = 2
 		Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
 		Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-		Me.TableLayoutPanel1.Size = New System.Drawing.Size(311, 702)
+		Me.TableLayoutPanel1.Size = New System.Drawing.Size(311, 706)
 		Me.TableLayoutPanel1.TabIndex = 0
 		'
 		'StandaloneBarDockControl2
@@ -583,6 +583,69 @@ Partial Class frmMain
 		Me.StandaloneBarDockControl3.Size = New System.Drawing.Size(223, 39)
 		Me.StandaloneBarDockControl3.Text = "StandaloneBarDockControl3"
 		'
+		'Bar3
+		'
+		Me.Bar3.BarName = "barVariables"
+		Me.Bar3.DockCol = 0
+		Me.Bar3.DockRow = 0
+		Me.Bar3.DockStyle = DevExpress.XtraBars.BarDockStyle.Standalone
+		Me.Bar3.FloatLocation = New System.Drawing.Point(1237, 313)
+		Me.Bar3.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.btnEditarVariable, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.btnNuevaVariable, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.btnEliminarVariable, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(Me.btnSubirVariable, True), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.btnVariableBajarOrden, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)})
+		Me.Bar3.OptionsBar.AllowQuickCustomization = False
+		Me.Bar3.OptionsBar.DrawDragBorder = False
+		Me.Bar3.StandaloneBarDockControl = Me.StandaloneBarDockControl4
+		Me.Bar3.Text = "barVariables"
+		'
+		'btnEditarVariable
+		'
+		Me.btnEditarVariable.Hint = "Editar Variable"
+		Me.btnEditarVariable.Id = 14
+		Me.btnEditarVariable.ImageOptions.Image = CType(resources.GetObject("btnEditarVariable.ImageOptions.Image"), System.Drawing.Image)
+		Me.btnEditarVariable.ImageOptions.LargeImage = CType(resources.GetObject("btnEditarVariable.ImageOptions.LargeImage"), System.Drawing.Image)
+		Me.btnEditarVariable.Name = "btnEditarVariable"
+		'
+		'btnNuevaVariable
+		'
+		Me.btnNuevaVariable.Hint = "Nueva Variable"
+		Me.btnNuevaVariable.Id = 13
+		Me.btnNuevaVariable.ImageOptions.Image = CType(resources.GetObject("btnNuevaVariable.ImageOptions.Image"), System.Drawing.Image)
+		Me.btnNuevaVariable.ImageOptions.LargeImage = CType(resources.GetObject("btnNuevaVariable.ImageOptions.LargeImage"), System.Drawing.Image)
+		Me.btnNuevaVariable.Name = "btnNuevaVariable"
+		'
+		'btnEliminarVariable
+		'
+		Me.btnEliminarVariable.Id = 15
+		Me.btnEliminarVariable.ImageOptions.Image = CType(resources.GetObject("btnEliminarVariable.ImageOptions.Image"), System.Drawing.Image)
+		Me.btnEliminarVariable.ImageOptions.LargeImage = CType(resources.GetObject("btnEliminarVariable.ImageOptions.LargeImage"), System.Drawing.Image)
+		Me.btnEliminarVariable.Name = "btnEliminarVariable"
+		'
+		'btnSubirVariable
+		'
+		Me.btnSubirVariable.Hint = "Subir orden"
+		Me.btnSubirVariable.Id = 16
+		Me.btnSubirVariable.ImageOptions.Image = CType(resources.GetObject("btnSubirVariable.ImageOptions.Image"), System.Drawing.Image)
+		Me.btnSubirVariable.ImageOptions.LargeImage = CType(resources.GetObject("btnSubirVariable.ImageOptions.LargeImage"), System.Drawing.Image)
+		Me.btnSubirVariable.Name = "btnSubirVariable"
+		'
+		'btnVariableBajarOrden
+		'
+		Me.btnVariableBajarOrden.Hint = "Bajar orden"
+		Me.btnVariableBajarOrden.Id = 17
+		Me.btnVariableBajarOrden.ImageOptions.Image = CType(resources.GetObject("btnVariableBajarOrden.ImageOptions.Image"), System.Drawing.Image)
+		Me.btnVariableBajarOrden.ImageOptions.LargeImage = CType(resources.GetObject("btnVariableBajarOrden.ImageOptions.LargeImage"), System.Drawing.Image)
+		Me.btnVariableBajarOrden.Name = "btnVariableBajarOrden"
+		'
+		'StandaloneBarDockControl4
+		'
+		Me.StandaloneBarDockControl4.CausesValidation = False
+		Me.StandaloneBarDockControl4.Dock = System.Windows.Forms.DockStyle.Top
+		Me.StandaloneBarDockControl4.Location = New System.Drawing.Point(3, 3)
+		Me.StandaloneBarDockControl4.Manager = Me.BarManager1
+		Me.StandaloneBarDockControl4.Margin = New System.Windows.Forms.Padding(4)
+		Me.StandaloneBarDockControl4.Name = "StandaloneBarDockControl4"
+		Me.StandaloneBarDockControl4.Size = New System.Drawing.Size(244, 34)
+		Me.StandaloneBarDockControl4.Text = "StandaloneBarDockControl4"
+		'
 		'barDockControlTop
 		'
 		Me.barDockControlTop.CausesValidation = False
@@ -619,17 +682,6 @@ Partial Class frmMain
 		Me.barDockControlRight.Margin = New System.Windows.Forms.Padding(4)
 		Me.barDockControlRight.Size = New System.Drawing.Size(0, 833)
 		'
-		'StandaloneBarDockControl4
-		'
-		Me.StandaloneBarDockControl4.CausesValidation = False
-		Me.StandaloneBarDockControl4.Dock = System.Windows.Forms.DockStyle.Top
-		Me.StandaloneBarDockControl4.Location = New System.Drawing.Point(3, 3)
-		Me.StandaloneBarDockControl4.Manager = Me.BarManager1
-		Me.StandaloneBarDockControl4.Margin = New System.Windows.Forms.Padding(4)
-		Me.StandaloneBarDockControl4.Name = "StandaloneBarDockControl4"
-		Me.StandaloneBarDockControl4.Size = New System.Drawing.Size(244, 34)
-		Me.StandaloneBarDockControl4.Text = "StandaloneBarDockControl4"
-		'
 		'GridCons
 		'
 		Me.GridCons.Dock = System.Windows.Forms.DockStyle.Fill
@@ -638,7 +690,7 @@ Partial Class frmMain
 		Me.GridCons.MainView = Me.GridViewCons
 		Me.GridCons.Margin = New System.Windows.Forms.Padding(0, 4, 0, 0)
 		Me.GridCons.Name = "GridCons"
-		Me.GridCons.Size = New System.Drawing.Size(311, 668)
+		Me.GridCons.Size = New System.Drawing.Size(311, 672)
 		Me.GridCons.TabIndex = 0
 		Me.GridCons.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.GridViewCons})
 		'
@@ -706,7 +758,7 @@ Partial Class frmMain
 		Me.TableLayoutPanel2.RowCount = 2
 		Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
 		Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-		Me.TableLayoutPanel2.Size = New System.Drawing.Size(1092, 702)
+		Me.TableLayoutPanel2.Size = New System.Drawing.Size(1092, 706)
 		Me.TableLayoutPanel2.TabIndex = 2
 		'
 		'tabPanel
@@ -717,7 +769,7 @@ Partial Class frmMain
 		Me.tabPanel.Margin = New System.Windows.Forms.Padding(0)
 		Me.tabPanel.Name = "tabPanel"
 		Me.tabPanel.SelectedTabPage = Me.tabPageFormulario
-		Me.tabPanel.Size = New System.Drawing.Size(1092, 672)
+		Me.tabPanel.Size = New System.Drawing.Size(1092, 676)
 		Me.tabPanel.TabIndex = 1
 		Me.tabPanel.TabPages.AddRange(New DevExpress.XtraTab.XtraTabPage() {Me.tabPageFormulario, Me.tabPageQuery, Me.tabPageColumnas, Me.tabPageProcesos})
 		'
@@ -997,7 +1049,7 @@ Partial Class frmMain
 		Me.tabPageQuery.ImageOptions.Image = CType(resources.GetObject("tabPageQuery.ImageOptions.Image"), System.Drawing.Image)
 		Me.tabPageQuery.Margin = New System.Windows.Forms.Padding(0)
 		Me.tabPageQuery.Name = "tabPageQuery"
-		Me.tabPageQuery.Size = New System.Drawing.Size(1085, 638)
+		Me.tabPageQuery.Size = New System.Drawing.Size(1085, 642)
 		Me.tabPageQuery.Text = "Query"
 		'
 		'lyVariables
@@ -1013,7 +1065,7 @@ Partial Class frmMain
 		Me.lyVariables.Name = "lyVariables"
 		Me.lyVariables.RowCount = 1
 		Me.lyVariables.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-		Me.lyVariables.Size = New System.Drawing.Size(1085, 638)
+		Me.lyVariables.Size = New System.Drawing.Size(1085, 642)
 		Me.lyVariables.TabIndex = 0
 		'
 		'TableLayoutPanel3
@@ -1031,7 +1083,7 @@ Partial Class frmMain
 		Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28.0!))
 		Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 220.0!))
 		Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-		Me.TableLayoutPanel3.Size = New System.Drawing.Size(250, 638)
+		Me.TableLayoutPanel3.Size = New System.Drawing.Size(250, 642)
 		Me.TableLayoutPanel3.TabIndex = 2
 		'
 		'PanelControl1
@@ -1045,7 +1097,7 @@ Partial Class frmMain
 		Me.PanelControl1.LookAndFeel.UseDefaultLookAndFeel = False
 		Me.PanelControl1.Margin = New System.Windows.Forms.Padding(4)
 		Me.PanelControl1.Name = "PanelControl1"
-		Me.PanelControl1.Size = New System.Drawing.Size(242, 382)
+		Me.PanelControl1.Size = New System.Drawing.Size(242, 386)
 		Me.PanelControl1.TabIndex = 0
 		'
 		'gridVariables
@@ -1057,7 +1109,7 @@ Partial Class frmMain
 		Me.gridVariables.Margin = New System.Windows.Forms.Padding(0)
 		Me.gridVariables.MenuManager = Me.BarManager1
 		Me.gridVariables.Name = "gridVariables"
-		Me.gridVariables.Size = New System.Drawing.Size(236, 376)
+		Me.gridVariables.Size = New System.Drawing.Size(236, 380)
 		Me.gridVariables.TabIndex = 3
 		Me.gridVariables.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gridViewVariables})
 		'
@@ -1070,6 +1122,7 @@ Partial Class frmMain
 		Me.gridViewVariables.Name = "gridViewVariables"
 		Me.gridViewVariables.OptionsBehavior.Editable = False
 		Me.gridViewVariables.OptionsSelection.MultiSelect = True
+		Me.gridViewVariables.OptionsSelection.UseIndicatorForSelection = False
 		Me.gridViewVariables.OptionsView.ShowGroupPanel = False
 		'
 		'Panel1
@@ -1276,7 +1329,7 @@ Partial Class frmMain
 		Me.pnlQuery.Location = New System.Drawing.Point(0, 0)
 		Me.pnlQuery.Margin = New System.Windows.Forms.Padding(0)
 		Me.pnlQuery.Name = "pnlQuery"
-		Me.pnlQuery.Size = New System.Drawing.Size(835, 638)
+		Me.pnlQuery.Size = New System.Drawing.Size(835, 642)
 		Me.pnlQuery.TabIndex = 0
 		'
 		'tabPageColumnas
@@ -1284,7 +1337,7 @@ Partial Class frmMain
 		Me.tabPageColumnas.ImageOptions.Image = CType(resources.GetObject("tabPageColumnas.ImageOptions.Image"), System.Drawing.Image)
 		Me.tabPageColumnas.Margin = New System.Windows.Forms.Padding(0)
 		Me.tabPageColumnas.Name = "tabPageColumnas"
-		Me.tabPageColumnas.Size = New System.Drawing.Size(1085, 638)
+		Me.tabPageColumnas.Size = New System.Drawing.Size(1085, 642)
 		Me.tabPageColumnas.Text = "Columnas"
 		'
 		'tabPageProcesos
@@ -1420,58 +1473,6 @@ Partial Class frmMain
 		Me.LabelControl4.Size = New System.Drawing.Size(40, 16)
 		Me.LabelControl4.TabIndex = 0
 		Me.LabelControl4.Text = "Orden:"
-		'
-		'Bar3
-		'
-		Me.Bar3.BarName = "barVariables"
-		Me.Bar3.DockCol = 0
-		Me.Bar3.DockRow = 0
-		Me.Bar3.DockStyle = DevExpress.XtraBars.BarDockStyle.Standalone
-		Me.Bar3.FloatLocation = New System.Drawing.Point(1237, 313)
-		Me.Bar3.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.btnEditarVariable, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.btnNuevaVariable, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.btnEliminarVariable, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(Me.btnSubirVariable, True), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.btnVariableBajarOrden, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)})
-		Me.Bar3.OptionsBar.AllowQuickCustomization = False
-		Me.Bar3.OptionsBar.DrawDragBorder = False
-		Me.Bar3.StandaloneBarDockControl = Me.StandaloneBarDockControl4
-		Me.Bar3.Text = "barVariables"
-		'
-		'btnNuevaVariable
-		'
-		Me.btnNuevaVariable.Hint = "Nueva Variable"
-		Me.btnNuevaVariable.Id = 13
-		Me.btnNuevaVariable.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image"), System.Drawing.Image)
-		Me.btnNuevaVariable.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage"), System.Drawing.Image)
-		Me.btnNuevaVariable.Name = "btnNuevaVariable"
-		'
-		'btnEditarVariable
-		'
-		Me.btnEditarVariable.Hint = "Editar Variable"
-		Me.btnEditarVariable.Id = 14
-		Me.btnEditarVariable.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image1"), System.Drawing.Image)
-		Me.btnEditarVariable.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage1"), System.Drawing.Image)
-		Me.btnEditarVariable.Name = "btnEditarVariable"
-		'
-		'btnEliminarVariable
-		'
-		Me.btnEliminarVariable.Id = 15
-		Me.btnEliminarVariable.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image"), System.Drawing.Image)
-		Me.btnEliminarVariable.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage"), System.Drawing.Image)
-		Me.btnEliminarVariable.Name = "btnEliminarVariable"
-		'
-		'btnSubirVariable
-		'
-		Me.btnSubirVariable.Hint = "Subir orden"
-		Me.btnSubirVariable.Id = 16
-		Me.btnSubirVariable.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image3"), System.Drawing.Image)
-		Me.btnSubirVariable.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage2"), System.Drawing.Image)
-		Me.btnSubirVariable.Name = "btnSubirVariable"
-		'
-		'btnVariableBajarOrden
-		'
-		Me.btnVariableBajarOrden.Hint = "Bajar orden"
-		Me.btnVariableBajarOrden.Id = 17
-		Me.btnVariableBajarOrden.ImageOptions.Image = CType(resources.GetObject("BarButtonItem1.ImageOptions.Image4"), System.Drawing.Image)
-		Me.btnVariableBajarOrden.ImageOptions.LargeImage = CType(resources.GetObject("BarButtonItem1.ImageOptions.LargeImage3"), System.Drawing.Image)
-		Me.btnVariableBajarOrden.Name = "btnVariableBajarOrden"
 		'
 		'frmMain
 		'
