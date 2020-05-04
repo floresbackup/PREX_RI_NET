@@ -57,12 +57,12 @@ Module modLocalMain
 
 
         Dim rutaLocalDll = Prex.Utils.Misc.Functions.ValidarYCopiarPathDll(CARPETA_LOCAL, System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies())
-        AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf Prex.Utils.Misc.Functions.LoadFromSameFolder
+		If (rutaLocalDll.ToString().Any()) Then AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf Prex.Utils.Misc.Functions.LoadFromSameFolder
 
 
 
 
-        If UsuarioActual.Codigo = 0 Then
+		If UsuarioActual.Codigo = 0 Then
             If IO.File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
                 IO.File.Delete(CARPETA_LOCAL & "TEMP\conn.enc")
             End If

@@ -43,46 +43,56 @@ namespace Prex.Utils.Misc.Forms
 
 		public void CopiarDlls()
 		{
-            if (!System.IO.Directory.Exists(PathDestino)) System.IO.Directory.CreateDirectory(PathDestino);
-            var directoryFiles = System.IO.Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "*.dll", System.IO.SearchOption.TopDirectoryOnly);
-
-            var files = directoryFiles.ToList().Where(f => f.ToLower().Contains("devexpress"));
-
-            SetProgreso("...", $"0/{files.Count()}");
-
-                try
-                {
-
-                    //Thread.Sleep(new TimeSpan(0, 0, 0, 5));
+			try
+			{
 
 
-                    var i = 0;
-                    foreach (var item in files)
-                    {
-                        if (item.ToLower().Contains("devexpress"))
-                        {
-                            i++;
-                            Invoke((Action)delegate
-                            {
-                                SetProgreso(Path.GetFileName(item), $"{i}/{files.Count()}");
-                            });
-                            if (!File.Exists($"{PathDestino}\\{Path.GetFileName(item)}"))
-                            {
-                                Thread.Sleep(new TimeSpan(0, 0, 0, 0, 100));
+				if (!System.IO.Directory.Exists(PathDestino)) System.IO.Directory.CreateDirectory(PathDestino);
+				var directoryFiles = System.IO.Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "*.dll", System.IO.SearchOption.TopDirectoryOnly);
 
-                                File.Copy(item, $"{PathDestino}\\{Path.GetFileName(item)}");
-                            }
-                        }
-                    }
+				var files = directoryFiles.ToList().Where(f => f.ToLower().Contains("devexpress"));
 
-                }
-                catch (Exception ex)
-                {
-                    ManejarErrores.TratarError(ex, "ValidarYCopiarPathDll");
-                }
+				SetProgreso("...", $"0/{files.Count()}");
 
-            Close();
-            
-        }
+					try
+					{
+
+						//Thread.Sleep(new TimeSpan(0, 0, 0, 5));
+
+
+						var i = 0;
+						foreach (var item in files)
+						{
+							if (item.ToLower().Contains("devexpress"))
+							{
+								i++;
+								Invoke((Action)delegate
+								{
+									SetProgreso(Path.GetFileName(item), $"{i}/{files.Count()}");
+								});
+								if (!File.Exists($"{PathDestino}\\{Path.GetFileName(item)}"))
+								{
+									Thread.Sleep(new TimeSpan(0, 0, 0, 0, 100));
+
+									File.Copy(item, $"{PathDestino}\\{Path.GetFileName(item)}");
+								}
+							}
+						}
+
+					}
+					catch (Exception ex)
+					{
+						ManejarErrores.TratarError(ex, "ValidarYCopiarPathDll");
+					}
+
+				Close();
+
+			}
+			catch (Exception ex)
+			{
+
+				throw new Exception("Ocurrió un error en CopiarDlls", ex);
+			}
+		}
 	}
 }

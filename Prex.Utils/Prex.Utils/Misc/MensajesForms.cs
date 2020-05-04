@@ -11,7 +11,8 @@ namespace Prex.Utils
         public static void MostrarInformacion(string mensaje) => MessageBox.Show(mensaje, "Mensaje del sistema", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
         public static void MostrarError(string mensaje) => MessageBox.Show(mensaje, "Mensaje del sistema - Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        
+        public static void MostrarAdvertencia(string mensaje) => MessageBox.Show(mensaje, "Mensaje del sistema - Atencion", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-    }
+
+	}
 }
