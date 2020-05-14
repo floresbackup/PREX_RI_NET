@@ -498,9 +498,9 @@ Public Class frmMain
                     For Each oVar In oVariables
                         If combo.Name = "_" & oVar.Nombre Then
                             combo.Items.Clear()
-                            CargarCombo(combo, oVar.HelpQuery)
-                            combo.SelectedItem = txtSelected
-                        End If
+							CargarCombo(combo, oVar.HelpQuery)
+							SelCombo(combo, CType(txtSelected, Prex.Utils.Entities.clsItem).Nombre)
+						End If
                     Next
                 End If
             Next
