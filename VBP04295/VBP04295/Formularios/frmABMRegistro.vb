@@ -6,8 +6,9 @@ Public Class frmABMRegistro
     Private MODO_APE As String
     Private sSQL_Update As String
     Private oAdmTablas As New AdmTablas
-    Private dicControlesValorAnterior As Dictionary(Of Control, String)
-    Public Sub PasarDatos(ByVal nCodCon As Long,
+	Private dicControlesValorAnterior As Dictionary(Of String, Control)
+
+	Public Sub PasarDatos(ByVal nCodCon As Long,
                          ByVal sQuery As String,
                          ByVal sCaption As String,
                          Optional ByVal sModo As String = "M")
@@ -21,8 +22,8 @@ Public Class frmABMRegistro
         Dim bPrimero As Boolean
 
         INPUT_GENERAL = ""
-        dicControlesValorAnterior = New Dictionary(Of Control, String)()
-        Me.Text = sCaption
+		dicControlesValorAnterior = New Dictionary(Of String, Control)()
+		Me.Text = sCaption
 
         sSQL_Update = sQuery
 
@@ -129,8 +130,12 @@ Public Class frmABMRegistro
                             End If
                         End With
 
-                        AddHandler txtInput.EditValueChanged, AddressOf txtInput_EditValueChanged
-                        Cont.Controls.Add(txtInput)
+						AddHandler txtInput.EditValueChanged, AddressOf txtInput_EditValueChanged
+						AddHandler txtInput.MouseLeave, AddressOf fecInput_Leave
+						AddHandler txtInput.Leave, AddressOf fecInput_Leave
+
+						dicControlesValorAnterior.Add(oCol.Key, txtInput)
+						Cont.Controls.Add(txtInput)
 
                     Else
 
@@ -162,8 +167,13 @@ Public Class frmABMRegistro
                             End If
                         End With
 
-                        AddHandler fecInput.EditValueChanged, AddressOf fecInput_EditValueChanged
-                        Cont.Controls.Add(fecInput)
+						AddHandler fecInput.EditValueChanged, AddressOf fecInput_EditValueChanged
+						AddHandler fecInput.MouseLeave, AddressOf fecInput_Leave
+						AddHandler fecInput.Leave, AddressOf fecInput_Leave
+
+						dicControlesValorAnterior.Add(oCol.Key, fecInput)
+
+						Cont.Controls.Add(fecInput)
 
                     End If
                 Else
@@ -195,8 +205,13 @@ Public Class frmABMRegistro
                         End If
                     End With
 
-                    AddHandler cboInput.SelectedIndexChanged, AddressOf cboInput_SelectedIndexChanged
-                    Cont.Controls.Add(cboInput)
+					AddHandler cboInput.SelectedIndexChanged, AddressOf cboInput_SelectedIndexChanged
+					AddHandler cboInput.MouseLeave, AddressOf fecInput_Leave
+					AddHandler cboInput.Leave, AddressOf fecInput_Leave
+
+					dicControlesValorAnterior.Add(oCol.Key, cboInput)
+
+					Cont.Controls.Add(cboInput)
 
                     CargarComboDevExpress(cboInput, frmMain.ReemplazarVariablesExt(oCol.HelpQuery))
 
@@ -213,8 +228,10 @@ Public Class frmABMRegistro
                         SelComboDevExpress(CType(Cont.Controls("_cboInput" & oCol.Orden.ToString), DevExpress.XtraEditors.ComboBoxEdit), "K" & oCol.Valor.ToString)
                     End If
                 End If
-
-            End If
+				If oCol.Formula <> "" Then
+					Formula(oCol.Formula, oCol.Key)
+				End If
+			End If
 
             If oCol.VisibleABM Then
                 nTabOrden = nTabOrden + 1
@@ -412,7 +429,76 @@ GuardaDataRow:
 
    End Sub
 
-   Private Sub txtInput_EditValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+	Private Sub Formula(ByVal sSQL As String, ByVal sKey As String)
+
+		Try
+			Dim oCol As clsColumnas
+			For Each oCol In oColumnas
+				Dim vValor = String.Empty
+
+				If oCol.Help = 0 Then
+					If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
+						vValor = FechaSQL(oCol.Valor)
+					ElseIf TipoDatosADO(oCol.Tipo) = "Numérico" Then
+						If IsNumeric(oCol.Valor) Then
+							vValor = FlotanteSQL(Format(oCol.Valor, "Fixed"))
+						Else
+							vValor = 0
+						End If
+					Else
+						vValor = "'" & oCol.Valor & "'"
+					End If
+				Else
+					If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
+						vValor = FechaSQL(Llave(oCol.Valor))
+					ElseIf TipoDatosADO(oCol.Tipo) = "Numérico" Then
+						If IsNumeric(oCol.Valor) Then
+							vValor = FlotanteSQL(Format(oCol.Valor, "Fixed"))
+						Else
+							vValor = 0
+						End If
+					Else
+						vValor = "'" & oCol.Valor & "'"
+					End If
+				End If
+
+
+				sSQL = Replace(sSQL, "[" & oCol.Campo & "]", vValor)
+
+				Application.DoEvents()
+			Next
+
+			sSQL = frmMain.ReemplazarVariablesExt(sSQL)
+
+			Dim ds As New DataSet
+			oAdmTablas.EjecutarComandoAsincrono(sSQL, "", 0, ds)
+			If ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
+
+				If oColumnas(sKey).Help = 0 Then
+					If TipoDatosADO(oColumnas(sKey).Tipo) = "Fecha/Hora" Then
+						CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.DateEdit).DateTime = Date.Parse(ds.Tables(0).Rows(0).Item(0).ToString())
+					Else
+						If (TypeOf (dicControlesValorAnterior(sKey)) Is DevExpress.XtraEditors.ComboBoxEdit) Then
+							CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.ComboBoxEdit).SelectedText = ds.Tables(0).Rows(0).Item(0).ToString()
+						End If
+						If (TypeOf (dicControlesValorAnterior(sKey)) Is DevExpress.XtraEditors.TextEdit) Then
+							CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.TextEdit).Text = ds.Tables(0).Rows(0).Item(0).ToString()
+						End If
+					End If
+				Else
+					CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.ComboBoxEdit).SelectedText = ds.Tables(0).Rows(0).Item(0).ToString()
+
+					'SelCombo(cboInput(oColumnas(sKey).Orden), "K" & RS.Fields(0)
+				End If
+			End If
+
+
+		Catch ex As Exception
+			Prex.Utils.ManejarErrores.TratarError(ex, "Formula")
+		End Try
+	End Sub
+
+	Private Sub txtInput_EditValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
       Dim oCol As clsColumnas
 
@@ -422,26 +508,68 @@ GuardaDataRow:
 
    End Sub
 
-   Private Sub cboInput_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+	Private Sub cboInput_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
 		Dim oItem As Prex.Utils.Entities.clsItem
 		Dim oCol As clsColumnas
 
-      oCol = oColumnas(sender.tag)
-      oItem = sender.SelectedItem
+		oCol = oColumnas(sender.tag)
+		oItem = sender.SelectedItem
 
-      Select Case TipoDatosADO(oCol.Tipo)
-         Case "Numérico"
-            oCol.Valor = oItem.Valor
-         Case "Fecha/Hora"
-            oCol.Valor = oItem.Valor
-         Case Else
-            oCol.Valor = oItem.Valor
-      End Select
+		Select Case TipoDatosADO(oCol.Tipo)
+			Case "Numérico"
+				oCol.Valor = oItem.Valor
+			Case "Fecha/Hora"
+				oCol.Valor = oItem.Valor
+			Case Else
+				oCol.Valor = oItem.Valor
+		End Select
 
-   End Sub
+	End Sub
 
-   Private Sub fecInput_EditValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+	'Private Sub cboInput_Click(Index As Integer)
+	'	Dim oCol As ItemsDetSys
+	'	Dim sSQL As String
+	'	For Each oCol In oDetSys
+	'		If Trim(oCol.Formul) <> "" Then
+	'			Formula oCol.Formul, oCol.Key
+	'  End If
+	'		DoEvents
+	'	Next
+
+	'	If CODIGO_TRANSACCION = 86101 And Index = 4 Then
+
+	'		sSQL = "SELECT TG_NUME02, '(' + CAST(TG_NUME02 AS VARCHAR) + ') - ' + TG_DESCRI " &
+	'		 "FROM TABGEN WHERE TG_CODTAB = 86004 " &
+	'		 "AND TG_NUME01 = " & Llave(cboInput(4)) & " ORDER BY TG_CODCON"
+	'		CargarCombo cboInput(5), sSQL
+	'  DoEvents
+	'	End If
+	'	DoEvents
+	'	cboInput(Index).ToolTipText = cboInput(Index).Text
+	'	'AGREGADO PARA UNIDADES DE SERVICIO (OCtubre 2014)
+	'	If CODIGO_TRANSACCION = 86101 And (Index = 3 Or Index = 4 Or Index = 5) Then
+
+	'		Inhabilita_ABM CODIGO_TRANSACCION, Llave(cboInput(4)), Llave(cboInput(3)), Llave(cboInput(5))
+
+	'  End If
+
+	'	DoEvents
+	'End Sub
+
+	Private Sub fecInput_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+		Dim oCol As clsColumnas
+		oCol = oColumnas(sender.tag)
+		If oCol.Formula <> "" Then
+
+			Formula(oCol.Formula, oCol.Key)
+		End If
+
+	End Sub
+
+	Private Sub fecInput_EditValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
       Dim oCol As clsColumnas
 
