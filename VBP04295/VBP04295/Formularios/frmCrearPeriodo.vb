@@ -85,7 +85,7 @@ Public Class frmCrearPeriodo
 					With ds.Tables(0)
 						sSQL = "UPDATE " & TABLA & " SET "
 						For Each oField In .Columns
-							If UCase(Mid(oField.Namespace, 1, 6)) = UCase(PREFIJO & "_MES") Then
+							If UCase(Mid(oField.ColumnName, 1, 6)) = UCase(PREFIJO & "_MES") Then
 								sSQL = sSQL & oField.ColumnName & " = B." & oField.ColumnName & ", " & vbCrLf
 							End If
 						Next
