@@ -1239,150 +1239,125 @@ Public Class frmMain
 
    Private Sub cmdIncorporar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdIncorporar.Click
 
-      If cmdIncorporar.Text = "&Vista previa" Then
-         If TempOrig() <> "" Then
-            CargarOrigenDatos()
-         End If
-      Else
-         Incorporar()
-      End If
+		If cmdIncorporar.Text = "&Vista previa" Then
+			If TempOrig() <> "" Then
+				CargarOrigenDatos()
+			End If
+		Else
+			Incorporar()
+		End If
 
-   End Sub
+	End Sub
 
-   Private Sub CargarOrigenDatos()
+	Private Sub CargarOrigenDatos()
 
-      Dim ds As DataSet
-      Dim sSQL As String = ""
-      Dim nCont As Integer = 0
-      Dim bResult As Boolean
-      Dim sError As String = ""
+		Dim ds As DataSet
+		Dim sSQL As String = ""
+		Dim nCont As Integer = 0
+		Dim bResult As Boolean
+		Dim sError As String = ""
 
-      Try
-            sSQL = ProcesarArchivoTexto()
-            'If optTexto.Checked Then
-            '   sSQL = ProcesarArchivoTexto()
-            'ElseIf optExcel.Checked Then
-            '   sSQL = ProcesarArchivoExcel()
-            'Else
-            '   sSQL = ProcesarBaseDatos()
-            'End If
+		Try
+			sSQL = ProcesarArchivoTexto()
+			'If optTexto.Checked Then
+			'   sSQL = ProcesarArchivoTexto()
+			'ElseIf optExcel.Checked Then
+			'   sSQL = ProcesarArchivoExcel()
+			'Else
+			'   sSQL = ProcesarBaseDatos()
+			'End If
 
-            MostrarProceso("Capturando datos...")
+			MostrarProceso("Capturando datos...")
 
-         If sSQL = "" Then
-            MensajeError("Se produjo un error en los procesos previos a la incorporación.")
-            Exit Try
-         End If
+			If sSQL = "" Then
+				MensajeError("Se produjo un error en los procesos previos a la incorporación.")
+				Exit Try
+			End If
 
-         CrearTablaTemp()
-            bResult = IncorporarArchivos(txtOrigen.Text, Llave(cboTabla1))
-            'Solo se usa importacion de archivos
-            'If rbArchivo.Checked Then
-            '    bResult = IncorporarArchivos(txtOrigen.Text, Llave(cboTabla1))
-            'Else
+			CrearTablaTemp()
+			bResult = IncorporarArchivos(txtOrigen.Text, Llave(cboTabla1))
+			OcultarProceso()
 
-            '    If optAccess.Checked Then
-            '        sSQL = "INSERT " &
-            '               "INTO " & TABLA_TEMPORAL & " " & vbCrLf &
-            '               sSQL & vbCrLf & " " &
-            '               "FROM OPENROWSET('Microsoft.Jet.OLEDB.4.0','Text;Database=" & TempOrig() & ";HDR=" & IIf(chkEncabezado.Checked, "YES", "NO") & "', " &
-            '               "'SELECT * FROM " & System.IO.Path.GetFileName(txtOrigen.Text) & "')"
-            '    Else
-            '        sSQL = Trim(sSQL)
-            '        If Len(sSQL) <= 4000 Then
-            '            sSQL = Replace(sSQL, "'", Chr(27))
-            '            sSQL = "P_IncorporarInterfase '" & sSQL & "'"
-            '        End If
-            '    End If
+			If Not bResult Then
+				If sError <> "" Then
+					Dim oErrores As New frmErrores
+					oErrores.Owner = Me
+					oErrores.PasarDatos(sError & vbCrLf & "------------------------------" & vbCrLf & sSQL)
+					oErrores.ShowDialog()
+					oErrores = Nothing
+				End If
+				Exit Try
+			End If
 
-            '    'tmrProcesando.Enabled = True
-            '    bResult = oAdmlocal.EjecutarComandoAsincrono(sSQL, sError)
-            '    'tmrProcesando.Enabled = False
+			'VERIFICO LA FECHA Y ENTIDAD
+			MostrarProceso("Validando datos...")
 
-            'End If
+			If Not VerificarOrigen(sError) Then
+				OcultarProceso()
+				MensajeError("Error de validación en " & sError)
+				Exit Try
+			End If
 
-            OcultarProceso()
+			OcultarProceso()
 
-         If Not bResult Then
-            If sError <> "" Then
-               Dim oErrores As New frmErrores
-               oErrores.Owner = Me
-               oErrores.PasarDatos(sError & vbCrLf & "------------------------------" & vbCrLf & sSQL)
-               oErrores.ShowDialog()
-               oErrores = Nothing
-            End If
-            Exit Try
-         End If
+			'REEMPLAZO EQUIVALENCIAS
+			If chkEqui.Checked Then
+				MostrarProceso("Reemplazando equivalencias...")
 
-         'VERIFICO LA FECHA Y ENTIDAD
-         MostrarProceso("Validando datos...")
+				If Not ReemplazarEquivalencias() Then
+					OcultarProceso()
+					MensajeError("Se produjo un error y no se pudieron procesar equivalencias.")
+					Exit Try
+				End If
 
-         If Not VerificarOrigen(sError) Then
-            OcultarProceso()
-            MensajeError("Error de validación en " & sError)
-            Exit Try
-         End If
+				OcultarProceso()
+			End If
 
-         OcultarProceso()
+			'GENERO LA CLAVE DE TABLA
+			MostrarProceso("Verificando claves...")
 
-         'REEMPLAZO EQUIVALENCIAS
-         If chkEqui.Checked Then
-            MostrarProceso("Reemplazando equivalencias...")
+			If Not GenerarClaveTabla() Then
+				OcultarProceso()
+				MensajeError("Se produjo un error y no se pudo procesar la clave.")
+				Exit Try
+			End If
 
-            If Not ReemplazarEquivalencias Then
-               OcultarProceso()
-               MensajeError("Se produjo un error y no se pudieron procesar equivalencias.")
-               Exit Try
-            End If
+			OcultarProceso()
 
-            OcultarProceso()
-         End If
+			'PRESENTO LOS DATOS
+			sSQL = "SELECT " & IIf(Val(txtCantidad.Text) <> 0, " TOP " & txtCantidad.Text, "") & " * " &
+				"FROM   " & TABLA_TEMPORAL
 
-         'GENERO LA CLAVE DE TABLA
-         MostrarProceso("Verificando claves...")
+			ds = New DataSet
+			oAdmlocal.EjecutarComandoAsincrono(sSQL, , , ds)
 
-         If Not GenerarClaveTabla Then
-            OcultarProceso()
-            MensajeError("Se produjo un error y no se pudo procesar la clave.")
-            Exit Try
-         End If
+			Grid.DataSource = ds.Tables(0)
+			Grid.RefreshDataSource()
+			Grid.Refresh()
 
-         OcultarProceso()
+			'If rbLinked.Checked Or rbRowSet.Checked Then
+			'    If optDBase.Checked Then
+			'        File.Delete(TempOrig() & cboTipo.Text & ".DBF")
+			'    ElseIf optExcel.Checked Then
+			'        File.Delete(TempOrig() & "Origen.xls")
+			'    ElseIf Not OptSQL.Checked Then
+			'        File.Delete(TempOrig() & NombreArchivo(txtOrigen.Text))
+			'        If File.Exists(TempOrig() & "schema.ini") Then
+			'            File.Delete(TempOrig() & "schema.ini")
+			'        End If
+			'    End If
+			'End If
 
-         'PRESENTO LOS DATOS
-         sSQL = "SELECT " & IIf(Val(txtCantidad.Text) <> 0, " TOP " & txtCantidad.Text, "") & " * " & _
-                "FROM   " & TABLA_TEMPORAL
+			cmdIncorporar.Text = "&Incorporar"
 
-         ds = New DataSet
-         oAdmlocal.EjecutarComandoAsincrono(sSQL, , , ds)
+		Catch ex As Exception
+			OcultarProceso()
+			TratarError(ex, "CargarOrigenDatos", ex.Message & vbCrLf & sSQL)
+		End Try
 
-         Grid.DataSource = ds.Tables(0)
-         Grid.RefreshDataSource()
-         Grid.Refresh()
+	End Sub
 
-            'If rbLinked.Checked Or rbRowSet.Checked Then
-            '    If optDBase.Checked Then
-            '        File.Delete(TempOrig() & cboTipo.Text & ".DBF")
-            '    ElseIf optExcel.Checked Then
-            '        File.Delete(TempOrig() & "Origen.xls")
-            '    ElseIf Not OptSQL.Checked Then
-            '        File.Delete(TempOrig() & NombreArchivo(txtOrigen.Text))
-            '        If File.Exists(TempOrig() & "schema.ini") Then
-            '            File.Delete(TempOrig() & "schema.ini")
-            '        End If
-            '    End If
-            'End If
-
-            cmdIncorporar.Text = "&Incorporar"
-
-      Catch ex As Exception
-         OcultarProceso()
-         TratarError(ex, "CargarOrigenDatos", ex.Message & vbCrLf & sSQL)
-      End Try
-
-   End Sub
-
-   Private Sub cmdCancelarVP_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancelarVP.Click
+	Private Sub cmdCancelarVP_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancelarVP.Click
 
       ResetVistaPrevia()
 
@@ -1829,232 +1804,232 @@ Public Class frmMain
 
    End Function
 
-   Public Function IncorporarArchivos(ByVal sArchivo As String, ByVal sTabla As String) As Boolean
+	Public Function IncorporarArchivos(ByVal sArchivo As String, ByVal sTabla As String) As Boolean
 
-      Dim oArchivo As System.IO.StreamReader
-      Dim ds As DataSet
-      Dim sSQL As String
-      Dim vTemp As Object
-      Dim sFormat As String
-      Dim sLinea As String
-      Dim sFecha(2) As String
-      Dim nLinea As Long = 0
-      Dim nLineaActual As Long = 0
-      Dim sDato() As String
-      Dim nC As Long
-      Dim nIndex As Long
-      Dim nSep As Integer
-      Dim nTex As Integer
-      Dim sTemp As String
-      Dim sCampo As String = ""
-      Dim nLineaAct As Long
-      Dim bProcesando As Boolean
-      Dim bEncabezado As Boolean
-      Dim row As DataRow
-      Dim da As OleDb.OleDbDataAdapter
-      Dim cb As OleDb.OleDbCommandBuilder
+		Dim oArchivo As System.IO.StreamReader
+		Dim ds As DataSet
+		Dim sSQL As String
+		Dim vTemp As Object
+		Dim sFormat As String
+		Dim sLinea As String
+		Dim sFecha(2) As String
+		Dim nLinea As Long = 0
+		Dim nLineaActual As Long = 0
+		Dim sDato() As String
+		Dim nC As Long
+		Dim nIndex As Long
+		Dim nSep As Integer
+		Dim nTex As Integer
+		Dim sTemp As String
+		Dim sCampo As String = ""
+		Dim nLineaAct As Long
+		Dim bProcesando As Boolean
+		Dim bEncabezado As Boolean
+		Dim row As DataRow
+		Dim da As OleDb.OleDbDataAdapter
+		Dim cb As OleDb.OleDbCommandBuilder
 
-      Try
+		Try
 
-            sTabla = sTabla & "_" & Llave(cboPeriodo1)
+			sTabla = sTabla & "_" & Llave(cboPeriodo1)
 
-            If Not oAdmlocal.ExisteTabla(sTabla) Then
-                CrearTabla()
-            End If
+			If Not oAdmlocal.ExisteTabla(sTabla) Then
+				CrearTabla()
+			End If
 
-            oAdmlocal.EjecutarComandoAsincrono("SELECT TOP 1 * INTO " & TABLA_TEMPORAL & " FROM " & sTabla)
-         oAdmlocal.EjecutarComandoAsincrono("DELETE FROM " & TABLA_TEMPORAL)
+			oAdmlocal.EjecutarComandoAsincrono("SELECT TOP 1 * INTO " & TABLA_TEMPORAL & " FROM " & sTabla)
+			oAdmlocal.EjecutarComandoAsincrono("DELETE FROM " & TABLA_TEMPORAL)
 
-         'Abro un recordset en modo escritura y agrego los registros.
-         sSQL = "SELECT * FROM " & TABLA_TEMPORAL
-         ds = oAdmlocal.AbrirDataset(sSQL, da)
-         cb = New OleDb.OleDbCommandBuilder(da)
+			'Abro un recordset en modo escritura y agrego los registros.
+			sSQL = "SELECT * FROM " & TABLA_TEMPORAL
+			ds = oAdmlocal.AbrirDataset(sSQL, da)
+			cb = New OleDb.OleDbCommandBuilder(da)
 
-         'Cuento las líneas
-         oArchivo = File.OpenText(sArchivo)
+			'Cuento las líneas
+			oArchivo = File.OpenText(sArchivo)
 
-         Do Until oArchivo.EndOfStream
-            nLinea = nLinea + 1
-            oArchivo.ReadLine()
-         Loop
+			Do Until oArchivo.EndOfStream
+				nLinea = nLinea + 1
+				oArchivo.ReadLine()
+			Loop
 
-         oArchivo.Close()
+			oArchivo.Close()
 
-         'Proceso y meto en la base
-         oArchivo = File.OpenText(sArchivo)
+			'Proceso y meto en la base
+			oArchivo = File.OpenText(sArchivo)
 
-         ReDim sDato(oTabla.Diseno.Rows.Count)
+			ReDim sDato(oTabla.Diseno.Rows.Count)
 
-         bProcesando = True
+			bProcesando = True
 
-         bEncabezado = chkEncabezado.Checked
+			bEncabezado = chkEncabezado.Checked
 
-         Do Until oArchivo.EndOfStream
+			Do Until oArchivo.EndOfStream
 
-            nLineaActual = nLineaActual + 1
+				nLineaActual = nLineaActual + 1
 
-            If bEncabezado Then
-               oArchivo.ReadLine()
-               bEncabezado = False
-            End If
+				If bEncabezado Then
+					oArchivo.ReadLine()
+					bEncabezado = False
+				End If
 
-            sLinea = oArchivo.ReadLine
+				sLinea = oArchivo.ReadLine
 
-            oProcesando.MensajeProceso("Procesando línea " & nLineaActual.ToString & " de " & nLinea.ToString & "(" & Int(nLineaActual * 100 / nLinea).ToString & "%)")
-            Application.DoEvents()
+				oProcesando.MensajeProceso("Procesando línea " & nLineaActual.ToString & " de " & nLinea.ToString & " (" & Int(nLineaActual * 100 / nLinea).ToString & "%)")
+				Application.DoEvents()
 
-            row = ds.Tables(0).NewRow()
+				row = ds.Tables(0).NewRow()
 
-            If Val(Llave(cboTipo)) = 2 Then
-               sTemp = sLinea
-               nIndex = 0
+				If Val(Llave(cboTipo)) = 2 Then
+					sTemp = sLinea
+					nIndex = 0
 
-               For Each oCampo As DataRow In oTabla.Diseno.Rows
+					For Each oCampo As DataRow In oTabla.Diseno.Rows
 
-                  If (oCampo("Valida") <> 98 And _
-                      oCampo("Valida") <> 99) Or _
-                      oCampo("Longitud") > 0 Then
+						If (oCampo("Valida") <> 98 And
+							oCampo("Valida") <> 99) Or
+							oCampo("Longitud") > 0 Then
 
-                     nSep = InStr(1, sTemp, txtSep.Text)
-                     nTex = InStr(1, sTemp, txtCualif.Text)
+							nSep = InStr(1, sTemp, txtSep.Text)
+							nTex = InStr(1, sTemp, txtCualif.Text)
 
-                     If nTex < nSep Then
-                        nSep = InStr(InStr(nTex + 1, sTemp, txtCualif.Text) + 1, sTemp, txtSep.Text)
-                     End If
+							If nTex < nSep Then
+								nSep = InStr(InStr(nTex + 1, sTemp, txtCualif.Text) + 1, sTemp, txtSep.Text)
+							End If
 
-                     If nSep = 0 Then
-                        sDato(nIndex) = Replace(sTemp, txtCualif.Text, "")
-                     Else
-                        sDato(nIndex) = Replace(Mid(sTemp, 1, nSep - 1), txtCualif.Text, "")
-                        sTemp = Mid(sTemp, nSep + 1)
-                     End If
+							If nSep = 0 Then
+								sDato(nIndex) = Replace(sTemp, txtCualif.Text, "")
+							Else
+								sDato(nIndex) = Replace(Mid(sTemp, 1, nSep - 1), txtCualif.Text, "")
+								sTemp = Mid(sTemp, nSep + 1)
+							End If
 
-                  End If
+						End If
 
-                  nIndex = nIndex + 1
-               Next
-            End If
+						nIndex = nIndex + 1
+					Next
+				End If
 
-            nC = 0
+				nC = 0
 
-            For Each oCampo As DataRow In oTabla.Diseno.Rows
+				For Each oCampo As DataRow In oTabla.Diseno.Rows
 
-               sCampo = oCampo("Campo destino")
+					sCampo = oCampo("Campo destino")
 
-               nLineaAct = nLineaActual
+					nLineaAct = nLineaActual
 
-               If oCampo("Valida") = 98 Then
-                  vTemp = CODIGO_ENTIDAD
-                  GoTo GrabarCampo
-               End If
+					If oCampo("Valida") = 98 Then
+						vTemp = CODIGO_ENTIDAD
+						GoTo GrabarCampo
+					End If
 
-               If oCampo("Valida") = 99 Then
-                  vTemp = txtFecha.Value
-                  GoTo GrabarCampo
-               End If
+					If oCampo("Valida") = 99 Then
+						vTemp = txtFecha.Value
+						GoTo GrabarCampo
+					End If
 
-               'Obtengo el dato de acuerdo a si es delimitado o ancho fijo
-               If Val(Llave(cboTipo)) = 1 Then
-                  vTemp = Mid(sLinea, Int(oCampo("Inicio")), Int(oCampo("Longitud"))).Trim
-               Else
-                  vTemp = sDato(nC)
-               End If
+					'Obtengo el dato de acuerdo a si es delimitado o ancho fijo
+					If Val(Llave(cboTipo)) = 1 Then
+						vTemp = Mid(sLinea, Int(oCampo("Inicio")), Int(oCampo("Longitud"))).Trim
+					Else
+						vTemp = sDato(nC)
+					End If
 
-                    If Not IsDBNull(oCampo("Formato")) Then
-                        sFormat = oCampo("Formato").ToString()
-                    End If
+					If Not IsDBNull(oCampo("Formato")) Then
+						sFormat = oCampo("Formato").ToString()
+					End If
 
-                    Select Case Mid(oCampo("Tipo"), 1, 1)
-                  'TEXTO
-                  Case "T"
-                     vTemp = Mid(CStr(vTemp), 1, oCampo("Longitud"))
+					Select Case Mid(oCampo("Tipo"), 1, 1)
+						'TEXTO
+						Case "T"
+							vTemp = Mid(CStr(vTemp), 1, oCampo("Longitud"))
 
-                     'FECHA
-                  Case "F"
-                     If sFormat = "" Then
-                        vTemp = Format(vTemp, "dd/MM/yyyy")
-                     Else
+						'FECHA
+						Case "F"
+							If sFormat = "" Then
+								vTemp = Format(vTemp, "dd/MM/yyyy")
+							Else
 
-                        If InStr(1, LCase(sFormat), "dd") Then
-                           sFecha(0) = Mid(vTemp, InStr(1, LCase(sFormat), "dd"), 2)
-                        Else
-                           sFecha(0) = "01"
-                        End If
+								If InStr(1, LCase(sFormat), "dd") Then
+									sFecha(0) = Mid(vTemp, InStr(1, LCase(sFormat), "dd"), 2)
+								Else
+									sFecha(0) = FechaCorrecta(sFecha(1), sFecha(2)).Day.ToString().PadLeft(2, "0")
+								End If
 
-                        If InStr(1, LCase(sFormat), "mm") Then
-                           sFecha(1) = Mid(vTemp, InStr(1, LCase(sFormat), "mm"), 2)
-                        End If
+								If InStr(1, LCase(sFormat), "mm") Then
+									sFecha(1) = Mid(vTemp, InStr(1, LCase(sFormat), "mm"), 2)
+								End If
 
-                        If InStr(1, LCase(sFormat), "aaaa") Then
-                           sFecha(2) = Mid(vTemp, InStr(1, LCase(sFormat), "aaaa"), 4)
-                        Else
-                           sFecha(2) = Mid(vTemp, InStr(1, LCase(sFormat), "aa"), 2)
-                        End If
+								If InStr(1, LCase(sFormat), "aaaa") Then
+									sFecha(2) = Mid(vTemp, InStr(1, LCase(sFormat), "aaaa"), 4)
+								Else
+									sFecha(2) = Mid(vTemp, InStr(1, LCase(sFormat), "aa"), 2)
+								End If
 
-                        'vTemp = sFecha(0) & "/" & sFecha(1) & "/" & sFecha(2)
-                        vTemp = FechaCorrecta(sFecha(1), sFecha(2))
+								vTemp = Date.Parse(sFecha(0) & "/" & sFecha(1) & "/" & sFecha(2))
+								'vTemp = FechaCorrecta(sFecha(1), sFecha(2))
 
-                     End If
+							End If
 
-                     If vTemp.ToString = "00/00/0000" Or _
-                        Len(vTemp.ToString) = 0 Then
-                        vTemp = "01/01/1900"
-                     End If
+							If vTemp.ToString = "00/00/0000" Or
+							   Len(vTemp.ToString) = 0 Then
+								vTemp = "01/01/1900"
+							End If
 
-                     If IsDate(vTemp) Then
-                        vTemp = CDate(vTemp)
-                     Else
-                        MensajeError("Fecha inválida para campo " & oCampo("Campo destino") & " leyendo línea " & nLineaActual.ToString)
-                        Exit Try
-                     End If
+							If IsDate(vTemp) Then
+								vTemp = CDate(vTemp)
+							Else
+								MensajeError("Fecha inválida para campo " & oCampo("Campo destino") & " leyendo línea " & nLineaActual.ToString)
+								Exit Try
+							End If
 
-                     'NUMERO
-                  Case "N"
+					 'NUMERO
+						Case "N"
 
-                     nIndex = Val(Mid(oCampo("Tipo"), 2))
+							nIndex = Val(Mid(oCampo("Tipo"), 2))
 
-                     vTemp = Val(Replace(vTemp, ",", "."))
-                     vTemp = Format(vTemp, "#0." & Mid("000000", 1, nIndex))
+							vTemp = Val(Replace(vTemp, ",", "."))
+							vTemp = Format(vTemp, "#0." & Mid("000000", 1, nIndex))
 
-                     If IsNumeric(vTemp) Then
-                        vTemp = CDbl(vTemp)
-                     Else
-                        MensajeError("Número inválido para campo " & oCampo("Campo destino") & " leyendo línea " & nLineaActual.ToString)
-                        Exit Try
-                     End If
+							If IsNumeric(vTemp) Then
+								vTemp = CDbl(vTemp)
+							Else
+								MensajeError("Número inválido para campo " & oCampo("Campo destino") & " leyendo línea " & nLineaActual.ToString)
+								Exit Try
+							End If
 
-               End Select
+					End Select
 
 GrabarCampo:
-               row(oCampo("Campo destino")) = vTemp
-               nC = nC + 1
-            Next
+					row(oCampo("Campo destino")) = vTemp
+					nC = nC + 1
+				Next
 
-            ds.Tables(0).Rows.Add(row)
-            da.Update(ds)
-            ds.AcceptChanges()
-         Loop
+				ds.Tables(0).Rows.Add(row)
+				da.Update(ds)
+				ds.AcceptChanges()
+			Loop
 
-         oArchivo.Close()
+			oArchivo.Close()
 
-         Return True
+			Return True
 
-      Catch ex As Exception
+		Catch ex As Exception
 
-         If bProcesando Then
-            MensajeError("Se produjo un error en la línea " & nLineaActual.ToString & ", campo " & sCampo & ": " & vbCrLf & ex.Message)
-         Else
-            TratarError(ex, "IncorporarArchivos")
-         End If
+			If bProcesando Then
+				MensajeError("Se produjo un error en la línea " & nLineaActual.ToString & ", campo " & sCampo & ": " & vbCrLf & ex.Message)
+			Else
+				TratarError(ex, "IncorporarArchivos")
+			End If
 
-      End Try
+		End Try
 
-      ds = Nothing
-      oArchivo = Nothing
+		ds = Nothing
+		oArchivo = Nothing
 
-   End Function
+	End Function
 
-   Private Function VerificarOrigen(Optional ByRef sError As String = "") As Boolean
+	Private Function VerificarOrigen(Optional ByRef sError As String = "") As Boolean
 
       Dim sSQL As String
       Dim ds As DataSet
