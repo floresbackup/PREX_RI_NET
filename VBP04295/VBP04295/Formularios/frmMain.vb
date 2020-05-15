@@ -388,8 +388,9 @@ Public Class frmMain
                 End If
 
                 lblInput.Location = New System.Drawing.Point(5, PanTop.Height + 23 * oVar.Orden - 17)
-                lblInput.Size() = New System.Drawing.Size(200, 18)
-                PanControles.Controls.Add(lblInput)
+				lblInput.Size() = New System.Drawing.Size(200, 18)
+				lblInput.Tag = oVar
+				PanControles.Controls.Add(lblInput)
             End If
 
             Select Case oVar.Help
@@ -408,8 +409,8 @@ Public Class frmMain
                             .Size() = New System.Drawing.Size(130, 18)
 
                         End With
-
-                        PanControles.Controls.Add(oFecha)
+						oFecha.Tag = oVar
+						PanControles.Controls.Add(oFecha)
 
                     Else
 
@@ -418,8 +419,9 @@ Public Class frmMain
                         oTextBox.Name = "_" & oVar.Nombre
                         oTextBox.Text = ""
                         oTextBox.Location = New System.Drawing.Point(210, PanTop.Height + 23 * oVar.Orden - 21)
-                        oTextBox.Size() = New System.Drawing.Size(130, 18)
-                        PanControles.Controls.Add(oTextBox)
+						oTextBox.Size() = New System.Drawing.Size(130, 18)
+						oTextBox.Tag = oVar
+						PanControles.Controls.Add(oTextBox)
 
                     End If
 
@@ -429,8 +431,9 @@ Public Class frmMain
                     oCombo.Name = "_" & oVar.Nombre
                     oCombo.Location = New System.Drawing.Point(210, PanTop.Height + 23 * oVar.Orden - 21)
                     oCombo.Size() = New System.Drawing.Size(400, 18)
-                    oCombo.DropDownStyle = ComboBoxStyle.DropDownList
-                    PanControles.Controls.Add(oCombo)
+					oCombo.DropDownStyle = ComboBoxStyle.DropDownList
+					oCombo.Tag = oVar
+					PanControles.Controls.Add(oCombo)
                     CargarCombo(oCombo, oVar.HelpQuery)
                     oCombo.Text = "<Seleccione...>"
 
@@ -441,8 +444,9 @@ Public Class frmMain
                     oTextBox.Name = "_" & oVar.Nombre
                     oTextBox.Text = CODIGO_ENTIDAD
                     oTextBox.Visible = False
-                    nC = nC - 1
-                    PanControles.Controls.Add(oTextBox)
+					nC = nC - 1
+					oTextBox.Tag = oVar
+					PanControles.Controls.Add(oTextBox)
 
                 Case 3 'CUADRO
                     Dim oTextBox As New TextBox
@@ -450,8 +454,9 @@ Public Class frmMain
                     oTextBox.Name = "_" & oVar.Nombre
                     oTextBox.Text = oAdmTablas.DevolverValor("TABGEN", "TG_CODCON", "TG_CODTAB = 2 AND TG_NUME01 = " & CODIGO_TRANSACCION, "0").ToString
                     oTextBox.Visible = False
-                    nC = nC - 1
-                    PanControles.Controls.Add(oTextBox)
+					nC = nC - 1
+					oTextBox.Tag = oVar
+					PanControles.Controls.Add(oTextBox)
 
                 Case 4 'CONDICIONAL
                     Dim oCheckBox As New CheckBox
@@ -460,8 +465,8 @@ Public Class frmMain
                     oCheckBox.Location = New System.Drawing.Point(210, PanTop.Height + 23 * oVar.Orden - 19)
                     oCheckBox.Size() = New System.Drawing.Size(120, 18)
                     oCheckBox.Text = ""
-                    oCheckBox.Tag = oVar.HelpQuery
-                    PanControles.Controls.Add(oCheckBox)
+					oCheckBox.Tag = oVar.HelpQuery
+					PanControles.Controls.Add(oCheckBox)
 
             End Select
 
@@ -2603,7 +2608,7 @@ Reinicio:
 				sParam(0) = oPro.Nombre
 				sParam(1) = oPro.Parametros
 				For Each oVar In oVariables
-					sParam(1) = Replace(sParam(1), oVar.Nombre, ValorVariable(oVar))
+					sParam(1) = Replace(sParam(1), oVar.Nombre, ValorVariable(oVar).ToString())
 				Next
 				ProcesosPrevios = CallByName(Me, sParam(0), vbMethod, sParam(1))
 				If Not ProcesosPrevios Then

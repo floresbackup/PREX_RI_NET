@@ -827,10 +827,18 @@ Module modFunciones
                 Case "DateTimePicker"
                     sValor = FechaSQL(DirectCast(oCtl, DateTimePicker).Value)
                 Case "DateEdit"
-                    sValor = FechaSQL(DirectCast(oCtl, DevExpress.XtraEditors.DateEdit).DateTime)
-                Case Else
+					sValor = FechaSQL(DirectCast(oCtl, DevExpress.XtraEditors.DateEdit).DateTime)
+				Case "TextBox"
+					Dim oVar As clsVariables = CType(oCtl.Tag, clsVariables)
+					If oVar.Tipo = 1 OrElse Not IsNumeric(oCtl.Text) Then
+						sValor = "'" & oCtl.Text & "'"
+					Else
+						sValor = oCtl.Text
+					End If
 
-                    Dim valorDecimal As Decimal
+				Case Else
+
+					Dim valorDecimal As Decimal
 
                     If Decimal.TryParse(oCtl.Text.Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator), valorDecimal) Then
                         sValor = valorDecimal.ToString().Replace(",", ".")

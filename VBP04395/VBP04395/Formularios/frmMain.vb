@@ -181,14 +181,13 @@ Public Class frmMain
              "WHERE     PC_CODTRA = " & nCodPro
         ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
         dt = New DataTable
+		ad.Fill(dt)
+		If dt.Rows.Count > 0 Then
+			nCodPro = dt.Rows(0).Item("PC_CODPRO")
+			AbrirProceso(nCodPro)
+		End If
 
-        ad.Fill(dt)
-
-        nCodPro = dt.Rows(0).Item("PC_CODPRO")
-
-        AbrirProceso(nCodPro)
-
-        dt = Nothing
+		dt = Nothing
         ad = Nothing
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
