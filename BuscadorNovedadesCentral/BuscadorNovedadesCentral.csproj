@@ -59,5 +59,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Prex.Utils\Prex.Utils\Prex.Utils.csproj">
+      <Project>{2eeedb12-2ee1-4d8c-a5c5-1e99954aa4ae}</Project>
+      <Name>Prex.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -14,7 +14,6 @@ C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Pr
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Prex.Utils.pdb
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\ScintillaNET.dll
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\ScintillaNET.xml
-C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.csprojAssemblyReference.cache
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.Misc.Forms.FrmCopyFiles.resources
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.frmError.resources
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.Misc.Forms.FrmInputGeneral.resources
@@ -23,3 +22,5 @@ C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Pr
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.csproj.CopyComplete
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.dll
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.pdb
+C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\RestSharp.dll
+C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\RestSharp.xml
