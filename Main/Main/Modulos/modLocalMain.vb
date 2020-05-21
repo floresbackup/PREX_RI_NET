@@ -144,11 +144,17 @@ Module modLocalMain
 		MisProcesos = Process.GetProcessesByName(Application.ProductName.ToString)
 
 		If MisProcesos.Length > 1 Then
-			MessageBox.Show("Esta aplicación ya se encuentra activa")
-			End
+			Dim usuario = System.Security.Principal.WindowsIdentity.GetCurrent().Name
+			If MisProcesos.Any(Function(p) p.Id <> Process.GetCurrentProcess().Id AndAlso Prex.Utils.Misc.Functions.GetProcessOwner(p.Id).ToLower() = usuario.ToString.ToLower()) Then
+				MessageBox.Show("Esta aplicación ya se encuentra activa")
+				End
+			End If
+
 		End If
 
 	End Sub
+
+
 
 	Public Sub LeerXMLLocal()
 
