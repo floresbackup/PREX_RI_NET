@@ -205,8 +205,10 @@ Module modFunciones
                 Next
 
             End If
+			'https://stackoverflow.com/questions/9482773/web-service-without-adding-a-reference
+			'Para referencia del servicio
 
-            If AUTENTICACIONSQL Then
+			If AUTENTICACIONSQL Then
 
                 If File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
 
@@ -830,7 +832,7 @@ Module modFunciones
 					sValor = FechaSQL(DirectCast(oCtl, DevExpress.XtraEditors.DateEdit).DateTime)
 				Case "TextBox"
 					Dim oVar As clsVariables = CType(oCtl.Tag, clsVariables)
-					If oVar.Tipo = 1 OrElse Not IsNumeric(oCtl.Text) Then
+					If ((oVar IsNot Nothing AndAlso oVar.Tipo = 1) OrElse Not IsNumeric(oCtl.Text)) Then
 						sValor = "'" & oCtl.Text & "'"
 					Else
 						sValor = oCtl.Text

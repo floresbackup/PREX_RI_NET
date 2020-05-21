@@ -231,8 +231,8 @@ Public Class frmMain
                     Else
 
                         Dim oTextBox As New TextBox
-
-                        oTextBox.Name = "_" & oVar.Nombre
+						oTextBox.Tag = oVar
+						oTextBox.Name = "_" & oVar.Nombre
                         oTextBox.Text = ""
                         oTextBox.Location = New System.Drawing.Point(210, panTop.Height + 23 * oVar.Orden - 21)
                         oTextBox.Size() = New System.Drawing.Size(130, 18)
@@ -254,8 +254,9 @@ Public Class frmMain
 
                 Case 2 'ENTIDAD
                     Dim oTextBox As New TextBox
+					oTextBox.Tag = oVar
 
-                    oTextBox.Name = "_" & oVar.Nombre
+					oTextBox.Name = "_" & oVar.Nombre
                     oTextBox.Text = CODIGO_ENTIDAD
                     oTextBox.Visible = False
                     nC = nC - 1
@@ -263,8 +264,9 @@ Public Class frmMain
 
                 Case 3 'CUADRO
                     Dim oTextBox As New TextBox
+					oTextBox.Tag = oVar
 
-                    oTextBox.Name = "_" & oVar.Nombre
+					oTextBox.Name = "_" & oVar.Nombre
                     oTextBox.Text = oAdmlocal.DevolverValor("TABGEN", "TG_CODCON", "TG_CODTAB = 2 AND TG_NUME01 = " & CODIGO_TRANSACCION, "0").ToString
                     oTextBox.Visible = False
                     nC = nC - 1
