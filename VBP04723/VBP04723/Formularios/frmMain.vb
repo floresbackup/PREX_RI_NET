@@ -176,16 +176,17 @@ Public Class frmMain
 
         Try
 
-            sSQL = "SELECT       TG_CODTAB, CAST(TG_CODTAB AS VARCHAR) + ' - ' + TG_DESCRI AS TG_DESCRI, TG_ALFA02 " &
-                "FROM         TABGEN " &
-                "WHERE        TG_CODCON = 999999 " &
-                "ORDER BY     TG_CODTAB "
-            ds = oAdmLocal.AbrirDataset(sSQL)
+			sSQL = "SELECT    TG_CODTAB, TG_DESCRI " &
+				  "FROM      TABGEN " &
+				  "WHERE     TG_CODCON = 999999 " &
+				  "AND       TG_NUME01 = 0 " &
+				  "ORDER BY  TG_CODTAB ASC"
+			ds = oAdmLocal.AbrirDataset(sSQL)
 
             With ds.Tables(0)
                 For Each row As DataRow In .Rows
-                    cboTabla.Items.Add(New Prex.Utils.Entities.clsItem(row(0), row(1), "" & row(2)))
-                Next
+					cboTabla.Items.Add(New Prex.Utils.Entities.clsItem(row(0), $"{row(0).ToString.PadLeft(4, "0")} - {row(1)}"))
+				Next
             End With
 
             ds = Nothing

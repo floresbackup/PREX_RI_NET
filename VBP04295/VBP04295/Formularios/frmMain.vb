@@ -1741,19 +1741,24 @@ Reinicio:
 			Exit Function
 		End If
 
-		If oConsulta.DrillDown And oConsulta.DrillDownQuery.Trim <> "" Then
+		If oConsulta.DrillDown AndAlso oConsulta.DrillDownQuery.Trim <> "" Then
 			Return True
 		Else
 			For Each oCol In oColumnas
 				If oCol.Campo = GridView1.FocusedColumn.FieldName Then
-					If oCol.DrillDown And oCol.DrillDownQuery.Trim <> "" Then
-						Return True
+					If oCol.DrillDown AndAlso oCol.DrillDownQuery.Trim <> "" AndAlso Not oCol.Campo.ToUpper.Contains("NIVELTAB") Then
+						Dim d = GetValorSeleccionado("DC_NIVELTAB")
+						If d = 0 Then
+							Return True
+						Else
+							Return False
+						End If
 						Exit For
 					End If
 				End If
 			Next
 		End If
-
+		Return False
 	End Function
 
 	Private Sub GridView1_FocusedColumnChanged(ByVal sender As Object, ByVal e As DevExpress.XtraGrid.Views.Base.FocusedColumnChangedEventArgs) Handles GridView1.FocusedColumnChanged
