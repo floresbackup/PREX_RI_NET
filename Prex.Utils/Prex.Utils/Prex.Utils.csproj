@@ -50,6 +50,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -63,6 +65,11 @@
     <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Configuration\ConfiguracionCultura.cs" />
     <Compile Include="Configuration\TablasGenerales.cs" />
+    <Compile Include="Connected Services\CitCiberarkService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\DataAccess.cs" />
     <Compile Include="Entities\clsItem.cs" />
     <Compile Include="Logging\Log.cs" />
@@ -99,6 +106,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Security\CitiSecurity.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Misc\Forms\FrmCopyFiles.resx">
@@ -116,10 +124,30 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Connected Services\CitCiberarkService\cyberark_service.wsdl" />
+    <None Include="Connected Services\CitCiberarkService\Prex.Utils.CitCiberarkService.PasswordResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\CitCiberarkService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\CitCiberarkService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\CitCiberarkService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\CitCiberarkService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -24,3 +24,5 @@ C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Pr
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.csproj.CopyComplete
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.dll
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.pdb
+C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Prex.Utils.dll.config
+C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.csprojAssemblyReference.cache

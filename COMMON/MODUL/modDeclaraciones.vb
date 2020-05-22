@@ -106,8 +106,19 @@ Module modDeclaraciones
 
    'Citi
    Public ID_SISTEMA As Long
+	'CitiWebService
+	Public APPID As String
+	Public WSDL As String
+	Public CertifcatePath As String
+	Public CertifcatePass As String
+	Public SAFE As String
+	Public STR_FOLDER As String
+	Public STR_OBJECT As String
+	Public STR_REASON As String
 
-   Public Structure Usuario
+
+
+	Public Structure Usuario
 
       Public Nombre As String
       Public Descripcion As String

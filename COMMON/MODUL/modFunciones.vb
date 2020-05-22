@@ -131,113 +131,152 @@ Module modFunciones
                 MensajeError("No se encuentra el archivo encriptado con la conexion SQL")
             End If
 
-            If File.Exists(ARCHIVO_CONFIG) Then
-                oConfig.ReadXml(ARCHIVO_CONFIG)
+			If File.Exists(ARCHIVO_CONFIG) Then
+				oConfig.ReadXml(ARCHIVO_CONFIG)
 
-                For Each row As DataRow In oConfig.Tables("CONFIG").Rows
+				For Each row As DataRow In oConfig.Tables("CONFIG").Rows
 
-                    sTemp = row("VALOR").ToString
+					sTemp = row("VALOR").ToString
 
-                    Select Case row("NOMBRE").ToString
+					Select Case row("NOMBRE").ToString
 
-                        Case "CONN_LOCAL"
-                            CONN_LOCAL = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
+						Case "CONN_LOCAL"
+							CONN_LOCAL = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
 
-                        Case "FFECHA"
-                            FORMATO_FECHA = sTemp
+						Case "FFECHA"
+							FORMATO_FECHA = sTemp
 
-                        Case "CONN_SIB"
-                            CONN_SIB = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
+						Case "CONN_SIB"
+							CONN_SIB = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
 
-                        Case "CARPETA_LOCAL"
-                            CARPETA_LOCAL = NormalizarRuta(sTemp)
+						Case "CARPETA_LOCAL"
+							CARPETA_LOCAL = NormalizarRuta(sTemp)
 
-                        Case "NOMBRE_INI_LOCAL"
-                            NOMBRE_INI_LOCAL = sTemp
+						Case "NOMBRE_INI_LOCAL"
+							NOMBRE_INI_LOCAL = sTemp
 
-                        Case "AUTENTICACIONSQL"
-                            AUTENTICACIONSQL = CBool(sTemp)
+						Case "AUTENTICACIONSQL"
+							AUTENTICACIONSQL = CBool(sTemp)
 
-                        Case "SEGURIDAD_INTEGRADA"
-                            SEGURIDAD_INTEGRADA = CBool(sTemp)
+						Case "SEGURIDAD_INTEGRADA"
+							SEGURIDAD_INTEGRADA = CBool(sTemp)
 
-                        Case "NOMBRE_SQLSERVER"
-                            NOMBRE_SQLSERVER = sTemp
+						Case "NOMBRE_SQLSERVER"
+							NOMBRE_SQLSERVER = sTemp
 
-                        Case "NOMBRE_EMPRESA"
-                            NOMBRE_EMPRESA = sTemp
+						Case "NOMBRE_EMPRESA"
+							NOMBRE_EMPRESA = sTemp
 
-                        Case "IDENTIFICACION_PC"
-                            IDENTIFICACION_PC = sTemp
+						Case "IDENTIFICACION_PC"
+							IDENTIFICACION_PC = sTemp
 
-                        Case "LOG_AUDITORIA"
-                            LOG_AUDITORIA = sTemp
+						Case "LOG_AUDITORIA"
+							LOG_AUDITORIA = sTemp
 
-                        Case "NOMBRE_BD"
-                            NOMBRE_BD = sTemp
+						Case "NOMBRE_BD"
+							NOMBRE_BD = sTemp
 
-                        Case "ID_SISTEMA"
-                            ID_SISTEMA = Val(sTemp)
+						Case "ID_SISTEMA"
+							ID_SISTEMA = Val(sTemp)
 
-                        Case "SG_CONFIG"
-                            SG_CONFIG = sTemp
+						Case "SG_CONFIG"
+							SG_CONFIG = sTemp
 
-                        Case "SIMBOLO_DECIMAL"
-                            SIMBOLO_DECIMAL = sTemp.Substring(0, 1)
+						Case "SIMBOLO_DECIMAL"
+							SIMBOLO_DECIMAL = sTemp.Substring(0, 1)
 
-                        Case "RUTA_AYUDA"
-                            RUTA_AYUDA = sTemp
+						Case "RUTA_AYUDA"
+							RUTA_AYUDA = sTemp
 
-                        '28-11-2014 SE AGREGA PARA USUARIO ENCRIPTADO DE RUN AS
-                        Case "RUTAENCR_RA"
-                            RUTAENCR_RA = sTemp
-                        Case "RUTA_PREFERIDA"
-                            RUTA_PREFERIDA = sTemp
-                        Case "DOMINIO_DEFAULT"
-                        Case "DOMINIO"
-                            DOMINIO_DEFAULT = sTemp
-                        Case "DEBUG" 'SI EXISTE LA VARIABLE EN EL INI - 0 = NO / 1 = SI
-                            GENERAR_LOG_SQL = IIf(Integer.Parse(sTemp) = 1, True, False)
-                        Case "TIPOLOG" 'SI EXISTE LA VARIABLE EN EL INI - 1= Completo 2= Solo modificaciones no SELECT 3= Ninguna grabación
-                            TIPO_LOG_SQL = Integer.Parse(sTemp)
-                    End Select
+						'28-11-2014 SE AGREGA PARA USUARIO ENCRIPTADO DE RUN AS
+						Case "RUTAENCR_RA"
+							RUTAENCR_RA = sTemp
+						Case "RUTA_PREFERIDA"
+							RUTA_PREFERIDA = sTemp
+						Case "DOMINIO_DEFAULT"
+						Case "DOMINIO"
+							DOMINIO_DEFAULT = sTemp
+						Case "DEBUG" 'SI EXISTE LA VARIABLE EN EL INI - 0 = NO / 1 = SI
+							GENERAR_LOG_SQL = IIf(Integer.Parse(sTemp) = 1, True, False)
+						Case "TIPOLOG" 'SI EXISTE LA VARIABLE EN EL INI - 1= Completo 2= Solo modificaciones no SELECT 3= Ninguna grabación
+							TIPO_LOG_SQL = Integer.Parse(sTemp)
 
-                Next
+						Case "APPID"
+							APPID = sTemp
+						Case "WSDL"
+							WSDL = sTemp
+						Case "CertifcatePath"
+							CertifcatePath = sTemp
+						Case "CertifcatePass"
+							CertifcatePass = sTemp
+						Case "SAFE"
+							SAFE = sTemp
+						Case "STR_FOLDER"
+							STR_FOLDER = sTemp
+						Case "STR_OBJECT"
+							STR_OBJECT = sTemp
+						Case "STR_REASON"
+							STR_REASON = sTemp
+					End Select
 
-            End If
-			'https://stackoverflow.com/questions/9482773/web-service-without-adding-a-reference
-			'Para referencia del servicio
+				Next
+
+			End If
+
+			Dim cyberrarkPass As String = ConsultarCyberRark()
 
 			If AUTENTICACIONSQL Then
+				If File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
+					Dim sUser As String = ""
+					Dim sPass As String = ""
+					LeerArchivoEncriptado(CARPETA_LOCAL & "TEMP\conn.enc", sUser, sPass)
+					CONN_LOCAL = CONN_LOCAL & ";User id=" & sUser & ";Password=" & IIf(cyberrarkPass.Length = 0, sPass, cyberrarkPass) & ";"
+				Else
+					If Command().Trim <> "" And Command().ToUpper <> "/IDE" Then
+						MensajeError("No se encuentra el archivo encriptado con la conexion SQL")
+						End
+					End If
+				End If
 
-                If File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
-
-                    Dim sUser As String = ""
-                    Dim sPass As String = ""
-
-                    LeerArchivoEncriptado(CARPETA_LOCAL & "TEMP\conn.enc", sUser, sPass)
-                    CONN_LOCAL = CONN_LOCAL & ";User id=" & sUser & ";Password=" & sPass & ";"
-
-                Else
-
-                    If Command().Trim <> "" And Command().ToUpper <> "/IDE" Then
-
-                        MensajeError("No se encuentra el archivo encriptado con la conexion SQL")
-                        End
-
-                    End If
-
-                End If
-
-            End If
-
-        Catch ex As Exception
+			End If
+		Catch ex As Exception
             TratarError(ex, "LeerXML")
         End Try
 
     End Sub
 
-    Public Sub TratarError(ByVal ex As Exception,
+	Public Function ConsultarCyberRark() As String
+		If ID_SISTEMA > 0 Then
+
+			Try
+
+
+				MessageBox.Show($"WSDL: {WSDL}, CertifcatePath: {CertifcatePath}, " & vbCrLf &
+						$"CertifcatePass: {CertifcatePass}, APPID: {APPID}, " & vbCrLf &
+						$"SAFE: {SAFE}, STR_FOLDER: {STR_FOLDER}, " & vbCrLf &
+						$"STR_OBJECT: {STR_OBJECT}, STR_REASON: {STR_REASON}", "Parametros del servicio: ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+				Dim pass As String = Prex.Utils.Security.CitiSecurity.GetPassWordCyberRark(WSDL, CertifcatePath, CertifcatePass, APPID, SAFE, STR_FOLDER, STR_OBJECT, STR_REASON)
+
+				MessageBox.Show("CyberRark Pass: " & pass)
+
+
+				Dim builder As New OleDb.OleDbConnectionStringBuilder(CONN_LOCAL)
+				builder.Remove("Password")
+				builder.Add("Password", "nuevallalala")
+
+				Return pass.Trim
+			Catch ex As Exception
+				MessageBox.Show(ex.Message, "Error GetPassWordCyberRark", MessageBoxButtons.OK, MessageBoxIcon.Error)
+				Return String.Empty
+			End Try
+
+		Else
+			Return String.Empty
+		End If
+	End Function
+
+	Public Sub TratarError(ByVal ex As Exception,
                            Optional ByVal sFuncion As String = "",
                            Optional ByVal sCustomError As String = "",
                            Optional ByVal bGuardaLog As Boolean = True)

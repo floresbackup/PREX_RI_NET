@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="https://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="https://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="https://tempuri.org/">
+      <s:element name="GetPassword">
+        <s:complexType>
+          <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="passwordWSRequest" type="tns:PasswordRequest" />
+            </s:sequence>
+          </s:complexType>
+        </s:element>
+      <s:complexType name="PasswordRequest">
+    <s:sequence>
+        <s:element minOccurs="0" maxOccurs="1" name="AppID" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="Safe" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="Folder" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="Object" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="Database" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="PolicyID" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="Reason" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" default="30" name="ConnectionTimeout" type="s:int" />
+        <s:element minOccurs="0" maxOccurs="1" name="Query" type="s:string" />
+        <s:element minOccurs="1" maxOccurs="1" name="QueryFormat" nillable="true" type="tns:PasswordQueryFormat" />
+        <s:element minOccurs="0" maxOccurs="1" name="Attributes" type="tns:ArrayOfKeyAndValue" />
+      </s:sequence>
+    </s:complexType>
+  <s:simpleType name="PasswordQueryFormat">
+    <s:restriction base="s:string">
+        <s:enumeration value="Exact" />
+        <s:enumeration value="Regexp" />
+      </s:restriction>
+    </s:simpleType>
+  <s:complexType name="ArrayOfKeyAndValue">
+    <s:sequence>
+        <s:element minOccurs="0" maxOccurs="unbounded" name="KeyAndValue" nillable="true" type="tns:KeyAndValue" />
+      </s:sequence>
+    </s:complexType>
+  <s:complexType name="KeyAndValue">
+    <s:sequence>
+        <s:element minOccurs="0" maxOccurs="1" name="key" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="value" type="s:string" />
+      </s:sequence>
+    </s:complexType>
+  <s:element name="GetPasswordResponse">
+    <s:complexType>
+      <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="GetPasswordResult" type="tns:PasswordResponse" />
+        </s:sequence>
+      </s:complexType>
+    </s:element>
+  <s:complexType name="PasswordResponse">
+    <s:sequence>
+        <s:element minOccurs="0" maxOccurs="1" name="Content" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="Database" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="PolicyID" type="s:string" />
+        <s:element minOccurs="0" maxOccurs="1" name="Properties" type="tns:ArrayOfKeyAndValue" />
+      </s:sequence>
+    </s:complexType>
+  </s:schema>
+  </wsdl:types>
+<wsdl:message name="GetPasswordSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPassword" />
+  </wsdl:message>
+<wsdl:message name="GetPasswordSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPasswordResponse" />
+  </wsdl:message>
+<wsdl:portType name="AIMServiceSoap">
+  <wsdl:operation name="GetPassword">
+      <wsdl:input message="tns:GetPasswordSoapIn" />
+      <wsdl:output message="tns:GetPasswordSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+<wsdl:binding name="AIMServiceSoap" type="tns:AIMServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+  <wsdl:operation name="GetPassword">
+      <soap:operation soapAction="https://tempuri.org/GetPassword" style="document" />
+    <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+    <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+<wsdl:binding name="AIMServiceSoap12" type="tns:AIMServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+  <wsdl:operation name="GetPassword">
+      <soap12:operation soapAction="https://tempuri.org/GetPassword" style="document" />
+    <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+<wsdl:service name="AIMService">
+  <wsdl:port name="AIMServiceSoap" binding="tns:AIMServiceSoap">
+      <soap:address location="http://10.10.1.154/AIMWebService/V1.1/AIM.asmx" />
+    </wsdl:port>
+  <wsdl:port name="AIMServiceSoap12" binding="tns:AIMServiceSoap12">
+      <soap12:address location="http://10.10.1.154/AIMWebService/V1.1/AIM.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

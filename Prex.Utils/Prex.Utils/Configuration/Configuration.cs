@@ -96,8 +96,17 @@ namespace Prex.Utils
 
         //Citi
         public long ID_SISTEMA           { get; internal set; }
-        public string SG_CONFIG { get; internal set; }
-        public Usuario UsuarioActual { get; internal set; }
+        public string SG_CONFIG          { get; internal set; }
+		public long APPID                { get; internal set; }
+		public string WSDL               { get; internal set; }
+		public string CertifcatePath     { get; internal set; }
+		public string CertifcatePass     { get; internal set; }
+		public bool SAFE                 { get; internal set; }
+		public string STR_FOLDER         { get; internal set; }
+		public string STR_OBJECT         { get; internal set; }
+		public string STR_REASON         { get; internal set; }
+
+		public Usuario UsuarioActual { get; internal set; }
         #endregion
 
         #region Contructor
