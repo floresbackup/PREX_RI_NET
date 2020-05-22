@@ -50,7 +50,7 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\..\Desktop\PREX_RI_CITI\</OutputPath>
+    <OutputPath>Z:\BIN\</OutputPath>
     <DocumentationFile>VBP04721.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
@@ -200,6 +200,7 @@
     <Compile Include="..\..\COMMON\MODUL\modGlobalBase64.vb">
       <Link>Modulos\modGlobalBase64.vb</Link>
     </Compile>
+    <Compile Include="Clases\clsVariables.vb" />
     <Compile Include="Formularios\frmCarpeta.Designer.vb">
       <DependentUpon>frmCarpeta.vb</DependentUpon>
     </Compile>
