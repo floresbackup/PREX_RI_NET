@@ -17,19 +17,16 @@ namespace Prex.Utils.Security
 
 	public class UsuarioPassword
 	{
-		private bool _isAdmin = false;
-
 		public Dictionary<string, string> DicUsuPass = new Dictionary<string, string>();
 
 		public long CodUsuario   { get; private set; }
 		public string PassActual { get; private set; }
 		public DateTime FechaVto { get; private set; }
 
-		public DateTime FechaVtoCalculada => _isAdmin ? (CodUsuario > 1 ? DateTime.Now : DateTime.Parse("1999-12-31")) : DateTime.Now.AddDays(30/*DIAS_VTO_PASSWORD*/);
+		public DateTime FechaVtoCalculada => CodUsuario > 1 ? DateTime.Now : DateTime.Parse("1999-12-31");
 
-		public UsuarioPassword(IDataRecord reader, bool isAdmin)
+		public UsuarioPassword(IDataRecord reader)
 		{
-			_isAdmin = isAdmin;
 			if ((int)reader["US_BLOQUE"] != 0 || ((DateTime)reader["US_FECBAJ"]) > DateTime.Parse("1900-01-01"))
 				throw new Exception("No se puede cambiar la contraseña - Usuario bloqueado o dado de baja");
 			else
@@ -63,21 +60,22 @@ namespace Prex.Utils.Security
 			return retorno;
 
 		}
-		public static bool CambiarPassword(string nombreUsuario, string nuevaPassword) => CambiarPassword(nombreUsuario, nuevaPassword, false);
 
-		public static bool CambiarPassword(string nombreUsuario, string nuevaPassword, bool isAdmin)
+		public static bool CambiarPassword(string nombreUsuario, string nuevaPassword)
 		{
-			var usuario = GetUsuarioPassWord(nombreUsuario, true);
+			var usuario = GetUsuarioPassWord(nombreUsuario);
 
-			ActualizarPassUsuario(usuario, nuevaPassword, !isAdmin);
+			ActualizarPassUsuario(usuario, nuevaPassword);
 
 			return true;
 		}
 
-		public static void ActualizarPassUsuario(UsuarioPassword usuario, string nuevaPass, bool ejecutaValidaciones)
+		public static void ActualizarPassUsuario(UsuarioPassword usuario, string nuevaPass)
 		{
 			var nuevaPassMD5 = CalculateMD5(nuevaPass);
-			if (ejecutaValidaciones)
+			var fechaVto = usuario.FechaVtoCalculada;
+
+			if (usuario.CodUsuario > 1)
 			{
 				var directiva = GetDirectivasVigentes();
 				if (directiva == null) directiva = new DirectivasSeguridad();
@@ -116,6 +114,8 @@ namespace Prex.Utils.Security
 					if (CantidadCaracteres(TiposValidacion.CantidadEsp, nuevaPass) < directiva.CANTIDAD_ESP)
 						throw new Exception("La cantidad de caracteres especiales ingresada no es suficiente para satisfacer la directiva de seguridad actual");
 				}
+
+				fechaVto = fechaVto.AddDays(directiva.DIAS_VTO_PASSWORD);
 			}
 
 			var cmdUpdate = new SqlCommand("update USUARI set " +
@@ -130,7 +130,7 @@ namespace Prex.Utils.Security
 								"US_GRACIA = 3 " + //INTENTOS_PARA_BLOQUEAR
 								" WHERE US_CODUSU = @US_CODUSU");
 
-			cmdUpdate.Parameters.Add("US_FECVTO", SqlDbType.DateTime).Value = usuario.FechaVtoCalculada;
+			cmdUpdate.Parameters.Add("US_FECVTO", SqlDbType.DateTime).Value = fechaVto;
 			cmdUpdate.Parameters.Add("US_PASS05", SqlDbType.VarChar).Value = usuario.DicUsuPass["US_PASS04"];
 			cmdUpdate.Parameters.Add("US_PASS04", SqlDbType.VarChar).Value = usuario.DicUsuPass["US_PASS03"];
 			cmdUpdate.Parameters.Add("US_PASS03", SqlDbType.VarChar).Value = usuario.DicUsuPass["US_PASS02"];
@@ -158,7 +158,7 @@ namespace Prex.Utils.Security
 			return directivas;
 		}
 
-		public static UsuarioPassword GetUsuarioPassWord(string nombre, bool isAdmin)
+		public static UsuarioPassword GetUsuarioPassWord(string nombre)
 		{
 			var sSQL = $"SELECT * FROM USUARI WHERE US_NOMBRE = '{nombre}'";
 
@@ -170,7 +170,7 @@ namespace Prex.Utils.Security
 				{
 					if (usuario != null)
 						throw new Exception("Existe más de un usuario con el criterio de búsqueda");
-					usuario = new UsuarioPassword(reader, isAdmin);
+					usuario = new UsuarioPassword(reader);
 				}
 				reader.Close();
 			}

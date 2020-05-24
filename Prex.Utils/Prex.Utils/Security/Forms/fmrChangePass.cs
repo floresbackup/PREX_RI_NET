@@ -78,7 +78,7 @@ namespace Prex.Utils.Security.Forms
 
 			try
 			{
-				return Functions.CambiarPassword(_usuarioActual.Nombre, txtNueva.Text, Configuration.PrexConfig.UsuarioActual.Codigo > 1);
+				return Functions.CambiarPassword(_usuarioActual.Nombre, txtNueva.Text);
 			}
 			catch (Exception ex)
 			{
