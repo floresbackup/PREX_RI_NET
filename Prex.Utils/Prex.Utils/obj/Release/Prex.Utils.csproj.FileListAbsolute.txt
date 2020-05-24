@@ -18,3 +18,4 @@ C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\
 Z:\BIN\Prex.Utils.dll
 Z:\BIN\Prex.Utils.pdb
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.csprojAssemblyReference.cache
+Z:\BIN\Prex.Utils.dll.config

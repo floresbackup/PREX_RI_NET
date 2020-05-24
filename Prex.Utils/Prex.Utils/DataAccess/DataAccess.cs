@@ -36,8 +36,29 @@ namespace Prex.Utils
                 throw new Exception("Ocurrió un error en execute DB", ex);
             }
         }
+		public static void Execute(SqlCommand cmd)
+		{
+			try
+			{
+				var con = new SqlConnection(Configuration.PrexConfig.CONN_LOCAL_ADO);
+				cmd.Connection = con;
+			
+				if (con.State == System.Data.ConnectionState.Closed) con.Open();
 
-        public static object GetScalar(string sql)
+				cmd.ExecuteNonQuery();
+
+				con.Close();
+
+			}
+			catch (Exception ex)
+			{
+				Prex.Utils.Logging.Log.GuardarLog(Prex.Utils.Logging.AccionesLOG.AL_ERROR_SISTEMA, $"Ocurrió un error execute DB - {ex.Message}", Configuration.PrexConfig.CODIGO_TRANSACCION);
+
+				throw new Exception("Ocurrió un error en execute DB", ex);
+			}
+		}
+
+		public static object GetScalar(string sql)
         {
             try
             {

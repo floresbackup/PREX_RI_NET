@@ -40,6 +40,11 @@
     <OutputPath>Z:\BIN\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Data.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Sparkline.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraEditors.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="RestSharp, Version=106.11.2.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\..\packages\RestSharp.106.11.2\lib\net452\RestSharp.dll</HintPath>
     </Reference>
@@ -47,7 +52,9 @@
       <HintPath>..\..\Main\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
@@ -64,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Configuration\ConfiguracionCultura.cs" />
+    <Compile Include="Configuration\DirectivasSeguridad.cs" />
     <Compile Include="Configuration\TablasGenerales.cs" />
     <Compile Include="Connected Services\CitCiberarkService\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -107,6 +115,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Security\CitiSecurity.cs" />
+    <Compile Include="Security\Forms\fmrChangePass.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Security\Forms\fmrChangePass.Designer.cs">
+      <DependentUpon>fmrChangePass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Security\Functions.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Misc\Forms\FrmCopyFiles.resx">
@@ -118,9 +133,13 @@
     <EmbeddedResource Include="Misc\Forms\FrmInputGeneral.resx">
       <DependentUpon>FrmInputGeneral.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\Forms\fmrChangePass.resx">
+      <DependentUpon>fmrChangePass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

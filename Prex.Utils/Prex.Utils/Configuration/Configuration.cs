@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -12,16 +13,47 @@ namespace Prex.Utils
     public class Usuario
     {
 
-        public string Nombre      { get; set; }
-        public string Descripcion { get; set; }
-        public long Codigo      { get; set; }
-        public bool Admin         { get; set; }
-        public bool SoloLectura   { get; set; }
-        public string Password    { get; set; }
-        public string Dominio     { get; set; }
-        public long Entidad       { get; set; }
+        public string Nombre         { get; set; }
+        public string Descripcion    { get; set; }
+        public long Codigo           { get; set; }
+        public bool Admin            { get; set; }
+        public bool SoloLectura      { get; set; }
+        public string Password       { get; set; }
+        public string Dominio        { get; set; }
+        public long Entidad          { get; set; }
+		public DateTime FechaVtoPass { get; set; }
+		public DateTime FechaAlta    { get; set; }
+		public DateTime FechaBaja    { get; set; }
+		public bool IsBloqueado      { get; set; }
+		public int ReintentosIngreso { get; set; }
+		public bool IsAdmin          { get; set; }
+		public int CodEntidad        { get; set; }
+		public string Email          { get; set; }
+		public string IdInterno      { get; set; }
 
-        public Usuario() { }
+		public Usuario() { }
+
+		public Usuario(IDataRecord reader)
+		{
+			Codigo            = (int)reader["US_CODUSU"];
+			Nombre            = reader["US_NOMBRE"].ToStringOrEmpty();
+			Descripcion       = reader["US_DESCRI"].ToStringOrEmpty();
+			Password          = reader["US_PASSWO"].ToStringOrEmpty();
+
+			FechaVtoPass      = DateTime.Parse(reader["US_FECVTO"].ToStringOrEmpty());
+			FechaAlta         = DateTime.Parse(reader["US_FECALT"].ToStringOrEmpty());
+			FechaBaja         = DateTime.Parse(reader["US_FECBAJ"].ToStringOrEmpty());
+
+			IsBloqueado       = ((int)reader["US_BLOQUE"]) == 0 ? false :  true;
+			ReintentosIngreso = (int)reader["US_GRACIA"];
+			IsAdmin           = ((int)reader["US_ADMIN"]) == 0 ? false : true;
+			CodEntidad        = int.Parse(reader["US_CODENT"].ToString());
+			Email             = reader["US_CORREO"].ToStringOrEmpty();
+			IdInterno         = reader["US_INTERN"].ToStringOrEmpty();
+			
+			if (reader.ContainsField("US_READER"))
+				SoloLectura   = ((int)reader["US_READER"]) == 0 ? false : true;
+		}
     }
 
     public class PrexConfigLocal

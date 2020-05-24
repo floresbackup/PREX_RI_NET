@@ -21,54 +21,54 @@ Public Class AdmUsuarios
 
    Private oAdmTablas As New AdmTablas
 
-   Private Sub InicializarVariables()
+	Private Sub InicializarVariables()
 
-      Dim sSQL As String
-      Dim ds As DataSet
+		Dim sSQL As String
+		Dim ds As DataSet
 
-      sSQL = "SELECT    * " & _
-             "FROM      DIRSEG " & _
-             "WHERE     DS_VIGENT = 1"
-      ds = oAdmTablas.AbrirDataset(sSQL)
+		sSQL = "SELECT    * " &
+			   "FROM      DIRSEG " &
+			   "WHERE     DS_VIGENT = 1"
+		ds = oAdmTablas.AbrirDataset(sSQL)
 
-      Try
+		Try
 
-         With ds.Tables(0).Rows(0)
+			With ds.Tables(0).Rows(0)
 
-            If ds.Tables(0).Rows.Count = 0 Then
+				If ds.Tables(0).Rows.Count = 0 Then
 
-               ' Valores x DEFAULT
-               DIAS_ANTES_RENOVACION = 10
-               DIAS_VTO_PASSWORD = 30
-               CANT_PASS_CONTROLADAS = 3
-               INTENTOS_PARA_BLOQUEAR = 3
-               CANTIDAD_ALFA = 4
-               CANTIDAD_NUM = 2
-               CANTIDAD_ESP = 0
+					' Valores x DEFAULT
+					DIAS_ANTES_RENOVACION = 10
+					DIAS_VTO_PASSWORD = 30
+					CANT_PASS_CONTROLADAS = 3
+					INTENTOS_PARA_BLOQUEAR = 3
+					CANTIDAD_ALFA = 4
+					CANTIDAD_NUM = 2
+					CANTIDAD_ESP = 0
 
-            Else
+				Else
 
-               DIAS_ANTES_RENOVACION = .Item("DS_DIASRE")
-               DIAS_VTO_PASSWORD = .Item("DS_DIASVT")
-               CANT_PASS_CONTROLADAS = .Item("DS_CANTPC")
-               INTENTOS_PARA_BLOQUEAR = .Item("DS_INTBLO")
-               CANTIDAD_ALFA = .Item("DS_PASCAR")
-               CANTIDAD_NUM = .Item("DS_PASNUM")
-               CANTIDAD_ESP = .Item("DS_PASESP")
+					DIAS_ANTES_RENOVACION = .Item("DS_DIASRE")
+					DIAS_VTO_PASSWORD = .Item("DS_DIASVT")
+					CANT_PASS_CONTROLADAS = .Item("DS_CANTPC")
+					INTENTOS_PARA_BLOQUEAR = .Item("DS_INTBLO")
+					CANTIDAD_ALFA = .Item("DS_PASCAR")
+					CANTIDAD_NUM = .Item("DS_PASNUM")
+					CANTIDAD_ESP = .Item("DS_PASESP")
 
-            End If
+				End If
 
-         End With
+			End With
 
-         ds = Nothing
+			ds = Nothing
 
-      Catch ex As Exception
-         TratarError(ex, "InicializarVariables")
-      End Try
+		Catch ex As Exception
+			TratarError(ex, "InicializarVariables")
+		End Try
 
-   End Sub
+	End Sub
 
-   Public Function ValidarUsuario(ByVal sNombreUsuario As String, _
+	Public Function ValidarUsuario(ByVal sNombreUsuario As String, _
                                   ByVal sPassword As String, _
                                   ByVal nCodEntidad As Long, _
                                   ByRef nDiasParaCambioPassword As Double, _

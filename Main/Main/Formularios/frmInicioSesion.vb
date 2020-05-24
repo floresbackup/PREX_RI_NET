@@ -419,73 +419,77 @@ Public Class frmInicioSesion
       Dim nCantidadDiasVto As Double
       Dim bLoginOK As Boolean
       Dim eRespuesta As DialogResult
+		Try
+			Me.Cursor = Cursors.WaitCursor
 
-      Try
+			Try
 
-         bResult = oAdmUsuarios.ValidarUsuario(txtUsuario.Text, txtPassword.Text, Val(LlaveCombo(cboEntidad)), nCantidadDiasVto, sMotivoError)
+				bResult = oAdmUsuarios.ValidarUsuario(txtUsuario.Text, txtPassword.Text, Val(LlaveCombo(cboEntidad)), nCantidadDiasVto, sMotivoError)
 
-         If Not bResult Then
-            MensajeError(sMotivoError)
-            txtUsuario.Focus()
-            Return False
-            Exit Function
-         End If
+				If Not bResult Then
+					MensajeError(sMotivoError)
+					txtUsuario.Focus()
+					Return False
+					Exit Function
+				End If
 
-         'Si el loggin fue exitoso:
+				'Si el loggin fue exitoso:
 
-         If nCantidadDiasVto > nDiasPreviosRenov Then
-            bLoginOK = True
-         Else
-            If nCantidadDiasVto > 0 Then
-               eRespuesta = MessageBox.Show("Su contraseña vencerá en " & nCantidadDiasVto & " día(s)." & vbCrLf & vbCrLf & "¿Desea renovarla ahora?", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-            Else
-               eRespuesta = MessageBox.Show("Su contaseña ha vencido. Presione el botón Aceptar para renovarla", "Información", MessageBoxButtons.OK)
-            End If
-            If eRespuesta <> Windows.Forms.DialogResult.No Then
-               INPUT_GENERAL = ""
-               'Load(frmCambiarPassword)
-               'frmCambiarPassword.PasarDatosUsuario(nCodUsuario, sNombreUsuario, sDescripcionUsuario, True, txtPassword)
-               'frmCambiarPassword.Show(vbModal)
-               If INPUT_GENERAL = "" Then
-                  If eRespuesta = Windows.Forms.DialogResult.Yes Then
-                     MensajeInformacion("Recuerde renovar su contraseña la próxima vez que inicie la sesión")
-                     bLoginOK = True
-                  End If
-               Else
-                  bLoginOK = True
-               End If
-            Else
-               bLoginOK = True
-            End If
-         End If
+				If nCantidadDiasVto > nDiasPreviosRenov Then
+					bLoginOK = True
+				Else
+					If nCantidadDiasVto > 0 Then
+						eRespuesta = MessageBox.Show("Su contraseña vencerá en " & nCantidadDiasVto & " día(s)." & vbCrLf & vbCrLf & "¿Desea renovarla ahora?", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+					Else
+						eRespuesta = MessageBox.Show("Su contaseña ha vencido. Presione el botón Aceptar para renovarla", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information)
+					End If
+					If (eRespuesta = DialogResult.OK OrElse eRespuesta = DialogResult.Yes) Then
 
-         ' Por ahora continuamos
-         If bLoginOK Then
-            If bSoloAutorizar Then
-               USUARIO_AUTORIZADO = True
-               NOMBRE_USU_AUTORIZADO = txtUsuario.Text.Trim
-               CODIGO_ENTIDAD_AUTH = Val(LlaveCombo(cboEntidad))
-            Else
-               NOMBRE_ENTIDAD = cboEntidad.Text
-               CODIGO_ENTIDAD = Val(LlaveCombo(cboEntidad))
-               UsuarioActual.Entidad = CODIGO_ENTIDAD
-               UsuarioActual.Codigo = oAdmTablas.DevolverValor("USUARI", "US_CODUSU", "US_NOMBRE='" & txtUsuario.Text & "'")
-               UsuarioActual.Nombre = txtUsuario.Text.Trim
-               UsuarioActual.Descripcion = oAdmTablas.DevolverValor("USUARI", "US_DESCRI", "US_NOMBRE='" & txtUsuario.Text & "'")
-               UsuarioActual.Dominio = cboDominio.Text
-               GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "")
-            End If
+						Dim frmCambiarPassword As New Prex.Utils.Security.Forms.fmrChangePass
 
-            Return True
-         Else
-            MensajeError("Imposible iniciar sesión en este momento. Renueve su contraseña la próxima vez que inicie el sistema e inténtelo nuevamente")
-         End If
+						frmCambiarPassword.PasarDatos(txtUsuario.Text.Trim, True, txtPassword.Text)
 
-      Catch ex As Exception
-         TratarError(ex, "Validar")
-      End Try
+						If frmCambiarPassword.ShowDialog = DialogResult.OK Then
+							If eRespuesta = DialogResult.Yes Then MensajeInformacion("Recuerde renovar su contraseña la próxima vez que inicie la sesión")
+							bLoginOK = True
+						Else
+							bLoginOK = False
+						End If
+					Else
+						bLoginOK = True
+					End If
+				End If
 
-   End Function
+				' Por ahora continuamos
+				If bLoginOK Then
+					If bSoloAutorizar Then
+						USUARIO_AUTORIZADO = True
+						NOMBRE_USU_AUTORIZADO = txtUsuario.Text.Trim
+						CODIGO_ENTIDAD_AUTH = Val(LlaveCombo(cboEntidad))
+					Else
+						NOMBRE_ENTIDAD = cboEntidad.Text
+						CODIGO_ENTIDAD = Val(LlaveCombo(cboEntidad))
+						UsuarioActual.Entidad = CODIGO_ENTIDAD
+						UsuarioActual.Codigo = oAdmTablas.DevolverValor("USUARI", "US_CODUSU", "US_NOMBRE='" & txtUsuario.Text & "'")
+						UsuarioActual.Nombre = txtUsuario.Text.Trim
+						UsuarioActual.Descripcion = oAdmTablas.DevolverValor("USUARI", "US_DESCRI", "US_NOMBRE='" & txtUsuario.Text & "'")
+						UsuarioActual.Dominio = cboDominio.Text
+						GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "")
+					End If
+
+					Return True
+				Else
+					MensajeError("Imposible iniciar sesión en este momento. Renueve su contraseña la próxima vez que inicie el sistema e inténtelo nuevamente")
+				End If
+
+			Catch ex As Exception
+				TratarError(ex, "Validar")
+			End Try
+
+		Finally
+			Me.Cursor = Cursors.Default
+		End Try
+	End Function
 
    Private Sub cboEntidad_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboEntidad.SelectedIndexChanged
 
