@@ -166,7 +166,7 @@ namespace Prex.Utils
                     if (propertyInfo != null) propertyInfo.SetValue(this, Convert.ChangeType((propertyInfo.PropertyType.FullName == "System.Boolean" ? (valor.ToString() == "0" ? "false" : "true") : valor), propertyInfo.PropertyType));
                 }
             }
-            if (!CARPETA_LOCAL.EndsWith("\\")) CARPETA_LOCAL += "\\";
+            if (!CARPETA_LOCAL.ToStringOrEmpty().EndsWith("\\")) CARPETA_LOCAL += "\\";
 
         }
         #endregion

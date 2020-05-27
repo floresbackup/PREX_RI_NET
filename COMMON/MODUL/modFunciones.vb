@@ -251,19 +251,45 @@ Module modFunciones
 			Try
 
 
-				MessageBox.Show($"WSDL: {WSDL}, CertifcatePath: {CertifcatePath}, " & vbCrLf &
-						$"CertifcatePass: {CertifcatePass}, APPID: {APPID}, " & vbCrLf &
-						$"SAFE: {SAFE}, STR_FOLDER: {STR_FOLDER}, " & vbCrLf &
-						$"STR_OBJECT: {STR_OBJECT}, STR_REASON: {STR_REASON}", "Parametros del servicio: ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+				'MessageBox.Show($"WSDL: {WSDL}, CertifcatePath: {CertifcatePath}, " & vbCrLf &
+				'		$"CertifcatePass: {CertifcatePass}, APPID: {APPID}, " & vbCrLf &
+				'		$"SAFE: {SAFE}, STR_FOLDER: {STR_FOLDER}, " & vbCrLf &
+				'		$"STR_OBJECT: {STR_OBJECT}, STR_REASON: {STR_REASON}", "Parametros del servicio: ", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
 				Dim pass As String = Prex.Utils.Security.CitiSecurity.GetPassWordCyberRark(WSDL, CertifcatePath, CertifcatePass, APPID, SAFE, STR_FOLDER, STR_OBJECT, STR_REASON)
 
-				MessageBox.Show("CyberRark Pass: " & pass)
+				'MessageBox.Show("CyberRark Pass: " & pass)
 
 
 				Dim builder As New OleDb.OleDbConnectionStringBuilder(CONN_LOCAL)
-				builder.Remove("Password")
-				builder.Add("Password", "nuevallalala")
+				Dim passAnt = String.Empty
+				Dim teniaPass As Boolean = False
+
+				If builder.ContainsKey("Password") Then
+					passAnt = builder("Password")
+					teniaPass = True
+					builder.Remove("Password")
+				End If
+				builder.Add("Password", pass)
+
+				Try
+					Dim conn As New OleDb.OleDbConnection(builder.ConnectionString)
+					conn.Open()
+					If (conn.State = ConnectionState.Open) Then
+						conn.Close()
+					End If
+				Catch ex As OleDb.OleDbException
+					If ex.Message.ToLower().Contains("login fail") Then
+						builder.Remove("Password")
+						If teniaPass Then
+							builder.Add("Password", passAnt)
+							pass = passAnt
+						End If
+					End If
+
+				End Try
+
+				CONN_LOCAL = builder.ConnectionString
 
 				Return pass.Trim
 			Catch ex As Exception
