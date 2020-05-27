@@ -10,10 +10,10 @@ namespace Prex.Utils.Misc
 {
 	public static class MailSender
 	{
-		private static string SmtpServer => @"http://webmail.proyectoexcelencia.com.ar/";
-		private static int SmtpPort      => 25;
-		private static string User       => "prex_sql@proyectoexcelencia.com.ar";
-		private static string Pass       => "Ihc438";
+		public static string SmtpServer => System.Configuration.ConfigurationManager.AppSettings["smtpServer"].ToString();//@"smtp.proyectoexcelencia.com.ar";
+		public static int SmtpPort      => int.Parse(System.Configuration.ConfigurationManager.AppSettings["smtpPort"].ToString());//25
+		public static string User       => System.Configuration.ConfigurationManager.AppSettings["smtpUser"].ToString();//"prex_sql@proyectoexcelencia.com.ar";
+		public static string Pass       => System.Configuration.ConfigurationManager.AppSettings["smtpPass"].ToString();//"Ihc438";
 
 		public static void EnviarMail(string deNombre, string deMAil, string destinatarios, string asunto, string mensaje, bool IsHtml)
 		{
@@ -50,7 +50,7 @@ namespace Prex.Utils.Misc
 				message.IsBodyHtml = IsHtml;
 
 
-				var emailClient = new SmtpClient("smtp.proyectoexcelencia.com.ar", SmtpPort);
+				var emailClient = new SmtpClient(SmtpServer, SmtpPort);
 				emailClient.Credentials = new System.Net.NetworkCredential(User, Pass);
 
 				emailClient.Timeout = 100000;

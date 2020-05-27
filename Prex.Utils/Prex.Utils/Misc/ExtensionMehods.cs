@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Prex.Utils
 {
-    public static class ExtensionMehods
+	public static class ExtensionMehods
     {
 
         public static object ValueOrDbNull(this object o) => o ?? DBNull.Value;
 
-        public static object ToStringOrEmpty(this string text) => text ?? string.Empty;
+        public static string ToStringOrEmpty(this string text) => text ?? string.Empty;
 		public static string ToStringOrEmpty(this object obj) => obj == null ? string.Empty : obj.ToString();
 
 		public static bool IsNullOrEmpty(this object o)

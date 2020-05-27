@@ -24,6 +24,8 @@ namespace BuscadorNovedadesCentral
 			var maxComunicaciones = int.Parse(System.Configuration.ConfigurationManager.AppSettings["maxRegistros"]);
 			var listTipos         = new List<string>() { "A", "B", "C" };
 			var destinatarios     = System.Configuration.ConfigurationManager.AppSettings["destinatarios"].ToString();
+			var asunto            = System.Configuration.ConfigurationManager.AppSettings["emailSubject"].ToString();
+			var deNombre          = System.Configuration.ConfigurationManager.AppSettings["emailFromName"].ToString();
 
 			Console.WriteLine("Configuracion:");
 			Console.WriteLine($"	* Url: {url}");
@@ -102,7 +104,14 @@ namespace BuscadorNovedadesCentral
 			{ 
 				Console.WriteLine($"{archivosEncontrados.Count()} Comunicados encontrados");
 				Console.WriteLine("	* Enviando correo...");
-				Prex.Utils.Misc.MailSender.EnviarMail("Prex - Novedad Central", "prex_sql@proyectoexcelencia.com.ar", destinatarios, $"Novedad Central - ({archivosEncontrados.Count()} comunicados nuevos)", $"<b>Fecha ejecución: {DateTime.Now.ToString()}</b><br /><div style='margin-top: 15px;'>{cuerpoMail}</div>", true);
+				if (!asunto.Trim().Any())
+					asunto = $"Novedad Central - ({archivosEncontrados.Count()} comunicados nuevos)";
+
+				if (!deNombre.Trim().Any())
+					deNombre = "Prex - Novedad Central";
+				asunto = asunto.Replace("@CntNotif", archivosEncontrados.Count().ToString());
+
+				Prex.Utils.Misc.MailSender.EnviarMail(deNombre, Prex.Utils.Misc.MailSender.User, destinatarios, asunto, $"<b>Fecha ejecución: {DateTime.Now.ToString()}</b><br /><div style='margin-top: 15px;'>{cuerpoMail}</div>", true);
 			}
 
 		}

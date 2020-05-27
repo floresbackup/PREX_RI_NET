@@ -17,5 +17,6 @@ C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.pdb
 Z:\BIN\Prex.Utils.dll
 Z:\BIN\Prex.Utils.pdb
-C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.csprojAssemblyReference.cache
 Z:\BIN\Prex.Utils.dll.config
+C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.Security.Forms.fmrChangePass.resources
+C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.dll.licenses
