@@ -131,8 +131,8 @@ namespace Prex.Utils
         public string SG_CONFIG          { get; internal set; }
 		public long APPID                { get; internal set; }
 		public string WSDL               { get; internal set; }
-		public string CertifcatePath     { get; internal set; }
-		public string CertifcatePass     { get; internal set; }
+		public string CertificatePath    { get; internal set; }
+		public string CertificatePass    { get; internal set; }
 		public bool SAFE                 { get; internal set; }
 		public string STR_FOLDER         { get; internal set; }
 		public string STR_OBJECT         { get; internal set; }

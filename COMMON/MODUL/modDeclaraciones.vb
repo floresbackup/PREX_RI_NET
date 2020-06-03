@@ -109,8 +109,8 @@ Module modDeclaraciones
 	'CitiWebService
 	Public APPID As String
 	Public WSDL As String
-	Public CertifcatePath As String
-	Public CertifcatePass As String
+	Public CertificatePath As String
+	Public CertificatePass As String
 	Public SAFE As String
 	Public STR_FOLDER As String
 	Public STR_OBJECT As String

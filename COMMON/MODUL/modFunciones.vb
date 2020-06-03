@@ -205,10 +205,10 @@ Module modFunciones
 							APPID = sTemp
 						Case "WSDL"
 							WSDL = sTemp
-						Case "CertifcatePath"
-							CertifcatePath = sTemp
-						Case "CertifcatePass"
-							CertifcatePass = sTemp
+						Case "CertificatePath"
+							CertificatePath = sTemp
+						Case "CertificatePass"
+							CertificatePass = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
 						Case "SAFE"
 							SAFE = sTemp
 						Case "STR_FOLDER"
@@ -256,7 +256,8 @@ Module modFunciones
 				'		$"SAFE: {SAFE}, STR_FOLDER: {STR_FOLDER}, " & vbCrLf &
 				'		$"STR_OBJECT: {STR_OBJECT}, STR_REASON: {STR_REASON}", "Parametros del servicio: ", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-				Dim pass As String = Prex.Utils.Security.CitiSecurity.GetPassWordCyberRark(WSDL, CertifcatePath, CertifcatePass, APPID, SAFE, STR_FOLDER, STR_OBJECT, STR_REASON)
+
+				Dim pass As String = Prex.Utils.Security.CitiSecurity.GetPassWordCyberRark(WSDL, CertificatePath, CertificatePass, APPID, SAFE, STR_FOLDER, STR_OBJECT, STR_REASON)
 
 				'MessageBox.Show("CyberRark Pass: " & pass)
 
@@ -293,7 +294,7 @@ Module modFunciones
 
 				Return pass.Trim
 			Catch ex As Exception
-				MessageBox.Show(ex.Message, "Error GetPassWordCyberRark", MessageBoxButtons.OK, MessageBoxIcon.Error)
+				'MessageBox.Show(ex.Message, "Error GetPassWordCyberRark", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Return String.Empty
 			End Try
 
