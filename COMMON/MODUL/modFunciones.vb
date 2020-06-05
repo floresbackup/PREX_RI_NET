@@ -223,6 +223,7 @@ Module modFunciones
 
 			End If
 
+
 			Dim cyberrarkPass As String = ConsultarCyberRark()
 
 			If AUTENTICACIONSQL Then
@@ -246,6 +247,7 @@ Module modFunciones
     End Sub
 
 	Public Function ConsultarCyberRark() As String
+		CYBERRARKPASS = String.Empty
 		If ID_SISTEMA > 0 Then
 
 			Try
@@ -291,7 +293,7 @@ Module modFunciones
 				End Try
 
 				CONN_LOCAL = builder.ConnectionString
-
+				CYBERRARKPASS = pass
 				Return pass.Trim
 			Catch ex As Exception
 				'MessageBox.Show(ex.Message, "Error GetPassWordCyberRark", MessageBoxButtons.OK, MessageBoxIcon.Error)

@@ -506,11 +506,26 @@ Public Class frmInicioSesion
 
    Private Sub frmInicioSesion_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-        If txtUsuario.Text.Trim.Equals("") Then
-            txtUsuario.Focus()
-        Else
-            txtPassword.Select()
+		If txtUsuario.Text.Trim.Equals("") Then
+			txtUsuario.Focus()
+		Else
+			txtPassword.Select()
 
-        End If
-    End Sub
+		End If
+
+		If ID_SISTEMA > 0 Then
+			pblCitiCiberrark.Visible = True
+			picErrorCiberrark.Visible = CYBERRARKPASS.Trim = String.Empty
+			picOkCiberrark.Visible = Not picErrorCiberrark.Visible
+			If picErrorCiberrark.Visible Then
+				lblciti.Text = "Error conexión con Cyberark"
+				lblciti.ForeColor = Color.DarkRed
+			Else
+				lblciti.Text = "Conexión con Cyberark"
+				lblciti.ForeColor = Color.DarkGreen
+			End If
+		Else
+			pblCitiCiberrark.Visible = False
+		End If
+	End Sub
 End Class

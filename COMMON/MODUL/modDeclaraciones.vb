@@ -104,8 +104,8 @@ Module modDeclaraciones
    Public USUARIO_DB As String
    Public PASSWORD_DB As String
 
-   'Citi
-   Public ID_SISTEMA As Long
+	'Citi
+	Public ID_SISTEMA As Long
 	'CitiWebService
 	Public APPID As String
 	Public WSDL As String
@@ -115,6 +115,7 @@ Module modDeclaraciones
 	Public STR_FOLDER As String
 	Public STR_OBJECT As String
 	Public STR_REASON As String
+	Public CYBERRARKPASS As String
 
 
 
