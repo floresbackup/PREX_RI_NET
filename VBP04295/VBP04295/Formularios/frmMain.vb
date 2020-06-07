@@ -223,8 +223,8 @@ Public Class frmMain
 
             Dim sSQL As String = ReemplazarVariables(oConsulta.Query, PanControles.Controls)
 
-            Dim ad As OleDb.OleDbDataAdapter = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
-            Dim dt As New DataTable
+			Dim ad As New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
+			Dim dt As New DataTable
             ad.Fill(dt)
 
 

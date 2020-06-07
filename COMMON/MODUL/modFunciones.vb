@@ -879,61 +879,73 @@ Module modFunciones
 
         Dim oCtl As Windows.Forms.Control
         Dim sValor As String
-		Dim oItem As Prex.Utils.Entities.clsItem
-
-		For Each oCtl In controls
-
-            Select Case oCtl.GetType.ToString.Substring(oCtl.GetType.ToString.LastIndexOf(".") + 1)
-                Case "ComboBox"
-                    oItem = CType(oCtl, ComboBox).SelectedItem
-                    sValor = "'" + oItem.Valor.ToString + "'"
-                Case "ComboBoxEdit"
-                    oItem = CType(oCtl, DevExpress.XtraEditors.ComboBoxEdit).SelectedItem
-                    sValor = "'" + oItem.Valor.ToString + "'"
-                Case "CheckBox"
-                    sValor = IIf(CType(oCtl, CheckBox).Checked, oCtl.Tag, "")
-                Case "CheckEdit"
-                    sValor = IIf(CType(oCtl, DevExpress.XtraEditors.CheckEdit).Checked, oCtl.Tag, "")
-                Case "DateTimePicker"
-                    sValor = FechaSQL(DirectCast(oCtl, DateTimePicker).Value)
-                Case "DateEdit"
-					sValor = FechaSQL(DirectCast(oCtl, DevExpress.XtraEditors.DateEdit).DateTime)
-				Case "TextBox"
-					Dim oVar As clsVariables = CType(oCtl.Tag, clsVariables)
-					If ((oVar IsNot Nothing AndAlso oVar.Tipo = 1) OrElse Not IsNumeric(oCtl.Text)) Then
-						sValor = "'" & oCtl.Text & "'"
-					Else
-						sValor = oCtl.Text
-					End If
-
-				Case Else
-
-					Dim valorDecimal As Decimal
-
-                    If Decimal.TryParse(oCtl.Text.Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator), valorDecimal) Then
-                        sValor = valorDecimal.ToString().Replace(",", ".")
-                    Else
-                        sValor = oCtl.Text
-                    End If
+		Try
 
 
-            End Select
+			For Each oCtl In controls
 
-            If oCtl.Name.Substring(0, 1) = "_" Then
-                sSQL = sSQL.Replace(oCtl.Name.Substring(1), sValor)
-            End If
+				Select Case oCtl.GetType.ToString.Substring(oCtl.GetType.ToString.LastIndexOf(".") + 1)
+					Case "ComboBox"
+						If TypeOf CType(oCtl, ComboBox).SelectedItem Is Prex.Utils.Entities.clsItem Then
+							Dim oItem As Prex.Utils.Entities.clsItem = CType(oCtl, ComboBox).SelectedItem
+							sValor = "'" + oItem.Valor.ToString + "'"
+						Else
+							sValor = "'" + CType(oCtl, ComboBox).SelectedItem.ToString + "'"
+						End If
+					Case "ComboBoxEdit"
+						If TypeOf CType(oCtl, DevExpress.XtraEditors.ComboBoxEdit).SelectedItem Is Prex.Utils.Entities.clsItem Then
+							Dim oItem As Prex.Utils.Entities.clsItem = CType(oCtl, DevExpress.XtraEditors.ComboBoxEdit).SelectedItem
+							sValor = "'" + oItem.Valor.ToString + "'"
+						Else
+							sValor = "'" + CType(oCtl, DevExpress.XtraEditors.ComboBoxEdit).SelectedItem.ToString + "'"
+						End If
+					Case "CheckBox"
+						sValor = IIf(CType(oCtl, CheckBox).Checked, oCtl.Tag, "")
+					Case "CheckEdit"
+						sValor = IIf(CType(oCtl, DevExpress.XtraEditors.CheckEdit).Checked, oCtl.Tag, "")
+					Case "DateTimePicker"
+						sValor = FechaSQL(DirectCast(oCtl, DateTimePicker).Value)
+					Case "DateEdit"
+						sValor = FechaSQL(DirectCast(oCtl, DevExpress.XtraEditors.DateEdit).DateTime)
+					Case "TextBox"
+						Dim oVar As clsVariables = CType(oCtl.Tag, clsVariables)
+						If ((oVar IsNot Nothing AndAlso oVar.Tipo = 1) OrElse Not IsNumeric(oCtl.Text)) Then
+							sValor = "'" & oCtl.Text & "'"
+						Else
+							sValor = oCtl.Text
+						End If
 
-        Next
-        If codProc.HasValue Then
-            sSQL = Replace(sSQL, "@CODPRO", codProc.Value.ToString, , , vbTextCompare)
-            sSQL = Replace(sSQL, "@CODUSU", UsuarioActual.Codigo, , , vbTextCompare)
-            sSQL = Replace(sSQL, "@CODIGO_ENTIDAD", CODIGO_ENTIDAD.ToString, , , vbTextCompare)
-            sSQL = Replace(sSQL, "@CODIGO_TRANSACCION", CODIGO_TRANSACCION.ToString, , , vbTextCompare)
-        End If
+					Case Else
 
-        Return sSQL
+						Dim valorDecimal As Decimal
 
-    End Function
+						If Decimal.TryParse(oCtl.Text.Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator), valorDecimal) Then
+							sValor = valorDecimal.ToString().Replace(",", ".")
+						Else
+							sValor = oCtl.Text
+						End If
+
+
+				End Select
+
+				If oCtl.Name.Substring(0, 1) = "_" Then
+					sSQL = sSQL.Replace(oCtl.Name.Substring(1), sValor)
+				End If
+
+			Next
+			If codProc.HasValue Then
+				sSQL = Replace(sSQL, "@CODPRO", codProc.Value.ToString, , , vbTextCompare)
+				sSQL = Replace(sSQL, "@CODUSU", UsuarioActual.Codigo, , , vbTextCompare)
+				sSQL = Replace(sSQL, "@CODIGO_ENTIDAD", CODIGO_ENTIDAD.ToString, , , vbTextCompare)
+				sSQL = Replace(sSQL, "@CODIGO_TRANSACCION", CODIGO_TRANSACCION.ToString, , , vbTextCompare)
+			End If
+
+			Return sSQL
+		Catch ex As Exception
+			Throw New Exception("Ocurrio un error en ReemplazarVariables ", ex)
+		End Try
+
+	End Function
 
     Public Sub PresentarDatos(ByVal formulario As Form, ByVal nCodigoTransaccion As Long, ByVal nCodigoUsuario As Long, ByVal nCodigoEntidad As Long)
 
