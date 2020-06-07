@@ -510,20 +510,24 @@ GuardaDataRow:
 
 	Private Sub cboInput_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-		Dim oItem As Prex.Utils.Entities.clsItem
 		Dim oCol As clsColumnas
-
 		oCol = oColumnas(sender.tag)
-		oItem = sender.SelectedItem
 
-		Select Case TipoDatosADO(oCol.Tipo)
-			Case "Numérico"
-				oCol.Valor = oItem.Valor
-			Case "Fecha/Hora"
-				oCol.Valor = oItem.Valor
-			Case Else
-				oCol.Valor = oItem.Valor
-		End Select
+		If TypeOf sender.SelectedItem Is Prex.Utils.Entities.clsItem Then
+
+			Dim oItem As Prex.Utils.Entities.clsItem = sender.SelectedItem
+			Select Case TipoDatosADO(oCol.Tipo)
+				Case "Numérico"
+					oCol.Valor = oItem.Valor
+				Case "Fecha/Hora"
+					oCol.Valor = oItem.Valor
+				Case Else
+					oCol.Valor = oItem.Valor
+			End Select
+
+		End If
+
+
 
 	End Sub
 
