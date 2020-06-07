@@ -33,8 +33,9 @@ Partial Class frmAdjuntos
         Me.cmdVer = New DevExpress.XtraEditors.SimpleButton()
         Me.GridControl1 = New DevExpress.XtraGrid.GridControl()
         Me.GridView1 = New DevExpress.XtraGrid.Views.Grid.GridView()
-        Me.colNombre = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.colArchivo = New DevExpress.XtraGrid.Columns.GridColumn()
+		Me.colNombre = New DevExpress.XtraGrid.Columns.GridColumn()
+		Me.colClave = New DevExpress.XtraGrid.Columns.GridColumn()
+		Me.colArchivo = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanTop.SuspendLayout()
@@ -140,11 +141,11 @@ Partial Class frmAdjuntos
         Me.GridControl1.Size = New System.Drawing.Size(521, 176)
         Me.GridControl1.TabIndex = 2
         Me.GridControl1.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.GridView1})
-        '
-        'GridView1
-        '
-        Me.GridView1.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colNombre, Me.colArchivo})
-        Me.GridView1.GridControl = Me.GridControl1
+		'
+		'GridView1
+		'
+		Me.GridView1.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colClave, Me.colNombre, Me.colArchivo})
+		Me.GridView1.GridControl = Me.GridControl1
         Me.GridView1.Name = "GridView1"
         Me.GridView1.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.[False]
         Me.GridView1.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.[False]
@@ -155,18 +156,25 @@ Partial Class frmAdjuntos
         Me.GridView1.OptionsSelection.InvertSelection = True
         Me.GridView1.OptionsView.ShowGroupExpandCollapseButtons = False
         Me.GridView1.OptionsView.ShowGroupPanel = False
-        '
-        'colNombre
-        '
-        Me.colNombre.Caption = "Archivos adjuntos"
-        Me.colNombre.FieldName = "AD_NOMBRE"
-        Me.colNombre.Name = "colNombre"
-        Me.colNombre.Visible = True
-        Me.colNombre.VisibleIndex = 0
-        '
-        'colArchivo
-        '
-        Me.colArchivo.Caption = "colArchivo"
+		'
+		'colClave
+		'
+		Me.colClave.Caption = "Archivos adjuntos"
+		Me.colClave.FieldName = "AD_CLAVE"
+		Me.colClave.Name = "colClave"
+		Me.colClave.Visible = True
+		Me.colClave.VisibleIndex = 0
+		'
+		'colNombre
+		'
+		Me.colNombre.Caption = "Archivos nombre"
+		Me.colNombre.FieldName = "AD_NOMBRE"
+		Me.colNombre.Name = "colNombre"
+		Me.colNombre.Visible = False
+		'
+		'colArchivo
+		'
+		Me.colArchivo.Caption = "colArchivo"
         Me.colArchivo.FieldName = "AD_ARCHIV"
         Me.colArchivo.Name = "colArchivo"
         '
@@ -205,7 +213,8 @@ Partial Class frmAdjuntos
     Friend WithEvents lblSubtitulo As DevExpress.XtraEditors.LabelControl
     Friend WithEvents lblTitulo As DevExpress.XtraEditors.LabelControl
     Friend WithEvents picLogo As DevExpress.XtraEditors.PictureEdit
-    Friend WithEvents colNombre As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents cmdCerrar As DevExpress.XtraEditors.SimpleButton
+	Friend WithEvents colNombre As DevExpress.XtraGrid.Columns.GridColumn
+	Friend WithEvents colClave As DevExpress.XtraGrid.Columns.GridColumn
+	Friend WithEvents cmdCerrar As DevExpress.XtraEditors.SimpleButton
     Friend WithEvents colArchivo As DevExpress.XtraGrid.Columns.GridColumn
 End Class
