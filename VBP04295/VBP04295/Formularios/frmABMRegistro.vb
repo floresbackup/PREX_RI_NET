@@ -232,7 +232,7 @@ Public Class frmABMRegistro
                         SelComboDevExpress(CType(Cont.Controls("_cboInput" & oCol.Orden.ToString), DevExpress.XtraEditors.ComboBoxEdit), "K" & oCol.Valor.ToString)
                     End If
                 End If
-				If oCol.Formula <> "" Then
+				If MODO_APE = "A" AndAlso oCol.Formula <> "" Then
 					Formula(oCol.Formula, oCol.Key)
 				End If
 			End If
