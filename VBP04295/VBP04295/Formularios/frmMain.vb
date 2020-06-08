@@ -810,70 +810,74 @@ Public Class frmMain
 		Dim sSQL As String
 		Dim oCol As clsColumnas
 		Dim vValor As Object
+		Try
+			Cursor = Cursors.WaitCursor
 
-		Me.Enabled = False
 
-		If MODO_APE = "N" Then
-			sSQL = oConsulta.NuevoDesdeQuery
-		ElseIf MODO_APE = "B" Then
-			sSQL = oConsulta.BajaQuery
-		ElseIf MODO_APE = "A" Then
-			sSQL = oConsulta.AltaQuery
-		Else
-			sSQL = oConsulta.ActualizaQuery
-		End If
+			Me.Enabled = False
 
-		If Grid.MainView.RowCount > 0 AndAlso MODO_APE <> "A" Then
+			If MODO_APE = "N" Then
+				sSQL = oConsulta.NuevoDesdeQuery
+			ElseIf MODO_APE = "B" Then
+				sSQL = oConsulta.BajaQuery
+			ElseIf MODO_APE = "A" Then
+				sSQL = oConsulta.AltaQuery
+			Else
+				sSQL = oConsulta.ActualizaQuery
+			End If
 
-			For Each oCol In oColumnas
-				'If Not oCol.VisibleABM Then Continue For
+			If Grid.MainView.RowCount > 0 AndAlso MODO_APE <> "A" Then
 
-				vValor = GetValorSeleccionado(oCol.Campo)
+				For Each oCol In oColumnas
+					'If Not oCol.VisibleABM Then Continue For
 
-				If Not String.IsNullOrEmpty(vValor) Then
-					If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
-						vValor = FechaSQL(vValor)
-					ElseIf TipoDatosADO(oCol.Tipo) = "Numérico" Then
-						vValor = FlotanteSQL(vValor)
+					vValor = GetValorSeleccionado(oCol.Campo)
+
+					If Not String.IsNullOrEmpty(vValor) Then
+						If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
+							vValor = FechaSQL(vValor)
+						ElseIf TipoDatosADO(oCol.Tipo) = "Numérico" Then
+							vValor = FlotanteSQL(vValor)
+						Else
+							vValor = "'" & vValor & "'"
+						End If
 					Else
-						vValor = "'" & vValor & "'"
+						vValor = "NULL"
 					End If
-				Else
-					vValor = "NULL"
-				End If
 
-				sSQL = sSQL.Replace("@" & oCol.Campo, vValor)
+					sSQL = sSQL.Replace("@" & oCol.Campo, vValor)
 
-			Next
-		End If
+				Next
+			End If
 
-		sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
+			sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
 
-		Me.Enabled = True
+			Me.Enabled = True
 
-		Dim oForm As New frmABMRegistro()
-		oForm.PasarDatos(oConsulta.CodCon, sSQL, "Modificar registro", MODO_APE)
+			Dim oForm As New frmABMRegistro()
+			oForm.PasarDatos(oConsulta.CodCon, sSQL, "Modificar registro", MODO_APE)
 
-		If INPUT_GENERAL = "CERRAR_FORMULARIO_YAA" Then
-			oForm.Close()
-		Else
-			oForm.ShowDialog()
-		End If
+			If INPUT_GENERAL = "CERRAR_FORMULARIO_YAA" Then
+				oForm.Close()
+			Else
+				oForm.ShowDialog()
+			End If
 
-		oForm = Nothing
+			oForm = Nothing
 
-Maneja_Error:
-		'Err.Clear()
+			'Err.Clear()
 
-		Me.Enabled = True
+			Me.Enabled = True
 
-		'      If bActualizado Then
-		' Ejecutar()
-		' Grid.Row = nLastRow
-		' Grid.Col = nLastCol
-		' bActualizado = False
-		' End If
-
+			'      If bActualizado Then
+			' Ejecutar()
+			' Grid.Row = nLastRow
+			' Grid.Col = nLastCol
+			' bActualizado = False
+			' End If
+		Finally
+			Cursor = Cursors.Default
+		End Try
 	End Sub
 
 	Private Sub btnModif_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnModif.Click

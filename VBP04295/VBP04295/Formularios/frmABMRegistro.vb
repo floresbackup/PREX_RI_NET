@@ -5,7 +5,8 @@ Public Class frmABMRegistro
     Private Const TOP_CONTROLES As Long = 10
     Private MODO_APE As String
     Private sSQL_Update As String
-    Private oAdmTablas As New AdmTablas
+	Private oAdmTablas As New AdmTablas
+	Private listColumnasExistentes As List(Of clsColumnas)
 	Private dicControlesValorAnterior As Dictionary(Of String, Control)
 
 	Public Sub PasarDatos(ByVal nCodCon As Long,
@@ -54,8 +55,8 @@ Public Class frmABMRegistro
 
         bExiste = False
         Dim withLabel = 165
-        Dim listColumnasExistentes As New List(Of clsColumnas)
-        For Each oCol In oColumnas
+		listColumnasExistentes = New List(Of clsColumnas)
+		For Each oCol In oColumnas
             For Each oField In ds.Tables(0).Columns
 
                 If oCol.Campo.ToUpper = oField.ColumnName.ToUpper Then
@@ -125,14 +126,16 @@ Public Class frmABMRegistro
                                     bPrimero = True
                                 End If
                             End If
-                            If .ReadOnly Then
-                                .ForeColor = Color.Gray
-                            End If
-                        End With
+							If .ReadOnly Then
+								.ForeColor = Color.Gray
+							End If
+						End With
 
 						AddHandler txtInput.EditValueChanged, AddressOf txtInput_EditValueChanged
-						AddHandler txtInput.MouseLeave, AddressOf fecInput_Leave
-						AddHandler txtInput.Leave, AddressOf fecInput_Leave
+						If Not txtInput.ReadOnly Then
+							AddHandler txtInput.TextChanged, AddressOf fecInput_Leave
+						End If
+
 
 						dicControlesValorAnterior.Add(oCol.Key, txtInput)
 						Cont.Controls.Add(txtInput)
@@ -168,9 +171,9 @@ Public Class frmABMRegistro
                         End With
 
 						AddHandler fecInput.EditValueChanged, AddressOf fecInput_EditValueChanged
-						AddHandler fecInput.MouseLeave, AddressOf fecInput_Leave
-						AddHandler fecInput.Leave, AddressOf fecInput_Leave
-
+						If Not fecInput.ReadOnly Then
+							AddHandler fecInput.DateTimeChanged, AddressOf fecInput_Leave
+						End If
 						dicControlesValorAnterior.Add(oCol.Key, fecInput)
 
 						Cont.Controls.Add(fecInput)
@@ -206,8 +209,9 @@ Public Class frmABMRegistro
                     End With
 
 					AddHandler cboInput.SelectedIndexChanged, AddressOf cboInput_SelectedIndexChanged
-					AddHandler cboInput.MouseLeave, AddressOf fecInput_Leave
-					AddHandler cboInput.Leave, AddressOf fecInput_Leave
+					If Not cboInput.ReadOnly Then
+						AddHandler cboInput.SelectedIndexChanged, AddressOf fecInput_Leave
+					End If
 
 					dicControlesValorAnterior.Add(oCol.Key, cboInput)
 
@@ -485,12 +489,26 @@ GuardaDataRow:
 							CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.TextEdit).Text = ds.Tables(0).Rows(0).Item(0).ToString()
 						End If
 					End If
-				Else
-					CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.ComboBoxEdit).SelectedText = ds.Tables(0).Rows(0).Item(0).ToString()
+				ElseIf dicControlesValorAnterior.ContainsKey(sKey) Then
+					Dim items = CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.ComboBoxEdit).Properties.Items
+					Dim cItem As Prex.Utils.Entities.clsItem = Nothing
+
+					For Each i As Object In items
+						If TypeOf i Is Prex.Utils.Entities.clsItem AndAlso CType(i, Prex.Utils.Entities.clsItem).Valor = ds.Tables(0).Rows(0).Item(0).ToString() Then
+							cItem = i
+							Exit For
+						End If
+					Next
+
+					If cItem IsNot Nothing Then
+						CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.ComboBoxEdit).SelectedItem = cItem
+					Else
+						CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.ComboBoxEdit).SelectedText = ds.Tables(0).Rows(0).Item(0).ToString()
+					End If
 
 					'SelCombo(cboInput(oColumnas(sKey).Orden), "K" & RS.Fields(0)
 				End If
-			End If
+				End If
 
 
 		Catch ex As Exception
@@ -564,12 +582,23 @@ GuardaDataRow:
 
 	Private Sub fecInput_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-		Dim oCol As clsColumnas
-		oCol = oColumnas(sender.tag)
-		If oCol.Formula <> "" Then
+		listColumnasExistentes _
+		.ForEach(Sub(col)
+					 If col.Formula <> "" Then
+						 Formula(col.Formula, col.Key)
+					 End If
+				 End Sub)
 
-			Formula(oCol.Formula, oCol.Key)
-		End If
+
+		'If Not CType(sender, Control).Enabled OrElse (TypeOf sender Is DevExpress.XtraEditors.BaseEdit AndAlso CType(sender, DevExpress.XtraEditors.BaseEdit).ReadOnly) Then
+		'	Exit Sub
+		'End If
+		'Dim oCol As clsColumnas
+		'oCol = oColumnas(sender.tag)
+		'If oCol.Formula <> "" Then
+
+		'	Formula(oCol.Formula, oCol.Key)
+		'End If
 
 	End Sub
 
