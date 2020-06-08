@@ -79,7 +79,9 @@ Public Class AdmUsuarios
       Dim ds As DataSet
       Dim sPasswordActual As String
 
-      sSQL = "SELECT       * " & _
+
+		InicializarVariables()
+		sSQL = "SELECT       * " & _
              "FROM         USUARI " & _
              "WHERE        US_NOMBRE = '" & sNombreUsuario & "'"
       ds = oAdmTablas.Abrirdataset(sSQL)

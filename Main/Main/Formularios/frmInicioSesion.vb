@@ -63,48 +63,47 @@ Public Class frmInicioSesion
         Me.Close()
     End Sub
 
-    Private Sub Cargar()
+	Private Sub Cargar()
+		'Verifico la configuración de seguridad
+		If Not AUTENTICACIONSQL Then
+			ParametrosSeguridadNT()
+		End If
 
-      'Verifico la configuración de seguridad
-      If Not AUTENTICACIONSQL Then
-         ParametrosSeguridadNT()
-      End If
+		If bIntegraNT Then
 
-      If bIntegraNT Then
+			'Usuario NT
+			txtUsuario.Text = SystemInformation.UserName
 
-         'Usuario NT
-         txtUsuario.Text = SystemInformation.UserName
+			'Dominios disponibles
+			Dim oDominios() As ServerInfo = SQLConnector.GetSQLServers(SQLConnector.EServerTypes.SV_TYPE_DOMAIN_ENUM)
 
-         'Dominios disponibles
-         Dim oDominios() As ServerInfo = SQLConnector.GetSQLServers(SQLConnector.EServerTypes.SV_TYPE_DOMAIN_ENUM)
+			cboDominio.Items.Clear()
+			cboDominio.Items.Add(SystemInformation.UserDomainName)
+			cboDominio.Text = SystemInformation.UserDomainName
 
-         cboDominio.Items.Clear()
-         cboDominio.Items.Add(SystemInformation.UserDomainName)
-         cboDominio.Text = SystemInformation.UserDomainName
+			If Not oDominios Is Nothing Then
+				For Each oDominio As ServerInfo In oDominios
+					If oDominio.Name <> SystemInformation.UserDomainName.ToString Then
+						cboDominio.Items.Add(oDominio.Name)
+					End If
+				Next
+			End If
 
-         If Not oDominios Is Nothing Then
-            For Each oDominio As ServerInfo In oDominios
-               If oDominio.Name <> SystemInformation.UserDomainName.ToString Then
-                  cboDominio.Items.Add(oDominio.Name)
-               End If
-            Next
-         End If
+		Else
+			txtUsuario.Text = LAST_USER
+			txtPassword.Focus()
+			cboDominio.Items.Add("(Ninguno)")
+			cboDominio.Text = "(Ninguno)"
+			cboDominio.Enabled = False
+		End If
 
-      Else
-         txtUsuario.Text = LAST_USER
-         txtPassword.Focus()
-         cboDominio.Items.Add("(Ninguno)")
-         cboDominio.Text = "(Ninguno)"
-         cboDominio.Enabled = False
-      End If
+		If Not AUTENTICACIONSQL Then
+			CargarEntidades()
+		End If
 
-      If Not AUTENTICACIONSQL Then
-         CargarEntidades()
-      End If
+	End Sub
 
-   End Sub
-
-    Public Sub New()
+	Public Sub New()
 
       ' This call is required by the Windows Form Designer.
       InitializeComponent()
