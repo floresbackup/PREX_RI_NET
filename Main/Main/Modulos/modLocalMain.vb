@@ -56,7 +56,7 @@ Module modLocalMain
         Application.DoEvents()
 
 
-        Dim rutaLocalDll = Prex.Utils.Misc.Functions.ValidarYCopiarPathDll(CARPETA_LOCAL, System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies())
+		Dim rutaLocalDll = Prex.Utils.Misc.Functions.ValidarYCopiarPathDll(CARPETA_LOCAL, System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies())
 		If (rutaLocalDll.ToString().Any()) Then AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf Prex.Utils.Misc.Functions.LoadFromSameFolder
 
 
@@ -145,7 +145,8 @@ Module modLocalMain
 
 		If MisProcesos.Length > 1 Then
 			Dim usuario = System.Security.Principal.WindowsIdentity.GetCurrent().Name
-			If MisProcesos.Any(Function(p) p.Id <> Process.GetCurrentProcess().Id AndAlso Prex.Utils.Misc.Functions.GetProcessOwner(p.Id).ToLower() = usuario.ToString.ToLower()) Then
+			If MisProcesos.Any(Function(p) p.Id <> Process.GetCurrentProcess().Id AndAlso
+				Prex.Utils.Misc.Functions.GetProcessOwner(p.Id).ToLower() = usuario.ToString.ToLower()) Then
 				MessageBox.Show("Esta aplicación ya se encuentra activa")
 				End
 			End If
@@ -157,7 +158,7 @@ Module modLocalMain
 
 
 	Public Sub LeerXMLLocal()
-
+		'Todo: sacar usuario local de windows. sRuta + usuario
 		Try
 
 			Dim sRuta As String
