@@ -74,10 +74,10 @@ Public Class frmInicioSesion
 			'Usuario NT
 			txtUsuario.Text = SystemInformation.UserName
 
-			'Dominios disponibles
-			Dim oDominios() As ServerInfo = SQLConnector.GetSQLServers(SQLConnector.EServerTypes.SV_TYPE_DOMAIN_ENUM)
+            'Dominios disponibles
+            Dim oDominios() As ServerInfo = SQLConnector.GetSQLServers(SQLConnector.EServerTypes.SV_TYPE_DOMAIN_ENUM)
 
-			cboDominio.Items.Clear()
+            cboDominio.Items.Clear()
 			cboDominio.Items.Add(SystemInformation.UserDomainName)
 			cboDominio.Text = SystemInformation.UserDomainName
 

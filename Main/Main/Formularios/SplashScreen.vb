@@ -1,104 +1,129 @@
+Imports System.Reflection
+
 Public NotInheritable Class SplashScreen
 
-   Public Property AcercaDe() As Boolean
-      Get
-         Return MODO_ABOUT
-      End Get
+	Public Property AcercaDe() As Boolean
+		Get
+			Return MODO_ABOUT
+		End Get
 
-      Set(ByVal bModo As Boolean)
-         MODO_ABOUT = bModo
-      End Set
-   End Property
+		Set(ByVal bModo As Boolean)
+			MODO_ABOUT = bModo
+		End Set
+	End Property
 
-   Private MODO_ABOUT As Boolean = False
+	Private MODO_ABOUT As Boolean = False
 
-   'TODO: Este formulario se puede establecer fácilmente como pantalla de bienvenida para la aplicación desde la ficha "Aplicación"
-   '  del Diseñador de proyectos ("Propiedades" bajo el menú "Proyecto").
-   Private Sub SplashScreen_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Click
+	'TODO: Este formulario se puede establecer fácilmente como pantalla de bienvenida para la aplicación desde la ficha "Aplicación"
+	'  del Diseñador de proyectos ("Propiedades" bajo el menú "Proyecto").
+	Private Sub SplashScreen_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Click
 
-      If MODO_ABOUT Then
-         Me.Close()
-      End If
+		If MODO_ABOUT Then
+			Me.Close()
+		End If
 
-   End Sub
+	End Sub
 
-   Private Sub SplashScreen_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        lblFrameworkNet.Text = ".NET Framework " + System.Runtime.InteropServices.RuntimeEnvironment.GetSystemVersion
-        If MODO_ABOUT Then
-            lblEquipo.Text = DatosEquipo()
-            Label2.Visible = False
-            lblEquipo.Height = 191 + 55
-            lblFrameworkNet.Visible = True
-        Else
-            lblFrameworkNet.Visible = False
-            Label2.Visible = True
-        End If
+	Private Sub SplashScreen_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+		Dim a As New System.Runtime.Versioning.TargetFrameworkAttribute("")
+		Dim targetFrameworkAttribute = Assembly.GetExecutingAssembly().GetCustomAttributes(a.GetType(), False)
 
-    End Sub
+		lblFrameworkNet.Text = DirectCast(targetFrameworkAttribute(0), System.Runtime.Versioning.TargetFrameworkAttribute).FrameworkDisplayName
+		If MODO_ABOUT Then
+			lblEquipo.Text = DatosEquipo()
+			Label2.Visible = False
+			pnlDatos.Height = 191 + 40
+			lblFrameworkNet.Visible = True
+			pnlDatos.Visible = True
 
-   Public Sub New()
+			If ID_SISTEMA > 0 Then
+				pblCitiCiberrark.Location = New Point(lblEquipo.Location.X, lblEquipo.Location.Y + lblEquipo.Size.Height)
+				pblCitiCiberrark.Visible = True
+				picErrorCiberrark.Visible = CYBERRARKPASS.Trim = String.Empty
+				picOkCiberrark.Visible = Not picErrorCiberrark.Visible
+				If picErrorCiberrark.Visible Then
+					lblciti.Text = "Error conexión con Cyberark"
+					lblciti.ForeColor = Color.DarkRed
+				Else
+					lblciti.Text = "Conexión con Cyberark"
+					lblciti.ForeColor = Color.DarkGreen
+				End If
+			Else
+				pblCitiCiberrark.Visible = False
+			End If
 
-      ' Llamada necesaria para el Diseñador de Windows Forms.
-      InitializeComponent()
+		Else
+			lblFrameworkNet.Visible = False
+			Label2.Visible = True
+			pnlDatos.Visible = False
+			pblCitiCiberrark.Visible = False
+		End If
 
-        ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
-        lblEmpresa.Text = NOMBRE_EMPRESA
-        lblVersion.Text = "Versión " & Application.ProductVersion.Trim
+	End Sub
 
-   End Sub
+	Public Sub New()
 
-   Private Function DatosEquipo() As String
+		' Llamada necesaria para el Diseñador de Windows Forms.
+		InitializeComponent()
 
-      Dim ds As DataSet
-      Dim oAdmTablas As New AdmTablas
-      Dim sSQL As String
+		' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+		lblEmpresa.Text = NOMBRE_EMPRESA
+		lblVersion.Text = "Versión " & Application.ProductVersion.Trim
 
-      DatosEquipo = ""
+	End Sub
 
-      Try
+	Private Function DatosEquipo() As String
 
-            oAdmTablas.ConnectionString = CONN_LOCAL
+		Dim ds As DataSet
+		Dim oAdmTablas As New AdmTablas
+		Dim sSQL As String
 
-            DatosEquipo = "Ruta aplicación: " & vbCrLf & IO.Path.GetDirectoryName(Application.ExecutablePath) & vbCrLf & vbCrLf
+		DatosEquipo = ""
 
-            sSQL = "SELECT DB_NAME() AS BASEDATOS "
-            ds = oAdmTablas.AbrirDataset(sSQL)
+		Try
 
-            DatosEquipo = DatosEquipo & "Perfil CITI: " & CITI_PERFIL & vbCrLf & vbCrLf
-            DatosEquipo = DatosEquipo & "Base de datos: " & vbCrLf & ds.Tables(0).Rows(0).Item("BASEDATOS") & vbCrLf & vbCrLf
+			oAdmTablas.ConnectionString = CONN_LOCAL
 
-            sSQL = "SELECT   CONVERT(char(20), SERVERPROPERTY('servername')) AS SERVIDOR "
-            ds = oAdmTablas.AbrirDataset(sSQL)
+			DatosEquipo = "Ruta aplicación: " & vbCrLf & IO.Path.GetDirectoryName(Application.ExecutablePath) & vbCrLf & vbCrLf
 
-            DatosEquipo = DatosEquipo & "Servidor SQL: " & vbCrLf & ds.Tables(0).Rows(0).Item("SERVIDOR") & vbCrLf & vbCrLf
+			sSQL = "SELECT DB_NAME() AS BASEDATOS "
+			ds = oAdmTablas.AbrirDataset(sSQL)
 
-            ds = Nothing
+			DatosEquipo = DatosEquipo & "Perfil CITI: " & CITI_PERFIL & vbCrLf & vbCrLf
+			DatosEquipo = DatosEquipo & "Base de datos: " & vbCrLf & ds.Tables(0).Rows(0).Item("BASEDATOS") & vbCrLf & vbCrLf
 
-            sSQL = "SELECT   CONVERT(char(20), SERVERPROPERTY('collation')) as COLL"
-            ds = oAdmTablas.AbrirDataset(sSQL)
+			sSQL = "SELECT   CONVERT(char(20), SERVERPROPERTY('servername')) AS SERVIDOR "
+			ds = oAdmTablas.AbrirDataset(sSQL)
 
-            DatosEquipo = DatosEquipo & "Intercalación SQL: " & vbCrLf & ds.Tables(0).Rows(0).Item("COLL") & vbCrLf & vbCrLf
+			DatosEquipo = DatosEquipo & "Servidor SQL: " & vbCrLf & ds.Tables(0).Rows(0).Item("SERVIDOR") & vbCrLf & vbCrLf
 
-            sSQL = "SELECT @@VERSION AS VERSIONSQL "
-            ds = oAdmTablas.AbrirDataset(sSQL)
+			ds = Nothing
 
-            DatosEquipo = DatosEquipo & "Versión SQL: " & vbCrLf & Replace(Replace(ds.Tables(0).Rows(0).Item("VERSIONSQL"), vbLf, vbCrLf), vbTab, "") & vbCrLf
+			sSQL = "SELECT   CONVERT(char(20), SERVERPROPERTY('collation')) as COLL"
+			ds = oAdmTablas.AbrirDataset(sSQL)
 
-            If DatosEquipo.Contains("Microsoft Corporation") Then
-                DatosEquipo = DatosEquipo.Substring(0, DatosEquipo.IndexOf("Microsoft Corporation") + 21)
-            End If
+			DatosEquipo = DatosEquipo & "Intercalación SQL: " & vbCrLf & ds.Tables(0).Rows(0).Item("COLL") & vbCrLf & vbCrLf
 
-            ds = Nothing
+			sSQL = "SELECT @@VERSION AS VERSIONSQL "
+			ds = oAdmTablas.AbrirDataset(sSQL)
 
-      Catch ex As Exception
-         TratarError(ex, "DatosEquipo")
-      End Try
+			DatosEquipo = DatosEquipo & "Versión SQL: " & vbCrLf & Replace(Replace(ds.Tables(0).Rows(0).Item("VERSIONSQL"), vbLf, vbCrLf), vbTab, "") & vbCrLf
 
-   End Function
+			If DatosEquipo.Contains("Microsoft Corporation") Then
+				DatosEquipo = DatosEquipo.Substring(0, DatosEquipo.IndexOf("Microsoft Corporation") + 21)
+			End If
 
-    Private Sub SplashScreen_KeyPress(sender As Object, e As KeyPressEventArgs) Handles MyBase.KeyPress
-        If MODO_ABOUT AndAlso e.KeyChar = ChrW(Keys.Escape) Then
-            Me.Close()
-        End If
-    End Sub
+			ds = Nothing
+
+		Catch ex As Exception
+			TratarError(ex, "DatosEquipo")
+		End Try
+
+	End Function
+
+	Private Sub SplashScreen_KeyPress(sender As Object, e As KeyPressEventArgs) Handles MyBase.KeyPress
+		If MODO_ABOUT AndAlso e.KeyChar = ChrW(Keys.Escape) Then
+			Me.Close()
+		End If
+	End Sub
 End Class

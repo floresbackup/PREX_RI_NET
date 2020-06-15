@@ -148,7 +148,8 @@ Public Class AdmTablas
 
     Public Function AbrirDataset(ByVal sSQL As String,
                                 Optional ByRef oDa As OleDb.OleDbDataAdapter = Nothing,
-                                Optional ByRef sErrorText As String = "") As DataSet
+                                Optional ByRef sErrorText As String = "",
+                                 Optional ByVal guardaLog As Boolean = True) As DataSet
 
         Dim oConn As OleDb.OleDbConnection
         Dim da As OleDb.OleDbDataAdapter
@@ -170,7 +171,9 @@ Public Class AdmTablas
 
         Catch ex As Exception
             sErrorText = ex.Message
-            GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "ERROR: AbrirDataSet - " & ex.Message, CODIGO_TRANSACCION)
+            If guardaLog Then
+                GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, "ERROR: AbrirDataSet - " & ex.Message, CODIGO_TRANSACCION)
+            End If
 
             Return Nothing
         End Try

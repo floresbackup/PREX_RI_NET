@@ -697,7 +697,11 @@ Module modFunciones
             Dim sql1 = "select ISNULL(COL_LENGTH('dbo.LogSis', 'LS_SECUEN') , 0)"
             Dim sql2 = "select ISNULL(COL_LENGTH('dbo.LogSis', 'LS_WKSTAT') , 0)"
 
-            Dim ds As DataSet = oAdmTablas.AbrirDataset(sql1)
+            Dim ds As DataSet = oAdmTablas.AbrirDataset(sql1, guardaLog:=False)
+            If ds Is Nothing Then
+                Throw New Exception("No fue posible conectarse al SQL")
+
+            End If
             If ds.Tables(0).Rows.Count > 0 AndAlso ds.Tables(0).Rows(0).Item(0) = 0 Then
                 oAdmTablas.EjecutarComandoAsincrono("ALTER TABLE dbo.LOGSIS ADD	LS_SECUEN int NOT NULL IDENTITY (1, 1)")
             End If
