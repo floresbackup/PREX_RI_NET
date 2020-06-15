@@ -2,6 +2,7 @@
 using System.Data;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
@@ -191,7 +192,29 @@ namespace Prex.Utils
             }
         }
 
-        public static string ARCHIVO_CONFIG_LOCAL => _config?.CARPETA_LOCAL + _config?.NOMBRE_INI_LOCAL;
+        public static string ARCHIVO_CONFIG_LOCAL 
+        {
+            get
+            {
+                var usuario = System.Security.Principal.WindowsIdentity.GetCurrent();
+				string carpetaConusuario;
+				if (usuario.Name.Split(@"\".ToCharArray()).Count() > 1)
+                    carpetaConusuario = Path.Combine(PrexConfig.CARPETA_LOCAL, usuario.Name.Split(@"\".ToCharArray()).LastOrDefault());
+                else
+                    carpetaConusuario = Path.Combine(PrexConfig.CARPETA_LOCAL, usuario.Name);
+
+                if (!Directory.Exists(carpetaConusuario))
+                    Directory.CreateDirectory(carpetaConusuario);
+
+                var sRuta = Path.Combine(carpetaConusuario, PrexConfig.NOMBRE_INI_LOCAL);
+                var sRutaIni = Path.Combine(PrexConfig.CARPETA_LOCAL, PrexConfig.NOMBRE_INI_LOCAL);
+
+                if (File.Exists(sRutaIni) && !File.Exists(sRuta))
+                    File.Copy(sRutaIni, sRuta);
+
+                return sRuta;
+            }
+        }
 
         public static PrexConfig PrexConfig
         {
@@ -269,6 +292,7 @@ namespace Prex.Utils
         {
             try
             {
+
 
                 if (!TieneConfigLocal)
                 {

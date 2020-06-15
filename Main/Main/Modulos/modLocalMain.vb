@@ -166,6 +166,23 @@ Module modLocalMain
 
 			sRuta = CARPETA_LOCAL & NOMBRE_INI_LOCAL
 
+			Dim usuario As Security.Principal.WindowsIdentity = System.Security.Principal.WindowsIdentity.GetCurrent()
+			If usuario.Name.Split("\").Count() > 1 Then
+				carpetaConusuario = Path.Combine(CARPETA_LOCAL, usuario.Name.Split("\").LastOrDefault())
+			Else
+				carpetaConusuario = Path.Combine(CARPETA_LOCAL, usuario.Name)
+			End If
+
+			If Not Directory.Exists(carpetaConusuario) Then
+				Directory.CreateDirectory(carpetaConusuario)
+			End If
+
+			sRuta = Path.Combine(carpetaConusuario, NOMBRE_INI_LOCAL)
+
+			If File.Exists(CARPETA_LOCAL & NOMBRE_INI_LOCAL) AndAlso Not File.Exists(sRuta) Then
+				File.Copy(CARPETA_LOCAL & NOMBRE_INI_LOCAL, sRuta)
+			End If
+
 			If Not IO.File.Exists(sRuta) Then
 				GuardarXMLLocal()
 			End If
