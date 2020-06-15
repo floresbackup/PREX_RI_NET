@@ -93,5 +93,11 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Prex.Utils\Prex.Utils\Prex.Utils.csproj">
+      <Project>{2EEEDB12-2EE1-4D8C-A5C5-1E99954AA4AE}</Project>
+      <Name>Prex.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -64,3 +64,4 @@ C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\de
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\es\DevExpress.Pdf.v17.2.Core.resources.dll
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\ja\DevExpress.Pdf.v17.2.Core.resources.dll
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\ru\DevExpress.Pdf.v17.2.Core.resources.dll
+C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Debug\Prex.Utils.csproj.CoreCompileInputs.cache

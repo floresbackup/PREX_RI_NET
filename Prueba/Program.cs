@@ -6,22 +6,40 @@ using Google.Apis.Reseller.v1.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using Microsoft.Owin.Security.Google;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Prex.Utils.Security.SSO;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading;
 
 namespace AdminSDKResellerQuickstart
 {
-	class Program
+
+
+
+    class Program
 	{
 		// If modifying these scopes, delete your previously saved credentials
 		// at ~/.credentials/reseller-dotnet-quickstart.json
-		static string[] Scopes = { ResellerService.Scope.AppsOrder };
+		//https://www.googleapis.com/auth/admin.directory.user.readonly
+		static string[] Scopes = { @"https://www.googleapis.com/auth/admin.directory.user.readonly" };
 		static string ApplicationName = "G Suite Reseller API .NET Quickstart";
 
 		static void Main(string[] args)
 		{
+            var ww = Prex.Utils.Security.SSO.GoogleJsonWebToken.Encode("iam-nx@naranjax.com", @"C:\Prex\Naranja X\cert.pem");
+            
+            if (ww != null)
+            {
+
+
+            }
+            /*
 			UserCredential credential;
 				
 
@@ -40,14 +58,6 @@ namespace AdminSDKResellerQuickstart
 				Console.WriteLine("Credential file saved to: " + credPath);
 			}
 
-			var xCred = new ServiceAccountCredential(new ServiceAccountCredential.Initializer("floresbackup@gmai.com")
-			{
-				Scopes = new[] {
-					ResellerService.Scope.AppsOrder
-					}
-			}.FromPrivateKey("SjCqED2rgNz8WsBbzSbTkvKo"));
-
-
 
 			// Create G Suite Reseller API service.
 			var service = new ResellerService(new BaseClientService.Initializer()
@@ -55,6 +65,19 @@ namespace AdminSDKResellerQuickstart
 				HttpClientInitializer = credential,
 				ApplicationName = ApplicationName,
 			});
+
+			try
+			{
+				var s = new Google.Apis.Admin.Directory.directory_v1.UsersResource(service);
+				var usuario = s.Get("raul.gatti@naranjax.com");
+				if (usuario != null)
+				{ }
+			}
+			catch (Exception ex)
+			{
+
+			}
+
 
 			// Define parameters of request.
 			SubscriptionsResource.ListRequest request = service.Subscriptions.List();
@@ -122,6 +145,7 @@ namespace AdminSDKResellerQuickstart
 
 			}
 			Console.Read();
-		}
+			*/
+        }
 	}
 }
