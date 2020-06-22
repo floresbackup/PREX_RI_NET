@@ -275,26 +275,24 @@ Module modFunciones
 				End If
 				builder.Add("Password", pass)
 
-				Try
-					Dim conn As New OleDb.OleDbConnection(builder.ConnectionString)
-					conn.Open()
-					If (conn.State = ConnectionState.Open) Then
-						conn.Close()
-					End If
-				Catch ex As OleDb.OleDbException
-					If ex.Message.ToLower().Contains("login fail") Then
-						builder.Remove("Password")
-						If teniaPass Then
-							builder.Add("Password", passAnt)
-							pass = passAnt
-						End If
-					End If
+                Try
+                    Dim conn As New OleDb.OleDbConnection(builder.ConnectionString)
+                    conn.Open()
+                    If (conn.State = ConnectionState.Open) Then
+                        conn.Close()
+                    End If
+                    CYBERRARKPASS = pass
+                Catch ex As OleDb.OleDbException
+                    builder.Remove("Password")
+                    If teniaPass Then
+                        builder.Add("Password", passAnt)
+                        pass = passAnt
+                    End If
+                End Try
 
-				End Try
+                CONN_LOCAL = builder.ConnectionString
 
-				CONN_LOCAL = builder.ConnectionString
-				CYBERRARKPASS = pass
-				Return pass.Trim
+                Return pass.Trim
 			Catch ex As Exception
 				'MessageBox.Show(ex.Message, "Error GetPassWordCyberRark", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Return String.Empty
