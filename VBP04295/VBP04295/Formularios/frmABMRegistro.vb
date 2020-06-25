@@ -351,15 +351,15 @@ Public Class frmABMRegistro
                     If MODO_APE = "A" Or MODO_APE = "N" Then
                         oRow.Item(oCol.Campo) = oAdmTablas.ValueOrDbNull(oCol.Valor)
                     Else
-                        If oCol.Valor Is Nothing Then
+                        If oCol.Valor Is Nothing AndAlso TipoDatosADO(oCol.Tipo) <> "Numérico" Then
                             sValor = "NULL"
                         Else
                             Select Case TipoDatosADO(oCol.Tipo)
 								Case "Numérico"
-									If oCol.Valor.ToString().Trim() = String.Empty Then
-										sValor = FlotanteSQL(0)
-									Else
-										sValor = FlotanteSQL(oCol.Valor)
+                                    If oCol.Valor Is Nothing OrElse oCol.Valor.ToString().Trim() = String.Empty Then
+                                        sValor = FlotanteSQL(0)
+                                    Else
+                                        sValor = FlotanteSQL(oCol.Valor)
 									End If
 								Case "Fecha/Hora"
 									If oCol.Valor.ToString().Trim() = String.Empty Then
