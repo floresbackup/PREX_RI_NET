@@ -61,10 +61,12 @@ Public Class frmCrearPeriodo
 			End If
 
 			If chkDatos.Checked Then
+				Dim fechastring = CType(cboFecVig.SelectedItem, Prex.Utils.Entities.clsItem).Valor
+				Dim fecha = FechaSQL(fechastring)
 				sSQL = "SELECT  * " &
 					   "INTO    VBP04295 " &
 					   "FROM    " & TABLA & " " &
-					   "WHERE   " & PREFIJO & "_FECVIG = " & FechaSQL(cboFecVig.Text) & " " &
+					   "WHERE   " & PREFIJO & "_FECVIG = " & fecha & " " &
 					   "AND     " & PREFIJO & "_CODENT = " & CODIGO_ENTIDAD & " " &
 					   "AND     CAST(" & PREFIJO & "_CODCON AS INT) = " & CodCon & " "
 
@@ -300,6 +302,7 @@ Maneja_Error:
 
 	Private Sub cboFecVig_CustomDisplayText(sender As Object, e As CustomDisplayTextEventArgs) Handles cboFecVig.CustomDisplayText
 		If e.Value Is Nothing Then Exit Sub
+
 		e.DisplayText = CType(CType(e.Value, Prex.Utils.Entities.clsItem).Valor, DateTime).ToString("dd/MM/yyyy")
 	End Sub
 End Class

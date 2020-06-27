@@ -61,7 +61,7 @@ Public Class frmABMRegistro
 
                 If oCol.Campo.ToUpper = oField.ColumnName.ToUpper Then
                     listColumnasExistentes.Add(oCol)
-                    If oCol.Titulo.Trim.Length > 0 Then
+                    If oCol.Titulo IsNot Nothing AndAlso oCol.Titulo.Trim.Length > 0 Then
 
                         Dim t As String = IIf(oCol.Titulo.Substring(oCol.Titulo.Length - 1, 1) <> ":", oCol.Titulo & ":", oCol.Titulo)
                         If t.Length > 30 Then
