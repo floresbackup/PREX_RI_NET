@@ -443,38 +443,41 @@ GuardaDataRow:
 			Dim oCol As clsColumnas
 			For Each oCol In oColumnas
 				Dim vValor = String.Empty
+                If oCol.Valor IsNot Nothing AndAlso Not IsDBNull(oCol.Valor) Then
+                    If oCol.Help = 0 Then
+                        If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
+                            vValor = FechaSQL(oCol.Valor)
+                        ElseIf TipoDatosADO(oCol.Tipo) = "Numérico" Then
+                            If IsNumeric(oCol.Valor) Then
+                                vValor = FlotanteSQL(Format(oCol.Valor, "Fixed"))
+                            Else
+                                vValor = 0
+                            End If
+                        Else
+                            vValor = "'" & oCol.Valor & "'"
+                        End If
+                    Else
+                        If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
+                                vValor = FechaSQL(Llave(oCol.Valor))
+                            ElseIf TipoDatosADO(oCol.Tipo) = "Numérico" Then
+                                If IsNumeric(oCol.Valor) Then
+                                    vValor = FlotanteSQL(Format(oCol.Valor, "Fixed"))
+                                Else
+                                    vValor = 0
+                                End If
+                            Else
+                                vValor = "'" & oCol.Valor & "'"
+                            End If
+                        End If
+                End If
 
-				If oCol.Help = 0 Then
-					If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
-						vValor = FechaSQL(oCol.Valor)
-					ElseIf TipoDatosADO(oCol.Tipo) = "Numérico" Then
-						If IsNumeric(oCol.Valor) Then
-							vValor = FlotanteSQL(Format(oCol.Valor, "Fixed"))
-						Else
-							vValor = 0
-						End If
-					Else
-						vValor = "'" & oCol.Valor & "'"
-					End If
-				Else
-					If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
-						vValor = FechaSQL(Llave(oCol.Valor))
-					ElseIf TipoDatosADO(oCol.Tipo) = "Numérico" Then
-						If IsNumeric(oCol.Valor) Then
-							vValor = FlotanteSQL(Format(oCol.Valor, "Fixed"))
-						Else
-							vValor = 0
-						End If
-					Else
-						vValor = "'" & oCol.Valor & "'"
-					End If
-				End If
 
 
-				sSQL = Replace(sSQL, "[" & oCol.Campo & "]", vValor)
 
-				Application.DoEvents()
-			Next
+                sSQL = Replace(sSQL, "[" & oCol.Campo & "]", vValor)
+
+                'Application.DoEvents()
+            Next
 
 			sSQL = frmMain.ReemplazarVariablesExt(sSQL)
 
