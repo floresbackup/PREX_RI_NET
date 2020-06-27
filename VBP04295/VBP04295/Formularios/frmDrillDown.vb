@@ -177,4 +177,30 @@ Public Class frmDrillDown
             Me.Cursor = Cursors.Default
         End Try
     End Sub
+
+    Private Sub cmdCopiarGrilla_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles cmdCopiarGrilla.ItemClick
+
+        'GuardarLOG(AccionesLOG.CopiaDeDatos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+        Cursor = Cursors.WaitCursor
+        SuspendLayout()
+        Try
+
+            Try
+                Dim d = GridView1.OptionsSelection.MultiSelect
+                GridView1.OptionsSelection.MultiSelect = True
+                GridView1.SelectAll()
+                GridView1.CopyToClipboard()
+                GridView1.ClearSelection()
+                GridView1.OptionsSelection.MultiSelect = d
+                MensajeInformacion("Se han copiado los resultados al portapapeles")
+            Catch ex As Exception
+                TratarError(ex, "Copiar")
+            End Try
+        Finally
+            ResumeLayout()
+            Cursor = Cursors.Default
+        End Try
+
+
+    End Sub
 End Class
