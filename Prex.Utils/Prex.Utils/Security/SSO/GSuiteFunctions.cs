@@ -1,17 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
+using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Prex.Utils.Security.SSO
 {
-    public enum JwtHashAlgorithm
+	public enum JwtHashAlgorithm
     {
         RS256,
         HS384,
@@ -139,7 +140,7 @@ namespace Prex.Utils.Security.SSO
         public static string Encode(string email, string certificateFilePath)
         {
             var utc0 = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Local);
-            var issueTime = DateTime.Now;
+            var issueTime = DateTime.Now.ToUniversalTime();
 
             var iat = (int)issueTime.Subtract(utc0).TotalSeconds;
             var exp = (int)issueTime.AddMinutes(55).Subtract(utc0).TotalSeconds; // Expiration time is up to 1 hour, but lets play on safe side
@@ -147,18 +148,45 @@ namespace Prex.Utils.Security.SSO
             var payload = new
             {
                 iss = "managegsuiteusers@kibananaranjacom-1567620199723.iam.gserviceaccount.com",
-                sub = "iam-nx@naranjax.com",
+                sub = email,
                 scope = "https://www.googleapis.com/auth/admin.directory.user.readonly",
                 aud = "https://oauth2.googleapis.com/token",
                 exp = exp,
                 iat = iat
             };
 
-            //var certificate = new X509Certificate2(certificateFilePath, "notasecret");
 
-            var privateKey = File.ReadAllBytes(certificateFilePath);//certificate.Export(X509ContentType.Cert);
+            var certText = File.ReadAllText(certificateFilePath);
+            var certBytes = Encoding.UTF8.GetBytes($"-----BEGIN PRIVATE KEY-----{Encoding.UTF8.GetString(Convert.FromBase64String(certText))}-----END PRIVATE KEY-----");
+            var signingcert = new X509Certificate2(certBytes, "notasecret", X509KeyStorageFlags.Exportable);
 
-            return JsonWebToken.Encode(payload, privateKey, JwtHashAlgorithm.RS256);
+
+            var certificate = new X509Certificate2(certificateFilePath, "notasecret");
+            var privateKey = certificate.Export(X509ContentType.Cert);
+
+            var tk = JsonWebToken.Encode(payload, privateKey, JwtHashAlgorithm.RS256);
+            return tk;
+        }
+
+        public static string GenerateToken(string email, string certificateFilePath, int expireMinutes)
+        {
+
+            var now = DateTime.UtcNow;
+            X509Certificate2 signingCert = new X509Certificate2(certificateFilePath);
+            X509SecurityKey privateKey = new X509SecurityKey(signingCert);
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) });
+           
+            var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            var jwtSecurityToken = tokenHandler.CreateJwtSecurityToken(
+                    audience: @"https://oauth2.googleapis.com/token",
+                    issuer: "managegsuiteusers@kibananaranjacom-1567620199723.iam.gserviceaccount.com",
+                    subject: claimsIdentity,
+                    notBefore: now,
+                    expires: now.AddMinutes(Convert.ToInt32(expireMinutes)),
+                    signingCredentials: new SigningCredentials(privateKey, SecurityAlgorithms.RsaSha256Signature));
+
+            var jwtTokenString = tokenHandler.WriteToken(jwtSecurityToken);
+            return jwtTokenString;
         }
     }
 

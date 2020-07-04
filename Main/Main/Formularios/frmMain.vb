@@ -21,7 +21,7 @@ Public Class frmMain
 
     Private Sub CargarILMenu()
 
-        If SIEMPRE_ICONOS_GRANDES Then
+        If Prex.Utils.Configuration.PrexConfigLocal.SiempreIG = 1 Then
             lvTrans.SmallImageList = il32x32
         Else
             lvTrans.SmallImageList = il16x16

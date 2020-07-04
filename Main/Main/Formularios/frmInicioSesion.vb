@@ -1,3 +1,5 @@
+Imports Prex.Utils
+
 Public Class frmInicioSesion
 
     ' TODO: Insert code to perform custom authentication using the provided username and password 
@@ -8,54 +10,54 @@ Public Class frmInicioSesion
     ' Subsequently, My.User will return identity information encapsulated in the CustomPrincipal object
     ' such as the username, display name, etc.
 
-   Public Enum eModoAutenticacion As Integer
-      AutenticacionExterna = 0
-      AutenticacionInterna = 1
-      AutenticacionNT = 2
-      AutenticacionSQL = 3
-   End Enum
+    Public Enum eModoAutenticacion As Integer
+        AutenticacionExterna = 0
+        AutenticacionInterna = 1
+        AutenticacionNT = 2
+        AutenticacionSQL = 3
+    End Enum
 
-   Private nModoAutenticacion As eModoAutenticacion = eModoAutenticacion.AutenticacionInterna
+    Private nModoAutenticacion As eModoAutenticacion = eModoAutenticacion.AutenticacionInterna
 
-   Public Property ModoAutenticacion() As eModoAutenticacion
-      Get
-         Return nModoAutenticacion
-      End Get
+    Public Property ModoAutenticacion() As eModoAutenticacion
+        Get
+            Return nModoAutenticacion
+        End Get
         Set(ByVal nModo As eModoAutenticacion)
             nModoAutenticacion = nModo
         End Set
     End Property
 
-   Private bAutenticadoOK As Boolean = False
+    Private bAutenticadoOK As Boolean = False
 
-   Public ReadOnly Property Autenticado() As Boolean
-      Get
-         Return bAutenticadoOK
-      End Get
-   End Property
+    Public ReadOnly Property Autenticado() As Boolean
+        Get
+            Return bAutenticadoOK
+        End Get
+    End Property
 
-   Private bIntegraNT As Boolean
-   Private nDiasPreviosRenov As Double
-   Private oAdmTablas As New AdmTablas
-   Private oAdmUsuarios As New AdmUsuarios
-   Private datosUsuario As Usuario
+    Private bIntegraNT As Boolean
+    Private nDiasPreviosRenov As Double
+    Private oAdmTablas As New AdmTablas
+    Private oAdmUsuarios As New AdmUsuarios
+    Private datosUsuario As Usuario
 
-   Private bSoloAutorizar As Boolean = False
+    Private bSoloAutorizar As Boolean = False
 
-   Public Sub SoloAutorizar()
+    Public Sub SoloAutorizar()
 
-      bSoloAutorizar = True
+        bSoloAutorizar = True
 
-      lblHeader.Text = "Ejecutar como..."
-      Me.Text = "Ejecutar como..."
+        lblHeader.Text = "Ejecutar como..."
+        Me.Text = "Ejecutar como..."
 
-   End Sub
+    End Sub
 
     Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
 
-      If DatosOK() Then
-         Validar()
-      End If
+        If DatosOK() Then
+            Validar()
+        End If
 
     End Sub
 
@@ -63,35 +65,35 @@ Public Class frmInicioSesion
         Me.Close()
     End Sub
 
-	Private Sub Cargar()
-		'Verifico la configuración de seguridad
-		If Not AUTENTICACIONSQL Then
-			ParametrosSeguridadNT()
-		End If
+    Private Sub Cargar()
+        'Verifico la configuración de seguridad
+        If Not AUTENTICACIONSQL Then
+            ParametrosSeguridadNT()
+        End If
 
-		If bIntegraNT Then
+        If bIntegraNT Then
 
-			'Usuario NT
-			txtUsuario.Text = SystemInformation.UserName
+            'Usuario NT
+            txtUsuario.Text = SystemInformation.UserName
 
             'Dominios disponibles
             Dim oDominios() As ServerInfo = SQLConnector.GetSQLServers(SQLConnector.EServerTypes.SV_TYPE_DOMAIN_ENUM)
 
             cboDominio.Items.Clear()
-			cboDominio.Items.Add(SystemInformation.UserDomainName)
-			cboDominio.Text = SystemInformation.UserDomainName
+            cboDominio.Items.Add(SystemInformation.UserDomainName)
+            cboDominio.Text = SystemInformation.UserDomainName
 
-			If Not oDominios Is Nothing Then
-				For Each oDominio As ServerInfo In oDominios
-					If oDominio.Name <> SystemInformation.UserDomainName.ToString Then
-						cboDominio.Items.Add(oDominio.Name)
-					End If
-				Next
-			End If
+            If Not oDominios Is Nothing Then
+                For Each oDominio As ServerInfo In oDominios
+                    If oDominio.Name <> SystemInformation.UserDomainName.ToString Then
+                        cboDominio.Items.Add(oDominio.Name)
+                    End If
+                Next
+            End If
 
-		Else
-			txtUsuario.Text = LAST_USER
-			txtPassword.Focus()
+        Else
+            txtUsuario.Text = Prex.Utils.Configuration.PrexConfigLocal.LastUser.ToStringOrEmpty()
+            txtPassword.Focus()
 			cboDominio.Items.Add("(Ninguno)")
 			cboDominio.Text = "(Ninguno)"
 			cboDominio.Enabled = False

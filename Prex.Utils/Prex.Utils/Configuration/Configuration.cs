@@ -59,13 +59,13 @@ namespace Prex.Utils
 
     public class PrexConfigLocal
     {
-        public int Vista             { get; protected set; }
-        public int MultiExec         { get; protected set; }
-        public int MinimizarAlCerrar { get; protected set; }
-        public int InicioTray        { get; protected set; }
-        public int ConfirmarAlSalir  { get; protected set; }
-        public string LastUser       { get; protected set; }
-        public int SiempreIG         { get; protected set; }
+        public int Vista             { get; set; }
+        public int MultiExec         { get; set; }
+        public int MinimizarAlCerrar { get; set; }
+        public int InicioTray        { get; set; }
+        public int ConfirmarAlSalir  { get; set; }
+        public string LastUser       { get; set; }
+        public int SiempreIG         { get; set; }
 
         public PrexConfigLocal() { }
 
@@ -234,7 +234,7 @@ namespace Prex.Utils
             }
         }
 
-        public static bool TieneConfigLocal => _config != null && File.Exists(ARCHIVO_CONFIG_LOCAL);
+        public static bool TieneConfigLocal =>/* _config != null &&*/ File.Exists(ARCHIVO_CONFIG_LOCAL);
 
         public static void LeerXML()
         {
@@ -288,21 +288,18 @@ namespace Prex.Utils
             }
         }
 
-        private static void LeerXMLLocal()
+        public static void LeerXMLLocal()
         {
             try
             {
-
-
                 if (!TieneConfigLocal)
-                {
                     GuardarXMLLocal();
-                }
                 else
                 {
                     var prexConfig = new XmlDocument();
                     prexConfig.Load(ARCHIVO_CONFIG_LOCAL);
                     _configLocal = new PrexConfigLocal(prexConfig);
+                    
                 }
             }
             catch (Exception ex)
@@ -312,19 +309,12 @@ namespace Prex.Utils
 
         }
 
-        private static T GetDefaultType<T>(T propiedad)
-        {
-            return default(T);
-        }
-
         public static void GuardarXMLLocal()
         {
 
             var _xmlLocal = new XmlDocument();
             var dec = _xmlLocal.CreateXmlDeclaration("1.0", "", "yes");
             _xmlLocal.AppendChild(dec);
-
-            _configLocal = new PrexConfigLocal();
 
             var dsConfig = _xmlLocal.CreateElement("dsConfig");
 
@@ -346,102 +336,7 @@ namespace Prex.Utils
             _xmlLocal.AppendChild(dsConfig);
             _xmlLocal.Save(ARCHIVO_CONFIG_LOCAL);
         }
-        //    //Vista
-        //    var node11 = _xmlLocal.CreateNode(XmlNodeType.Element, "NOMBRE", "dsConfig/config");
-        //    node11.InnerText = "Vista";
-        //    var node12 = _xmlLocal.CreateNode(XmlNodeType.Element, "VALOR", "dsConfig/config");
-        //    node11.InnerText = "0";
 
-        //    //MultiExec
-        //    var node21 = _xmlLocal.CreateNode(XmlNodeType.Element, "NOMBRE", "dsConfig/config");
-        //    node21.InnerText = "MultiExec";
-        //    var node22 = _xmlLocal.CreateNode(XmlNodeType.Element, "VALOR", "dsConfig/config");
-        //    node21.InnerText = "0";
-
-        //    //MinimizarAlCerrar
-        //    var node31 = _xmlLocal.CreateNode(XmlNodeType.Element, "NOMBRE", "dsConfig/config");
-        //    node31.InnerText = "MinimizarAlCerrar";
-        //    var node32 = _xmlLocal.CreateNode(XmlNodeType.Element, "VALOR", "dsConfig/config");
-        //    node32.InnerText = "0";
-
-        //    //Vista
-        //    var node11 = _xmlLocal.CreateNode(XmlNodeType.Element, "NOMBRE", "dsConfig/config");
-        //    node1.InnerText = "Vista";
-        //    var node12 = _xmlLocal.CreateNode(XmlNodeType.Element, "VALOR", "dsConfig/config");
-        //    node1.InnerText = "0";
-
-        //    //Vista
-        //    var node11 = _xmlLocal.CreateNode(XmlNodeType.Element, "NOMBRE", "dsConfig/config");
-        //    node1.InnerText = "Vista";
-        //    var node12 = _xmlLocal.CreateNode(XmlNodeType.Element, "VALOR", "dsConfig/config");
-        //    node1.InnerText = "0";
-
-        //    _xmlLocal.AppendChild()
-
-        //Dim ds As New dsConfig
-        //Dim dr As DataRow
-        //Dim dt As DataTable = ds.Tables("CONFIG")
-
-        //Try
-
-        //    Dim sRuta As String
-
-        //    sRuta = CARPETA_LOCAL & NOMBRE_INI_LOCAL
-
-        //    'Conexión Base de datos
-        //    dr = dt.NewRow()
-        //    dr("NOMBRE") = "Vista"
-        //    dr("VALOR") = VISTA_ACTUAL
-        //    dt.Rows.Add(dr)
-        //    ds.AcceptChanges()
-
-        //    'Formato de Fecha del Servidor SQL
-        //    dr = dt.NewRow()
-        //    dr("NOMBRE") = "MultiExec"
-        //    dr("VALOR") = MULTIEXEC
-        //    dt.Rows.Add(dr)
-        //    ds.AcceptChanges()
-
-        //    'Ruta a la carpeta local
-        //    dr = dt.NewRow()
-        //    dr("NOMBRE") = "MinimizarAlCerrar"
-        //    dr("VALOR") = MINIMIZAR_AL_CERRAR
-        //    dt.Rows.Add(dr)
-        //    ds.AcceptChanges()
-
-        //    'Nombre de archivo de configuración local
-        //    dr = dt.NewRow()
-        //    dr("NOMBRE") = "InicioTray"
-        //    dr("VALOR") = INICIAR_EN_TRAY
-        //    dt.Rows.Add(dr)
-        //    ds.AcceptChanges()
-
-        //    'Nombre de archivo de configuración local
-        //    dr = dt.NewRow()
-        //    dr("NOMBRE") = "ConfirmarAlSalir"
-        //    dr("VALOR") = CONFIRMAR_AL_SALIR
-        //    dt.Rows.Add(dr)
-        //    ds.AcceptChanges()
-
-        //    'Nombre de archivo de configuración local
-        //    dr = dt.NewRow()
-        //    dr("NOMBRE") = "LastUser"
-        //    dr("VALOR") = UsuarioActual.Nombre
-        //    dt.Rows.Add(dr)
-        //    ds.AcceptChanges()
-
-        //    'Nombre de archivo de configuración local
-        //    dr = dt.NewRow()
-        //    dr("NOMBRE") = "SiempreIG"
-        //    dr("VALOR") = SIEMPRE_ICONOS_GRANDES
-        //    dt.Rows.Add(dr)
-        //    ds.AcceptChanges()
-
-        //    ds.WriteXml(sRuta)
-
-        //Catch ex As Exception
-        //    TratarError(ex, "GuardarXMLLocal")
-        //End Try
 
     }
 

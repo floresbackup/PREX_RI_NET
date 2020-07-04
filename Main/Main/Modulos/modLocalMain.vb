@@ -7,14 +7,8 @@ Imports System.Reflection
 Module modLocalMain
 
 	'Propiedades lanzador
-	Public VISTA_ACTUAL As Integer
 	Public HABILITACIONES_ESPECIALES As String
 	Public INHABILITACIONES_ESPECIALES As String
-	Public MULTIEXEC As Integer
-	Public MINIMIZAR_AL_CERRAR As Integer
-	Public CONFIRMAR_AL_SALIR As Integer
-	Public INICIAR_EN_TRAY As Integer
-	Public SIEMPRE_ICONOS_GRANDES As Integer
 	Public LOADING_APP As Boolean
 
 	'Ejecutar como...
@@ -23,31 +17,14 @@ Module modLocalMain
 	Public USUARIO_AUTORIZADO As Boolean
 
 	Sub Main()
-		''Prueba response SG
-		'Dim responseSplit As String() = "SG_ME66396_160771_3265|xT97sUaP83".Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
-		'If (responseSplit.Where(Function(s) s.Any()).Any() AndAlso Not responseSplit.FirstOrDefault() Is Nothing) Then
-		'    Dim usuarioCiti As String() = responseSplit.FirstOrDefault(Function(s) s.ToLower.Contains("sg_")).Trim().Split(New String() {"_"}, StringSplitOptions.RemoveEmptyEntries)
-		'    If usuarioCiti.Any AndAlso usuarioCiti.FirstOrDefault().ToLower() = "sg" Then
-		'        sNombre = usuarioCiti(1)
-		'    Else
-		'        sNombre = String.Empty
-		'    End If
-		'Else
-		'    sNombre = String.Empty
-		'End If
-
-
 		Dim bIniciar As Boolean = True
 
 		PrevInstance()
-        'NUEVA FUNCIONA DE LEER XML
-        'Prex.Utils.Configuration.LeerXML()
 
-
-        'Configuración
-        LeerXML()
-        LeerXMLLocal()
-        Dim currentDomain As AppDomain = AppDomain.CurrentDomain
+		'Configuración
+		LeerXML()
+		Prex.Utils.Configuration.LeerXMLLocal()
+		Dim currentDomain As AppDomain = AppDomain.CurrentDomain
 
         Dim oSplash As New SplashScreen
 
@@ -55,12 +32,8 @@ Module modLocalMain
         oSplash.Show()
         Application.DoEvents()
 
-
 		Dim rutaLocalDll = Prex.Utils.Misc.Functions.ValidarYCopiarPathDll(CARPETA_LOCAL, System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies())
 		If (rutaLocalDll.ToString().Any()) Then AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf Prex.Utils.Misc.Functions.LoadFromSameFolder
-
-
-
 
 		If UsuarioActual.Codigo = 0 Then
             If IO.File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
@@ -108,7 +81,8 @@ Module modLocalMain
 			CulturaCargarTextos(CulturaActual.ToString)
 
 			frmMain.ShowDialog()
-			GuardarXMLLocal()
+			Prex.Utils.Configuration.PrexConfigLocal.LastUser = UsuarioActual.Nombre
+			Prex.Utils.Configuration.GuardarXMLLocal()
 			GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "", -1, UsuarioActual.Codigo)
 		End If
 
@@ -152,152 +126,6 @@ Module modLocalMain
 			End If
 
 		End If
-
-	End Sub
-
-
-
-	Public Sub LeerXMLLocal()
-		'Todo: sacar usuario local de windows. sRuta + usuario
-		Try
-
-			Dim sRuta As String
-			Dim oConfigLocal As New dsConfig
-
-			sRuta = CARPETA_LOCAL & NOMBRE_INI_LOCAL
-
-			Dim usuario As Security.Principal.WindowsIdentity = System.Security.Principal.WindowsIdentity.GetCurrent()
-			If usuario.Name.Split("\").Count() > 1 Then
-				carpetaConusuario = Path.Combine(CARPETA_LOCAL, usuario.Name.Split("\").LastOrDefault())
-			Else
-				carpetaConusuario = Path.Combine(CARPETA_LOCAL, usuario.Name)
-			End If
-
-			If Not Directory.Exists(carpetaConusuario) Then
-				Directory.CreateDirectory(carpetaConusuario)
-			End If
-
-			sRuta = Path.Combine(carpetaConusuario, NOMBRE_INI_LOCAL)
-
-			If File.Exists(CARPETA_LOCAL & NOMBRE_INI_LOCAL) AndAlso Not File.Exists(sRuta) Then
-				File.Copy(CARPETA_LOCAL & NOMBRE_INI_LOCAL, sRuta)
-			End If
-
-			If Not IO.File.Exists(sRuta) Then
-				GuardarXMLLocal()
-			End If
-
-			If IO.File.Exists(sRuta) Then
-				oConfigLocal.ReadXml(sRuta)
-
-				For Each row As DataRow In oConfigLocal.Tables("CONFIG").Rows
-
-					Select Case row("NOMBRE").ToString
-
-						Case "Vista"
-							VISTA_ACTUAL = row("VALOR")
-
-						Case "MultiExec"
-							MULTIEXEC = row("VALOR")
-
-						Case "MinimizarAlCerrar"
-							MINIMIZAR_AL_CERRAR = row("VALOR")
-
-						Case "InicioTray"
-							INICIAR_EN_TRAY = row("VALOR")
-
-						Case "ConfirmarAlSalir"
-							CONFIRMAR_AL_SALIR = row("VALOR")
-
-						Case "LastUser"
-							If Not (row("VALOR") Is DBNull.Value) Then
-								LAST_USER = row("VALOR")
-							End If
-
-						Case "SiempreIG"
-							SIEMPRE_ICONOS_GRANDES = row("VALOR")
-
-						Case "InicioTray"
-							INICIAR_EN_TRAY = row("VALOR")
-
-					End Select
-
-				Next
-
-			End If
-
-		Catch ex As Exception
-			TratarError(ex, "LeerXMLLocal")
-		End Try
-
-	End Sub
-
-	Public Sub GuardarXMLLocal()
-
-		Dim ds As New dsConfig
-		Dim dr As DataRow
-		Dim dt As DataTable = ds.Tables("CONFIG")
-
-		Try
-
-			Dim sRuta As String
-
-			sRuta = CARPETA_LOCAL & NOMBRE_INI_LOCAL
-
-			'Conexión Base de datos
-			dr = dt.NewRow()
-			dr("NOMBRE") = "Vista"
-			dr("VALOR") = VISTA_ACTUAL
-			dt.Rows.Add(dr)
-			ds.AcceptChanges()
-
-			'Formato de Fecha del Servidor SQL
-			dr = dt.NewRow()
-			dr("NOMBRE") = "MultiExec"
-			dr("VALOR") = MULTIEXEC
-			dt.Rows.Add(dr)
-			ds.AcceptChanges()
-
-			'Ruta a la carpeta local
-			dr = dt.NewRow()
-			dr("NOMBRE") = "MinimizarAlCerrar"
-			dr("VALOR") = MINIMIZAR_AL_CERRAR
-			dt.Rows.Add(dr)
-			ds.AcceptChanges()
-
-			'Nombre de archivo de configuración local
-			dr = dt.NewRow()
-			dr("NOMBRE") = "InicioTray"
-			dr("VALOR") = INICIAR_EN_TRAY
-			dt.Rows.Add(dr)
-			ds.AcceptChanges()
-
-			'Nombre de archivo de configuración local
-			dr = dt.NewRow()
-			dr("NOMBRE") = "ConfirmarAlSalir"
-			dr("VALOR") = CONFIRMAR_AL_SALIR
-			dt.Rows.Add(dr)
-			ds.AcceptChanges()
-
-			'Nombre de archivo de configuración local
-			dr = dt.NewRow()
-			dr("NOMBRE") = "LastUser"
-			dr("VALOR") = UsuarioActual.Nombre
-			dt.Rows.Add(dr)
-			ds.AcceptChanges()
-
-			'Nombre de archivo de configuración local
-			dr = dt.NewRow()
-			dr("NOMBRE") = "SiempreIG"
-			dr("VALOR") = SIEMPRE_ICONOS_GRANDES
-			dt.Rows.Add(dr)
-			ds.AcceptChanges()
-
-			ds.WriteXml(sRuta)
-
-		Catch ex As Exception
-			TratarError(ex, "GuardarXMLLocal")
-		End Try
 
 	End Sub
 
