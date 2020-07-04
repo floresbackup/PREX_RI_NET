@@ -131,149 +131,149 @@ Module modFunciones
                 MensajeError("No se encuentra el archivo encriptado con la conexion SQL")
             End If
 
-			If File.Exists(ARCHIVO_CONFIG) Then
-				oConfig.ReadXml(ARCHIVO_CONFIG)
+            If File.Exists(ARCHIVO_CONFIG) Then
+                oConfig.ReadXml(ARCHIVO_CONFIG)
 
-				For Each row As DataRow In oConfig.Tables("CONFIG").Rows
+                For Each row As DataRow In oConfig.Tables("CONFIG").Rows
 
-					sTemp = row("VALOR").ToString
+                    sTemp = row("VALOR").ToString
 
-					Select Case row("NOMBRE").ToString
+                    Select Case row("NOMBRE").ToString
 
-						Case "CONN_LOCAL"
-							CONN_LOCAL = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
+                        Case "CONN_LOCAL"
+                            CONN_LOCAL = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
 
-						Case "FFECHA"
-							FORMATO_FECHA = sTemp
+                        Case "FFECHA"
+                            FORMATO_FECHA = sTemp
 
-						Case "CONN_SIB"
-							CONN_SIB = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
+                        Case "CONN_SIB"
+                            CONN_SIB = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
 
-						Case "CARPETA_LOCAL"
-							CARPETA_LOCAL = NormalizarRuta(sTemp)
+                        Case "CARPETA_LOCAL"
+                            CARPETA_LOCAL = NormalizarRuta(sTemp)
 
-						Case "NOMBRE_INI_LOCAL"
-							NOMBRE_INI_LOCAL = sTemp
+                        Case "NOMBRE_INI_LOCAL"
+                            NOMBRE_INI_LOCAL = sTemp
 
-						Case "AUTENTICACIONSQL"
-							AUTENTICACIONSQL = CBool(sTemp)
+                        Case "AUTENTICACIONSQL"
+                            AUTENTICACIONSQL = CBool(sTemp)
 
-						Case "SEGURIDAD_INTEGRADA"
-							SEGURIDAD_INTEGRADA = CBool(sTemp)
+                        Case "SEGURIDAD_INTEGRADA"
+                            SEGURIDAD_INTEGRADA = CBool(sTemp)
 
-						Case "NOMBRE_SQLSERVER"
-							NOMBRE_SQLSERVER = sTemp
+                        Case "NOMBRE_SQLSERVER"
+                            NOMBRE_SQLSERVER = sTemp
 
-						Case "NOMBRE_EMPRESA"
-							NOMBRE_EMPRESA = sTemp
+                        Case "NOMBRE_EMPRESA"
+                            NOMBRE_EMPRESA = sTemp
 
-						Case "IDENTIFICACION_PC"
-							IDENTIFICACION_PC = sTemp
+                        Case "IDENTIFICACION_PC"
+                            IDENTIFICACION_PC = sTemp
 
-						Case "LOG_AUDITORIA"
-							LOG_AUDITORIA = sTemp
+                        Case "LOG_AUDITORIA"
+                            LOG_AUDITORIA = sTemp
 
-						Case "NOMBRE_BD"
-							NOMBRE_BD = sTemp
+                        Case "NOMBRE_BD"
+                            NOMBRE_BD = sTemp
 
-						Case "ID_SISTEMA"
-							ID_SISTEMA = Val(sTemp)
+                        Case "ID_SISTEMA"
+                            ID_SISTEMA = Val(sTemp)
 
-						Case "SG_CONFIG"
-							SG_CONFIG = sTemp
+                        Case "SG_CONFIG"
+                            SG_CONFIG = sTemp
 
-						Case "SIMBOLO_DECIMAL"
-							SIMBOLO_DECIMAL = sTemp.Substring(0, 1)
+                        Case "SIMBOLO_DECIMAL"
+                            SIMBOLO_DECIMAL = sTemp.Substring(0, 1)
 
-						Case "RUTA_AYUDA"
-							RUTA_AYUDA = sTemp
+                        Case "RUTA_AYUDA"
+                            RUTA_AYUDA = sTemp
 
-						'28-11-2014 SE AGREGA PARA USUARIO ENCRIPTADO DE RUN AS
-						Case "RUTAENCR_RA"
-							RUTAENCR_RA = sTemp
-						Case "RUTA_PREFERIDA"
-							RUTA_PREFERIDA = sTemp
-						Case "DOMINIO_DEFAULT"
-						Case "DOMINIO"
-							DOMINIO_DEFAULT = sTemp
-						Case "DEBUG" 'SI EXISTE LA VARIABLE EN EL INI - 0 = NO / 1 = SI
-							GENERAR_LOG_SQL = IIf(Integer.Parse(sTemp) = 1, True, False)
-						Case "TIPOLOG" 'SI EXISTE LA VARIABLE EN EL INI - 1= Completo 2= Solo modificaciones no SELECT 3= Ninguna grabación
-							TIPO_LOG_SQL = Integer.Parse(sTemp)
+                        '28-11-2014 SE AGREGA PARA USUARIO ENCRIPTADO DE RUN AS
+                        Case "RUTAENCR_RA"
+                            RUTAENCR_RA = sTemp
+                        Case "RUTA_PREFERIDA"
+                            RUTA_PREFERIDA = sTemp
+                        Case "DOMINIO_DEFAULT"
+                        Case "DOMINIO"
+                            DOMINIO_DEFAULT = sTemp
+                        Case "DEBUG" 'SI EXISTE LA VARIABLE EN EL INI - 0 = NO / 1 = SI
+                            GENERAR_LOG_SQL = IIf(Integer.Parse(sTemp) = 1, True, False)
+                        Case "TIPOLOG" 'SI EXISTE LA VARIABLE EN EL INI - 1= Completo 2= Solo modificaciones no SELECT 3= Ninguna grabación
+                            TIPO_LOG_SQL = Integer.Parse(sTemp)
 
-						Case "APPID"
-							APPID = sTemp
-						Case "WSDL"
-							WSDL = sTemp
-						Case "CertificatePath"
-							CertificatePath = sTemp
-						Case "CertificatePass"
-							CertificatePass = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
-						Case "SAFE"
-							SAFE = sTemp
-						Case "STR_FOLDER"
-							STR_FOLDER = sTemp
-						Case "STR_OBJECT"
-							STR_OBJECT = sTemp
-						Case "STR_REASON"
-							STR_REASON = sTemp
-					End Select
+                        Case "APPID"
+                            APPID = sTemp
+                        Case "WSDL"
+                            WSDL = sTemp
+                        Case "CertificatePath"
+                            CertificatePath = sTemp
+                        Case "CertificatePass"
+                            CertificatePass = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
+                        Case "SAFE"
+                            SAFE = sTemp
+                        Case "STR_FOLDER"
+                            STR_FOLDER = sTemp
+                        Case "STR_OBJECT"
+                            STR_OBJECT = sTemp
+                        Case "STR_REASON"
+                            STR_REASON = sTemp
+                    End Select
 
-				Next
+                Next
 
-			End If
+            End If
 
 
-			Dim cyberrarkPass As String = ConsultarCyberRark()
+            Dim cyberrarkPass As String = ConsultarCyberRark()
 
-			If AUTENTICACIONSQL Then
-				If File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
-					Dim sUser As String = ""
-					Dim sPass As String = ""
-					LeerArchivoEncriptado(CARPETA_LOCAL & "TEMP\conn.enc", sUser, sPass)
-					CONN_LOCAL = CONN_LOCAL & ";User id=" & sUser & ";Password=" & IIf(cyberrarkPass.Length = 0, sPass, cyberrarkPass) & ";"
-				Else
-					If Command().Trim <> "" And Command().ToUpper <> "/IDE" Then
-						MensajeError("No se encuentra el archivo encriptado con la conexion SQL")
-						End
-					End If
-				End If
+            If AUTENTICACIONSQL Then
+                If File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
+                    Dim sUser As String = ""
+                    Dim sPass As String = ""
+                    LeerArchivoEncriptado(CARPETA_LOCAL & "TEMP\conn.enc", sUser, sPass)
+                    CONN_LOCAL = CONN_LOCAL & ";User id=" & sUser & ";Password=" & IIf(cyberrarkPass.Length = 0, sPass, cyberrarkPass) & ";"
+                Else
+                    If Command().Trim <> "" And Command().ToUpper <> "/IDE" Then
+                        MensajeError("No se encuentra el archivo encriptado con la conexion SQL")
+                        End
+                    End If
+                End If
 
-			End If
-		Catch ex As Exception
+            End If
+        Catch ex As Exception
             TratarError(ex, "LeerXML")
         End Try
 
     End Sub
 
-	Public Function ConsultarCyberRark() As String
-		CYBERRARKPASS = String.Empty
-		If ID_SISTEMA > 0 Then
+    Public Function ConsultarCyberRark() As String
+        CYBERRARKPASS = String.Empty
+        If ID_SISTEMA > 0 Then
 
-			Try
-
-
-				'MessageBox.Show($"WSDL: {WSDL}, CertifcatePath: {CertifcatePath}, " & vbCrLf &
-				'		$"CertifcatePass: {CertifcatePass}, APPID: {APPID}, " & vbCrLf &
-				'		$"SAFE: {SAFE}, STR_FOLDER: {STR_FOLDER}, " & vbCrLf &
-				'		$"STR_OBJECT: {STR_OBJECT}, STR_REASON: {STR_REASON}", "Parametros del servicio: ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Try
 
 
-				Dim pass As String = Prex.Utils.Security.CitiSecurity.GetPassWordCyberRark(WSDL, CertificatePath, CertificatePass, APPID, SAFE, STR_FOLDER, STR_OBJECT, STR_REASON)
+                'MessageBox.Show($"WSDL: {WSDL}, CertifcatePath: {CertifcatePath}, " & vbCrLf &
+                '		$"CertifcatePass: {CertifcatePass}, APPID: {APPID}, " & vbCrLf &
+                '		$"SAFE: {SAFE}, STR_FOLDER: {STR_FOLDER}, " & vbCrLf &
+                '		$"STR_OBJECT: {STR_OBJECT}, STR_REASON: {STR_REASON}", "Parametros del servicio: ", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-				'MessageBox.Show("CyberRark Pass: " & pass)
+
+                Dim pass As String = Prex.Utils.Security.CitiSecurity.GetPassWordCyberRark(WSDL, CertificatePath, CertificatePass, APPID, SAFE, STR_FOLDER, STR_OBJECT, STR_REASON)
+
+                'MessageBox.Show("CyberRark Pass: " & pass)
 
 
-				Dim builder As New OleDb.OleDbConnectionStringBuilder(CONN_LOCAL)
-				Dim passAnt = String.Empty
-				Dim teniaPass As Boolean = False
+                Dim builder As New OleDb.OleDbConnectionStringBuilder(CONN_LOCAL)
+                Dim passAnt = String.Empty
+                Dim teniaPass As Boolean = False
 
-				If builder.ContainsKey("Password") Then
-					passAnt = builder("Password")
-					teniaPass = True
-					builder.Remove("Password")
-				End If
-				builder.Add("Password", pass)
+                If builder.ContainsKey("Password") Then
+                    passAnt = builder("Password")
+                    teniaPass = True
+                    builder.Remove("Password")
+                End If
+                builder.Add("Password", pass)
 
                 Try
                     Dim conn As New OleDb.OleDbConnection(builder.ConnectionString)
@@ -293,17 +293,17 @@ Module modFunciones
                 CONN_LOCAL = builder.ConnectionString
 
                 Return pass.Trim
-			Catch ex As Exception
-				'MessageBox.Show(ex.Message, "Error GetPassWordCyberRark", MessageBoxButtons.OK, MessageBoxIcon.Error)
-				Return String.Empty
-			End Try
+            Catch ex As Exception
+                'MessageBox.Show(ex.Message, "Error GetPassWordCyberRark", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return String.Empty
+            End Try
 
-		Else
-			Return String.Empty
-		End If
-	End Function
+        Else
+            Return String.Empty
+        End If
+    End Function
 
-	Public Sub TratarError(ByVal ex As Exception,
+    Public Sub TratarError(ByVal ex As Exception,
                            Optional ByVal sFuncion As String = "",
                            Optional ByVal sCustomError As String = "",
                            Optional ByVal bGuardaLog As Boolean = True)
@@ -416,9 +416,9 @@ Module modFunciones
     'Seleccióna un campo especificado de un ImageCombo a partir de la "Key".
     Public Sub SelCombo(ByVal oCombo As Object, ByVal sCadena As String)
 
-		Dim oItem As Prex.Utils.Entities.clsItem
+        Dim oItem As Prex.Utils.Entities.clsItem
 
-		For Each oItem In oCombo.Items
+        For Each oItem In oCombo.Items
             If oItem.Nombre.ToUpper = sCadena.ToUpper Then
                 oCombo.SelectedItem = oItem
             End If
@@ -429,9 +429,9 @@ Module modFunciones
     'Seleccióna un campo especificado de un ImageCombo a partir de la "Key".
     Public Sub SelComboDevExpress(ByVal oCombo As DevExpress.XtraEditors.ComboBoxEdit, ByVal sCadena As String)
 
-		Dim oItem As Prex.Utils.Entities.clsItem
+        Dim oItem As Prex.Utils.Entities.clsItem
 
-		For Each oItem In oCombo.Properties.Items
+        For Each oItem In oCombo.Properties.Items
             If "K" & oItem.Valor.ToString.ToUpper = sCadena.ToUpper Then
                 oCombo.SelectedItem = oItem
             End If
@@ -442,9 +442,9 @@ Module modFunciones
     'Seleccióna un item de un combo box o list box
     Public Sub SelComboBox(ByVal oCombo_List As Object, ByVal sCadena As String)
 
-		Dim oItem As Prex.Utils.Entities.clsItem
+        Dim oItem As Prex.Utils.Entities.clsItem
 
-		For Each oItem In oCombo_List.Items
+        For Each oItem In oCombo_List.Items
             If oItem.Valor.ToUpper = sCadena.ToUpper Then
                 oCombo_List.SelectedItem = oItem
             End If
@@ -454,9 +454,9 @@ Module modFunciones
 
     Public Sub SelItemCombo(ByVal oCombo As Object, ByVal nCodigo As Long)
 
-		Dim oItem As Prex.Utils.Entities.clsItem
+        Dim oItem As Prex.Utils.Entities.clsItem
 
-		For Each oItem In oCombo.Items
+        For Each oItem In oCombo.Items
             If oItem.Valor = nCodigo Then
                 oCombo.SelectedItem = oItem
             End If
@@ -466,23 +466,11 @@ Module modFunciones
 
     Public Sub CargarCombo(ByVal oCombo As Object, ByVal sSQL As String)
 
-        Dim ad As OleDb.OleDbDataAdapter
-        Dim dt As DataTable
-        Dim dr As DataRow
-        Dim nC As Integer = 0
 
         Try
-
-            ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
-            dt = New DataTable
-
-            ad.Fill(dt)
-
-            oCombo.Items.Clear()
-
-            For Each dr In dt.Rows
-				oCombo.Items.Add(New Prex.Utils.Entities.clsItem(dr(0).ToString, dr(1).ToString))
-			Next
+            For Each l As Prex.Utils.Entities.clsItem In ObtenerItemsCombo(sSQL)
+                oCombo.Items.Add(l)
+            Next
 
             Application.DoEvents()
 
@@ -492,13 +480,30 @@ Module modFunciones
 
     End Sub
 
+    Public Function ObtenerItemsCombo(ByVal sSQL As String) As List(Of Prex.Utils.Entities.clsItem)
+        'Dim ad As OleDb.OleDbDataAdapter
+        'Dim dt As DataTable
+        'Dim dr As DataRow
+        Dim lista As New List(Of Prex.Utils.Entities.clsItem)
+        Dim ad As New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
+        Dim dt As New DataTable
+
+        ad.Fill(dt)
+
+        For Each dr As DataRow In dt.Rows
+            lista.Add(New Prex.Utils.Entities.clsItem(dr(0).ToString, dr(1).ToString))
+        Next
+
+        Return lista
+    End Function
+
     Public Sub AgregarItemCombo(ByVal oCombo As Object, ByVal nCodigo As Long, ByVal sDescripcion As String)
 
         Try
 
-			oCombo.Items.Add(New Prex.Utils.Entities.clsItem(nCodigo, sDescripcion))
+            oCombo.Items.Add(New Prex.Utils.Entities.clsItem(nCodigo, sDescripcion))
 
-		Catch ex As Exception
+        Catch ex As Exception
             TratarError(ex, "AgregarItemCombo")
         End Try
 
@@ -508,14 +513,14 @@ Module modFunciones
 
         Try
 
-			For Each item As Prex.Utils.Entities.clsItem In oCombo.Items
-				If item.Valor = nCodigo Then
-					oCombo.Items.Remove(item)
-					Exit For
-				End If
-			Next
+            For Each item As Prex.Utils.Entities.clsItem In oCombo.Items
+                If item.Valor = nCodigo Then
+                    oCombo.Items.Remove(item)
+                    Exit For
+                End If
+            Next
 
-		Catch ex As Exception
+        Catch ex As Exception
             TratarError(ex, "QuitarItemCombo")
         End Try
 
@@ -530,42 +535,42 @@ Module modFunciones
         End If
 
     End Function
-	Public Sub CargarComboDevExpress(ByVal oCombo As DevExpress.XtraEditors.ComboBoxEdit, ByVal sSQL As String)
-		CargarComboDevExpress(oCombo, sSQL, False)
-	End Sub
-	Public Sub CargarComboDevExpress(ByVal oCombo As DevExpress.XtraEditors.ComboBoxEdit, ByVal sSQL As String, ByVal formatearFecha As Boolean)
+    Public Sub CargarComboDevExpress(ByVal oCombo As DevExpress.XtraEditors.ComboBoxEdit, ByVal sSQL As String)
+        CargarComboDevExpress(oCombo, sSQL, False)
+    End Sub
+    Public Sub CargarComboDevExpress(ByVal oCombo As DevExpress.XtraEditors.ComboBoxEdit, ByVal sSQL As String, ByVal formatearFecha As Boolean)
 
-		Dim ad As OleDb.OleDbDataAdapter
-		Dim dt As DataTable
-		Dim oRow As DataRow
+        Dim ad As OleDb.OleDbDataAdapter
+        Dim dt As DataTable
+        Dim oRow As DataRow
 
-		Try
-			oCombo.Properties.Items.Clear()
+        Try
+            oCombo.Properties.Items.Clear()
 
-			ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
-			dt = New DataTable
+            ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
+            dt = New DataTable
 
-			ad.Fill(dt)
+            ad.Fill(dt)
 
-			For Each oRow In dt.Rows
-				Dim oItem As New Prex.Utils.Entities.clsItem(oRow(0), oRow(1).ToString, formatearFecha)
+            For Each oRow In dt.Rows
+                Dim oItem As New Prex.Utils.Entities.clsItem(oRow(0), oRow(1).ToString, formatearFecha)
 
-				oCombo.Properties.Items.Add(oItem)
+                oCombo.Properties.Items.Add(oItem)
 
-			Next
+            Next
 
-		Catch ex As Exception
-			'nada
-		End Try
+        Catch ex As Exception
+            'nada
+        End Try
 
-	End Sub
+    End Sub
 
-	'Obtiene el Key de un ImageCombo o ListView.
-	Public Function Llave(ByVal oLlave As Object) As String
+    'Obtiene el Key de un ImageCombo o ListView.
+    Public Function Llave(ByVal oLlave As Object) As String
 
-		Dim oItem As Prex.Utils.Entities.clsItem
+        Dim oItem As Prex.Utils.Entities.clsItem
 
-		If Not (oLlave.SelectedItem Is Nothing) Then
+        If Not (oLlave.SelectedItem Is Nothing) Then
             oItem = oLlave.SelectedItem
             Return oItem.Valor.ToString.TrimEnd.Substring(1)
         Else
@@ -577,9 +582,9 @@ Module modFunciones
     'Obtiene el Key de un ImageCombo o ListView.
     Public Function LlaveCombo(ByVal oLlave As Object) As Object
 
-		Dim oItem As Prex.Utils.Entities.clsItem
+        Dim oItem As Prex.Utils.Entities.clsItem
 
-		If Not (oLlave.SelectedItem Is Nothing) Then
+        If Not (oLlave.SelectedItem Is Nothing) Then
             oItem = oLlave.SelectedItem
             Return oItem.Valor
         Else
@@ -879,75 +884,89 @@ Module modFunciones
 
     Public Function ReemplazarVariables(ByVal sSQL As String, ByVal controls As Control.ControlCollection, ByVal codProc As Long?) As String
 
-        Dim oCtl As Windows.Forms.Control
-        Dim sValor As String
-		Try
+        Try
 
+            Dim lista As Dictionary(Of String, String) = ObtenerValoresControles(controls)
+            For Each d As KeyValuePair(Of String, String) In lista
+                sSQL = sSQL.Replace(d.Key, d.Value)
+            Next
 
-			For Each oCtl In controls
+            If codProc.HasValue Then
+                sSQL = Replace(sSQL, "@CODPRO", codProc.Value.ToString, , , vbTextCompare)
+                sSQL = Replace(sSQL, "@CODUSU", UsuarioActual.Codigo, , , vbTextCompare)
+                sSQL = Replace(sSQL, "@CODIGO_ENTIDAD", CODIGO_ENTIDAD.ToString, , , vbTextCompare)
+                sSQL = Replace(sSQL, "@CODIGO_TRANSACCION", CODIGO_TRANSACCION.ToString, , , vbTextCompare)
+            End If
 
-				Select Case oCtl.GetType.ToString.Substring(oCtl.GetType.ToString.LastIndexOf(".") + 1)
-					Case "ComboBox"
-						If TypeOf CType(oCtl, ComboBox).SelectedItem Is Prex.Utils.Entities.clsItem Then
-							Dim oItem As Prex.Utils.Entities.clsItem = CType(oCtl, ComboBox).SelectedItem
-							sValor = "'" + oItem.Valor.ToString + "'"
-						Else
-							sValor = "'" + CType(oCtl, ComboBox).SelectedItem.ToString + "'"
-						End If
-					Case "ComboBoxEdit"
-						If TypeOf CType(oCtl, DevExpress.XtraEditors.ComboBoxEdit).SelectedItem Is Prex.Utils.Entities.clsItem Then
-							Dim oItem As Prex.Utils.Entities.clsItem = CType(oCtl, DevExpress.XtraEditors.ComboBoxEdit).SelectedItem
-							sValor = "'" + oItem.Valor.ToString + "'"
-						Else
-							sValor = "'" + CType(oCtl, DevExpress.XtraEditors.ComboBoxEdit).SelectedItem.ToString + "'"
-						End If
-					Case "CheckBox"
-						sValor = IIf(CType(oCtl, CheckBox).Checked, oCtl.Tag, "")
-					Case "CheckEdit"
-						sValor = IIf(CType(oCtl, DevExpress.XtraEditors.CheckEdit).Checked, oCtl.Tag, "")
-					Case "DateTimePicker"
-						sValor = FechaSQL(DirectCast(oCtl, DateTimePicker).Value)
-					Case "DateEdit"
-						sValor = FechaSQL(DirectCast(oCtl, DevExpress.XtraEditors.DateEdit).DateTime)
-					Case "TextBox"
-						Dim oVar As clsVariables = CType(oCtl.Tag, clsVariables)
-						If ((oVar IsNot Nothing AndAlso oVar.Tipo = 1) OrElse Not IsNumeric(oCtl.Text)) Then
-							sValor = "'" & oCtl.Text & "'"
-						Else
-							sValor = oCtl.Text
-						End If
-
-					Case Else
-
-						Dim valorDecimal As Decimal
-
-						If Decimal.TryParse(oCtl.Text.Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator), valorDecimal) Then
-							sValor = valorDecimal.ToString().Replace(",", ".")
-						Else
-							sValor = oCtl.Text
-						End If
-
-
-				End Select
-
-				If oCtl.Name.Substring(0, 1) = "_" Then
-					sSQL = sSQL.Replace(oCtl.Name.Substring(1), sValor)
-				End If
-
-			Next
-			If codProc.HasValue Then
-				sSQL = Replace(sSQL, "@CODPRO", codProc.Value.ToString, , , vbTextCompare)
-				sSQL = Replace(sSQL, "@CODUSU", UsuarioActual.Codigo, , , vbTextCompare)
-				sSQL = Replace(sSQL, "@CODIGO_ENTIDAD", CODIGO_ENTIDAD.ToString, , , vbTextCompare)
-				sSQL = Replace(sSQL, "@CODIGO_TRANSACCION", CODIGO_TRANSACCION.ToString, , , vbTextCompare)
-			End If
-
-			Return sSQL
-		Catch ex As Exception
-			Throw New Exception("Ocurrio un error en ReemplazarVariables ", ex)
+            Return sSQL
+        Catch ex As Exception
+            Throw New Exception("Ocurrio un error en ReemplazarVariables ", ex)
 		End Try
 
 	End Function
+
+    Public Function ObtenerValoresControles(ByVal controls As Windows.Forms.Control.ControlCollection) As Dictionary(Of String, String)
+        Dim oCtl As Windows.Forms.Control
+        Dim lista As New Dictionary(Of String, String)
+        Dim sValor As String
+
+        For Each oCtl In controls
+
+            Select Case oCtl.GetType.ToString.Substring(oCtl.GetType.ToString.LastIndexOf(".") + 1)
+                Case "ComboBox"
+                    If TypeOf CType(oCtl, ComboBox).SelectedItem Is Prex.Utils.Entities.clsItem Then
+                        Dim oItem As Prex.Utils.Entities.clsItem = CType(oCtl, ComboBox).SelectedItem
+                        sValor = "'" + oItem.Valor.ToString + "'"
+                    Else
+                        sValor = "'" + CType(oCtl, ComboBox).SelectedItem.ToString + "'"
+                    End If
+                Case "ComboBoxEdit"
+                    If TypeOf CType(oCtl, DevExpress.XtraEditors.ComboBoxEdit).SelectedItem Is Prex.Utils.Entities.clsItem Then
+                        Dim oItem As Prex.Utils.Entities.clsItem = CType(oCtl, DevExpress.XtraEditors.ComboBoxEdit).SelectedItem
+                        sValor = "'" + oItem.Valor.ToString + "'"
+                    Else
+                        sValor = "'" + CType(oCtl, DevExpress.XtraEditors.ComboBoxEdit).SelectedItem.ToString + "'"
+                    End If
+                Case "CheckBox"
+                    sValor = IIf(CType(oCtl, CheckBox).Checked, oCtl.Tag, "")
+                Case "CheckEdit"
+                    sValor = IIf(CType(oCtl, DevExpress.XtraEditors.CheckEdit).Checked, oCtl.Tag, "")
+                Case "DateTimePicker"
+                    sValor = FechaSQL(DirectCast(oCtl, DateTimePicker).Value)
+                Case "DateEdit"
+                    sValor = FechaSQL(DirectCast(oCtl, DevExpress.XtraEditors.DateEdit).DateTime)
+                Case "TextBox"
+                    Dim oVar As clsVariables = CType(oCtl.Tag, clsVariables)
+                    If ((oVar IsNot Nothing AndAlso oVar.Tipo = 1) OrElse Not IsNumeric(oCtl.Text)) Then
+                        sValor = "'" & oCtl.Text & "'"
+                    Else
+                        sValor = oCtl.Text
+                    End If
+
+                Case Else
+
+                    Dim valorDecimal As Decimal
+
+                    If Decimal.TryParse(oCtl.Text.Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator), valorDecimal) Then
+                        sValor = valorDecimal.ToString().Replace(",", ".")
+                    Else
+                        sValor = oCtl.Text
+                    End If
+
+
+            End Select
+
+
+            If oCtl.Name.Substring(0, 1) = "_" Then
+                If Not lista.ContainsKey(oCtl.Name.Substring(1)) Then
+                    lista.Add(oCtl.Name.Substring(1), String.Empty)
+                End If
+                lista(oCtl.Name.Substring(1)) = sValor
+            End If
+
+        Next
+        Return lista
+    End Function
 
     Public Sub PresentarDatos(ByVal formulario As Form, ByVal nCodigoTransaccion As Long, ByVal nCodigoUsuario As Long, ByVal nCodigoEntidad As Long)
 

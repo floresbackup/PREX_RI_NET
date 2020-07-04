@@ -485,19 +485,19 @@ GuardaDataRow:
 			oAdmTablas.EjecutarComandoAsincrono(sSQL, "", 0, ds)
 			If ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
 
-				If oColumnas(sKey).Help = 0 Then
-					If TipoDatosADO(oColumnas(sKey).Tipo) = "Fecha/Hora" Then
-						CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.DateEdit).DateTime = Date.Parse(ds.Tables(0).Rows(0).Item(0).ToString())
-					Else
-						If (TypeOf (dicControlesValorAnterior(sKey)) Is DevExpress.XtraEditors.ComboBoxEdit) Then
-							CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.ComboBoxEdit).SelectedText = ds.Tables(0).Rows(0).Item(0).ToString()
-						End If
-						If (TypeOf (dicControlesValorAnterior(sKey)) Is DevExpress.XtraEditors.TextEdit) Then
-							CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.TextEdit).Text = ds.Tables(0).Rows(0).Item(0).ToString()
-						End If
-					End If
-				ElseIf dicControlesValorAnterior.ContainsKey(sKey) Then
-					Dim items = CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.ComboBoxEdit).Properties.Items
+                If oColumnas(sKey).Help = 0 AndAlso dicControlesValorAnterior.ContainsKey(sKey) Then
+                    If TipoDatosADO(oColumnas(sKey).Tipo) = "Fecha/Hora" Then
+                        CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.DateEdit).DateTime = Date.Parse(ds.Tables(0).Rows(0).Item(0).ToString())
+                    Else
+                        If (TypeOf (dicControlesValorAnterior(sKey)) Is DevExpress.XtraEditors.ComboBoxEdit) Then
+                            CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.ComboBoxEdit).SelectedText = ds.Tables(0).Rows(0).Item(0).ToString()
+                        End If
+                        If (TypeOf (dicControlesValorAnterior(sKey)) Is DevExpress.XtraEditors.TextEdit) Then
+                            CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.TextEdit).Text = ds.Tables(0).Rows(0).Item(0).ToString()
+                        End If
+                    End If
+                ElseIf dicControlesValorAnterior.ContainsKey(sKey) Then
+                    Dim items = CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.ComboBoxEdit).Properties.Items
 					Dim cItem As Prex.Utils.Entities.clsItem = Nothing
 
 					For Each i As Object In items

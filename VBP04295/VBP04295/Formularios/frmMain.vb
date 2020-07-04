@@ -1,5 +1,7 @@
 Imports System.Globalization
 Imports System.IO
+Imports System.Linq
+Imports System.Security
 Imports DevExpress.Utils
 Imports DevExpress.Xpo
 Imports DevExpress.XtraBars.Localization
@@ -11,510 +13,512 @@ Imports DevExpress.XtraGrid.Views.Base
 Imports DevExpress.XtraPivotGrid.Localization
 Imports DevExpress.XtraPrinting.Localization
 Imports DevExpress.XtraReports.Localization
+Imports Prex.Utils
 Imports WebSupergoo
 
 Public Class frmMain
-    Private sExtra_log As String
-    Public ps1 = New DevExpress.XtraPrinting.PrintingSystem
+	Private sExtra_log As String
+	Public ps1 = New DevExpress.XtraPrinting.PrintingSystem
+	Private listaControles As Dictionary(Of String, String)
 
-    Public Class DropDownGrid
-        Inherits XPObject
-        Public Sub New()
-            Codigo = Nothing
-            Descripcion = ""
-        End Sub
-        Public Codigo As Object
-        Public Descripcion As String
-    End Class
+	Public Class DropDownGrid
+		Inherits XPObject
+		Public Sub New()
+			Codigo = Nothing
+			Descripcion = ""
+		End Sub
+		Public Codigo As Object
+		Public Descripcion As String
+	End Class
 
-    Private Structure tDetalle
-        Friend SI As Boolean
-        Friend Variable As String
-        Friend Condicion As Object
-        Friend CodigoHTML As String
-        Friend PosIni As Long
-        Friend PosFin As Long
-        Friend Longitud As Long
-        Friend Encabezado As String
-        Friend Pie As String
-    End Structure
+	Private Structure tDetalle
+		Friend SI As Boolean
+		Friend Variable As String
+		Friend Condicion As Object
+		Friend CodigoHTML As String
+		Friend PosIni As Long
+		Friend PosFin As Long
+		Friend Longitud As Long
+		Friend Encabezado As String
+		Friend Pie As String
+	End Structure
 
-    Private oAdmTablas As New AdmTablas
-    Private nLastCol As Long
-    Private nLastRow As Long
-    Private nPagInicial As Long
-    Private bFlagCargado As Boolean
-    Private bHabilitado As Boolean
-    Private Detalle() As tDetalle
+	Private oAdmTablas As New AdmTablas
+	Private nLastCol As Long
+	Private nLastRow As Long
+	Private nPagInicial As Long
+	Private bFlagCargado As Boolean
+	Private bHabilitado As Boolean
+	Private Detalle() As tDetalle
 
-    Private Declare Function OleTranslateColor Lib "OLEPRO32.DLL" (ByVal OLE_COLOR As Long, ByVal HPALETTE As Long, ByVal pccolorref As Long) As Long
-    Public ErrorPermiso As Boolean = False
+	Private Declare Function OleTranslateColor Lib "OLEPRO32.DLL" (ByVal OLE_COLOR As Long, ByVal HPALETTE As Long, ByVal pccolorref As Long) As Long
+	Public ErrorPermiso As Boolean = False
 
-    Private ReadOnly Property ClaveFormulario(separador As String) As String
-        Get
-            Dim sClave = String.Empty
-            If GridView1.RowCount > 0 AndAlso GridView1.SelectedRowsCount > 0 Then
+	Private ReadOnly Property ClaveFormulario(separador As String) As String
+		Get
+			Dim sClave = String.Empty
+			If GridView1.RowCount > 0 AndAlso GridView1.SelectedRowsCount > 0 Then
 
-                For Each oCol As clsColumnas In oColumnas
-                    If oCol.Clave Then
-                        sClave = sClave & GridView1.GetRowCellDisplayText(GridView1.FocusedRowHandle, oCol.Campo).ToString & separador
-                    End If
-                Next
-            End If
-            Return sClave
-        End Get
-    End Property
+				For Each oCol As clsColumnas In oColumnas
+					If oCol.Clave Then
+						sClave = sClave & GridView1.GetRowCellDisplayText(GridView1.FocusedRowHandle, oCol.Campo).ToString & separador
+					End If
+				Next
+			End If
+			Return sClave
+		End Get
+	End Property
 
-    Public Sub AnalizarCommand()
+	Public Sub AnalizarCommand()
 
-        Try
+		Try
 
-            Dim sParametros() As String
-            Dim sItemParam() As String
-            Dim nCodigoUsuario As Long
-            Dim nCodigoTransaccion As Long
-            Dim nCodigoEntidad As Long
-            Dim nC As Integer
+			Dim sParametros() As String
+			Dim sItemParam() As String
+			Dim nCodigoUsuario As Long
+			Dim nCodigoTransaccion As Long
+			Dim nCodigoEntidad As Long
+			Dim nC As Integer
 
-            '''''' USUARIO ''''''
+			'''''' USUARIO ''''''
 
-            sParametros = Command.Split("/")
+			sParametros = Command.Split("/")
 
-            For nC = 0 To sParametros.Length - 1
+			For nC = 0 To sParametros.Length - 1
 
-                sItemParam = sParametros(nC).Trim.Split(":")
+				sItemParam = sParametros(nC).Trim.Split(":")
 
-                If sItemParam.Length = 2 Then
+				If sItemParam.Length = 2 Then
 
-                    Select Case sItemParam(0).Trim.ToUpper
-                        Case "U"
-                            nCodigoUsuario = Val(sItemParam(1))
-                        Case "T"
-                            nCodigoTransaccion = Val(sItemParam(1))
-                        Case "E"
-                            nCodigoEntidad = Val(sItemParam(1))
-                    End Select
+					Select Case sItemParam(0).Trim.ToUpper
+						Case "U"
+							nCodigoUsuario = Val(sItemParam(1))
+						Case "T"
+							nCodigoTransaccion = Val(sItemParam(1))
+						Case "E"
+							nCodigoEntidad = Val(sItemParam(1))
+					End Select
 
-                End If
-            Next
+				End If
+			Next
 
-            If nCodigoUsuario = 0 Then
-                MensajeError("El parámetro código usuario es inválido.")
-                Application.Exit()
-            End If
+			If nCodigoUsuario = 0 Then
+				MensajeError("El parámetro código usuario es inválido.")
+				Application.Exit()
+			End If
 
-            If nCodigoTransaccion = 0 Then
-                MensajeError("El parámetro código de transacción es inválido.")
-                Application.Exit()
-            End If
+			If nCodigoTransaccion = 0 Then
+				MensajeError("El parámetro código de transacción es inválido.")
+				Application.Exit()
+			End If
 
-            If nCodigoEntidad = 0 Then
-                MensajeError("El parámetro código de entidad es inválido.")
-                Application.Exit()
-            End If
+			If nCodigoEntidad = 0 Then
+				MensajeError("El parámetro código de entidad es inválido.")
+				Application.Exit()
+			End If
 
-            CODIGO_TRANSACCION = nCodigoTransaccion
-            CODIGO_ENTIDAD = nCodigoEntidad
+			CODIGO_TRANSACCION = nCodigoTransaccion
+			CODIGO_ENTIDAD = nCodigoEntidad
 
-            PresentarDatos(nCodigoTransaccion, nCodigoUsuario, nCodigoEntidad)
+			PresentarDatos(nCodigoTransaccion, nCodigoUsuario, nCodigoEntidad)
 
-        Catch ex As Exception
-            TratarError(ex, "AnalizarCommand")
-            Application.Exit()
-        End Try
+		Catch ex As Exception
+			TratarError(ex, "AnalizarCommand")
+			Application.Exit()
+		End Try
 
-    End Sub
+	End Sub
 
-    Private Sub PresentarDatos(ByVal nCodigoTransaccion As Long, ByVal nCodigoUsuario As Long, ByVal nCodigoEntidad As Long)
+	Private Sub PresentarDatos(ByVal nCodigoTransaccion As Long, ByVal nCodigoUsuario As Long, ByVal nCodigoEntidad As Long)
 
-        Try
-            Try
-                Dim sSQL As String
-                Dim ds As DataSet
+		Try
+			Try
+				Dim sSQL As String
+				Dim ds As DataSet
 
-                ''''' USUARIO '''''
+				''''' USUARIO '''''
 
-                sSQL = "SELECT    US_CODUSU, US_NOMBRE, US_DESCRI, US_ADMIN " &
-                   "FROM      USUARI " &
-                   "WHERE     US_CODUSU = " & nCodigoUsuario
-                ds = oAdmTablas.AbrirDataset(sSQL)
+				sSQL = "SELECT    US_CODUSU, US_NOMBRE, US_DESCRI, US_ADMIN " &
+				   "FROM      USUARI " &
+				   "WHERE     US_CODUSU = " & nCodigoUsuario
+				ds = oAdmTablas.AbrirDataset(sSQL)
 
-                With ds.Tables(0)
+				With ds.Tables(0)
 
-                    If .Rows.Count = 0 Then
-                        Throw New Security.SecurityException("Falla de seguridad - US_CODUSU: " & nCodigoUsuario)
-                    Else
-                        UsuarioActual.Codigo = nCodigoUsuario
-                        UsuarioActual.Nombre = .Rows(0).Item("US_NOMBRE")
-                        UsuarioActual.Descripcion = .Rows(0).Item("US_DESCRI")
-                        UsuarioActual.Admin = .Rows(0).Item("US_ADMIN")
-                        UsuarioActual.SoloLectura = False
-                        'lblUsuario.Text = UsuarioActual.Descripcion
-                    End If
+					If .Rows.Count = 0 Then
+						Throw New SecurityException("Falla de seguridad - US_CODUSU: " & nCodigoUsuario)
+					Else
+						UsuarioActual.Codigo = nCodigoUsuario
+						UsuarioActual.Nombre = .Rows(0).Item("US_NOMBRE")
+						UsuarioActual.Descripcion = .Rows(0).Item("US_DESCRI")
+						UsuarioActual.Admin = .Rows(0).Item("US_ADMIN")
+						UsuarioActual.SoloLectura = False
+						'lblUsuario.Text = UsuarioActual.Descripcion
+					End If
 
-                End With
+				End With
 
-                ds = Nothing
+				ds = Nothing
 
-                ''''' ENTIDAD '''''
+				''''' ENTIDAD '''''
 
-                sSQL = "SELECT    TG_CODCON, TG_DESCRI " &
-                   "FROM      TABGEN " &
-                   "WHERE     TG_CODTAB = 1 " &
-                   "AND       TG_CODCON = " & nCodigoEntidad
-                ds = oAdmTablas.AbrirDataset(sSQL)
+				sSQL = "SELECT    TG_CODCON, TG_DESCRI " &
+				   "FROM      TABGEN " &
+				   "WHERE     TG_CODTAB = 1 " &
+				   "AND       TG_CODCON = " & nCodigoEntidad
+				ds = oAdmTablas.AbrirDataset(sSQL)
 
-                With ds.Tables(0)
+				With ds.Tables(0)
 
-                    If .Rows.Count = 0 Then
-                        Throw New Security.SecurityException("Parámetro de entidad no válido - TG_CODCON: " & nCodigoEntidad)
-                    Else
-                        NOMBRE_ENTIDAD = .Rows(0).Item("TG_DESCRI")
-                        'lblEntidad.Text = NOMBRE_ENTIDAD
-                    End If
+					If .Rows.Count = 0 Then
+						Throw New SecurityException("Parámetro de entidad no válido - TG_CODCON: " & nCodigoEntidad)
+					Else
+						NOMBRE_ENTIDAD = .Rows(0).Item("TG_DESCRI")
+						'lblEntidad.Text = NOMBRE_ENTIDAD
+					End If
 
-                End With
+				End With
 
-                ds = Nothing
+				ds = Nothing
 
-                ''''' TRANSACCION '''''
+				''''' TRANSACCION '''''
 
-                sSQL = "SELECT    MU_TRANSA, MU_DESCRI " &
-                   "FROM      MENUES " &
-                   "WHERE     MU_CODTRA = " & nCodigoTransaccion
-                ds = oAdmTablas.AbrirDataset(sSQL)
+				sSQL = "SELECT    MU_TRANSA, MU_DESCRI " &
+				   "FROM      MENUES " &
+				   "WHERE     MU_CODTRA = " & nCodigoTransaccion
+				ds = oAdmTablas.AbrirDataset(sSQL)
 
-                With ds.Tables(0)
-
-
-                    If .Rows.Count = 0 Then
-                        Throw New Security.SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto - MU_CODTRA: " & nCodigoTransaccion)
-                    Else
-                        'lblTransaccion.Text = nCodigoTransaccion.ToString & " - " & .Rows(0).Item("MU_TRANSA")
-                        Me.Text = "Transacción:" & nCodigoTransaccion.ToString & " - " & .Rows(0).Item("MU_TRANSA")
-                    End If
-
-                End With
-
-                ds = Nothing
-
-                'lblVersion.Text = "Versión: " & Application.ProductVersion
-                'Me.Text = lblTransaccion.Text
-
-            Catch ex As Security.SecurityException
-                MensajeError(ex.Message)
-                ErrorPermiso = True
-            End Try
-        Catch ex As Exception
-            TratarError(ex, "PresentarDatos")
-            ErrorPermiso = True
-        End Try
-
-    End Sub
-
-    Public Sub Ejecutar()
-
-        'FORMAT,FONDO,FRENTE,FUENTE,BOLD,UNDERLN,ITALIC,TACHADO,SIZE,ANCHO COL
-        'yyyy-mm-dd;-2147483643;-2147483630;Tahoma;0;0;0;8;1200;
+				With ds.Tables(0)
 
 
+					If .Rows.Count = 0 Then
+						Throw New SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto - MU_CODTRA: " & nCodigoTransaccion)
+					Else
+						'lblTransaccion.Text = nCodigoTransaccion.ToString & " - " & .Rows(0).Item("MU_TRANSA")
+						Me.Text = "Transacción:" & nCodigoTransaccion.ToString & " - " & .Rows(0).Item("MU_TRANSA")
+					End If
 
-        If ProcesosPrevios() Then
+				End With
 
-            Dim sSQL As String = ReemplazarVariables(oConsulta.Query, PanControles.Controls)
+				ds = Nothing
+
+				'lblVersion.Text = "Versión: " & Application.ProductVersion
+				'Me.Text = lblTransaccion.Text
+
+			Catch ex As SecurityException
+				MensajeError(ex.Message)
+				ErrorPermiso = True
+			End Try
+		Catch ex As Exception
+			TratarError(ex, "PresentarDatos")
+			ErrorPermiso = True
+		End Try
+
+	End Sub
+
+	Public Sub Ejecutar()
+
+		'FORMAT,FONDO,FRENTE,FUENTE,BOLD,UNDERLN,ITALIC,TACHADO,SIZE,ANCHO COL
+		'yyyy-mm-dd;-2147483643;-2147483630;Tahoma;0;0;0;8;1200;
+
+		listaControles = ObtenerValoresControles(PanControles.Controls)
+
+		If ProcesosPrevios() Then
+
+			Dim sSQL As String = ReemplazarVariables(oConsulta.Query, PanControles.Controls)
 
 			Dim ad As New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
 			Dim dt As New DataTable
-            ad.Fill(dt)
+			ad.Fill(dt)
 
 
 
-            If Not bFlagCargado Then
-                For Each oCol As clsColumnas In oColumnas
+			If Not bFlagCargado Then
+				For Each oCol As clsColumnas In oColumnas
 
-                    If oCol.Help = 1 And oCol.Reemplazar Then
-                        CargarValoresColumna(oCol.Campo, oCol.HelpQuery)
-                    End If
+					If oCol.Help = 1 And oCol.Reemplazar Then
+						CargarValoresColumna(oCol.Campo, oCol.HelpQuery)
+					End If
 
-                Next
-                bFlagCargado = True
-            End If
+				Next
+				bFlagCargado = True
+			End If
 
-            Grid.DataSource = dt
-            Grid.RefreshDataSource()
-            Grid.Refresh()
+			Grid.DataSource = dt
+			Grid.RefreshDataSource()
+			Grid.Refresh()
 
-            If GridView1.RowCount > 0 Then
-                btnMostrarBuscador.Enabled = True
-                btnImprimir.Enabled = True
-                btnExportar.Enabled = True
-                btnCopiar.Enabled = True
-            End If
+			If GridView1.RowCount > 0 Then
+				btnMostrarBuscador.Enabled = True
+				btnImprimir.Enabled = True
+				btnExportar.Enabled = True
+				btnCopiar.Enabled = True
+			End If
 
-            btnAdjuntarArchivo.Enabled = oAdmTablas.ExisteTabla("ADJUNT")
-            Columnas(False)
-        End If
-    End Sub
+			btnAdjuntarArchivo.Enabled = oAdmTablas.ExisteTabla("ADJUNT")
+			Columnas(False)
+		End If
+	End Sub
 
-    Private Sub Columnas()
-        Columnas(True)
-    End Sub
+	Private Sub Columnas()
+		Columnas(True)
+	End Sub
 
-    Private Sub Columnas(isNew As Boolean)
+	Private Sub Columnas(isNew As Boolean)
 
-        Dim View As ColumnView = Grid.MainView
-        Dim Column As DevExpress.XtraGrid.Columns.GridColumn
-        Dim oCol As clsColumnas
+		Dim View As ColumnView = Grid.MainView
+		Dim Column As DevExpress.XtraGrid.Columns.GridColumn
+		Dim oCol As clsColumnas
 
-        If isNew Then
-            View.Columns.Clear()
-        End If
+		If isNew Then
+			View.Columns.Clear()
+		End If
 
-        For Each oCol In oColumnas
-            If isNew Then
+		For Each oCol In oColumnas
+			If isNew Then
 
-                Column = View.Columns.AddField(oCol.Campo)
+				Column = View.Columns.AddField(oCol.Campo)
 
-                Column.Width = 100
-                Column.VisibleIndex = oCol.Orden
-                Column.Visible = oCol.Visible
-                Column.Caption = oCol.Titulo
-            Else
-                Column = View.Columns.Item(oCol.Campo)
-            End If
+				Column.Width = 100
+				Column.VisibleIndex = oCol.Orden
+				Column.Visible = oCol.Visible
+				Column.Caption = oCol.Titulo
+			Else
+				Column = View.Columns.Item(oCol.Campo)
+			End If
 
-            If oCol.Formato.IndexOf(";") <> -1 Then
-                If Not FormatearColumna(Column) Then
-                    FormatoCondicional(oCol.Campo)
-                End If
-            End If
+			If oCol.Formato.IndexOf(";") <> -1 Then
+				If Not FormatearColumna(Column) Then
+					FormatoCondicional(oCol.Campo)
+				End If
+			End If
 
-        Next
+		Next
 
-    End Sub
+	End Sub
 
-    Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        CargarConsulta(CODIGO_TRANSACCION)
-    End Sub
+	Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+		CargarConsulta(CODIGO_TRANSACCION)
+	End Sub
 
-    Private Sub frmMain_ResizeEnd(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.ResizeEnd
-        Grid.Height = Me.Height - 100
-    End Sub
+	Private Sub frmMain_ResizeEnd(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.ResizeEnd
+		Grid.Height = Me.Height - 100
+	End Sub
 
-    Private Sub HabilitarBotones()
+	Private Sub HabilitarBotones()
 
-        btnAlta.Enabled = oConsulta.Alta
-        btnBaja.Enabled = oConsulta.Baja
-        btnModif.Enabled = ValidaUpdate()
-        btnNDesde.Enabled = oConsulta.NuevoDesde
-        btnDrillDown.Enabled = ValidarDrillDown()
-        btnComent.Enabled = GridView1.RowCount > 0
+		btnAlta.Enabled = oConsulta.Alta
+		btnBaja.Enabled = oConsulta.Baja
+		btnModif.Enabled = ValidaUpdate()
+		btnNDesde.Enabled = oConsulta.NuevoDesde
+		btnDrillDown.Enabled = ValidarDrillDown()
+		btnComent.Enabled = GridView1.RowCount > 0
 
-    End Sub
+	End Sub
 
-    Private Sub CargarConsulta(ByVal nCodCon As Long)
+	Private Sub CargarConsulta(ByVal nCodCon As Long)
 
-        Dim sSQL As String
-        Dim ad As OleDb.OleDbDataAdapter
-        Dim dt As DataTable
-        Dim dr As DataRow
-        Dim nC As Integer = 0
-        Dim oVar As clsVariables
+		Dim sSQL As String
+		Dim ad As OleDb.OleDbDataAdapter
+		Dim dt As DataTable
+		Dim dr As DataRow
+		Dim nC As Integer = 0
+		Dim oVar As clsVariables
 
-        'ENCABEZADO
-        ''''''''''''''''''''''''''''''''''''
-        sSQL = "SELECT    * " &
-               "FROM      CABSYS " &
-               "WHERE     CS_CODTRA = " & nCodCon
+		'ENCABEZADO
+		''''''''''''''''''''''''''''''''''''
+		sSQL = "SELECT    * " &
+			   "FROM      CABSYS " &
+			   "WHERE     CS_CODTRA = " & nCodCon
 
-        ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
-        dt = New DataTable
+		ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
+		dt = New DataTable
 
-        ad.Fill(dt)
+		ad.Fill(dt)
 
-        For Each dr In dt.Rows
-            nCodCon = Convert.ToInt32(dr("CS_CODCON").ToString)
-        Next
+		For Each dr In dt.Rows
+			nCodCon = Convert.ToInt32(dr("CS_CODCON").ToString)
+		Next
 
-        AbrirConsulta(nCodCon)
+		AbrirConsulta(nCodCon)
 
-        dt = Nothing
-        ad = Nothing
+		dt = Nothing
+		ad = Nothing
 
-        sSQL = "SELECT    * " &
-               "FROM      SYSGRA " &
-               "WHERE     SG_CODCON = " & oConsulta.CodCon
+		sSQL = "SELECT    * " &
+			   "FROM      SYSGRA " &
+			   "WHERE     SG_CODCON = " & oConsulta.CodCon
 
-        ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
-        dt = New DataTable
+		ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
+		dt = New DataTable
 
-        ad.Fill(dt)
-        'btnGrafico.Enabled = dt.Rows.Count > 0
+		ad.Fill(dt)
+		'btnGrafico.Enabled = dt.Rows.Count > 0
 
-        dt = Nothing
-        ad = Nothing
+		dt = Nothing
+		ad = Nothing
 
-        sSQL = "SELECT    * " &
-               "FROM      REPORT " &
-               "WHERE     RO_CODTRA = " & oConsulta.Transaccion
+		sSQL = "SELECT    * " &
+			   "FROM      REPORT " &
+			   "WHERE     RO_CODTRA = " & oConsulta.Transaccion
 
-        ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
-        dt = New DataTable
+		ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
+		dt = New DataTable
 
-        ad.Fill(dt)
-        ' btnReporte.Enabled = dt.Rows.Count > 0
+		ad.Fill(dt)
+		' btnReporte.Enabled = dt.Rows.Count > 0
 
-        lblTitulo.Text = oConsulta.Nombre
-        lblSubtitulo.Text = oConsulta.Descripcion
-        Me.Text = oConsulta.Transaccion & " - " & oConsulta.Nombre
+		lblTitulo.Text = oConsulta.Nombre
+		lblSubtitulo.Text = oConsulta.Descripcion
+		Me.Text = oConsulta.Transaccion & " - " & oConsulta.Nombre
 
-        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        'VARIABLES
-        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        For Each oVar In oVariables
+		''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+		'VARIABLES
+		''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+		For Each oVar In oVariables
 
-            nC = nC + 1
+			nC = nC + 1
 
-            Dim lblInput As New Label
+			Dim lblInput As New Label
 
-            'Labels
-            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            If oVar.Help <> 2 And oVar.Help <> 3 Then
-                lblInput.Name = "_lbl" & oVar.Nombre
-                If oVar.Titulo.Contains(":") Then
-                    lblInput.Text = oVar.Titulo
-                Else
-                    lblInput.Text = oVar.Titulo & ":"
-                End If
+			'Labels
+			''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+			If oVar.Help <> 2 And oVar.Help <> 3 Then
+				lblInput.Name = "_lbl" & oVar.Nombre
+				If oVar.Titulo.Contains(":") Then
+					lblInput.Text = oVar.Titulo
+				Else
+					lblInput.Text = oVar.Titulo & ":"
+				End If
 
-                lblInput.Location = New System.Drawing.Point(5, PanTop.Height + 23 * oVar.Orden - 17)
+				lblInput.Location = New System.Drawing.Point(5, PanTop.Height + 23 * oVar.Orden - 17)
 				lblInput.Size() = New System.Drawing.Size(200, 18)
 				lblInput.Tag = oVar
 				PanControles.Controls.Add(lblInput)
-            End If
+			End If
 
-            Select Case oVar.Help
-                Case 0
-                    If oVar.Tipo = 2 Then
+			Select Case oVar.Help
+				Case 0
+					If oVar.Tipo = 2 Then
 
-                        Dim oFecha As New DateTimePicker
+						Dim oFecha As New DateTimePicker
 
-                        With oFecha
-                            .Name = "_" & oVar.Nombre
-                            .CustomFormat = "dd/MM/yyyy"
-                            .Format = DateTimePickerFormat.Custom
-                            .Visible = True
-                            .Value = Date.Today ' DateAdd(DateInterval.Day, -DateTime.Today.Day, DateTime.Today)
-                            .Location = New System.Drawing.Point(210, PanTop.Height + 23 * oVar.Orden - 21)
-                            .Size() = New System.Drawing.Size(130, 18)
+						With oFecha
+							.Name = "_" & oVar.Nombre
+							.CustomFormat = "dd/MM/yyyy"
+							.Format = DateTimePickerFormat.Custom
+							.Visible = True
+							.Value = Date.Today ' DateAdd(DateInterval.Day, -DateTime.Today.Day, DateTime.Today)
+							.Location = New System.Drawing.Point(210, PanTop.Height + 23 * oVar.Orden - 21)
+							.Size() = New System.Drawing.Size(130, 18)
 
-                        End With
+						End With
 						oFecha.Tag = oVar
 						PanControles.Controls.Add(oFecha)
 
-                    Else
+					Else
 
-                        Dim oTextBox As New TextBox
+						Dim oTextBox As New TextBox
 
-                        oTextBox.Name = "_" & oVar.Nombre
-                        oTextBox.Text = ""
-                        oTextBox.Location = New System.Drawing.Point(210, PanTop.Height + 23 * oVar.Orden - 21)
+						oTextBox.Name = "_" & oVar.Nombre
+						oTextBox.Text = ""
+						oTextBox.Location = New System.Drawing.Point(210, PanTop.Height + 23 * oVar.Orden - 21)
 						oTextBox.Size() = New System.Drawing.Size(130, 18)
 						oTextBox.Tag = oVar
 						PanControles.Controls.Add(oTextBox)
 
-                    End If
+					End If
 
-                Case 1 'SQL
-                    Dim oCombo As New Windows.Forms.ComboBox
+				Case 1 'SQL
+					Dim oCombo As New Windows.Forms.ComboBox
 
-                    oCombo.Name = "_" & oVar.Nombre
-                    oCombo.Location = New System.Drawing.Point(210, PanTop.Height + 23 * oVar.Orden - 21)
-                    oCombo.Size() = New System.Drawing.Size(400, 18)
+					oCombo.Name = "_" & oVar.Nombre
+					oCombo.Location = New System.Drawing.Point(210, PanTop.Height + 23 * oVar.Orden - 21)
+					oCombo.Size() = New System.Drawing.Size(400, 18)
 					oCombo.DropDownStyle = ComboBoxStyle.DropDownList
 					oCombo.Tag = oVar
 					PanControles.Controls.Add(oCombo)
-                    CargarCombo(oCombo, oVar.HelpQuery)
-                    oCombo.Text = "<Seleccione...>"
+					CargarCombo(oCombo, oVar.HelpQuery)
+					oCombo.Text = "<Seleccione...>"
 
 
-                Case 2 'ENTIDAD
-                    Dim oTextBox As New TextBox
+				Case 2 'ENTIDAD
+					Dim oTextBox As New TextBox
 
-                    oTextBox.Name = "_" & oVar.Nombre
-                    oTextBox.Text = CODIGO_ENTIDAD
-                    oTextBox.Visible = False
+					oTextBox.Name = "_" & oVar.Nombre
+					oTextBox.Text = CODIGO_ENTIDAD
+					oTextBox.Visible = False
 					nC = nC - 1
 					oTextBox.Tag = oVar
 					PanControles.Controls.Add(oTextBox)
 
-                Case 3 'CUADRO
-                    Dim oTextBox As New TextBox
+				Case 3 'CUADRO
+					Dim oTextBox As New TextBox
 
-                    oTextBox.Name = "_" & oVar.Nombre
-                    oTextBox.Text = oAdmTablas.DevolverValor("TABGEN", "TG_CODCON", "TG_CODTAB = 2 AND TG_NUME01 = " & CODIGO_TRANSACCION, "0").ToString
-                    oTextBox.Visible = False
+					oTextBox.Name = "_" & oVar.Nombre
+					oTextBox.Text = oAdmTablas.DevolverValor("TABGEN", "TG_CODCON", "TG_CODTAB = 2 AND TG_NUME01 = " & CODIGO_TRANSACCION, "0").ToString
+					oTextBox.Visible = False
 					nC = nC - 1
 					oTextBox.Tag = oVar
 					PanControles.Controls.Add(oTextBox)
 
-                Case 4 'CONDICIONAL
-                    Dim oCheckBox As New CheckBox
+				Case 4 'CONDICIONAL
+					Dim oCheckBox As New CheckBox
 
-                    oCheckBox.Name = "_" & oVar.Nombre
-                    oCheckBox.Location = New System.Drawing.Point(210, PanTop.Height + 23 * oVar.Orden - 19)
-                    oCheckBox.Size() = New System.Drawing.Size(120, 18)
-                    oCheckBox.Text = ""
+					oCheckBox.Name = "_" & oVar.Nombre
+					oCheckBox.Location = New System.Drawing.Point(210, PanTop.Height + 23 * oVar.Orden - 19)
+					oCheckBox.Size() = New System.Drawing.Size(120, 18)
+					oCheckBox.Text = ""
 					oCheckBox.Tag = oVar.HelpQuery
 					PanControles.Controls.Add(oCheckBox)
 
-            End Select
+			End Select
 
-        Next
+		Next
 
-        ad.Dispose()
-        dt.Dispose()
+		ad.Dispose()
+		dt.Dispose()
 
-        PanControles.Height = PanTop.Height + 23 * nC + 3
+		PanControles.Height = PanTop.Height + 23 * nC + 3
 
-        ad.Dispose()
-        dt.Dispose()
+		ad.Dispose()
+		dt.Dispose()
 
-        Columnas()
+		Columnas()
 
-        HabilitarBotones()
+		HabilitarBotones()
 
-    End Sub
+	End Sub
 
-    Function TranslateColor(ByVal clr As Long) As Long
-        If OleTranslateColor(clr, 0, TranslateColor) Then
-            TranslateColor = -1
-        End If
-    End Function
+	Function TranslateColor(ByVal clr As Long) As Long
+		If OleTranslateColor(clr, 0, TranslateColor) Then
+			TranslateColor = -1
+		End If
+	End Function
 
-    Private Sub RefreshCombosVariables()
-        Try
-            Dim i As Integer
-            For i = 0 To PanControles.Controls.Count - 1
-                If TypeOf (PanControles.Controls.Item(i)) Is ComboBox Then
-                    Dim combo As ComboBox = CType(PanControles.Controls.Item(i), ComboBox)
-                    Dim txtSelected = combo.SelectedItem
-                    Dim oVar As clsVariables
-                    For Each oVar In oVariables
-                        If combo.Name = "_" & oVar.Nombre Then
-                            combo.Items.Clear()
+	Private Sub RefreshCombosVariables()
+		Try
+			Dim i As Integer
+			For i = 0 To PanControles.Controls.Count - 1
+				If TypeOf (PanControles.Controls.Item(i)) Is ComboBox Then
+					Dim combo As ComboBox = CType(PanControles.Controls.Item(i), ComboBox)
+					Dim txtSelected = combo.SelectedItem
+					Dim oVar As clsVariables
+					For Each oVar In oVariables
+						If combo.Name = "_" & oVar.Nombre Then
+							combo.Items.Clear()
 							CargarCombo(combo, oVar.HelpQuery)
 							SelCombo(combo, CType(txtSelected, Prex.Utils.Entities.clsItem).Nombre)
 						End If
-                    Next
-                End If
-            Next
-        Catch ex As Exception
-            TratarError(ex, "RefreshCombosVariables")
-        End Try
-    End Sub
+					Next
+				End If
+			Next
+		Catch ex As Exception
+			TratarError(ex, "RefreshCombosVariables")
+		End Try
+	End Sub
 
-    Private Sub btnEjecutar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEjecutar.Click
+	Private Sub btnEjecutar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEjecutar.Click
 		Try
 			Me.Cursor = Cursors.WaitCursor
 
@@ -534,31 +538,31 @@ Public Class frmMain
 		End Try
 	End Sub
 
-    Public Sub New()
+	Public Sub New()
 
-        ' Llamada necesaria para el Diseñador de Windows Forms.
-        InitializeComponent()
+		' Llamada necesaria para el Diseñador de Windows Forms.
+		InitializeComponent()
 
-        ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
-        oAdmTablas.ConnectionString = CONN_LOCAL
-        AnalizarCommand()
+		' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+		oAdmTablas.ConnectionString = CONN_LOCAL
+		AnalizarCommand()
 
-    End Sub
+	End Sub
 
-    Private Function FormatearColumna(ByVal oColumna As DevExpress.XtraGrid.Columns.GridColumn) As Boolean
+	Private Function FormatearColumna(ByVal oColumna As DevExpress.XtraGrid.Columns.GridColumn) As Boolean
 
-        Dim fmt As StyleFormatCondition = New StyleFormatCondition()
-        Dim oFont As Font
-        Dim oEstiloFuente As FontStyle
-        Dim oFmt As clsFormatosColumnas = New clsFormatosColumnas()
+		Dim fmt As StyleFormatCondition = New StyleFormatCondition()
+		Dim oFont As Font
+		Dim oEstiloFuente As FontStyle
+		Dim oFmt As clsFormatosColumnas = New clsFormatosColumnas()
 
-        oFmt = oFormato(oColumna.FieldName)
+		oFmt = oFormato(oColumna.FieldName)
 
-        If oFmt.Ancho = 0 Then
-            oColumna.OptionsColumn.FixedWidth = True
-        Else
-            oColumna.Width = IIf(oFmt.Ancho = 0, 1000, oFmt.Ancho)
-        End If
+		If oFmt.Ancho = 0 Then
+			oColumna.OptionsColumn.FixedWidth = True
+		Else
+			oColumna.Width = IIf(oFmt.Ancho = 0, 1000, oFmt.Ancho)
+		End If
 
 		If Not (oFmt.Formato Is Nothing) AndAlso (oFmt.Formato.ToLower() <> "standard") Then
 
@@ -583,149 +587,149 @@ Public Class frmMain
 		End If
 
 		If Not bFmtEmb Then
-            If oFmt.Condicion = "" Then
-                If oFmt.Negrita Then oEstiloFuente = FontStyle.Bold
-                If oFmt.Subrayado Then oEstiloFuente = oEstiloFuente + FontStyle.Underline
-                If oFmt.Tachado Then oEstiloFuente = oEstiloFuente + FontStyle.Strikeout
+			If oFmt.Condicion = "" Then
+				If oFmt.Negrita Then oEstiloFuente = FontStyle.Bold
+				If oFmt.Subrayado Then oEstiloFuente = oEstiloFuente + FontStyle.Underline
+				If oFmt.Tachado Then oEstiloFuente = oEstiloFuente + FontStyle.Strikeout
 
-                If oFmt.Fuente <> "" Then
-                    oFont = New Font(oFmt.Fuente, oFmt.Tamano, oEstiloFuente)
-                Else
-                    oFont = New Font(oColumna.AppearanceCell.Font, oEstiloFuente)
-                End If
-                oColumna.AppearanceCell.Font = oFont
+				If oFmt.Fuente <> "" Then
+					oFont = New Font(oFmt.Fuente, oFmt.Tamano, oEstiloFuente)
+				Else
+					oFont = New Font(oColumna.AppearanceCell.Font, oEstiloFuente)
+				End If
+				oColumna.AppearanceCell.Font = oFont
 
-                If oFmt.Frente <> 0 Then oColumna.AppearanceCell.ForeColor = System.Drawing.ColorTranslator.FromWin32(oFmt.Frente)
-                If oFmt.Fondo <> 0 Then oColumna.AppearanceCell.BackColor = System.Drawing.ColorTranslator.FromWin32(oFmt.Fondo)
+				If oFmt.Frente <> 0 Then oColumna.AppearanceCell.ForeColor = System.Drawing.ColorTranslator.FromWin32(oFmt.Frente)
+				If oFmt.Fondo <> 0 Then oColumna.AppearanceCell.BackColor = System.Drawing.ColorTranslator.FromWin32(oFmt.Fondo)
 
-                Return True
-            Else
-                Return False
-            End If
-        Else
-            Return False
-        End If
+				Return True
+			Else
+				Return False
+			End If
+		Else
+			Return False
+		End If
 
-    End Function
+	End Function
 
-    Private Function FormatoCondicional(ByVal sCampo As String) As Boolean
+	Private Function FormatoCondicional(ByVal sCampo As String) As Boolean
 
-        Dim fmt As StyleFormatCondition = New StyleFormatCondition()
-        Dim sValor() As String
-        Dim oFmt As clsFormatosColumnas
-        Dim nC As Long
+		Dim fmt As StyleFormatCondition = New StyleFormatCondition()
+		Dim sValor() As String
+		Dim oFmt As clsFormatosColumnas
+		Dim nC As Long
 
-        oFmt = oFormato(sCampo)
+		oFmt = oFormato(sCampo)
 
-        If oFmt.Condicion <> "" Then
+		If oFmt.Condicion <> "" Then
 
 			GridView1.FormatConditions.Add(fmt)
 			fmt.Column = GridView1.Columns(sCampo)
 
 			If oFmt.Condicion.IndexOf("|") > 0 Then
-                sValor = oFmt.Condicion.Split("|")
+				sValor = oFmt.Condicion.Split("|")
 
-                If sValor.Length > 2 Then
-                    For nC = LBound(sValor) To UBound(sValor)
-                        fmt.Condition = FormatConditionEnum.Equal
-                        fmt.Value1 = sValor(nC)
+				If sValor.Length > 2 Then
+					For nC = LBound(sValor) To UBound(sValor)
+						fmt.Condition = FormatConditionEnum.Equal
+						fmt.Value1 = sValor(nC)
 
-                        EstablecerFmt(fmt, oFmt)
+						EstablecerFmt(fmt, oFmt)
 
-                        If nC < UBound(sValor) Then
-                            fmt = New StyleFormatCondition()
-                            GridView1.FormatConditions.Add(fmt)
-                            fmt.Column = GridView1.Columns(sCampo)
-                        End If
+						If nC < UBound(sValor) Then
+							fmt = New StyleFormatCondition()
+							GridView1.FormatConditions.Add(fmt)
+							fmt.Column = GridView1.Columns(sCampo)
+						End If
 
-                    Next
-                Else
-                    fmt.Condition = FormatConditionEnum.Between
-                    fmt.Value1 = sValor(0)
-                    fmt.Value2 = sValor(1)
-                    EstablecerFmt(fmt, oFmt)
-                End If
-            Else
-                fmt.Condition = FormatConditionEnum.Equal
-                Dim result As Integer
-                'Todo: revisar formato condicional xej: BALANA
-                If Integer.TryParse(oFmt.Condicion, result) Then
-                    fmt.Value1 = result
-                Else
-                    fmt.Value1 = oFmt.Condicion
-                End If
-                EstablecerFmt(fmt, oFmt)
-            End If
+					Next
+				Else
+					fmt.Condition = FormatConditionEnum.Between
+					fmt.Value1 = sValor(0)
+					fmt.Value2 = sValor(1)
+					EstablecerFmt(fmt, oFmt)
+				End If
+			Else
+				fmt.Condition = FormatConditionEnum.Equal
+				Dim result As Integer
+				'Todo: revisar formato condicional xej: BALANA
+				If Integer.TryParse(oFmt.Condicion, result) Then
+					fmt.Value1 = result
+				Else
+					fmt.Value1 = oFmt.Condicion
+				End If
+				EstablecerFmt(fmt, oFmt)
+			End If
 
-            Return True
+			Return True
 
-        End If
+		End If
 
-    End Function
+	End Function
 
-    Private Sub EstablecerFmt(ByVal fmt As StyleFormatCondition, ByVal oFmt As clsFormatosColumnas)
+	Private Sub EstablecerFmt(ByVal fmt As StyleFormatCondition, ByVal oFmt As clsFormatosColumnas)
 
-        Dim oFont As Font
-        Dim oEstiloFuente As System.Drawing.FontStyle
+		Dim oFont As Font
+		Dim oEstiloFuente As System.Drawing.FontStyle
 
-        If oFmt.Negrita Then oEstiloFuente = oEstiloFuente + FontStyle.Bold
-        If oFmt.Subrayado Then oEstiloFuente = oEstiloFuente + FontStyle.Underline
-        If oFmt.Tachado Then oEstiloFuente = oEstiloFuente + FontStyle.Strikeout
+		If oFmt.Negrita Then oEstiloFuente = oEstiloFuente + FontStyle.Bold
+		If oFmt.Subrayado Then oEstiloFuente = oEstiloFuente + FontStyle.Underline
+		If oFmt.Tachado Then oEstiloFuente = oEstiloFuente + FontStyle.Strikeout
 
-        If oFmt.Fuente <> "" Then
-            oFont = New Font(oFmt.Fuente, oFmt.Tamano, oEstiloFuente)
-        Else
-            oFont = New Font("Tahoma", 8, oEstiloFuente)
-        End If
+		If oFmt.Fuente <> "" Then
+			oFont = New Font(oFmt.Fuente, oFmt.Tamano, oEstiloFuente)
+		Else
+			oFont = New Font("Tahoma", 8, oEstiloFuente)
+		End If
 
-        If oFmt.Fondo <> 0 Then fmt.Appearance.BackColor = System.Drawing.ColorTranslator.FromWin32(oFmt.Fondo)
-        If oFmt.Frente <> 0 Then fmt.Appearance.ForeColor = System.Drawing.ColorTranslator.FromWin32(oFmt.Frente)
+		If oFmt.Fondo <> 0 Then fmt.Appearance.BackColor = System.Drawing.ColorTranslator.FromWin32(oFmt.Fondo)
+		If oFmt.Frente <> 0 Then fmt.Appearance.ForeColor = System.Drawing.ColorTranslator.FromWin32(oFmt.Frente)
 
-        fmt.Appearance.Font = oFont
-        fmt.ApplyToRow = True
+		fmt.Appearance.Font = oFont
+		fmt.ApplyToRow = True
 
-    End Sub
+	End Sub
 
-    Private Sub btnExportar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExportar.Click
-        GuardarLOG(AccionesLOG.ExportacionDeDatos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+	Private Sub btnExportar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExportar.Click
+		GuardarLOG(AccionesLOG.ExportacionDeDatos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
 
-        frmExportar.PasarViewResultados("", Me.lblTitulo.Text, GridView1)
-        frmExportar.ShowDialog()
+		frmExportar.PasarViewResultados("", Me.lblTitulo.Text, GridView1)
+		frmExportar.ShowDialog()
 
-    End Sub
+	End Sub
 
-    Private Sub btnImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnImprimir.Click
+	Private Sub btnImprimir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnImprimir.Click
 
 
-        VistaPrevia(Me.lblTitulo.Text)
-        'Grid.ShowPrintPreview()
+		VistaPrevia(Me.lblTitulo.Text)
+		'Grid.ShowPrintPreview()
 
-    End Sub
+	End Sub
 
-    Private Sub EstablecerLenguaje()
+	Private Sub EstablecerLenguaje()
 
-        BarLocalizer.Active = New cBarsLocalizer()
-        GridLocalizer.Active = New cGridLocalizer()
-        PivotGridLocalizer.Active = New cPivotGridLocalizer()
-        ChartLocalizer.Active = New cChartLocalizer()
-        PreviewLocalizer.Active = New cPrintingLocalizer()
-        BarLocalizer.Active = New cBarsLocalizer()
-        Localizer.Active = New cEditorsLocalizer()
-        ReportLocalizer.Active = New cReportsLocalizer()
+		BarLocalizer.Active = New cBarsLocalizer()
+		GridLocalizer.Active = New cGridLocalizer()
+		PivotGridLocalizer.Active = New cPivotGridLocalizer()
+		ChartLocalizer.Active = New cChartLocalizer()
+		PreviewLocalizer.Active = New cPrintingLocalizer()
+		BarLocalizer.Active = New cBarsLocalizer()
+		Localizer.Active = New cEditorsLocalizer()
+		ReportLocalizer.Active = New cReportsLocalizer()
 
-    End Sub
+	End Sub
 
-    Private Sub Grid_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.DoubleClick
+	Private Sub Grid_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.DoubleClick
 
-        If ValidaUpdate() Then
-            If Not UsuarioActual.SoloLectura Then
-                Modificar()
-            End If
-        ElseIf ValidarDrillDown() Then
-            DrillDown()
-        End If
+		If ValidaUpdate() Then
+			If Not UsuarioActual.SoloLectura Then
+				Modificar()
+			End If
+		ElseIf ValidarDrillDown() Then
+			DrillDown()
+		End If
 
-    End Sub
+	End Sub
 
 	'Public Function ReemplazarVariables(ByVal sSQL As String) As String
 
@@ -2635,397 +2639,420 @@ Reinicio:
 		Dim oItem As Prex.Utils.Entities.clsItem
 
 		Select Case oVar.Tipo
-            Case 0
-                If oVar.Help = 1 Then
-                    oItem = CType(Controles("_" & oVar.Nombre), ComboBox).SelectedItem
-                    vReemplazo = oItem.Valor
-                ElseIf oVar.Help = 2 Then
-                    vReemplazo = Val(Controles("_" & oVar.Nombre).Text)
-                ElseIf oVar.Help = 3 Then
-                    vReemplazo = Val(Controles("_" & oVar.Nombre).Text)
-                ElseIf oVar.Help = 4 Then
-                    vReemplazo = Controles("_" & oVar.Nombre).Tag
-                Else
-                    vReemplazo = Val(Controles("_" & oVar.Nombre).Text)
-                End If
+			Case 0
+				If oVar.Help = 1 Then
+					oItem = CType(Controles("_" & oVar.Nombre), ComboBox).SelectedItem
+					vReemplazo = oItem.Valor
+				ElseIf oVar.Help = 2 Then
+					vReemplazo = Val(Controles("_" & oVar.Nombre).Text)
+				ElseIf oVar.Help = 3 Then
+					vReemplazo = Val(Controles("_" & oVar.Nombre).Text)
+				ElseIf oVar.Help = 4 Then
+					vReemplazo = Controles("_" & oVar.Nombre).Tag
+				Else
+					vReemplazo = Val(Controles("_" & oVar.Nombre).Text)
+				End If
 
-            Case 1
-                If oVar.Help Then
-                    oItem = CType(Controles("_" & oVar.Nombre), ComboBox).SelectedItem
-                    vReemplazo = oItem.Valor
-                Else
-                    vReemplazo = Controles("_" & oVar.Nombre)
-                End If
+			Case 1
+				If oVar.Help Then
+					oItem = CType(Controles("_" & oVar.Nombre), ComboBox).SelectedItem
+					vReemplazo = oItem.Valor
+				Else
+					vReemplazo = Controles("_" & oVar.Nombre)
+				End If
 
-            Case 2
-                vReemplazo = CType(Controles("_" & oVar.Nombre), DateTimePicker).Value
+			Case 2
+				vReemplazo = CType(Controles("_" & oVar.Nombre), DateTimePicker).Value
 
-        End Select
-        Return vReemplazo
+		End Select
+		Return vReemplazo
 
-    End Function
+	End Function
 
-    Private Sub CargarValoresColumna(ByVal sColumna As String, ByVal sSQL As String)
+	Private Sub CargarValoresColumna(ByVal sColumna As String, ByVal sSQL As String)
 
-        Dim ds As New DataSet
-        Dim oItem As DropDownGrid
-        Dim xpCollectionTipo As New XPCollection(GetType(DropDownGrid))
+		Dim ds As New DataSet
+		Dim oItem As DropDownGrid
+		Dim xpCollectionTipo As New XPCollection(GetType(DropDownGrid))
 
-        xpCollectionTipo.DisplayableProperties = "This;Oid;Descripcion"
+		xpCollectionTipo.DisplayableProperties = "This;Oid;Descripcion"
 
-        sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
-        ds = oAdmTablas.AbrirDataset(sSQL)
+		sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
+		ds = oAdmTablas.AbrirDataset(sSQL)
 
-        With ds.Tables(0)
+		With ds.Tables(0)
 
-            For Each row As DataRow In .Rows
+			For Each row As DataRow In .Rows
 
-                oItem = New DropDownGrid
-                Dim oi
-                If IsNumeric(row(0).ToString) AndAlso Integer.TryParse(row(0).ToString, oi) Then oItem.Oid = oi
-                oItem.Codigo = row(0)
-                oItem.Descripcion = row(1)
+				oItem = New DropDownGrid
+				Dim oi
+				If IsNumeric(row(0).ToString) AndAlso Integer.TryParse(row(0).ToString, oi) Then oItem.Oid = oi
+				oItem.Codigo = row(0)
+				oItem.Descripcion = row(1)
 
-                xpCollectionTipo.Add(oItem)
+				xpCollectionTipo.Add(oItem)
 
-                oItem = Nothing
+				oItem = Nothing
 
-            Next
+			Next
 
-        End With
+		End With
 
-        Dim oLookUp As New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
+		Dim oLookUp As New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
 
-        oLookUp.Name = "lu" & sColumna
-        oLookUp.DataSource = xpCollectionTipo
-        oLookUp.DisplayMember = "Descripcion"
-        oLookUp.ValueMember = "Oid"
-        oLookUp.Columns.Add(New DevExpress.XtraEditors.Controls.LookUpColumnInfo("Oid"))
-        oLookUp.Columns.Add(New DevExpress.XtraEditors.Controls.LookUpColumnInfo("Descripcion"))
-        oLookUp.Columns("Oid").Visible = False
-        oLookUp.ShowFooter = False
-        oLookUp.ShowHeader = False
-        Grid.RepositoryItems.Add(oLookUp)
+		oLookUp.Name = "lu" & sColumna
+		oLookUp.DataSource = xpCollectionTipo
+		oLookUp.DisplayMember = "Descripcion"
+		oLookUp.ValueMember = "Oid"
+		oLookUp.Columns.Add(New DevExpress.XtraEditors.Controls.LookUpColumnInfo("Oid"))
+		oLookUp.Columns.Add(New DevExpress.XtraEditors.Controls.LookUpColumnInfo("Descripcion"))
+		oLookUp.Columns("Oid").Visible = False
+		oLookUp.ShowFooter = False
+		oLookUp.ShowHeader = False
+		Grid.RepositoryItems.Add(oLookUp)
 
-        CType(Grid.MainView, ColumnView).Columns(sColumna).ColumnEdit = oLookUp
+		CType(Grid.MainView, ColumnView).Columns(sColumna).ColumnEdit = oLookUp
 
-        oLookUp = Nothing
+		oLookUp = Nothing
 
-    End Sub
+	End Sub
 
-    Private Function TieneComentarios() As String
+	Private Function TieneComentarios() As String
 
-        Dim ds As DataSet
-        Dim sTemp As String = ""
-        Dim sSQL As String
+		Dim ds As DataSet
+		Dim sTemp As String = ""
+		Dim sSQL As String
 
-        If Grid.MainView.RowCount > 0 Then
+		If Grid.MainView.RowCount > 0 Then
 
-            Dim oNotas As New frmNotas
+			Dim oNotas As New frmNotas
 
 
 
-            sSQL = "SELECT    * " &
-                   "FROM      COMENT " &
-                   "WHERE     CM_CLAVE = '" & ClaveFormulario("|") & "'"
-            ds = oAdmTablas.AbrirDataset(sSQL)
+			sSQL = "SELECT    * " &
+				   "FROM      COMENT " &
+				   "WHERE     CM_CLAVE = '" & ClaveFormulario("|") & "'"
+			ds = oAdmTablas.AbrirDataset(sSQL)
 
-            With ds.Tables(0)
-                For Each row As DataRow In .Rows
-                    oNotas.rtfNota.Rtf = row("CM_COMENT")
-                Next
-            End With
+			With ds.Tables(0)
+				For Each row As DataRow In .Rows
+					oNotas.rtfNota.Rtf = row("CM_COMENT")
+				Next
+			End With
 
-            sTemp = oNotas.rtfNota.Text
-
-            oNotas = Nothing
-            ds = Nothing
-        End If
-
-        Return sTemp
-
-    End Function
-
-
-    Private Sub GridView1_GridMenuItemClick(ByVal sender As Object, ByVal e As DevExpress.XtraGrid.Views.Grid.GridMenuItemClickEventArgs) Handles GridView1.GridMenuItemClick
-
-        ' In some cases the SummaryType is not null, but the SummaryItems is null
-        ' For that reason we are validating that to prevent the crash
-        If e.SummaryItem IsNot Nothing Then
-            ' We need to set the handle as true. This should be the default value, Stupid Grid!
-            e.Handled = True
-
-            Select Case e.SummaryType
-                Case DevExpress.Data.SummaryItemType.Sum
-                    e.SummaryItem.SetSummary(DevExpress.Data.SummaryItemType.Sum, "SUM={0}")
-                Case DevExpress.Data.SummaryItemType.Average
-                    e.SummaryItem.SetSummary(DevExpress.Data.SummaryItemType.Average, "AVE={0}")
-                Case DevExpress.Data.SummaryItemType.Count
-                    e.SummaryItem.SetSummary(DevExpress.Data.SummaryItemType.Count, "COUNT={0}")
-                Case DevExpress.Data.SummaryItemType.Max
-                    e.SummaryItem.SetSummary(DevExpress.Data.SummaryItemType.Max, "MAX={0}")
-                Case DevExpress.Data.SummaryItemType.Min
-                    e.SummaryItem.SetSummary(DevExpress.Data.SummaryItemType.Min, "MIN={0}")
-                Case DevExpress.Data.SummaryItemType.None
-                    e.SummaryItem.SetSummary(DevExpress.Data.SummaryItemType.None, "")
-            End Select
-        Else
-            e.Handled = False
-        End If
-
-        e.DXMenuItem.Collection.BeginUpdate()
-
-    End Sub
-
-    Private Sub VistaPrevia(ByVal sTitulo As String)
-        GuardarLOG(AccionesLOG.ImprimeDatosDeCuadro, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
-        Dim pl As New DevExpress.XtraPrinting.PrintableComponentLink
-        Dim phf As DevExpress.XtraPrinting.PageHeaderFooter
-        Dim Period As String
-
-        Period = Format(DateTime.Today, "dd-MM-yyyy")
-
-        pl.Component = Grid
-        ps1.Links.Add(pl)
-        phf = pl.PageHeaderFooter
-
-        phf.Header.Font = New Font("Tahoma", 10, FontStyle.Bold)
-        phf.Header.LineAlignment = DevExpress.XtraPrinting.BrickAlignment.Center
-
-        phf.Header.Content.Clear()
-        phf.Header.Content.Add(sTitulo)
-
-        phf.Footer.Font = New Font("Tahoma", 8, FontStyle.Bold)
-        phf.Footer.LineAlignment = DevExpress.XtraPrinting.BrickAlignment.Center
-
-        phf.Footer.Content.Clear()
-        phf.Footer.Content.Add("Fecha: " & Period)
-
-        pl.CreateDocument()
-        pl.ShowPreview()
-
-
-    End Sub
-
-    Public Function ReemplazarVariablesExt(ByVal sConsulta As String) As String
-        Return ReemplazarVariables(sConsulta, PanControles.Controls)
-    End Function
-
-    Private Sub btnCopiar_Click(sender As Object, e As EventArgs) Handles btnCopiar.Click
-        GuardarLOG(AccionesLOG.CopiaDeDatos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
-        Cursor = Cursors.WaitCursor
-        SuspendLayout()
-        Try
-
-            Try
-                Dim d = GridView1.OptionsSelection.MultiSelect
-                GridView1.OptionsSelection.MultiSelect = True
-                GridView1.SelectAll()
-                GridView1.CopyToClipboard()
-                GridView1.ClearSelection()
-                GridView1.OptionsSelection.MultiSelect = d
-                MensajeInformacion("Se han copiado los resultados al portapapeles")
-            Catch ex As Exception
-                TratarError(ex, "Copiar")
-            End Try
-        Finally
-            ResumeLayout()
-            Cursor = Cursors.Default
-        End Try
-    End Sub
-
-    Private Sub btnAdjuntarArchivo_Click(sender As Object, e As EventArgs) Handles btnAdjuntarArchivo.Click
-        GuardarLOG(AccionesLOG.ActualizacionDeArchivosAdjuntos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
-        Adjuntar()
-
-    End Sub
-
-    Private Sub btnNDesde_Click(sender As Object, e As EventArgs) Handles btnNDesde.Click
-        Modificar("N")
-    End Sub
-
-    Private Sub btnMostrarBuscador_Click(sender As Object, e As EventArgs) Handles btnMostrarBuscador.Click
-        If Not GridView1.IsFindPanelVisible Then
-            btnMostrarBuscador.BackColor = SystemColors.ActiveCaption
-            GridView1.ShowFindPanel()
-        Else
-            btnMostrarBuscador.BackColor = SystemColors.Control
-            GridView1.HideFindPanel()
-        End If
-    End Sub
-
-    'Parametros sParam(0)=Cuadro|sParam(1)=Periodo|sParam(2)=CodCons|sParam(3)=Entidad|
-    '           sParam(4)=Columnas|sParam(5)=MesDesde|sParam(6)=MostrarSoloConSaldo|
-    '           sParam(7)=TablaDatos|sParam(8)=PrefijoTablaDatos|sParam(9)=Escenario
-    Public Function ConsActualizar_PNP(ByVal sParametros As String) As Boolean
-        Try
-            Me.Cursor = Cursors.WaitCursor
-            Dim sSQL As String
-            Dim dFechaVig As Date
-            Dim nCont As Long
-            Dim sParam() As String
-            Dim sIndice As String
-            Dim nEscena As Integer
-            Dim sTabla As String
-            Dim nMaxNivel As Long
-            Try
-
-                sParam = Split(sParametros, "|")
-                sTabla = sParam(7)
-                sIndice = sParam(8)
-                nEscena = sParam(9)
-
-                sSQL = "SELECT  MAX(TK_FECVIG) AS MAX_FECHA " &
-                   "FROM    PNP_TABPAR " &
-                   "WHERE   TK_FECVIG <= " & FechaSQL(sParam(1))
-
-                Dim rs As DataSet = oAdmTablas.AbrirDataset(sSQL)
-                If rs.Tables(0) Is Nothing OrElse rs.Tables(0).Rows.Count() = 0 Then
-                    MensajeInformacion("No existen relaciones con vigencia igual o anterior al período seleccionado. Por favor verifique el Mapa de Relaciones!")
-                    Return False
-                End If
-
-
-                dFechaVig = rs.Tables(0).Rows(0).Item("MAX_FECHA")
-
-
-                nMaxNivel = ConsTotalizar_PNP(sParam(0), CDate(sParam(1)), dFechaVig, sParam(2), sParam(3), sParam(4), sParam(5), sTabla, sIndice, nEscena)
-
-                sSQL = ""
-
-                If CBool(Val(sParam(6))) Then
-
-                    For nCont = 0 To Val(sParam(4))
-                        sSQL = sSQL & sIndice & "_MES" & nCont & " + "
-                    Next
-
-                    sSQL = Strings.Left(sSQL, Len(sSQL) - 2)
-                    sSQL = "AND (" & sSQL & ") <> 0 "
-                End If
-
-                sSQL = "SELECT    * " &
-                   "FROM      " & sTabla & " " &
-                   "WHERE     " & sIndice & "_CUADRO = " & sParam(0) & " " &
-                   "AND       " & sIndice & "_FECVIG = " & FechaSQL(sParam(1)) & " " &
-                   "AND       " & sIndice & "_CODENT = " & sParam(3) & " " &
-                   "AND       " & sIndice & "_CODCON = '" & sParam(2) & "' " &
-                   "AND       " & sIndice & "_ESCENA = " & nEscena & " " &
-                   "AND       " & sIndice & "_ACTIVA = 1 " &
-                    IIf(CBool(Val(sParam(6))), "AND (" & sIndice & "_MES" & Val(sParam(4)) & " <> 0 OR " & sIndice & "_MES" & Val(sParam(4)) - 1 & " <> 0) ", " ") &
-                   "ORDER BY  " & sIndice & "_ORDEN, " & sIndice & "_CODPAR, " & sIndice & "_CAMPO8 ASC"
-
-                nMaxNivel = 17
-                ConsFormatoCondicional(nMaxNivel)
-
-                Return True
-
-            Catch ex As Exception
-                If Err.Number <> 0 Then
-                    TratarError(ex, "ConsActualizar_PNP")
-                End If
-            End Try
-        Finally
-            Cursor = Cursors.Default
-        End Try
-
-    End Function
-
-
-    Public Function ConsTotalizar_PNP(ByVal sCuadro As String, ByVal dFecha As Date,
-                              ByVal dFechaVig As Date, ByVal sConsolidacion As String,
-                              ByVal nEmpresa As Long, ByVal nCol As Long,
-                              ByVal nDesdeMes As Integer, ByVal sTabla As String,
-                              ByVal sIndice As String, ByVal nEscena As Integer) As Long
-
-        Dim sSQL As String
-        Dim nMax As Long
-        Dim nCont As Long
-        Dim nCont1 As Long
-
-        sConsolidacion = Format(Val(sConsolidacion), "000")
-
-        sSQL = "SELECT      MAX(" & sIndice & "_NIVEL) AS MAXNIVEL " &
-          "FROM        " & sTabla & " " &
-          "WHERE       " & sIndice & "_FECVIG=" & FechaSQL(dFecha) & " " &
-          "AND         " & sIndice & "_CODENT = " & nEmpresa & " " &
-          "AND         " & sIndice & "_CUADRO = " & sCuadro & " " &
-          "AND         " & sIndice & "_ESCENA = " & nEscena
-
-        Dim RS As DataSet = oAdmTablas.AbrirDataset(sSQL)
-        If RS.Tables(0) Is Nothing OrElse RS.Tables(0).Rows.Count() = 0 Then
-            Throw New Exception("No hay registros en MAX de tabla " & sTabla)
-        End If
-
-        If RS.Tables(0).Rows.Item(0)("MAXNIVEL") Is Nothing OrElse IsDBNull(RS.Tables(0).Rows.Item(0)("MAXNIVEL")) Then
-            nMax = 0
-        Else
-            nMax = RS.Tables(0).Rows.Item(0)("MAXNIVEL")
-        End If
-        RS = Nothing
-
-        For nCont = 1 To nMax
-
-            If oAdmTablas.ExisteTabla("SUMTEMP") Then
-                Call oAdmTablas.EjecutarComandoSQL("DROP TABLE SUMTEMP")
-            End If
-
-            sSQL = "SELECT " & sTabla & "." & sIndice & "_NIVEL, " & sTabla & "." & sIndice & "_ESQUEMA, " &
-              "       " & sTabla & "." & sIndice & "_CODENT, " & sTabla & "." & sIndice & "_FECVIG, "
-
-            For nCont1 = 0 To nCol - 1
-
-                sSQL = sSQL & "Sum(" & sTabla & "." & sIndice & "_MES" & nDesdeMes + nCont1 & ") AS Tot_MES" & nDesdeMes + nCont1 & ", "
-
-            Next nCont1
-
-            sSQL = Strings.Left(sSQL, Len(sSQL) - 2)
-
-            sSQL = sSQL & " " &
-              "INTO   SUMTEMP " &
-              "FROM   " & sTabla & " " &
-              "WHERE  " & sTabla & "." & sIndice & "_CODENT = " & nEmpresa & " " &
-              "AND    " & sTabla & "." & sIndice & "_ACTIVA = 1 " &
-              "AND    " & sTabla & "." & sIndice & "_FECVIG = " & FechaSQL(dFecha) & " " &
-              "AND    " & sTabla & "." & sIndice & "_CUADRO = " & sCuadro & " " &
-              "AND    " & sTabla & "." & sIndice & "_ESCENA = " & nEscena & " " &
-              "AND    " & sTabla & "." & sIndice & "_CODCON = '" & sConsolidacion & "' " &
-              "GROUP BY " & sTabla & "." & sIndice & "_NIVEL, " & sTabla & "." & sIndice & "_ESQUEMA, " &
-              "         " & sTabla & "." & sIndice & "_CODENT, " & sTabla & "." & sIndice & "_FECVIG " &
-              "HAVING (((" & sTabla & "." & sIndice & "_NIVEL)=" & (nMax - (nCont - 1)) & "));"
-
-            Call oAdmTablas.EjecutarComandoSQL(sSQL)
-
-            sSQL = "UPDATE        " & sTabla & " " &
-              "INNER JOIN    SUMTEMP " &
-              "ON            (" & sTabla & "." & sIndice & "_INDEX = SUMTEMP." & sIndice & "_ESQUEMA) " &
-              "AND           (" & sTabla & "." & sIndice & "_CODENT = SUMTEMP." & sIndice & "_CODENT) " &
-              "AND           (" & sTabla & "." & sIndice & "_FECVIG = SUMTEMP." & sIndice & "_FECVIG) SET "
-
-            For nCont1 = 0 To nCol - 1
-                sSQL = sSQL & "" & sTabla & "." & sIndice & "_MES" & nDesdeMes + nCont1 & " = SUMTEMP.TOT_MES" & nDesdeMes + nCont1 & ", "
-            Next nCont1
-
-            sSQL = Strings.Left(sSQL, Len(sSQL) - 2)
-
-            sSQL = sSQL & " " &
-              "WHERE         " & sTabla & "." & sIndice & "_CODENT = " & nEmpresa & " " &
-              "AND           " & sTabla & "." & sIndice & "_FECVIG = " & FechaSQL(dFecha) & " " &
-              "AND           " & sTabla & "." & sIndice & "_CUADRO = " & sCuadro & " " &
-              "AND           " & sTabla & "." & sIndice & "_ESCENA = " & nEscena & " " &
-              "AND           " & sTabla & "." & sIndice & "_INDEX > 1 " &
-              "AND           " & sTabla & "." & sIndice & "_CODCON = '" & sConsolidacion & "' "
-
-            ' Filtro por DC_index agregado para que no cometa el error de actualizar partidas de mas
-
-            Call oAdmTablas.EjecutarComandoSQL(sSQL)
-
-        Next nCont
-
-        Return nMax
-
-    End Function
-
-
-
+			sTemp = oNotas.rtfNota.Text
+
+			oNotas = Nothing
+			ds = Nothing
+		End If
+
+		Return sTemp
+
+	End Function
+
+
+	Private Sub GridView1_GridMenuItemClick(ByVal sender As Object, ByVal e As DevExpress.XtraGrid.Views.Grid.GridMenuItemClickEventArgs) Handles GridView1.GridMenuItemClick
+
+		' In some cases the SummaryType is not null, but the SummaryItems is null
+		' For that reason we are validating that to prevent the crash
+		If e.SummaryItem IsNot Nothing Then
+			' We need to set the handle as true. This should be the default value, Stupid Grid!
+			e.Handled = True
+
+			Select Case e.SummaryType
+				Case DevExpress.Data.SummaryItemType.Sum
+					e.SummaryItem.SetSummary(DevExpress.Data.SummaryItemType.Sum, "SUM={0}")
+				Case DevExpress.Data.SummaryItemType.Average
+					e.SummaryItem.SetSummary(DevExpress.Data.SummaryItemType.Average, "AVE={0}")
+				Case DevExpress.Data.SummaryItemType.Count
+					e.SummaryItem.SetSummary(DevExpress.Data.SummaryItemType.Count, "COUNT={0}")
+				Case DevExpress.Data.SummaryItemType.Max
+					e.SummaryItem.SetSummary(DevExpress.Data.SummaryItemType.Max, "MAX={0}")
+				Case DevExpress.Data.SummaryItemType.Min
+					e.SummaryItem.SetSummary(DevExpress.Data.SummaryItemType.Min, "MIN={0}")
+				Case DevExpress.Data.SummaryItemType.None
+					e.SummaryItem.SetSummary(DevExpress.Data.SummaryItemType.None, "")
+			End Select
+		Else
+			e.Handled = False
+		End If
+
+		e.DXMenuItem.Collection.BeginUpdate()
+
+	End Sub
+
+	Private Sub VistaPrevia(ByVal sTitulo As String)
+		GuardarLOG(AccionesLOG.ImprimeDatosDeCuadro, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+		Dim pl As New DevExpress.XtraPrinting.PrintableComponentLink
+		Dim phf As DevExpress.XtraPrinting.PageHeaderFooter
+		Dim Period As String
+
+		Period = Format(DateTime.Today, "dd-MM-yyyy")
+
+		pl.Component = Grid
+		ps1.Links.Add(pl)
+		phf = pl.PageHeaderFooter
+
+		phf.Header.Font = New Font("Tahoma", 10, FontStyle.Bold)
+		phf.Header.LineAlignment = DevExpress.XtraPrinting.BrickAlignment.Center
+
+		phf.Header.Content.Clear()
+		phf.Header.Content.Add(sTitulo)
+
+		phf.Footer.Font = New Font("Tahoma", 8, FontStyle.Bold)
+		phf.Footer.LineAlignment = DevExpress.XtraPrinting.BrickAlignment.Center
+
+		phf.Footer.Content.Clear()
+		phf.Footer.Content.Add("Fecha: " & Period)
+
+		pl.CreateDocument()
+		pl.ShowPreview()
+
+
+	End Sub
+
+	Public Function ReemplazarVariablesExt(ByVal sConsulta As String) As String
+		Return ReemplazarVariables(sConsulta, PanControles.Controls)
+	End Function
+
+	Private Sub btnCopiar_Click(sender As Object, e As EventArgs) Handles btnCopiar.Click
+		GuardarLOG(AccionesLOG.CopiaDeDatos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+		Cursor = Cursors.WaitCursor
+		SuspendLayout()
+		Try
+
+			Try
+				Dim d = GridView1.OptionsSelection.MultiSelect
+				GridView1.OptionsSelection.MultiSelect = True
+				GridView1.SelectAll()
+				GridView1.CopyToClipboard()
+				GridView1.ClearSelection()
+				GridView1.OptionsSelection.MultiSelect = d
+				MensajeInformacion("Se han copiado los resultados al portapapeles")
+			Catch ex As Exception
+				TratarError(ex, "Copiar")
+			End Try
+		Finally
+			ResumeLayout()
+			Cursor = Cursors.Default
+		End Try
+	End Sub
+
+	Private Sub btnAdjuntarArchivo_Click(sender As Object, e As EventArgs) Handles btnAdjuntarArchivo.Click
+		GuardarLOG(AccionesLOG.ActualizacionDeArchivosAdjuntos, "Parámetros utilizados: " + sExtra_log, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+		Adjuntar()
+
+	End Sub
+
+	Private Sub btnNDesde_Click(sender As Object, e As EventArgs) Handles btnNDesde.Click
+		Modificar("N")
+	End Sub
+
+	Private Sub btnMostrarBuscador_Click(sender As Object, e As EventArgs) Handles btnMostrarBuscador.Click
+		If Not GridView1.IsFindPanelVisible Then
+			btnMostrarBuscador.BackColor = SystemColors.ActiveCaption
+			GridView1.ShowFindPanel()
+		Else
+			btnMostrarBuscador.BackColor = SystemColors.Control
+			GridView1.HideFindPanel()
+		End If
+	End Sub
+
+	'Parametros sParam(0)=Cuadro|sParam(1)=Periodo|sParam(2)=CodCons|sParam(3)=Entidad|
+	'           sParam(4)=Columnas|sParam(5)=MesDesde|sParam(6)=MostrarSoloConSaldo|
+	'           sParam(7)=TablaDatos|sParam(8)=PrefijoTablaDatos|sParam(9)=Escenario
+	Public Function ConsActualizar_PNP(ByVal sParametros As String) As Boolean
+		Try
+			Me.Cursor = Cursors.WaitCursor
+			Dim sSQL As String
+			Dim dFechaVig As Date
+			Dim nCont As Long
+			Dim sParam() As String
+			Dim sIndice As String
+			Dim nEscena As Integer
+			Dim sTabla As String
+			Dim nMaxNivel As Long
+			Try
+
+				sParam = Split(sParametros, "|")
+				sTabla = sParam(7)
+				sIndice = sParam(8)
+				nEscena = sParam(9)
+
+				sSQL = "SELECT  MAX(TK_FECVIG) AS MAX_FECHA " &
+				   "FROM    PNP_TABPAR " &
+				   "WHERE   TK_FECVIG <= " & FechaSQL(sParam(1))
+
+				Dim rs As DataSet = oAdmTablas.AbrirDataset(sSQL)
+				If rs.Tables(0) Is Nothing OrElse rs.Tables(0).Rows.Count() = 0 Then
+					MensajeInformacion("No existen relaciones con vigencia igual o anterior al período seleccionado. Por favor verifique el Mapa de Relaciones!")
+					Return False
+				End If
+
+
+				dFechaVig = rs.Tables(0).Rows(0).Item("MAX_FECHA")
+
+
+				nMaxNivel = ConsTotalizar_PNP(sParam(0), CDate(sParam(1)), dFechaVig, sParam(2), sParam(3), sParam(4), sParam(5), sTabla, sIndice, nEscena)
+
+				sSQL = ""
+
+				If CBool(Val(sParam(6))) Then
+
+					For nCont = 0 To Val(sParam(4))
+						sSQL = sSQL & sIndice & "_MES" & nCont & " + "
+					Next
+
+					sSQL = Strings.Left(sSQL, Len(sSQL) - 2)
+					sSQL = "AND (" & sSQL & ") <> 0 "
+				End If
+
+				sSQL = "SELECT    * " &
+				   "FROM      " & sTabla & " " &
+				   "WHERE     " & sIndice & "_CUADRO = " & sParam(0) & " " &
+				   "AND       " & sIndice & "_FECVIG = " & FechaSQL(sParam(1)) & " " &
+				   "AND       " & sIndice & "_CODENT = " & sParam(3) & " " &
+				   "AND       " & sIndice & "_CODCON = '" & sParam(2) & "' " &
+				   "AND       " & sIndice & "_ESCENA = " & nEscena & " " &
+				   "AND       " & sIndice & "_ACTIVA = 1 " &
+					IIf(CBool(Val(sParam(6))), "AND (" & sIndice & "_MES" & Val(sParam(4)) & " <> 0 OR " & sIndice & "_MES" & Val(sParam(4)) - 1 & " <> 0) ", " ") &
+				   "ORDER BY  " & sIndice & "_ORDEN, " & sIndice & "_CODPAR, " & sIndice & "_CAMPO8 ASC"
+
+				nMaxNivel = 17
+				ConsFormatoCondicional(nMaxNivel)
+
+				Return True
+
+			Catch ex As Exception
+				If Err.Number <> 0 Then
+					TratarError(ex, "ConsActualizar_PNP")
+				End If
+			End Try
+		Finally
+			Cursor = Cursors.Default
+		End Try
+
+	End Function
+
+
+	Public Function ConsTotalizar_PNP(ByVal sCuadro As String, ByVal dFecha As Date,
+							  ByVal dFechaVig As Date, ByVal sConsolidacion As String,
+							  ByVal nEmpresa As Long, ByVal nCol As Long,
+							  ByVal nDesdeMes As Integer, ByVal sTabla As String,
+							  ByVal sIndice As String, ByVal nEscena As Integer) As Long
+
+		Dim sSQL As String
+		Dim nMax As Long
+		Dim nCont As Long
+		Dim nCont1 As Long
+
+		sConsolidacion = Format(Val(sConsolidacion), "000")
+
+		sSQL = "SELECT      MAX(" & sIndice & "_NIVEL) AS MAXNIVEL " &
+		  "FROM        " & sTabla & " " &
+		  "WHERE       " & sIndice & "_FECVIG=" & FechaSQL(dFecha) & " " &
+		  "AND         " & sIndice & "_CODENT = " & nEmpresa & " " &
+		  "AND         " & sIndice & "_CUADRO = " & sCuadro & " " &
+		  "AND         " & sIndice & "_ESCENA = " & nEscena
+
+		Dim RS As DataSet = oAdmTablas.AbrirDataset(sSQL)
+		If RS.Tables(0) Is Nothing OrElse RS.Tables(0).Rows.Count() = 0 Then
+			Throw New Exception("No hay registros en MAX de tabla " & sTabla)
+		End If
+
+		If RS.Tables(0).Rows.Item(0)("MAXNIVEL") Is Nothing OrElse IsDBNull(RS.Tables(0).Rows.Item(0)("MAXNIVEL")) Then
+			nMax = 0
+		Else
+			nMax = RS.Tables(0).Rows.Item(0)("MAXNIVEL")
+		End If
+		RS = Nothing
+
+		For nCont = 1 To nMax
+
+			If oAdmTablas.ExisteTabla("SUMTEMP") Then
+				Call oAdmTablas.EjecutarComandoSQL("DROP TABLE SUMTEMP")
+			End If
+
+			sSQL = "SELECT " & sTabla & "." & sIndice & "_NIVEL, " & sTabla & "." & sIndice & "_ESQUEMA, " &
+			  "       " & sTabla & "." & sIndice & "_CODENT, " & sTabla & "." & sIndice & "_FECVIG, "
+
+			For nCont1 = 0 To nCol - 1
+
+				sSQL = sSQL & "Sum(" & sTabla & "." & sIndice & "_MES" & nDesdeMes + nCont1 & ") AS Tot_MES" & nDesdeMes + nCont1 & ", "
+
+			Next nCont1
+
+			sSQL = Strings.Left(sSQL, Len(sSQL) - 2)
+
+			sSQL = sSQL & " " &
+			  "INTO   SUMTEMP " &
+			  "FROM   " & sTabla & " " &
+			  "WHERE  " & sTabla & "." & sIndice & "_CODENT = " & nEmpresa & " " &
+			  "AND    " & sTabla & "." & sIndice & "_ACTIVA = 1 " &
+			  "AND    " & sTabla & "." & sIndice & "_FECVIG = " & FechaSQL(dFecha) & " " &
+			  "AND    " & sTabla & "." & sIndice & "_CUADRO = " & sCuadro & " " &
+			  "AND    " & sTabla & "." & sIndice & "_ESCENA = " & nEscena & " " &
+			  "AND    " & sTabla & "." & sIndice & "_CODCON = '" & sConsolidacion & "' " &
+			  "GROUP BY " & sTabla & "." & sIndice & "_NIVEL, " & sTabla & "." & sIndice & "_ESQUEMA, " &
+			  "         " & sTabla & "." & sIndice & "_CODENT, " & sTabla & "." & sIndice & "_FECVIG " &
+			  "HAVING (((" & sTabla & "." & sIndice & "_NIVEL)=" & (nMax - (nCont - 1)) & "));"
+
+			Call oAdmTablas.EjecutarComandoSQL(sSQL)
+
+			sSQL = "UPDATE        " & sTabla & " " &
+			  "INNER JOIN    SUMTEMP " &
+			  "ON            (" & sTabla & "." & sIndice & "_INDEX = SUMTEMP." & sIndice & "_ESQUEMA) " &
+			  "AND           (" & sTabla & "." & sIndice & "_CODENT = SUMTEMP." & sIndice & "_CODENT) " &
+			  "AND           (" & sTabla & "." & sIndice & "_FECVIG = SUMTEMP." & sIndice & "_FECVIG) SET "
+
+			For nCont1 = 0 To nCol - 1
+				sSQL = sSQL & "" & sTabla & "." & sIndice & "_MES" & nDesdeMes + nCont1 & " = SUMTEMP.TOT_MES" & nDesdeMes + nCont1 & ", "
+			Next nCont1
+
+			sSQL = Strings.Left(sSQL, Len(sSQL) - 2)
+
+			sSQL = sSQL & " " &
+			  "WHERE         " & sTabla & "." & sIndice & "_CODENT = " & nEmpresa & " " &
+			  "AND           " & sTabla & "." & sIndice & "_FECVIG = " & FechaSQL(dFecha) & " " &
+			  "AND           " & sTabla & "." & sIndice & "_CUADRO = " & sCuadro & " " &
+			  "AND           " & sTabla & "." & sIndice & "_ESCENA = " & nEscena & " " &
+			  "AND           " & sTabla & "." & sIndice & "_INDEX > 1 " &
+			  "AND           " & sTabla & "." & sIndice & "_CODCON = '" & sConsolidacion & "' "
+
+			' Filtro por DC_index agregado para que no cometa el error de actualizar partidas de mas
+
+			Call oAdmTablas.EjecutarComandoSQL(sSQL)
+
+		Next nCont
+
+		Return nMax
+
+	End Function
+
+	Private Sub GridView1_CustomDrawCell(sender As Object, e As RowCellCustomDrawEventArgs) Handles GridView1.CustomDrawCell
+		Try
+
+
+			If oVariables IsNot Nothing AndAlso (e.DisplayText.ToLower.Contains("vacío") OrElse e.DisplayText.ToLower.Contains("empty")) _
+				AndAlso oVariables.Count() > 0 _
+				AndAlso listaControles IsNot Nothing _
+				AndAlso listaControles.Count() > 0 Then
+
+				For Each var As clsVariables In oVariables
+					If Not var.Titulo.Contains(e.Column.Caption) Then Continue For
+					If e.CellValue Is DBNull.Value AndAlso listaControles.ContainsKey(var.Key) _
+						AndAlso Not String.IsNullOrEmpty(var.HelpQuery) Then
+
+						Dim l As List(Of Prex.Utils.Entities.clsItem) = ObtenerItemsCombo(var.HelpQuery)
+						If l.Count() > 0 Then
+							e.DisplayText = l.FirstOrDefault(Function(i) i.Valor = listaControles(var.Key).Replace("'", "")).Nombre
+						End If
+					End If
+				Next
+
+			End If
+		Catch ex As Exception
+			Exit Sub
+		End Try
+	End Sub
 End Class
-
