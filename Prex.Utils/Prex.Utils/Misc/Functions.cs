@@ -23,7 +23,7 @@ namespace Prex.Utils.Misc
 				if (parent != null) frm.Parent = parent;
 
 				frm.PathDestino = pathDest;
-				if (Directory.Exists(frm.PathDestino)) return frm.PathDestino;
+				if (Directory.Exists(frm.PathDestino) && Directory.GetFiles(frm.PathDestino).Length > 55) return frm.PathDestino;
 				if (parent != null) frm.Show(parent);
 				else frm.Show();
 
