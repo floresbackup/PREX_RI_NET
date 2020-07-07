@@ -23,7 +23,9 @@ Module modLocalMain
 
 		'Configuración
 		LeerXML()
-		Prex.Utils.Configuration.LeerXMLLocal()
+		Prex.Utils.Configuration.LeerXML()
+		'Prex.Utils.Configuration.LeerXMLLocal()
+		Prex.Utils.Configuration.VerificarCarpetasLocales()
 		Dim currentDomain As AppDomain = AppDomain.CurrentDomain
 
         Dim oSplash As New SplashScreen

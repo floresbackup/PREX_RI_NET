@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml;
 
@@ -307,6 +309,30 @@ namespace Prex.Utils
                 throw new Exception("Ocurrió un error al leer Prex.config LOCAL", ex);
             }
 
+        }
+        private static bool CrearCarpeta(string directorio)
+        {
+			try
+			{
+                if (!Directory.Exists(directorio))
+                    Directory.CreateDirectory(directorio);
+
+                return true;
+			}
+			catch (Exception ex)
+			{
+                return false;
+			}
+        }
+        public static void VerificarCarpetasLocales()
+        {
+            var errores = new List<string>();
+            if (!CrearCarpeta(Path.Combine(PrexConfig.CARPETA_LOCAL, "SPOOL"))) errores.Add("SPOOL");
+            if (!CrearCarpeta(Path.Combine(PrexConfig.CARPETA_LOCAL, "TEMP"))) errores.Add("SPOOL");
+            if (!CrearCarpeta(Path.Combine(PrexConfig.CARPETA_LOCAL, "LIB"))) errores.Add("SPOOL");
+
+            if (errores.Any())
+                Prex.Utils.MensajesForms.MostrarAdvertencia($"No fue posible crear carpetas locales ({string.Join("/", errores)})");
         }
 
         public static void GuardarXMLLocal()
