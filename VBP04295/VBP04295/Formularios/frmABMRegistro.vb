@@ -1,15 +1,17 @@
 Imports Microsoft.Data.ConnectionUI
 Imports ExtensionsAdm
+Imports Prex.Utils
+
 Public Class frmABMRegistro
 
     Private Const TOP_CONTROLES As Long = 10
     Private MODO_APE As String
     Private sSQL_Update As String
-	Private oAdmTablas As New AdmTablas
-	Private listColumnasExistentes As List(Of clsColumnas)
-	Private dicControlesValorAnterior As Dictionary(Of String, Control)
+    Private oAdmTablas As New AdmTablas
+    Private listColumnasExistentes As List(Of clsColumnas)
+    Private dicControlesValorAnterior As Dictionary(Of String, Control)
 
-	Public Sub PasarDatos(ByVal nCodCon As Long,
+    Public Sub PasarDatos(ByVal nCodCon As Long,
                          ByVal sQuery As String,
                          ByVal sCaption As String,
                          Optional ByVal sModo As String = "M")
@@ -23,8 +25,8 @@ Public Class frmABMRegistro
         Dim bPrimero As Boolean
 
         INPUT_GENERAL = ""
-		dicControlesValorAnterior = New Dictionary(Of String, Control)()
-		Me.Text = sCaption
+        dicControlesValorAnterior = New Dictionary(Of String, Control)()
+        Me.Text = sCaption
 
         sSQL_Update = sQuery
 
@@ -55,8 +57,8 @@ Public Class frmABMRegistro
 
         bExiste = False
         Dim withLabel = 165
-		listColumnasExistentes = New List(Of clsColumnas)
-		For Each oCol In oColumnas
+        listColumnasExistentes = New List(Of clsColumnas)
+        For Each oCol In oColumnas
             For Each oField In ds.Tables(0).Columns
 
                 If oCol.Campo.ToUpper = oField.ColumnName.ToUpper Then
@@ -130,19 +132,19 @@ Public Class frmABMRegistro
                                     bPrimero = True
                                 End If
                             End If
-							If .ReadOnly Then
-								.ForeColor = Color.Gray
-							End If
-						End With
+                            If .ReadOnly Then
+                                .ForeColor = Color.Gray
+                            End If
+                        End With
 
-						AddHandler txtInput.EditValueChanged, AddressOf txtInput_EditValueChanged
-						If Not txtInput.ReadOnly Then
-							AddHandler txtInput.TextChanged, AddressOf fecInput_Leave
-						End If
+                        AddHandler txtInput.EditValueChanged, AddressOf txtInput_EditValueChanged
+                        If Not txtInput.ReadOnly Then
+                            AddHandler txtInput.TextChanged, AddressOf fecInput_Leave
+                        End If
 
 
-						dicControlesValorAnterior.Add(oCol.Key, txtInput)
-						Cont.Controls.Add(txtInput)
+                        dicControlesValorAnterior.Add(oCol.Key, txtInput)
+                        Cont.Controls.Add(txtInput)
 
                     Else
 
@@ -174,13 +176,13 @@ Public Class frmABMRegistro
                             End If
                         End With
 
-						AddHandler fecInput.EditValueChanged, AddressOf fecInput_EditValueChanged
-						If Not fecInput.ReadOnly Then
-							AddHandler fecInput.DateTimeChanged, AddressOf fecInput_Leave
-						End If
-						dicControlesValorAnterior.Add(oCol.Key, fecInput)
+                        AddHandler fecInput.EditValueChanged, AddressOf fecInput_EditValueChanged
+                        If Not fecInput.ReadOnly Then
+                            AddHandler fecInput.DateTimeChanged, AddressOf fecInput_Leave
+                        End If
+                        dicControlesValorAnterior.Add(oCol.Key, fecInput)
 
-						Cont.Controls.Add(fecInput)
+                        Cont.Controls.Add(fecInput)
 
                     End If
                 Else
@@ -212,14 +214,14 @@ Public Class frmABMRegistro
                         End If
                     End With
 
-					AddHandler cboInput.SelectedIndexChanged, AddressOf cboInput_SelectedIndexChanged
-					If Not cboInput.ReadOnly Then
-						AddHandler cboInput.SelectedIndexChanged, AddressOf fecInput_Leave
-					End If
+                    AddHandler cboInput.SelectedIndexChanged, AddressOf cboInput_SelectedIndexChanged
+                    If Not cboInput.ReadOnly Then
+                        AddHandler cboInput.SelectedIndexChanged, AddressOf fecInput_Leave
+                    End If
 
-					dicControlesValorAnterior.Add(oCol.Key, cboInput)
+                    dicControlesValorAnterior.Add(oCol.Key, cboInput)
 
-					Cont.Controls.Add(cboInput)
+                    Cont.Controls.Add(cboInput)
 
                     CargarComboDevExpress(cboInput, frmMain.ReemplazarVariablesExt(oCol.HelpQuery))
 
@@ -236,10 +238,10 @@ Public Class frmABMRegistro
                         SelComboDevExpress(CType(Cont.Controls("_cboInput" & oCol.Orden.ToString), DevExpress.XtraEditors.ComboBoxEdit), "K" & oCol.Valor.ToString)
                     End If
                 End If
-				If MODO_APE = "A" AndAlso oCol.Formula <> "" Then
-					Formula(oCol.Formula, oCol.Key)
-				End If
-			End If
+                If MODO_APE = "A" AndAlso oCol.Formula <> "" Then
+                    Formula(oCol.Formula, oCol.Key)
+                End If
+            End If
 
             If oCol.VisibleABM Then
                 nTabOrden = nTabOrden + 1
@@ -256,33 +258,33 @@ Public Class frmABMRegistro
 
     Public Sub New()
 
-      ' Llamada necesaria para el Diseñador de Windows Forms.
-      InitializeComponent()
+        ' Llamada necesaria para el Diseñador de Windows Forms.
+        InitializeComponent()
 
-      ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
-      oAdmTablas.ConnectionString = CONN_LOCAL
+        ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+        oAdmTablas.ConnectionString = CONN_LOCAL
 
-   End Sub
+    End Sub
 
-   Private Sub cmdCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancelar.Click
-      Me.Close()
-   End Sub
+    Private Sub cmdCancelar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancelar.Click
+        Me.Close()
+    End Sub
 
-   Private Sub cmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdGuardar.Click
+    Private Sub cmdGuardar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdGuardar.Click
 
-      If DatosOK() Then
-         Guardar()
-      End If
+        If DatosOK() Then
+            Guardar()
+        End If
 
-   End Sub
+    End Sub
 
-   Private Function DatosOK() As Boolean
+    Private Function DatosOK() As Boolean
 
-      Return True
+        Return True
 
-   End Function
+    End Function
 
-   Private Sub Guardar()
+    Private Sub Guardar()
 
         Dim sSQL As String
         Dim ds As DataSet
@@ -299,29 +301,29 @@ Public Class frmABMRegistro
 
         Cursor = Cursors.WaitCursor
 
-      sSQL = sSQL_Update
-      sSQL = "SELECT * " & sSQL.Substring(sSQL.LastIndexOf("FROM", System.StringComparison.OrdinalIgnoreCase))
+        sSQL = sSQL_Update
+        sSQL = "SELECT * " & sSQL.Substring(sSQL.LastIndexOf("FROM", System.StringComparison.OrdinalIgnoreCase))
 
-      If MODO_APE <> "A" Then
-         sTabla = sSQL.Substring(sSQL.LastIndexOf("FROM", System.StringComparison.OrdinalIgnoreCase))
-         sTabla = sTabla.Replace("FROM", "").Trim
-         sTabla = sTabla.Replace(vbCrLf, " ")
-         sTabla = sTabla.Substring(0, sTabla.IndexOf(" ", System.StringComparison.OrdinalIgnoreCase))
-         sTabla = sTabla.Trim
-      End If
+        If MODO_APE <> "A" Then
+            sTabla = sSQL.Substring(sSQL.LastIndexOf("FROM", System.StringComparison.OrdinalIgnoreCase))
+            sTabla = sTabla.Replace("FROM", "").Trim
+            sTabla = sTabla.Replace(vbCrLf, " ")
+            sTabla = sTabla.Substring(0, sTabla.IndexOf(" ", System.StringComparison.OrdinalIgnoreCase))
+            sTabla = sTabla.Trim
+        End If
 
-      If sSQL.IndexOf("END") <> -1 Then
-         sSQL = sSQL.Substring(0, sSQL.IndexOf("END", System.StringComparison.OrdinalIgnoreCase) - 1)
-      End If
+        If sSQL.IndexOf("END") <> -1 Then
+            sSQL = sSQL.Substring(0, sSQL.IndexOf("END", System.StringComparison.OrdinalIgnoreCase) - 1)
+        End If
 
-      Try
+        Try
 
-         ds = oAdmTablas.AbrirDataset(sSQL, da)
-         cb = New OleDb.OleDbCommandBuilder(da)
+            ds = oAdmTablas.AbrirDataset(sSQL, da)
+            cb = New OleDb.OleDbCommandBuilder(da)
 
-         sSQL = sSQL.Substring(sSQL.LastIndexOf("FROM", System.StringComparison.OrdinalIgnoreCase))
+            sSQL = sSQL.Substring(sSQL.LastIndexOf("FROM", System.StringComparison.OrdinalIgnoreCase))
 
-         If MODO_APE = "B" Then
+            If MODO_APE = "B" Then
                 sUpdate = "DELETE " & sSQL
 
                 If GENERAR_LOG_SQL And (TIPO_LOG_SQL = 1 Or TIPO_LOG_SQL = 2 Or TIPO_LOG_SQL = 3) Then
@@ -330,15 +332,15 @@ Public Class frmABMRegistro
                 End If
 
                 GoTo GuardaDataRow
-         ElseIf MODO_APE = "A" Or MODO_APE = "N" Then
-            oRow = ds.Tables(0).NewRow()
-         Else
-            sUpdate = "UPDATE " & sTabla & " SET "
-         End If
+            ElseIf MODO_APE = "A" Or MODO_APE = "N" Then
+                oRow = ds.Tables(0).NewRow()
+            Else
+                sUpdate = "UPDATE " & sTabla & " SET "
+            End If
 
             For Each oCol In oColumnas
-				If Not oCol.VisibleABM Then Continue For
-				bProcesa = False
+                If Not oCol.VisibleABM Then Continue For
+                bProcesa = False
 
                 For Each oField As DataColumn In ds.Tables(0).Columns
                     If oCol.Campo.ToUpper = oField.ColumnName.ToUpper Then
@@ -355,20 +357,20 @@ Public Class frmABMRegistro
                             sValor = "NULL"
                         Else
                             Select Case TipoDatosADO(oCol.Tipo)
-								Case "Numérico"
+                                Case "Numérico"
                                     If oCol.Valor Is Nothing OrElse oCol.Valor.ToString().Trim() = String.Empty Then
                                         sValor = FlotanteSQL(0)
                                     Else
                                         sValor = FlotanteSQL(oCol.Valor)
-									End If
-								Case "Fecha/Hora"
-									If oCol.Valor.ToString().Trim() = String.Empty Then
-										sValor = FechaSQL(Date.MinValue)
-									Else
-										sValor = FechaSQL(oCol.Valor)
-									End If
+                                    End If
+                                Case "Fecha/Hora"
+                                    If oCol.Valor.ToString().Trim() = String.Empty Then
+                                        sValor = FechaSQL(Date.MinValue)
+                                    Else
+                                        sValor = FechaSQL(oCol.Valor)
+                                    End If
 
-								Case Else
+                                Case Else
                                     sValor = "'" & oCol.Valor & "'"
                             End Select
                         End If
@@ -386,10 +388,13 @@ Public Class frmABMRegistro
                             sVarLogAct = sVarLogAct +
                                     oCol.Titulo + ": " +
                                     sValor + ", "
+                            If oCol.ValorAnterior Is Nothing Then
+                                sVarLogAnt = sVarLogAnt + oCol.Titulo + ": , "
 
-                            sVarLogAnt = sVarLogAnt +
-                                     oCol.Titulo + ": " +
-                                     oCol.ValorAnterior.ToString() + ", "
+                            Else
+                                sVarLogAnt = sVarLogAnt + oCol.Titulo + ": " + oCol.ValorAnterior.ToString + ", "
+                            End If
+
                         End If
                     End If
                 End If
