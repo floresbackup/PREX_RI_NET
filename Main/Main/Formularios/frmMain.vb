@@ -1,5 +1,6 @@
 Imports System.Data.SqlClient
 Imports System.DirectoryServices
+Imports System.Linq
 
 Public Class frmMain
 
@@ -416,18 +417,21 @@ Public Class frmMain
             TransaccionHabilitada = True
             Exit Function
         End If
+        If HABILITACIONES_ESPECIALES.Split(",").Where(Function(s) s.Trim().Length > 0).Contains(nCodTransaccion) Then Return True
+        If INHABILITACIONES_ESPECIALES.Split(",").Where(Function(s) s.Trim().Length > 0).Contains(nCodTransaccion) Then Return False
+        Return False
 
-        If Len(HABILITACIONES_ESPECIALES) > 0 Then
-            If InStr(1, HABILITACIONES_ESPECIALES, CStr(nCodTransaccion)) > 0 Then
-                If Len(INHABILITACIONES_ESPECIALES) > 0 Then
-                    If InStr(1, INHABILITACIONES_ESPECIALES, CStr(nCodTransaccion)) = 0 Then
-                        TransaccionHabilitada = True
-                    End If
-                Else
-                    TransaccionHabilitada = True
-                End If
-            End If
-        End If
+        'If Len(HABILITACIONES_ESPECIALES) > 0 Then
+        '    If InStr(1, HABILITACIONES_ESPECIALES, CStr(nCodTransaccion)) > 0 Then
+        '        If Len(INHABILITACIONES_ESPECIALES) > 0 Then
+        '            If InStr(1, INHABILITACIONES_ESPECIALES, CStr(nCodTransaccion)) = 0 Then
+        '                TransaccionHabilitada = True
+        '            End If
+        '        Else
+        '            TransaccionHabilitada = True
+        '        End If
+        '    End If
+        'End If
 
     End Function
 
@@ -449,18 +453,10 @@ Public Class frmMain
 
         End If
 
-        If Len(sHabs) > 0 Then
-            If InStr(1, sHabs, CStr(nCodTransaccion)) > 0 Then
-                If Len(sInHabs) > 0 Then
-                    If InStr(1, sInHabs, CStr(nCodTransaccion)) = 0 Then
-                        TransaccionHabilitadaEnUsuario = True
-                    End If
-                Else
-                    TransaccionHabilitadaEnUsuario = True
-                End If
-            End If
-        End If
+        If sHabs.Split(",").Where(Function(s) s.Trim().Length > 0).Contains(nCodTransaccion) Then Return True
+        If sInHabs.Split(",").Where(Function(s) s.Trim().Length > 0).Contains(nCodTransaccion) Then Return False
 
+        Return False
     End Function
 
     Public Function MenuesSeguridadIntegrada(ByVal sNombreUsuario As String) As String
