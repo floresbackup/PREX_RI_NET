@@ -298,6 +298,12 @@ Public Class frmMain
 	End Sub
 
 	Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+		btnAlta.Enabled = False
+		btnBaja.Enabled = False
+		btnModif.Enabled = False
+		btnNDesde.Enabled = False
+		btnDrillDown.Enabled = False
+		btnComent.Enabled = False
 		CargarConsulta(CODIGO_TRANSACCION)
 	End Sub
 
@@ -486,7 +492,6 @@ Public Class frmMain
 
 		Columnas()
 
-		HabilitarBotones()
 
 	End Sub
 
@@ -534,6 +539,8 @@ Public Class frmMain
 				End Try
 			End If
 		Finally
+			HabilitarBotones()
+			AddHandler GridView1.FocusedColumnChanged, AddressOf GridView1_FocusedColumnChanged
 			Me.Cursor = Cursors.Default
 		End Try
 	End Sub
@@ -1769,7 +1776,7 @@ Reinicio:
 		Return False
 	End Function
 
-	Private Sub GridView1_FocusedColumnChanged(ByVal sender As Object, ByVal e As DevExpress.XtraGrid.Views.Base.FocusedColumnChangedEventArgs) Handles GridView1.FocusedColumnChanged
+	Private Sub GridView1_FocusedColumnChanged(ByVal sender As Object, ByVal e As DevExpress.XtraGrid.Views.Base.FocusedColumnChangedEventArgs)
 		HabilitarBotones()
 
 	End Sub
