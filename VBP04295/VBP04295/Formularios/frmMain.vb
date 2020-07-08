@@ -275,6 +275,7 @@ Public Class frmMain
 		End If
 
 		For Each oCol In oColumnas
+
 			If isNew Then
 
 				Column = View.Columns.AddField(oCol.Campo)
@@ -286,7 +287,6 @@ Public Class frmMain
 			Else
 				Column = View.Columns.Item(oCol.Campo)
 			End If
-
 			If oCol.Formato.IndexOf(";") <> -1 Then
 				If Not FormatearColumna(Column) Then
 					FormatoCondicional(oCol.Campo)
@@ -3039,7 +3039,9 @@ Reinicio:
 				AndAlso listaControles.Count() > 0 Then
 
 				For Each var As clsVariables In oVariables
-					If Not var.Titulo.Contains(e.Column.Caption) Then Continue For
+					If Not var.Titulo.Contains(e.Column.Caption) Then
+						Continue For
+					End If
 					If e.CellValue Is DBNull.Value AndAlso listaControles.ContainsKey(var.Key) _
 						AndAlso Not String.IsNullOrEmpty(var.HelpQuery) Then
 
@@ -3049,7 +3051,9 @@ Reinicio:
 						End If
 					End If
 				Next
-
+				If e.CellValue Is DBNull.Value AndAlso (e.DisplayText.ToLower.Contains("vacío") OrElse e.DisplayText.ToLower.Contains("empty")) Then
+					e.DisplayText = String.Empty
+				End If
 			End If
 		Catch ex As Exception
 			Exit Sub
