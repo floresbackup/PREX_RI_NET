@@ -273,7 +273,7 @@ Public Class frmMain
                             Dim sPwdEncr_RA As String
 
                             LeerArchivoEncriptado(RUTAENCR_RA & "\PrExEncr_RA.txt", sUsuEncr_RA, sPwdEncr_RA)
-
+                            sPwdEncr_RA = ObternerPasswordRunAsCyberark(sPwdEncr_RA)
                             RunProgram(sUsuEncr_RA, sPwdEncr_RA, DOMINIO_DEFAULT, sRuta, sParametros)
                         Else
                             Process.Start(sRuta, sParametros)
@@ -304,6 +304,24 @@ Public Class frmMain
             Me.Cursor = Cursors.Default
         End Try
     End Sub
+
+
+    Private Function ObternerPasswordRunAsCyberark(ByVal pass As String) As String
+        If ID_SISTEMA <= 0 Then
+            Return pass
+        End If
+        Try
+            Dim passCyberArk As String = Prex.Utils.Security.CitiSecurity.GetPassWordCyberRark(WSDL, CertificatePath, CertificatePass, APPID, SAFE, STR_FOLDER, STR_OBJECT_AD, STR_REASON)
+            If passCyberArk Is Nothing OrElse String.IsNullOrEmpty(passCyberArk.Trim()) Then
+                Return pass
+            End If
+
+            Return passCyberArk
+        Catch ex As Exception
+            Return pass
+        End Try
+
+    End Function
 
     Private Sub btnIr_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnIr.Click
 

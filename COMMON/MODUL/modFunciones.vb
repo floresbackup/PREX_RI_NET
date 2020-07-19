@@ -215,6 +215,8 @@ Module modFunciones
                             STR_FOLDER = sTemp
                         Case "STR_OBJECT"
                             STR_OBJECT = sTemp
+                        Case "STR_OBJECT_AD"
+                            STR_OBJECT_AD = sTemp
                         Case "STR_REASON"
                             STR_REASON = sTemp
                     End Select
@@ -681,8 +683,6 @@ Module modFunciones
     End Sub
 
     Public Sub LeerArchivoEncriptado(ByVal sNombreArchivo As String, ByRef sNombreUsuario As String, ByRef sPassword As String)
-
-        On Error Resume Next
 
         Dim oText As StreamReader
 

@@ -113,8 +113,9 @@ Module modDeclaraciones
 	Public CertificatePass As String
 	Public SAFE As String
 	Public STR_FOLDER As String
-	Public STR_OBJECT As String
-	Public STR_REASON As String
+    Public STR_OBJECT As String
+    Public STR_OBJECT_AD As String
+    Public STR_REASON As String
 	Public CYBERRARKPASS As String
 
 

@@ -139,7 +139,8 @@ namespace Prex.Utils
 		public bool SAFE                 { get; internal set; }
 		public string STR_FOLDER         { get; internal set; }
 		public string STR_OBJECT         { get; internal set; }
-		public string STR_REASON         { get; internal set; }
+		public string STR_OBJECT_AD      { get; internal set; }
+        public string STR_REASON         { get; internal set; }
 
 		public Usuario UsuarioActual { get; internal set; }
         #endregion
