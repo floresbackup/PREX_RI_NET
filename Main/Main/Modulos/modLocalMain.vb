@@ -17,79 +17,90 @@ Module modLocalMain
 	Public USUARIO_AUTORIZADO As Boolean
 
 	Sub Main()
-		Dim bIniciar As Boolean = True
+		Dim paso = "Inicio"
+		Try
 
-		PrevInstance()
 
-		'Configuración
-		LeerXML()
-		Prex.Utils.Configuration.LeerXML()
-		'Prex.Utils.Configuration.LeerXMLLocal()
-		Prex.Utils.Configuration.VerificarCarpetasLocales()
-		Dim currentDomain As AppDomain = AppDomain.CurrentDomain
+			Dim bIniciar As Boolean = True
 
-        Dim oSplash As New SplashScreen
+			PrevInstance()
 
-        oSplash.AcercaDe = False
-        oSplash.Show()
-        Application.DoEvents()
+			'Configuración
+			paso = "LeerXML"
+			LeerXML()
+			paso = "UtilsLeerXML"
+			Prex.Utils.Configuration.LeerXML()
+			'Prex.Utils.Configuration.LeerXMLLocal()
+			paso = "VerificarCarpetasLocales"
+			Prex.Utils.Configuration.VerificarCarpetasLocales()
+			Dim currentDomain As AppDomain = AppDomain.CurrentDomain
 
-		Dim rutaLocalDll = Prex.Utils.Misc.Functions.ValidarYCopiarPathDll(CARPETA_LOCAL, System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies())
-		If (rutaLocalDll.ToString().Any()) Then AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf Prex.Utils.Misc.Functions.LoadFromSameFolder
+			Dim oSplash As New SplashScreen
+			paso = "Show"
 
-		If UsuarioActual.Codigo = 0 Then
-            If IO.File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
-                IO.File.Delete(CARPETA_LOCAL & "TEMP\conn.enc")
-            End If
-        End If
+			oSplash.AcercaDe = False
+			oSplash.Show()
+			Application.DoEvents()
 
-        If Right(Command, 3) = "IDE" Then
-			RUTA_BIN = ConfigurationManager.AppSettings.Item("PATHDEBUG")
-		Else
-			RUTA_BIN = NormalizarRuta(Application.StartupPath)
-		End If
+			Dim rutaLocalDll = Prex.Utils.Misc.Functions.ValidarYCopiarPathDll(CARPETA_LOCAL, System.Reflection.Assembly.GetExecutingAssembly().GetReferencedAssemblies())
+			If (rutaLocalDll.ToString().Any()) Then AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf Prex.Utils.Misc.Functions.LoadFromSameFolder
 
-		Dim oInicioSesion As New frmInicioSesion
+			If UsuarioActual.Codigo = 0 Then
+				If IO.File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
+					IO.File.Delete(CARPETA_LOCAL & "TEMP\conn.enc")
+				End If
+			End If
 
-		If Command.Length > 30 Then 'MORGAN SSOBA
-			oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionExterna
-			InicioSSOBA()
-		ElseIf ID_SISTEMA > 0 Then
-			oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionExterna
-			bIniciar = InicioCITI()
-		ElseIf SEGURIDAD_INTEGRADA Then 'BANCOR
-			oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionExterna
-			oInicioSesion.txtUsuario.Enabled = False
-			oInicioSesion.txtPassword.Enabled = False
-			oInicioSesion.cboDominio.Enabled = False
-		ElseIf AUTENTICACIONSQL Then 'LOGIN POR SQL
-			oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionSQL
-		End If
-		System.Threading.Thread.Sleep(2500)
-		oSplash.Close()
-		oSplash = Nothing
-		Application.DoEvents()
+			If Right(Command, 3) = "IDE" Then
+				RUTA_BIN = ConfigurationManager.AppSettings.Item("PATHDEBUG")
+			Else
+				RUTA_BIN = NormalizarRuta(Application.StartupPath)
+			End If
+			paso = "InicioSesion"
 
-		If oInicioSesion.ModoAutenticacion <> frmInicioSesion.eModoAutenticacion.AutenticacionExterna Then
-			oInicioSesion.ShowDialog()
-			bIniciar = oInicioSesion.Autenticado
-		End If
+			Dim oInicioSesion As New frmInicioSesion
 
-		oInicioSesion = Nothing
+			If Command.Length > 30 Then 'MORGAN SSOBA
+				oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionExterna
+				InicioSSOBA()
+			ElseIf ID_SISTEMA > 0 Then
+				oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionExterna
+				bIniciar = InicioCITI()
+			ElseIf SEGURIDAD_INTEGRADA Then 'BANCOR
+				oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionExterna
+				oInicioSesion.txtUsuario.Enabled = False
+				oInicioSesion.txtPassword.Enabled = False
+				oInicioSesion.cboDominio.Enabled = False
+			ElseIf AUTENTICACIONSQL Then 'LOGIN POR SQL
+				oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionSQL
+			End If
+			System.Threading.Thread.Sleep(2500)
+			oSplash.Close()
+			oSplash = Nothing
+			Application.DoEvents()
 
-		If bIniciar Then
+			If oInicioSesion.ModoAutenticacion <> frmInicioSesion.eModoAutenticacion.AutenticacionExterna Then
+				oInicioSesion.ShowDialog()
+				bIniciar = oInicioSesion.Autenticado
+			End If
 
-			CulturaActual = System.Threading.Thread.CurrentThread.CurrentCulture
-			CulturaCargarTextos(CulturaActual.ToString)
+			oInicioSesion = Nothing
 
-			frmMain.ShowDialog()
-			Prex.Utils.Configuration.PrexConfigLocal.LastUser = UsuarioActual.Nombre
-			Prex.Utils.Configuration.GuardarXMLLocal()
-			GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "", -1, UsuarioActual.Codigo)
-		End If
+			If bIniciar Then
 
-		End
+				CulturaActual = System.Threading.Thread.CurrentThread.CurrentCulture
+				CulturaCargarTextos(CulturaActual.ToString)
 
+				frmMain.ShowDialog()
+				Prex.Utils.Configuration.PrexConfigLocal.LastUser = UsuarioActual.Nombre
+				Prex.Utils.Configuration.GuardarXMLLocal()
+				GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "", -1, UsuarioActual.Codigo)
+			End If
+
+			End
+		Catch ex As Exception
+			MessageBox.Show("Error en " & paso & Environment.NewLine & "Detalle:" & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+		End Try
 	End Sub
 
 

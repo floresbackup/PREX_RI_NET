@@ -132,7 +132,7 @@ namespace Prex.Utils
         //Citi
         public long ID_SISTEMA           { get; internal set; }
         public string SG_CONFIG          { get; internal set; }
-		public long APPID                { get; internal set; }
+		public string APPID              { get; internal set; }
 		public string WSDL               { get; internal set; }
 		public string CertificatePath    { get; internal set; }
 		public string CertificatePass    { get; internal set; }
@@ -169,6 +169,7 @@ namespace Prex.Utils
                     var propertyInfo = this.GetType().GetProperty(nombre);
                     if (propertyInfo != null) propertyInfo.SetValue(this, Convert.ChangeType((propertyInfo.PropertyType.FullName == "System.Boolean" ? (valor.ToString() == "0" ? "false" : "true") : valor), propertyInfo.PropertyType));
                 }
+
             }
             if (!CARPETA_LOCAL.ToStringOrEmpty().EndsWith("\\")) CARPETA_LOCAL += "\\";
 
