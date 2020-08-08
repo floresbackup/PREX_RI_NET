@@ -157,7 +157,7 @@ Public Class frmMain
                             txtConnString.Text = sTemp.Substring(0, sTemp.LastIndexOf(";"))
                             ' sTemp = sTemp.Substring(sTemp.LastIndexOf(";"))
                             txtPassword.Text = GetStringFromConnection(sTemp, "Password=") ' sTemp.Substring(sTemp.LastIndexOf("=") + 1)
-                            txtUsuario.Text = GetStringFromConnection(sTemp, "User Id=")
+                            txtUsuario.Text = GetStringFromConnection(sTemp, "User ID=")
                             txtBaseDeDatos.Text = GetStringFromConnection(sTemp, "Initial Catalog=")
                             txtServidor.Text = GetStringFromConnection(sTemp, "Data Source=")
                             ckSeguridadIntegrada.Checked = sTemp.Contains("Integrated Security=true")
@@ -235,9 +235,13 @@ Public Class frmMain
     Private Function GetStringFromConnection(conexion As String, clave As String) As String
         For Each item As String In conexion.Split(";")
             If item.ToUpper().Contains(clave.ToUpper) Then
-                Dim clavelst As List(Of String) = item.Replace(";", String.Empty).Split("=").ToList()
-                Return clavelst.LastOrDefault()
-                'Return item.Replace(";", String.Empty).Replace(clave.ToUpper, String.Empty)
+                Dim lst As List(Of String) = item.Replace(";", String.Empty).Split("=".ToCharArray()).ToList()
+                If lst.Count() = 2 Then
+                    Return lst(1).Trim()
+                Else
+                    Return Strings.Join(lst.Skip(1).ToArray(), "=")
+                End If
+
             End If
         Next
         Return String.Empty
