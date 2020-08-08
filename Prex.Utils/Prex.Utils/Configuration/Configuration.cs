@@ -136,13 +136,14 @@ namespace Prex.Utils
 		public string WSDL               { get; internal set; }
 		public string CertificatePath    { get; internal set; }
 		public string CertificatePass    { get; internal set; }
-		public bool SAFE                 { get; internal set; }
+		public string SAFE               { get; internal set; }
 		public string STR_FOLDER         { get; internal set; }
 		public string STR_OBJECT         { get; internal set; }
 		public string STR_OBJECT_AD      { get; internal set; }
         public string STR_REASON         { get; internal set; }
+        public string CYBERRARKPASS      { get; internal set; }
 
-		public Usuario UsuarioActual { get; internal set; }
+        public Usuario UsuarioActual { get; internal set; }
         #endregion
 
         #region Contructor

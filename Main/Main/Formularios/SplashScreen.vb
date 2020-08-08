@@ -37,6 +37,7 @@ Public NotInheritable Class SplashScreen
 			pnlDatos.Visible = True
 
 			If ID_SISTEMA > 0 Then
+				lblEquipo.Height = pnlDatos.Height + 15
 				pblCitiCiberrark.Location = New Point(lblEquipo.Location.X, lblEquipo.Location.Y + lblEquipo.Size.Height)
 				pblCitiCiberrark.Visible = True
 				picErrorCiberrark.Visible = CYBERRARKPASS.Trim = String.Empty
@@ -48,8 +49,15 @@ Public NotInheritable Class SplashScreen
 					lblciti.Text = "Conexión con Cyberark"
 					lblciti.ForeColor = Color.DarkGreen
 				End If
+				pblCitiCiberrark.Location = New Point(pblCitiCiberrark.Location.X, lblEquipo.Location.Y + lblEquipo.Height)
+				pnlDatos.AutoScroll = pblCitiCiberrark.Location.Y + pblCitiCiberrark.Height > lblEquipo.Location.Y + lblEquipo.Height
+
 			Else
 				pblCitiCiberrark.Visible = False
+				pnlDatos.AutoScroll = False
+
+				lblEquipo.Height = pnlDatos.Height
+
 			End If
 
 		Else
@@ -84,30 +92,33 @@ Public NotInheritable Class SplashScreen
 
 			oAdmTablas.ConnectionString = CONN_LOCAL
 
-			DatosEquipo = "Ruta aplicación: " & vbCrLf & IO.Path.GetDirectoryName(Application.ExecutablePath) & vbCrLf & vbCrLf
+			DatosEquipo = "Ruta aplicación: " & IO.Path.GetDirectoryName(Application.ExecutablePath) & vbCrLf & vbCrLf
 
 			sSQL = "SELECT DB_NAME() AS BASEDATOS "
 			ds = oAdmTablas.AbrirDataset(sSQL)
 
-			DatosEquipo = DatosEquipo & "Perfil CITI: " & CITI_PERFIL & vbCrLf & vbCrLf
-			DatosEquipo = DatosEquipo & "Base de datos: " & vbCrLf & ds.Tables(0).Rows(0).Item("BASEDATOS") & vbCrLf & vbCrLf
+			If ID_SISTEMA > 0 Then
+				DatosEquipo = DatosEquipo & "Perfil CITI: " & CITI_PERFIL & vbCrLf & vbCrLf
+			End If
+			DatosEquipo += $"WorkStation: {Environment.MachineName} {vbCrLf & vbCrLf}"
+			DatosEquipo += "Base de datos: " & ds.Tables(0).Rows(0).Item("BASEDATOS") & vbCrLf & vbCrLf
 
 			sSQL = "SELECT   CONVERT(char(20), SERVERPROPERTY('servername')) AS SERVIDOR "
 			ds = oAdmTablas.AbrirDataset(sSQL)
 
-			DatosEquipo = DatosEquipo & "Servidor SQL: " & vbCrLf & ds.Tables(0).Rows(0).Item("SERVIDOR") & vbCrLf & vbCrLf
+			DatosEquipo += "Servidor SQL: " & ds.Tables(0).Rows(0).Item("SERVIDOR") & vbCrLf & vbCrLf
 
 			ds = Nothing
 
 			sSQL = "SELECT   CONVERT(char(20), SERVERPROPERTY('collation')) as COLL"
 			ds = oAdmTablas.AbrirDataset(sSQL)
 
-			DatosEquipo = DatosEquipo & "Intercalación SQL: " & vbCrLf & ds.Tables(0).Rows(0).Item("COLL") & vbCrLf & vbCrLf
+			DatosEquipo += "Intercalación SQL: " & ds.Tables(0).Rows(0).Item("COLL") & vbCrLf & vbCrLf
 
 			sSQL = "SELECT @@VERSION AS VERSIONSQL "
 			ds = oAdmTablas.AbrirDataset(sSQL)
 
-			DatosEquipo = DatosEquipo & "Versión SQL: " & vbCrLf & Replace(Replace(ds.Tables(0).Rows(0).Item("VERSIONSQL"), vbLf, vbCrLf), vbTab, "") & vbCrLf
+			DatosEquipo += "Versión SQL: " & Replace(Replace(ds.Tables(0).Rows(0).Item("VERSIONSQL"), vbLf, vbCrLf), vbTab, "") & vbCrLf & vbCrLf
 
 			If DatosEquipo.Contains("Microsoft Corporation") Then
 				DatosEquipo = DatosEquipo.Substring(0, DatosEquipo.IndexOf("Microsoft Corporation") + 21)

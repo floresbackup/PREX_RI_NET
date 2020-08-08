@@ -29,11 +29,11 @@ Partial Class SplashScreen
 		Me.Label2 = New System.Windows.Forms.Label()
 		Me.lblFrameworkNet = New System.Windows.Forms.Label()
 		Me.pnlDatos = New System.Windows.Forms.Panel()
-		Me.lblEquipo = New System.Windows.Forms.Label()
 		Me.pblCitiCiberrark = New System.Windows.Forms.Panel()
 		Me.picErrorCiberrark = New System.Windows.Forms.PictureBox()
 		Me.lblciti = New System.Windows.Forms.Label()
 		Me.picOkCiberrark = New System.Windows.Forms.PictureBox()
+		Me.lblEquipo = New System.Windows.Forms.Label()
 		Me.pnlDatos.SuspendLayout()
 		Me.pblCitiCiberrark.SuspendLayout()
 		CType(Me.picErrorCiberrark, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -131,17 +131,6 @@ Partial Class SplashScreen
 		Me.pnlDatos.Size = New System.Drawing.Size(382, 235)
 		Me.pnlDatos.TabIndex = 7
 		'
-		'lblEquipo
-		'
-		Me.lblEquipo.BackColor = System.Drawing.Color.Transparent
-		Me.lblEquipo.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-		Me.lblEquipo.ForeColor = System.Drawing.Color.SteelBlue
-		Me.lblEquipo.Location = New System.Drawing.Point(0, 8)
-		Me.lblEquipo.Margin = New System.Windows.Forms.Padding(0)
-		Me.lblEquipo.Name = "lblEquipo"
-		Me.lblEquipo.Size = New System.Drawing.Size(361, 235)
-		Me.lblEquipo.TabIndex = 6
-		'
 		'pblCitiCiberrark
 		'
 		Me.pblCitiCiberrark.BackColor = System.Drawing.Color.Transparent
@@ -189,6 +178,17 @@ Partial Class SplashScreen
 		Me.picOkCiberrark.TabIndex = 11
 		Me.picOkCiberrark.TabStop = False
 		'
+		'lblEquipo
+		'
+		Me.lblEquipo.BackColor = System.Drawing.Color.Transparent
+		Me.lblEquipo.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+		Me.lblEquipo.ForeColor = System.Drawing.Color.SteelBlue
+		Me.lblEquipo.Location = New System.Drawing.Point(0, 8)
+		Me.lblEquipo.Margin = New System.Windows.Forms.Padding(0)
+		Me.lblEquipo.Name = "lblEquipo"
+		Me.lblEquipo.Size = New System.Drawing.Size(361, 235)
+		Me.lblEquipo.TabIndex = 6
+		'
 		'SplashScreen
 		'
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -205,7 +205,7 @@ Partial Class SplashScreen
 		Me.Controls.Add(Me.pnlDatos)
 		Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
 		Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-		Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.Margin = New System.Windows.Forms.Padding(4)
 		Me.MaximizeBox = False
 		Me.MinimizeBox = False
 		Me.Name = "SplashScreen"
