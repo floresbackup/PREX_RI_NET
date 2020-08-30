@@ -71,6 +71,11 @@ Module modLocalMain
 				oInicioSesion.txtUsuario.Enabled = False
 				oInicioSesion.txtPassword.Enabled = False
 				oInicioSesion.cboDominio.Enabled = False
+			ElseIf AUTENTICACIONGOOGLE Then 'NaranjaX
+				oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionInterna
+				oInicioSesion.txtUsuario.Enabled = True
+				oInicioSesion.txtPassword.Enabled = False
+				oInicioSesion.cboDominio.Enabled = False
 			ElseIf AUTENTICACIONSQL Then 'LOGIN POR SQL
 				oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionSQL
 			End If

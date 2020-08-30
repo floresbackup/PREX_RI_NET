@@ -42,16 +42,16 @@ Public Class frmInicioSesion
     Private oAdmUsuarios As New AdmUsuarios
     Private datosUsuario As Usuario
 
-    Private bSoloAutorizar As Boolean = False
+    'Private bSoloAutorizar As Boolean = False
 
-    Public Sub SoloAutorizar()
+    'Public Sub SoloAutorizar()
 
-        bSoloAutorizar = True
+    '    bSoloAutorizar = True
 
-        lblHeader.Text = "Ejecutar como..."
-        Me.Text = "Ejecutar como..."
+    '    lblHeader.Text = "Ejecutar como..."
+    '    Me.Text = "Ejecutar como..."
 
-    End Sub
+    'End Sub
 
     Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
 
@@ -67,11 +67,11 @@ Public Class frmInicioSesion
 
     Private Sub Cargar()
         'Verifico la configuración de seguridad
-        If Not AUTENTICACIONSQL Then
+        If Not AUTENTICACIONSQL AndAlso Not AUTENTICACIONGOOGLE Then
             ParametrosSeguridadNT()
         End If
 
-        If bIntegraNT Then
+        If bIntegraNT AndAlso Not AUTENTICACIONGOOGLE Then
 
             'Usuario NT
             txtUsuario.Text = SystemInformation.UserName
@@ -415,88 +415,113 @@ Public Class frmInicioSesion
 
     Private Function AutenticacionInterna() As Boolean
 
-      Dim sMotivoError As String
-      Dim bResult As Boolean
-      Dim nCantidadDiasVto As Double
-      Dim bLoginOK As Boolean
-      Dim eRespuesta As DialogResult
+        Dim sMotivoError As String
+        Dim nCantidadDiasVto As Double
+        Dim bLoginOK As Boolean
+        Dim eRespuesta As DialogResult
 		Try
 			Me.Cursor = Cursors.WaitCursor
 
 			Try
 
-				bResult = oAdmUsuarios.ValidarUsuario(txtUsuario.Text, txtPassword.Text, Val(LlaveCombo(cboEntidad)), nCantidadDiasVto, sMotivoError)
+                If AUTENTICACIONGOOGLE Then Return AutenticarGoogle(True)
 
-				If Not bResult Then
+                Dim bResult = oAdmUsuarios.ValidarUsuario(txtUsuario.Text, txtPassword.Text, Val(LlaveCombo(cboEntidad)), nCantidadDiasVto, sMotivoError)
+
+
+                If Not bResult Then
 					MensajeError(sMotivoError)
 					txtUsuario.Focus()
 					Return False
 					Exit Function
 				End If
 
-				'Si el loggin fue exitoso:
+                'Si el loggin fue exitoso:
+                If nCantidadDiasVto > nDiasPreviosRenov Then
+                        bLoginOK = True
+                    Else
+                        If nCantidadDiasVto > 0 Then
+                            eRespuesta = MessageBox.Show("Su contraseña vencerá en " & nCantidadDiasVto & " día(s)." & vbCrLf & vbCrLf & "¿Desea renovarla ahora?", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                        Else
+                            eRespuesta = MessageBox.Show("Su contaseña ha vencido. Presione el botón Aceptar para renovarla", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        End If
+                    If (eRespuesta = DialogResult.OK OrElse eRespuesta = DialogResult.Yes) Then
 
-				If nCantidadDiasVto > nDiasPreviosRenov Then
-					bLoginOK = True
-				Else
-					If nCantidadDiasVto > 0 Then
-						eRespuesta = MessageBox.Show("Su contraseña vencerá en " & nCantidadDiasVto & " día(s)." & vbCrLf & vbCrLf & "¿Desea renovarla ahora?", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-					Else
-						eRespuesta = MessageBox.Show("Su contaseña ha vencido. Presione el botón Aceptar para renovarla", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information)
-					End If
-					If (eRespuesta = DialogResult.OK OrElse eRespuesta = DialogResult.Yes) Then
+                        Dim frmCambiarPassword As New Prex.Utils.Security.Forms.fmrChangePass
 
-						Dim frmCambiarPassword As New Prex.Utils.Security.Forms.fmrChangePass
+                        frmCambiarPassword.PasarDatos(txtUsuario.Text.Trim, True, txtPassword.Text)
 
-						frmCambiarPassword.PasarDatos(txtUsuario.Text.Trim, True, txtPassword.Text)
+                        If frmCambiarPassword.ShowDialog = DialogResult.OK Then
+                            If eRespuesta = DialogResult.Yes Then MensajeInformacion("Recuerde renovar su contraseña la próxima vez que inicie la sesión")
+                            bLoginOK = True
+                        Else
+                            bLoginOK = False
+                        End If
+                    Else
+                        bLoginOK = True
+                    End If
+                End If
 
-						If frmCambiarPassword.ShowDialog = DialogResult.OK Then
-							If eRespuesta = DialogResult.Yes Then MensajeInformacion("Recuerde renovar su contraseña la próxima vez que inicie la sesión")
-							bLoginOK = True
-						Else
-							bLoginOK = False
-						End If
-					Else
-						bLoginOK = True
-					End If
-				End If
+                ' Por ahora continuamos
+                If bLoginOK Then
+                    SetearDatosDeAcceso()
 
-				' Por ahora continuamos
-				If bLoginOK Then
-					If bSoloAutorizar Then
-						USUARIO_AUTORIZADO = True
-						NOMBRE_USU_AUTORIZADO = txtUsuario.Text.Trim
-						CODIGO_ENTIDAD_AUTH = Val(LlaveCombo(cboEntidad))
-					Else
-						NOMBRE_ENTIDAD = cboEntidad.Text
-						CODIGO_ENTIDAD = Val(LlaveCombo(cboEntidad))
-						UsuarioActual.Entidad = CODIGO_ENTIDAD
-						UsuarioActual.Codigo = oAdmTablas.DevolverValor("USUARI", "US_CODUSU", "US_NOMBRE='" & txtUsuario.Text & "'")
-						UsuarioActual.Nombre = txtUsuario.Text.Trim
-						UsuarioActual.Descripcion = oAdmTablas.DevolverValor("USUARI", "US_DESCRI", "US_NOMBRE='" & txtUsuario.Text & "'")
-						UsuarioActual.Dominio = cboDominio.Text
-						GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "")
-					End If
+                    GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "")
+                    'End If
 
-					Return True
+                    Return True
 				Else
 					MensajeError("Imposible iniciar sesión en este momento. Renueve su contraseña la próxima vez que inicie el sistema e inténtelo nuevamente")
 				End If
 
 			Catch ex As Exception
-				TratarError(ex, "Validar")
-			End Try
+                TratarError(ex, "AutenticacionInterna")
+            End Try
 
 		Finally
 			Me.Cursor = Cursors.Default
 		End Try
 	End Function
 
-   Private Sub cboEntidad_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboEntidad.SelectedIndexChanged
+    Private Sub SetearDatosDeAcceso()
+        NOMBRE_ENTIDAD = cboEntidad.Text
+        CODIGO_ENTIDAD = Val(LlaveCombo(cboEntidad))
+        UsuarioActual.Entidad = CODIGO_ENTIDAD
+        UsuarioActual.Codigo = oAdmTablas.DevolverValor("USUARI", "US_CODUSU", "US_NOMBRE='" & txtUsuario.Text & "'")
+        UsuarioActual.Nombre = txtUsuario.Text.Trim
+        UsuarioActual.Descripcion = oAdmTablas.DevolverValor("USUARI", "US_DESCRI", "US_NOMBRE='" & txtUsuario.Text & "'")
+        UsuarioActual.Dominio = cboDominio.Text
+        Prex.Utils.Configuration.CargarUsuarioActual(UsuarioActual.Nombre)
+    End Sub
 
-   End Sub
+    Private Function AutenticarGoogle(primerIngreso As Boolean)
+        Try
+            Dim ds = oAdmUsuarios.ValidarUsuario(txtUsuario.Text)
 
-   Private Sub txtPassword_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtPassword.LostFocus
+            If ds Is Nothing Then
+                If primerIngreso Then
+
+                    CODIGO_ENTIDAD = Val(LlaveCombo(cboEntidad))
+                    Dim frm As New FrmAltaUsuarioNaranja(txtUsuario.Text.Trim)
+                    frm.ShowDialog()
+                    Return AutenticarGoogle(False)
+                Else
+                    MensajeError("No se encontró usuario proporcionado.")
+                    Return False
+                End If
+            Else
+                SetearDatosDeAcceso()
+                Return Security.NaranjaSecurity.AutenticarConGoogle(txtUsuario.Text)
+            End If
+        Catch ex As Exception
+            ManejarErrores.TratarError(ex, "AutenticarGoogle", "Ocurrió un error al intentar autenticar usuario en google", True)
+            Return False
+        End Try
+    End Function
+
+
+
+    Private Sub txtPassword_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtPassword.LostFocus
 
       'SOLO PARA AUTENTICACION SQL
       If AUTENTICACIONSQL Then

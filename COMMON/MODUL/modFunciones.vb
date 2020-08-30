@@ -219,6 +219,10 @@ Module modFunciones
                             STR_OBJECT_AD = sTemp
                         Case "STR_REASON"
                             STR_REASON = sTemp
+                        Case "AUTENTICACIONGOOGLE"
+                            AUTENTICACIONGOOGLE = CBool(sTemp)
+                        Case "FILE_GOOGLE_CREDENTIALS"
+                            FILE_GOOGLE_CREDENTIALS = sTemp.Trim
                     End Select
 
                 Next

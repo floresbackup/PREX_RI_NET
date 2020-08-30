@@ -118,9 +118,12 @@ Module modDeclaraciones
     Public STR_REASON As String
 	Public CYBERRARKPASS As String
 
+    'Naraja
+    Public FILE_GOOGLE_CREDENTIALS As String
+    Public AUTENTICACIONGOOGLE As Boolean
 
 
-	Public Structure Usuario
+    Public Structure Usuario
 
       Public Nombre As String
       Public Descripcion As String

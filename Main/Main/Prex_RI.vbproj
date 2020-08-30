@@ -255,6 +255,12 @@
     <Compile Include="DataSets\dsTabla.vb">
       <DependentUpon>dsTabla.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\FrmAltaUsuarioNaranja.Designer.vb">
+      <DependentUpon>FrmAltaUsuarioNaranja.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\FrmAltaUsuarioNaranja.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\frmErrores.designer.vb">
       <DependentUpon>frmErrores.vb</DependentUpon>
     </Compile>
@@ -332,6 +338,9 @@
       <Link>Formularios\frmTablaGeneral.resx</Link>
       <DependentUpon>frmTablaGeneral.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FrmAltaUsuarioNaranja.resx">
+      <DependentUpon>FrmAltaUsuarioNaranja.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\frmErrores.resx">
       <DependentUpon>frmErrores.vb</DependentUpon>

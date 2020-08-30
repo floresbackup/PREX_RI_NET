@@ -14,7 +14,7 @@ namespace Prex.Utils.Logging
         AL_INGRESO_TRANSACCION = 3,
         AL_ERROR_SISTEMA = 4,
         AL_VIOLACION_SEGURIDAD = 5,
-             Consulta_Perfil = 10,
+        Consulta_Perfil = 10,
         Modifica_Perfil = 11,
         Consulta_Usuario = 12,
         Modifica_Usuario = 13,

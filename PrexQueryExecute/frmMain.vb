@@ -1,8 +1,12 @@
 ﻿Imports System.Data.SqlClient
+Imports DevExpress.XtraTab
+Imports Prex.Utils.Misc.Forms
 
 Public Class frmMain
 
 #Region "Variables/Propiedades"
+	Private txtQuery As ScintillaNET.Scintilla
+
 	Private ReadOnly Property Query As String
 		Get
 			If txtQuery.SelectedText.Any() Then Return txtQuery.SelectedText.Trim()
@@ -13,14 +17,25 @@ Public Class frmMain
 
 
 #Region "Constructores"
-	Public Sub frmMain()
+	Public Sub New()
 
+		' This call is required by the designer.
+		InitializeComponent()
+
+		' Add any initialization after the InitializeComponent() call.
+		txtQuery = New ScintillaNET.Scintilla()
+		pnlQuery.Controls.Add(txtQuery)
+		txtQuery.Dock = DockStyle.Fill
+		ScintillaSQL.InitialiseScintilla(txtQuery)
+
+		AddHandler txtQuery.TextChanged, AddressOf txtQuery_TextChanged
 	End Sub
+
 #End Region
 
 #Region "Eventos del formulario"
 
-	Private Sub txtQuery_TextChanged(sender As Object, e As EventArgs) Handles txtQuery.TextChanged
+	Private Sub txtQuery_TextChanged(sender As Object, e As EventArgs)
 		EnabledMenu()
 	End Sub
 
@@ -100,10 +115,14 @@ Public Class frmMain
 		Try
 			Cursor = Cursors.WaitCursor
 			Try
+				Dim tabs = New List(Of XtraTabPage)
+				tabs.AddRange(tabControl.TabPages.Skip(2).ToList())
+				tabs.ForEach(Sub(t) tabControl.TabPages.Remove(t))
+
 				If Not Query.Trim().Any() Then
 					MessageBox.Show(Me, "No se completó consulta SQL", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
 				Else
-					If Query.ToUpper().StartsWith("SELECT") Then
+					If GetTypeSQL() <> Nothing Then
 						ShowResultsGrid(ExecuteQueryResults())
 					Else
 						ExecuteQueryDefault()
@@ -117,22 +136,52 @@ Public Class frmMain
 		End Try
 	End Sub
 
-	Private Function ExecuteQueryResults() As DataTable
+	Private Function ExecuteQueryResults() As List(Of DataTable)
 		Dim conn As New SqlConnection(Prex.Utils.Configuration.PrexConfig.CONN_LOCAL_ADO)
 		Try
 
-			conn.Open()
+			Try
 
-			Dim da As New SqlDataAdapter(Query, conn)
 
-			Dim dt As New DataTable()
-			da.Fill(dt)
 
-			Return dt
+				conn.Open()
+
+				'Dim da As New SqlDataAdapter(Query, conn)
+				'da.SelectCommand.CommandType = GetTypeSQL()
+				'Dim dt As New DataTable()
+				'da.Fill(dt)
+				'dt.Rows
+
+				Dim listdt As New List(Of DataTable)
+				Dim cmd = New SqlCommand(Query, conn)
+				Dim reader = cmd.ExecuteReader()
+
+				Do
+					'reader.Read()
+					Dim d1 As New DataTable()
+					d1.Load(reader)
+					listdt.Add(d1)
+				Loop While Not reader.IsClosed AndAlso reader.NextResult
+
+				reader.Close()
+
+				'Return dt
+				Return listdt
+			Catch ex As Exception
+				Throw ex
+			End Try
 		Finally
 			conn.Close()
 		End Try
 	End Function
+
+	Private Function GetTypeSQL() As CommandType
+		If Query.ToUpper().StartsWith("EXEC") OrElse Query.ToUpper().StartsWith("SP_") Then Return CommandType.StoredProcedure
+		If Query.ToUpper().StartsWith("SELECT") Then Return CommandType.Text
+
+		Return Nothing
+	End Function
+
 
 	Private Sub ExecuteQueryDefault()
 		Dim conn As New SqlConnection(Prex.Utils.Configuration.PrexConfig.CONN_LOCAL_ADO)
@@ -162,65 +211,31 @@ Public Class frmMain
 		End If
 	End Sub
 
-	Private Sub ShowResultsGrid(ByVal data As DataTable)
+	Private Sub ShowResultsGrid(ByVal dataTables As List(Of DataTable))
 
-		pnlResult.Padding = New Padding(0, 0, 0, 0)
+		For index = 0 To dataTables.Count() - 1
+			Dim data = dataTables(index)
+			Dim newTab As XtraTabPage = IIf(index > 0, tabControl.TabPages.Add(), tabResults)
+			newTab.Name = IIf(index > 0, $"tabResultados{index}", newTab.Name)
+			newTab.Text = IIf(dataTables.Count() > 0, $"Resultados &{index}", "&Resultados")
 
-		txtResultsError.Text = String.Empty
-		txtResultsError.Dock = DockStyle.Bottom
-		txtResultsError.Visible = False
+			Dim ucresult As New ucPanelResult()
+			ucresult.SetResultado(data)
 
-		grdResults.Dock = DockStyle.Fill
-		grdResults.Visible = True
-		gridViewResults.OptionsView.ColumnAutoWidth = False
-		gridViewResults.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.Default
+			mnuExportToExcel.Enabled = mnuExportToExcel.Enabled OrElse ucresult.gridViewResults.RowCount > 0
 
-        gridViewResults.Columns.Clear()
-        grdResults.DataSource = data
-		grdResults.RefreshDataSource()
-		grdResults.Refresh()
+		Next
 
-		gridViewResults.BestFitColumns()
-
-		If data Is Nothing Then ShowMessageResult("Error: No fue posible obtener DataTable (ISNULL)", True)
-		mnuExportToExcel.Enabled = gridViewResults.RowCount > 0
-
-		ActiveResultPage()
-		gridViewResults.Focus()
+		ActiveResultPage(tabControl.TabPages.LastOrDefault())
 	End Sub
 
-	Private Sub ShowMessageResult(ByVal errorMessage As String, isError As Boolean)
-		If isError Then MessageBox.Show(Me, "Ocurrió un error al ejecutar consulta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-		grdResults.Visible = False
-		grdResults.DataSource = Nothing
-		grdResults.Dock = DockStyle.Bottom
 
-		mnuExportToExcel.Enabled = False
-
-		If isError Then
-			txtResultsError.ForeColor = Color.Red
-		Else
-			txtResultsError.ForeColor = Color.Blue
-		End If
-
-		pnlResult.Padding = New Padding(10, 10, 0, 0)
-
-		txtResultsError.ScrollBars = RichTextBoxScrollBars.Both
-		txtResultsError.Text = errorMessage
-		txtResultsError.Dock = DockStyle.Fill
-		txtResultsError.Visible = True
-		txtResultsError.SelectionStart = 0
-		txtResultsError.Focus()
-
-		ActiveResultPage()
-	End Sub
-
-	Private Sub ActiveResultPage()
-		tabResults.Enabled = True
-		tabResults.PageEnabled = True
-		tabControl.SelectedTabPage = tabResults
-		tabResults.Select()
-		tabResults.Focus()
+	Private Sub ActiveResultPage(tab As XtraTabPage)
+		tab.Enabled = True
+		tab.PageEnabled = True
+		tabControl.SelectedTabPage = tab
+		tab.Select()
+		tab.Focus()
 	End Sub
 
 	Private Sub ClearQuery()
@@ -236,7 +251,7 @@ Public Class frmMain
 		openFileDialog.Filter = "SQL (*.sql)|*.sql"
 		If openFileDialog.ShowDialog() = DialogResult.OK Then
 			Dim fileName = openFileDialog.FileName
-			txtQuery.Lines = System.IO.File.ReadAllLines(fileName)
+			txtQuery.Text = IO.File.ReadAllText(fileName)
 		End If
 	End Sub
 

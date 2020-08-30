@@ -1,16 +1,12 @@
-﻿
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace Prex.Utils.Security.SSO
+namespace Prex.Utils.Security.SSO.Google
 {
 	public enum JwtHashAlgorithm
     {
@@ -54,11 +50,35 @@ namespace Prex.Utils.Security.SSO
 
             var bytesToSign = Encoding.UTF8.GetBytes(stringToSign);
 
-            byte[] signature = HashAlgorithms[algorithm](keyBytes, bytesToSign);
-            segments.Add(Base64UrlEncode(signature));
 
+            byte[] signature = HashAlgorithms[algorithm](keyBytes, bytesToSign);
+            var cc = Base64UrlEncode(signature);
+            segments.Add(cc);
             return string.Join(".", segments.ToArray());
         }
+        public static string ComputeHash(string input, HashAlgorithm algorithm, Byte[] salt)
+        {
+            Byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+
+            // Combine salt and input bytes
+            Byte[] saltedInput = new Byte[salt.Length + inputBytes.Length];
+            salt.CopyTo(saltedInput, 0);
+            inputBytes.CopyTo(saltedInput, salt.Length);
+
+            Byte[] hashedBytes = algorithm.ComputeHash(saltedInput);
+
+            return Base64UrlEncode(hashedBytes);
+        }
+
+        static byte[] HmacSHA256(String data, byte[] key)
+        {
+            String algorithm = "HmacSHA256";
+            KeyedHashAlgorithm kha = KeyedHashAlgorithm.Create(algorithm);
+            kha.Key = key;
+
+            return kha.ComputeHash(Encoding.UTF8.GetBytes(data));
+        }
+
 
         public static string Decode(string token, string key)
         {
@@ -116,7 +136,20 @@ namespace Prex.Utils.Security.SSO
             output = output.Replace('/', '_'); // 63rd char of encoding
             return output;
         }
-
+        private static string Base64UrlEncode(string output)
+        {
+            output = output.Split('=')[0]; // Remove any trailing '='s
+            output = output.Replace('+', '-'); // 62nd char of encoding
+            output = output.Replace('/', '_'); // 63rd char of encoding
+            return output;
+        }
+        private static string UrlEncodeToBase64(byte[] input)
+        {
+            var output = Encoding.UTF8.GetString(input) + "==";
+            output = output.Replace('-', '+'); // 62nd char of encoding
+            output = output.Replace('_', '/'); // 63rd char of encoding
+            return output;
+        }
         // from JWT spec
         private static byte[] Base64UrlDecode(string input)
         {
@@ -143,59 +176,40 @@ namespace Prex.Utils.Security.SSO
             var issueTime = DateTime.Now.ToUniversalTime();
 
             var iat = (int)issueTime.Subtract(utc0).TotalSeconds;
-            var exp = (int)issueTime.AddMinutes(55).Subtract(utc0).TotalSeconds; // Expiration time is up to 1 hour, but lets play on safe side
+            var exp = (int)issueTime.AddMinutes(60).Subtract(utc0).TotalSeconds; // Expiration time is up to 1 hour, but lets play on safe side
 
             var payload = new
             {
                 iss = "managegsuiteusers@kibananaranjacom-1567620199723.iam.gserviceaccount.com",
                 sub = email,
-                scope = "https://www.googleapis.com/auth/admin.directory.user.readonly",
-                aud = "https://oauth2.googleapis.com/token",
+                scope = @"https://www.googleapis.com/auth/admin.directory.user.readonly",
+                aud = @"https://oauth2.googleapis.com/token",
                 exp = exp,
                 iat = iat
             };
 
 
             var certText = File.ReadAllText(certificateFilePath);
-            var certBytes = Encoding.UTF8.GetBytes($"-----BEGIN PRIVATE KEY-----{Encoding.UTF8.GetString(Convert.FromBase64String(certText))}-----END PRIVATE KEY-----");
-            var signingcert = new X509Certificate2(certBytes, "notasecret", X509KeyStorageFlags.Exportable);
+            //var certBytes = File.ReadAllBytes(certificateFilePath);
+            //var signingcert = new X509Certificate2(certBytes, "notasecret", X509KeyStorageFlags.Exportable);
 
 
-            var certificate = new X509Certificate2(certificateFilePath, "notasecret");
-            var privateKey = certificate.Export(X509ContentType.Cert);
+            // var certificate = new X509Certificate2(certText, "");
+            // var privateKey = certificate.Export(X509ContentType.Cert);
 
-            var tk = JsonWebToken.Encode(payload, privateKey, JwtHashAlgorithm.RS256);
+            var tk = JsonWebToken.Encode(payload, certText, JwtHashAlgorithm.RS256);
             return tk;
         }
 
-        public static string GenerateToken(string email, string certificateFilePath, int expireMinutes)
-        {
-
-            var now = DateTime.UtcNow;
-            X509Certificate2 signingCert = new X509Certificate2(certificateFilePath);
-            X509SecurityKey privateKey = new X509SecurityKey(signingCert);
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) });
-           
-            var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-            var jwtSecurityToken = tokenHandler.CreateJwtSecurityToken(
-                    audience: @"https://oauth2.googleapis.com/token",
-                    issuer: "managegsuiteusers@kibananaranjacom-1567620199723.iam.gserviceaccount.com",
-                    subject: claimsIdentity,
-                    notBefore: now,
-                    expires: now.AddMinutes(Convert.ToInt32(expireMinutes)),
-                    signingCredentials: new SigningCredentials(privateKey, SecurityAlgorithms.RsaSha256Signature));
-
-            var jwtTokenString = tokenHandler.WriteToken(jwtSecurityToken);
-            return jwtTokenString;
-        }
     }
 
     public static class GSuiteFunctions
-	{
+    {
         //https://oauth2.googleapis.com/token
         public static void GetToken(string apiUrl)
-		{
-			return;
+        {
+            return;
         }
-	}
+    }
+
 }

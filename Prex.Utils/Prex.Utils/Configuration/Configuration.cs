@@ -144,6 +144,10 @@ namespace Prex.Utils
         public string CYBERRARKPASS      { get; internal set; }
 
         public Usuario UsuarioActual { get; internal set; }
+
+        //Naranja
+        public string FILE_GOOGLE_CREDENTIALS { get; internal set; }
+        public bool AUTENTICACIONGOOGLE { get; internal set; }
         #endregion
 
         #region Contructor
@@ -366,7 +370,8 @@ namespace Prex.Utils
             _xmlLocal.Save(ARCHIVO_CONFIG_LOCAL);
         }
 
-
+        public static void CargarUsuarioActual(string nombre) => PrexConfig.UsuarioActual = Security.Functions.GetUsuario(nombre);
+        
     }
 
     

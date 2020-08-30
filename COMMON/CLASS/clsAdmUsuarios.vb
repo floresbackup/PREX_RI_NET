@@ -68,92 +68,98 @@ Public Class AdmUsuarios
 
 	End Sub
 
-	Public Function ValidarUsuario(ByVal sNombreUsuario As String, _
+    Public Function ValidarUsuario(sNombreUsuario As String) As DataSet
+        InicializarVariables()
+        Dim sSQL = "SELECT       * " &
+                "FROM         USUARI " &
+                "WHERE        US_NOMBRE = '" & sNombreUsuario & "'"
+        Dim ds = oAdmTablas.AbrirDataset(sSQL)
+
+        If ds.Tables(0).Rows.Count = 0 Then
+            Return Nothing '"El nombre de usuario proporcionado no existe"
+        Else
+            Return ds
+        End If
+    End Function
+
+    Public Function ValidarUsuario(ByVal sNombreUsuario As String, _
                                   ByVal sPassword As String, _
                                   ByVal nCodEntidad As Long, _
                                   ByRef nDiasParaCambioPassword As Double, _
                                   Optional ByRef sMotivoError As String = "", _
                                   Optional ByVal bIngresaSeguridad As Boolean = False) As Boolean
 
-      Dim sSQL As String
-      Dim ds As DataSet
-      Dim sPasswordActual As String
+        Dim sSQL As String
+        Dim sPasswordActual As String
+        Dim ds = ValidarUsuario(sNombreUsuario)
 
+        If ds Is Nothing Then
+            sMotivoError = "El nombre de usuario proporcionado no existe"
+        Else
 
-		InicializarVariables()
-		sSQL = "SELECT       * " & _
-             "FROM         USUARI " & _
-             "WHERE        US_NOMBRE = '" & sNombreUsuario & "'"
-      ds = oAdmTablas.Abrirdataset(sSQL)
+            With ds.Tables(0).Rows(0)
 
+                If (.Item("US_CODENT") <> nCodEntidad) And (.Item("US_CODENT") <> 0) Then
+                    sMotivoError = "El usuario proporcionado no pertenece a la entidad seleccionada"
+                    GoTo CerrarDataSet
+                End If
 
-      If ds.Tables(0).Rows.Count = 0 Then
-         sMotivoError = "El nombre de usuario proporcionado no existe"
-      Else
+                If .Item("US_BLOQUE") <> 0 Then
+                    sMotivoError = "El usuario se encuentra bloqueado para iniciar la sesión"
+                Else
+                    If .Item("US_FECBAJ") > CDate("01-01-1900") Then
+                        sMotivoError = "El usuario proporcionado fue dado de baja"
+                    Else
 
-         With ds.Tables(0).Rows(0)
+                        If bIngresaSeguridad Then
+                            If .Item("US_ADMIN") = 0 Then
+                                sMotivoError = "No dispone de privilegios para ingresar a este módulo"
+                                GoTo CerrarDataSet
+                            End If
+                        End If
 
-            If (.Item("US_CODENT") <> nCodEntidad) And (.Item("US_CODENT") <> 0) Then
-               sMotivoError = "El usuario proporcionado no pertenece a la entidad seleccionada"
-               GoTo CerrarDataSet
-            End If
+                        sPasswordActual = .Item("US_PASSWO")
 
-            If .Item("US_BLOQUE") <> 0 Then
-               sMotivoError = "El usuario se encuentra bloqueado para iniciar la sesión"
-            Else
-               If .Item("US_FECBAJ") > CDate("01-01-1900") Then
-                  sMotivoError = "El usuario proporcionado fue dado de baja"
-               Else
+                        If sPasswordActual <> CalculateMD5(sPassword) Then
 
-                  If bIngresaSeguridad Then
-                     If .Item("US_ADMIN") = 0 Then
-                        sMotivoError = "No dispone de privilegios para ingresar a este módulo"
-                        GoTo CerrarDataSet
-                     End If
-                  End If
+                            sMotivoError = "La contraseña ingresada es incorrecta"
 
-                  sPasswordActual = .Item("US_PASSWO")
+                            If .Item("US_GRACIA") > 1 Then
+                                sSQL = "UPDATE    USUARI " &
+                                   "SET       US_GRACIA = US_GRACIA - 1 " &
+                                   "WHERE     US_NOMBRE = '" & sNombreUsuario & "'"
+                                oAdmTablas.EjecutarComandoSQL(sSQL)
+                            Else
+                                sSQL = "UPDATE    USUARI " &
+                                   "SET       US_GRACIA = 0, " &
+                                   "          US_BLOQUE = 1  " &
+                                   "WHERE     US_NOMBRE = '" & sNombreUsuario & "'"
+                                oAdmTablas.EjecutarComandoSQL(sSQL)
+                            End If
 
-                  If sPasswordActual <> CalculateMD5(sPassword) Then
+                        Else
 
-                     sMotivoError = "La contraseña ingresada es incorrecta"
+                            sSQL = "UPDATE    USUARI " &
+                                "SET       US_GRACIA = " & INTENTOS_PARA_BLOQUEAR & " " &
+                                "WHERE     US_NOMBRE = '" & sNombreUsuario & "'"
+                            oAdmTablas.EjecutarComandoSQL(sSQL)
 
-                     If .Item("US_GRACIA") > 1 Then
-                        sSQL = "UPDATE    USUARI " & _
-                               "SET       US_GRACIA = US_GRACIA - 1 " & _
-                               "WHERE     US_NOMBRE = '" & sNombreUsuario & "'"
-                        oAdmTablas.EjecutarComandoSQL(sSQL)
-                     Else
-                        sSQL = "UPDATE    USUARI " & _
-                               "SET       US_GRACIA = 0, " & _
-                               "          US_BLOQUE = 1  " & _
-                               "WHERE     US_NOMBRE = '" & sNombreUsuario & "'"
-                        oAdmTablas.EjecutarComandoSQL(sSQL)
-                     End If
+                            If .Item("US_CODUSU") > 1 Then ' AL AdminPREX NO !!!
+                                nDiasParaCambioPassword = DateDiff(DateInterval.Day, Date.Today, CDate(.Item("US_FECVTO")))
+                            Else
+                                nDiasParaCambioPassword = 32767
+                            End If
 
-                  Else
+                            Return True
 
-                     sSQL = "UPDATE    USUARI " & _
-                            "SET       US_GRACIA = " & INTENTOS_PARA_BLOQUEAR & " " & _
-                            "WHERE     US_NOMBRE = '" & sNombreUsuario & "'"
-                     oAdmTablas.EjecutarComandoSQL(sSQL)
+                        End If
 
-                     If .Item("US_CODUSU") > 1 Then ' AL AdminPREX NO !!!
-                        nDiasParaCambioPassword = DateDiff(DateInterval.Day, Date.Today, CDate(.Item("US_FECVTO")))
-                     Else
-                        nDiasParaCambioPassword = 32767
-                     End If
+                    End If
+                End If
 
-                     Return True
+            End With
 
-                  End If
-
-               End If
-            End If
-
-         End With
-
-      End If
+        End If
 
 CerrarDataSet:
       ds = Nothing
