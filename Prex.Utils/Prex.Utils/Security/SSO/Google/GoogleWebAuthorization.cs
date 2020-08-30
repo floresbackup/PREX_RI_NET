@@ -1,7 +1,13 @@
-﻿using Google.Apis.Auth.OAuth2;
+﻿using DevExpress.Printing.Core.PdfExport.Metafile;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Auth.OAuth2.Flows;
+using Google.Apis.Auth.OAuth2.Requests;
+using Google.Apis.Auth.OAuth2.Responses;
 using Google.Apis.Gmail.v1;
+using Google.Apis.Oauth2.v2;
 using Google.Apis.Reseller.v1;
 using Google.Apis.Services;
+using Microsoft.Win32;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -15,6 +21,7 @@ namespace Prex.Utils.Security.SSO.Google
 
 		private GmailService gmailService;
         private ResellerService gsuiteResellerService;
+        private Oauth2Service oauth2Service;
 		#endregion
 
 		#region Propiedades
@@ -34,6 +41,22 @@ namespace Prex.Utils.Security.SSO.Google
                 });
                 
             }
+        }
+
+        public Oauth2Service Oauth2Service
+        {
+            get 
+            {
+                if (oauth2Service != null) return oauth2Service;
+
+                return oauth2Service = new Oauth2Service(new BaseClientService.Initializer()
+                    {
+                        HttpClientInitializer = UserCredentials,
+                        ApplicationName = ApplicationName,
+                    });
+
+            }
+
         }
 		#endregion
 
@@ -72,10 +95,26 @@ namespace Prex.Utils.Security.SSO.Google
                 scopes, 
                 usuario,
                 CancellationToken.None,
-                new LogDataStore()).Result;
-            
+                new SQLGoogleDataStore()).Result;
+
+
             return UserCredentials;
 
+        }
+
+
+        public void RefreshToken(string usuario)
+        {
+            var flow = new GoogleAuthorizationCodeFlow(
+                     new GoogleAuthorizationCodeFlow.Initializer()
+                     {
+                         ClientSecrets = ClientSecrets
+                     });
+
+            var cred = new UserCredential(flow, usuario, UserCredentials.Token);
+            
+            var refreshToken = cred.Flow.RefreshTokenAsync(usuario, UserCredentials.Token.RefreshToken, CancellationToken.None).Result;
+          
         }
     }
 

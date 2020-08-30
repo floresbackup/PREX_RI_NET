@@ -135,7 +135,7 @@ Partial Class FrmAltaUsuarioNaranja
 		Me.Name = "FrmAltaUsuarioNaranja"
 		Me.ShowIcon = False
 		Me.ShowInTaskbar = False
-		Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+		Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
 		Me.Text = "Nuevo usuario"
 		Me.ResumeLayout(False)
 		Me.PerformLayout()

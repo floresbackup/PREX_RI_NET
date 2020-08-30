@@ -79,7 +79,8 @@ Module modLocalMain
 			ElseIf AUTENTICACIONSQL Then 'LOGIN POR SQL
 				oInicioSesion.ModoAutenticacion = frmInicioSesion.eModoAutenticacion.AutenticacionSQL
 			End If
-			System.Threading.Thread.Sleep(2500)
+			System.Threading.Thread.Sleep(1500)
+
 			oSplash.Close()
 			oSplash = Nothing
 			Application.DoEvents()

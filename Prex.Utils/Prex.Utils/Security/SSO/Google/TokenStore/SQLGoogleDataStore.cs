@@ -13,16 +13,13 @@ namespace Prex.Utils.Security.SSO.Google
 	/// </summary>
 	public class SQLGoogleDataStore : IDataStore
     {
-        private readonly string conextionDb;
 
         /// <summary>
         /// Constructor. Get the conexion string
         /// for your database.
         /// </summary>
-        /// <param name="conexionString"></param>
-        public SQLGoogleDataStore(string conexionString)
+        public SQLGoogleDataStore()
         {
-            conextionDb = conexionString;
         }
 
         #region Implementation of IDataStore
@@ -40,29 +37,24 @@ namespace Prex.Utils.Security.SSO.Google
             return Task.Run(() =>
             {
                 string contents = Newtonsoft.Json.JsonConvert.SerializeObject((object)value);
-                var conn = new SqlConnection(conextionDb);
-                var comm = new SqlCommand("SELECT COUNT(*) FROM OAuthToken WHERE UserKey = @Param1", conn);
-                comm.Parameters.AddWithValue("@Param1", key);
-                conn.Open();
+                var conn = DataAccess.GetConnection();
+                var cmd = new SqlCommand("SELECT COUNT(*) FROM USUTOK WHERE UT_NOMBRE = @Nombre", conn);
+                cmd.Parameters.AddWithValue("Nombre", key);
                 try
                 {
-                    var res = comm.ExecuteScalar();
+                    var res = cmd.ExecuteScalar();
                     if ((int)res == 0)
                     {
                         // Insert token
-                        comm = new SqlCommand("INSERT INTO OAuthToken (UserKey, Token) VALUES(@Param1, @Param2)", conn);
-                        comm.Parameters.AddWithValue("@Param1", key);
-                        comm.Parameters.AddWithValue("@Param2", contents);
+                        cmd = new SqlCommand("INSERT INTO USUTOK (UT_CODUSU, UT_NOMBRE, UT_TOKEN) VALUES (@Usuario, @Nombre, @Token)", conn);
+                        cmd.Parameters.AddWithValue("Usuario", Configuration.PrexConfig.UsuarioActual.Codigo);
                     }
-                    else
-                    {
-                        //Update token
-                        comm = new SqlCommand("UPDATE OAuthToken SET Token = @Param2 WHERE UserKey = @Param1", conn);
-                        comm.Parameters.AddWithValue("@Param1", key);
-                        comm.Parameters.AddWithValue("@Param2", contents);
-                    }
+                    else //Update token
+                        cmd = new SqlCommand("UPDATE USUTOK SET UT_TOKEN = @Token, UT_FECHAACT = GetDate() WHERE UT_NOMBRE = @Nombre", conn);
 
-                    var exec = comm.ExecuteNonQuery();
+                    cmd.Parameters.AddWithValue("Nombre", key);
+                    cmd.Parameters.AddWithValue("Token", contents);
+                    var exec = cmd.ExecuteNonQuery();
                 }
                 finally
                 {
@@ -86,10 +78,9 @@ namespace Prex.Utils.Security.SSO.Google
         {
             return Task.Run(() =>
             {
-                var conn = new SqlConnection(conextionDb);
-                var comm = new SqlCommand("DELETE OAuthToken WHERE UserKey = @Param1", conn);
-                comm.Parameters.AddWithValue("@Param1", key);
-                conn.Open();
+                var conn = Prex.Utils.DataAccess.GetConnection();
+                var comm = new SqlCommand("DELETE USUTOK WHERE UT_NOMBRE = @Nombre", conn);
+                comm.Parameters.AddWithValue("Nombre", key);
                 try
                 {
                     var res = comm.ExecuteScalar();
@@ -118,21 +109,16 @@ namespace Prex.Utils.Security.SSO.Google
             }
 
             TaskCompletionSource<T> completionSource = new TaskCompletionSource<T>();
-            var conn = new SqlConnection(conextionDb);
-            var comm = new SqlCommand("SELECT Token FROM OAuthToken WHERE UserKey = @Param1", conn);
-            comm.Parameters.AddWithValue("@Param1", key);
-            conn.Open();
+            var conn = Prex.Utils.DataAccess.GetConnection();
+            var comm = new SqlCommand("SELECT UT_TOKEN FROM USUTOK WHERE UT_NOMBRE = @Nombre", conn);
+            comm.Parameters.AddWithValue("Nombre", key);
             try
             {
                 var res = comm.ExecuteScalar();
                 if (res == null || string.IsNullOrWhiteSpace(res.ToString()))
-                {
                     completionSource.SetResult(default(T));
-                }
                 else
-                {
                     completionSource.SetResult(Newtonsoft.Json.JsonConvert.DeserializeObject<T>(res.ToString()));
-                }
             }
             catch (Exception ex)
             {
@@ -153,9 +139,8 @@ namespace Prex.Utils.Security.SSO.Google
             return Task.Run(() =>
             {
 
-                var conn = new SqlConnection(conextionDb);
-                var comm = new SqlCommand("TRUNCATE TABLE OAuthToken", conn);
-                conn.Open();
+                var conn = Prex.Utils.DataAccess.GetConnection();
+                var comm = new SqlCommand("TRUNCATE TABLE USUTOK", conn);
                 try
                 {
                     var res = comm.ExecuteNonQuery();
