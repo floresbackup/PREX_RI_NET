@@ -28,7 +28,7 @@ namespace Prex.Utils.Security
 				using (var file = new FileStream(Configuration.PrexConfig.FILE_GOOGLE_CREDENTIALS.Trim(), FileMode.Open, FileAccess.Read))
 				{
 					var googleWebAutorization = new GoogleWebAuthorization(file);
-					credentials = googleWebAutorization.Autenticar(userName, new List<string>() { @"https://www.googleapis.com/auth/userinfo.profile", @"https://www.googleapis.com/auth/userinfo.email", @"https://www.googleapis.com/auth/admin.directory.user.readonly",  });
+					credentials = googleWebAutorization.Autenticar(userName, new List<string>() { @"https://www.googleapis.com/auth/userinfo.profile", @"https://www.googleapis.com/auth/userinfo.email", @"https://www.googleapis.com/auth/admin.directory.user.readonly"  });
 					var ui = googleWebAutorization.Oauth2Service.Userinfo.Get().Execute();
 					if (ui == null || ui.Name.IsNullOrEmpty()) return null;
 					var json = Newtonsoft.Json.JsonConvert.SerializeObject(ui);
@@ -37,6 +37,14 @@ namespace Prex.Utils.Security
 			}
 			catch (Exception ex)
 			{
+				var strMsg = string.Empty;
+				if (ex.Message.Contains("invalid_grant") || (ex.InnerException != null && ex.InnerException.Message.Contains("invalid_grant")))
+					strMsg = "invalid_grant";
+				if (ex.Message.Contains("access_denied") || (ex.InnerException != null && ex.InnerException.Message.Contains("access_denied")))
+					strMsg = "access_denied";
+
+				if (!strMsg.IsNullOrEmpty()) throw new UnauthorizedAccessException(strMsg);
+
 				throw new Exception("Ocurrio un error al intentar autenticar con Google", ex);
 			}
 		}

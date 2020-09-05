@@ -63,6 +63,12 @@ Public Class FrmAltaUsuarioNaranja
 				cmdUsuGru.Parameters.Add("CodGrupo", SqlDbType.Int).Value = CType(cboGrupos.SelectedItem, Entities.clsItem).Valor
 				DataAccess.Execute(cmdUsuGru)
 
+				'Update de USUTOK 
+				Dim cmdUsuTok As New SqlCommand("UPDATE USUTOK SET UT_CODUSU=@CodUsuario WHERE UT_NOMBRE=@NombreUsuario")
+				cmdUsuTok.Parameters.Add("CodUsuario", SqlDbType.Int).Value = codUsuario
+				cmdUsuTok.Parameters.Add("NombreUsuario", SqlDbType.VarChar).Value = txtUsusario.Text.Trim()
+				DataAccess.Execute(cmdUsuTok)
+
 				Me.Close()
 			Catch ex As Exception
 				TratarError(ex, "GuardarNuevoUsuario")

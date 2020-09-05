@@ -425,7 +425,7 @@ Public Class frmInicioSesion
 
             Try
 
-                If AUTENTICACIONGOOGLE Then Return AutenticarGoogle()
+                If AUTENTICACIONGOOGLE Then Return AutenticarGoogle(True)
 
                 Dim bResult = oAdmUsuarios.ValidarUsuario(txtUsuario.Text, txtPassword.Text, Val(LlaveCombo(cboEntidad)), nCantidadDiasVto, sMotivoError)
 
@@ -495,7 +495,7 @@ Public Class frmInicioSesion
         Prex.Utils.Configuration.CargarUsuarioActual(UsuarioActual.Nombre)
     End Sub
 
-    Private Function AutenticarGoogle()
+    Private Function AutenticarGoogle(reintento As Boolean) As Boolean
         Try
             Me.Cursor = Cursors.WaitCursor
             Try
@@ -518,6 +518,23 @@ Public Class frmInicioSesion
                     Return True
                 End If
             Catch ex As Exception
+                If TypeOf ex Is UnauthorizedAccessException Then
+                    Select Case ex.Message
+                        Case "invalid_grant"
+                            If reintento AndAlso Prex.Utils.MensajesForms.MostrarPregunta("No posee los permisos suficientes. ¿Desea volver autenticar?") = DialogResult.Yes Then
+                                Return AutenticarGoogle(False)
+                            Else
+                                MensajesForms.MostrarError("Se denegó el acceso a la aplicación.")
+                                Return False
+                            End If
+                        Case "access_denied"
+                            MensajesForms.MostrarError("Se denegó el acceso a la aplicación.")
+                            Return False
+                        Case Else
+
+                    End Select
+                End If
+
                 ManejarErrores.TratarError(ex, "AutenticarGoogle", "Ocurrió un error al intentar autenticar usuario en google", True)
                 Return False
             End Try
