@@ -82,6 +82,25 @@ namespace Prex.Utils
         }
 
 
+        public static DataSet GetDataSet(string sql, string tabla)
+        {
+            try
+            {
+                var dts = new DataSet();
+                var con = new SqlConnection(Configuration.PrexConfig.CONN_LOCAL_ADO);
+                con.Open();
+
+                var dad = new SqlDataAdapter(sql, con);
+                dad.Fill(dts, tabla);
+                con.Close();
+                return dts;
+            }
+            catch (Exception ex)
+            {
+                Prex.Utils.Logging.Log.GuardarLog(Prex.Utils.Logging.AccionesLOG.AL_ERROR_SISTEMA, $"Ocurrió un error al  obtener DataSet - {ex.Message}", Configuration.PrexConfig.CODIGO_TRANSACCION);
+                throw new Exception("Ocurrió un error al obtener DataSet", ex);
+            }
+        }
 
         public static DataTable GetDataTable(string sql)
         {
@@ -103,8 +122,10 @@ namespace Prex.Utils
             }
 
         }
+        public static SqlDataReader GetSingleReader(string sql) => GetReader(sql, CommandBehavior.SingleRow);
+        public static SqlDataReader GetReader(string sql) => GetReader(sql, null);
 
-        public static SqlDataReader GetReader(string sql)
+        private static SqlDataReader GetReader(string sql, CommandBehavior? cmdBehavior)
         {
             try
             {
@@ -113,7 +134,7 @@ namespace Prex.Utils
 
                 con.Open();
 
-                var r = cmd.ExecuteReader();
+                var r = cmdBehavior.HasValue ? cmd.ExecuteReader(cmdBehavior.Value) : cmd.ExecuteReader();
 
                 //con.Close();
 
