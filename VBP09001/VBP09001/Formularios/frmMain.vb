@@ -1629,7 +1629,9 @@ Salir:
 
                 lblStatus.Text = "Procesando..."
                 lblStatus.Visible = True
-                
+                Application.DoEvents()
+                Threading.Thread.Sleep(10)
+
                 For Each row As DataRow In rstCuadros.Tables(0).Rows
 
                     sCuadro = row("TR_CUADRO")
@@ -1668,10 +1670,10 @@ Salir:
                                         Select Case "" & rowAux("TR_DATOFIJO")
 
                                             Case "[RECTIFICATIVA]"
-                                                sLine = sLine & IIf(chkRectivicativa.Checked, "R", "N")
+                                                sLine &= IIf(chkRectivicativa.Checked, "R", "N")
 
                                             Case "[ENTIDAD]"
-                                                sLine = sLine & Format(CODIGO_ENTIDAD, Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
+                                                sLine &= Format(CODIGO_ENTIDAD, Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
 
                                         End Select
 
@@ -1681,22 +1683,22 @@ Salir:
 
                                             Case "N"
                                                 If IsNumeric(rowAux("TR_DATOFIJO")) Then
-                                                    sLine = sLine & Format(Val(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
+                                                    sLine &= Format(Val(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
                                                 ElseIf IsDate(rowAux("TR_DATOFIJO")) Then
-                                                    sLine = sLine & Format(CDate(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
+                                                    sLine &= Format(CDate(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
                                                 Else
-                                                    sLine = sLine & Format(NoNulo(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
+                                                    sLine &= Format(NoNulo(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
                                                 End If
                                             Case "F"
                                                 If NoNulo(rowAux("TR_DATOFIJO"), False) = 0 Then
                                                     'sLine = sLine & "".PadLeft(CType(Formato(nOrden), clsFormato).Longitud, "0")
-                                                    sLine = sLine & New String("0", CType(Formato(nOrden), clsFormato).Longitud)
+                                                    sLine &= New String("0", CType(Formato(nOrden), clsFormato).Longitud)
                                                 Else
-                                                    sLine = sLine & Format(CDate(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
+                                                    sLine &= Format(CDate(rowAux("TR_DATOFIJO")), Microsoft.VisualBasic.Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
                                                 End If
 
                                             Case Else
-                                                sLine = sLine & RellenarCadena(Trim("" & rowAux("TR_DATOFIJO")), CType(Formato(nOrden), clsFormato).Longitud)
+                                                sLine &= RellenarCadena(Trim("" & rowAux("TR_DATOFIJO")), CType(Formato(nOrden), clsFormato).Longitud)
 
                                         End Select
                                     End If
@@ -1712,17 +1714,17 @@ Salir:
                                         Case "N"
                                             vDato = Val(rowTrabajo(sCampo))
                                             If CType(Formato(nOrden), clsFormato).Decimales > 0 Then
-                                                sLine = sLine & Format(vDato * Val("1" & "".PadLeft(CType(Formato(nOrden), clsFormato).Decimales, "0")), CType(Formato(nOrden), clsFormato).FormatoCampo)
+                                                sLine &= Format(vDato * Val("1" & "".PadLeft(CType(Formato(nOrden), clsFormato).Decimales, "0")), CType(Formato(nOrden), clsFormato).FormatoCampo)
                                             Else
                                                 If vDato >= 0 Then
-                                                    sLine = sLine & (IIf(vDato = 0 AndAlso CType(Formato(nOrden), clsFormato).FormatoCampo = String.Empty, String.Empty, Format(vDato, CType(Formato(nOrden), clsFormato).FormatoCampo)))
+                                                    sLine &= (IIf(vDato = 0 AndAlso CType(Formato(nOrden), clsFormato).FormatoCampo = String.Empty, String.Empty, Format(vDato, CType(Formato(nOrden), clsFormato).FormatoCampo)))
                                                 Else
-                                                    sLine = sLine & Format(vDato, Microsoft.VisualBasic.Strings.Right(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud - 1))
+                                                    sLine &= Format(vDato, Microsoft.VisualBasic.Strings.Right(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud - 1))
                                                 End If
                                             End If
 
                                             If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then
-                                                sLine = sLine & ";"
+                                                sLine &= ";"
                                             End If
                                         Case "T"
 
@@ -1739,7 +1741,7 @@ Salir:
                                             Else
 
                                                 vDato = Trim(rowTrabajo(sCampo).ToString)
-                                                sLine = sLine & RellenarCadena(vDato, CType(Formato(nOrden), clsFormato).Longitud)
+                                                sLine &= RellenarCadena(vDato, CType(Formato(nOrden), clsFormato).Longitud)
 
                                             End If
 
@@ -1748,14 +1750,14 @@ Salir:
                                 'sLine = sLine & RellenarCadena(vDato, CType(Formato(nOrden), clsFormato).Longitud)
 
                                         Case "F"
-                                            vDato = NoNulo(rowTrabajo(sCampo))
+                                            vDato = NoNulo(rowTrabajo(sCampo), False)
 
                                             Select Case rowAux("TR_DATOFIJO").ToString
 
                                                 Case "[PERIODOANT]"
 
                                                     dNewValue = UnAnioMenos(DateTime.Parse(vDato.ToString))
-                                                    sLine = sLine & Format(dNewValue, Formato(nOrden).FORMATOCAMPO)
+                                                    sLine &= Format(dNewValue, Formato(nOrden).FORMATOCAMPO)
 
                                                 Case Else ' VACIO !!
 
@@ -1764,19 +1766,19 @@ Salir:
                                                         If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then
                                                             sLine = sLine
                                                         Else
-                                                            sLine = sLine & Format(vDato, "".PadLeft(Len(Formato(nOrden).FORMATOCAMPO), "0"))
+                                                            sLine &= Format(vDato, "".PadLeft(Len(Formato(nOrden).FORMATOCAMPO), "0"))
                                                         End If
 
                                                     Else
 
-                                                        sLine = sLine & Format(vDato, Formato(nOrden).FORMATOCAMPO)
+                                                        sLine &= Format(vDato, Formato(nOrden).FORMATOCAMPO)
 
                                                     End If
 
                                             End Select
 
                                             If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then
-                                                sLine = sLine & ";"
+                                                sLine &= ";"
                                             End If
 
 
@@ -1786,7 +1788,7 @@ Salir:
 
                             Next
 
-                            j = j + 1
+                            j += 1
                             oText.WriteLine(sLine)
                             sLine = ""
                             procesoFin = True
