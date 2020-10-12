@@ -120,6 +120,7 @@
     </Compile>
     <Compile Include="DataAccess\DataAccess.cs" />
     <Compile Include="Entities\clsItem.cs" />
+    <Compile Include="Entities\IdCodigoNombre.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Misc\Encoding.cs" />
     <Compile Include="Misc\ExtensionMehods.cs" />

@@ -14,6 +14,7 @@ Imports DevExpress.XtraPivotGrid.Localization
 Imports DevExpress.XtraPrinting.Localization
 Imports DevExpress.XtraReports.Localization
 Imports Prex.Utils
+Imports Prex.Utils.Entities
 Imports WebSupergoo
 
 Public Class frmMain
@@ -2679,10 +2680,7 @@ Reinicio:
 	Private Sub CargarValoresColumna(ByVal sColumna As String, ByVal sSQL As String)
 
 		Dim ds As New DataSet
-		Dim oItem As DropDownGrid
-		Dim xpCollectionTipo As New XPCollection(GetType(DropDownGrid))
-
-		xpCollectionTipo.DisplayableProperties = "This;Oid;Descripcion"
+		Dim listValues As New List(Of IdCodigoNombre)()
 
 		sSQL = ReemplazarVariables(sSQL, PanControles.Controls)
 		ds = oAdmTablas.AbrirDataset(sSQL)
@@ -2691,37 +2689,41 @@ Reinicio:
 
 			For Each row As DataRow In .Rows
 
-				oItem = New DropDownGrid
+				Dim item As New IdCodigoNombre()
+
 				Dim oi
-				If IsNumeric(row(0).ToString) AndAlso Integer.TryParse(row(0).ToString, oi) Then oItem.Oid = oi
-				oItem.Codigo = row(0)
-				oItem.Descripcion = row(1)
+				If IsNumeric(row(0).ToString) AndAlso Integer.TryParse(row(0).ToString, oi) Then
+					item.Id = oi
+				End If
+				item.Codigo = row(0)
+				item.Nombre = row(1)
 
-				xpCollectionTipo.Add(oItem)
-
-				oItem = Nothing
-
+				listValues.Add(item)
 			Next
-
 		End With
 
-		Dim oLookUp As New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
+		Dim oLookUp As New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit With {
+			.Name = "lu" & sColumna,
+			.DataSource = listValues,
+			.DisplayMember = "Nombre"
+		}
+		If (listValues.Any(Function(i) i.Id.HasValue)) Then
+			oLookUp.ValueMember = "Id"
+			oLookUp.Columns.Add(New DevExpress.XtraEditors.Controls.LookUpColumnInfo("Id"))
+			oLookUp.Columns("Id").Visible = False
+		Else
+			oLookUp.ValueMember = "Codigo"
+			oLookUp.Columns.Add(New DevExpress.XtraEditors.Controls.LookUpColumnInfo("Codigo"))
+			oLookUp.Columns("Codigo").Visible = False
+		End If
 
-		oLookUp.Name = "lu" & sColumna
-		oLookUp.DataSource = xpCollectionTipo
-		oLookUp.DisplayMember = "Descripcion"
-		oLookUp.ValueMember = "Oid"
-		oLookUp.Columns.Add(New DevExpress.XtraEditors.Controls.LookUpColumnInfo("Oid"))
 		oLookUp.Columns.Add(New DevExpress.XtraEditors.Controls.LookUpColumnInfo("Descripcion"))
-		oLookUp.Columns("Oid").Visible = False
+
 		oLookUp.ShowFooter = False
 		oLookUp.ShowHeader = False
 		Grid.RepositoryItems.Add(oLookUp)
 
 		CType(Grid.MainView, ColumnView).Columns(sColumna).ColumnEdit = oLookUp
-
-		oLookUp = Nothing
-
 	End Sub
 
 	Private Function TieneComentarios() As String
