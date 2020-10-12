@@ -1727,7 +1727,7 @@ Reinicio:
 
 			Dim bRespuesta As Boolean = False
 
-			If ds.Tables(0).Rows.Count > 0 Then
+			If ds IsNot Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
 				Dim oRow As DataRow = ds.Tables(0).Rows(0)
 
 				If oRow(0).Equals(True) Or oRow(0).Equals(False) Then
