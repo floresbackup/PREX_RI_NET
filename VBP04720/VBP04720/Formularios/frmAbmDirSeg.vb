@@ -87,62 +87,54 @@ Public Class frmAbmDirSeg
    End Function
 
    Private Function GuardarDirectiva() As Boolean
+        Try
 
-      Dim sSQL As String
-      Dim ds As DataSet
-      Dim da As OleDbDataAdapter = Nothing
-      Dim cb As OleDbCommandBuilder
-      Dim row As DataRow
+            If nCodDirectiva = 0 Then
+                nCodDirectiva = oAdmTablas.ProximoID("DIRSEG", "DS_CODDIR")
+            End If
 
-      Try
-
-         If nCodDirectiva = 0 Then
-            nCodDirectiva = oAdmTablas.ProximoID("DIRSEG", "DS_CODDIR")
-         End If
-
-         sSQL = "SELECT    * " & _
-                "FROM      DIRSEG " & _
-                "WHERE     DS_CODDIR = " & nCodDirectiva
-
-         ds = oAdmTablas.AbrirDataset(sSQL, da)
-         cb = New OleDbCommandBuilder(da)
-
-         With ds.Tables(0)
-
-            If .Rows.Count = 0 Then
-               row = .NewRow
+            Dim rows = Prex.Utils.DataAccess.GetScalar($"Select TOP 1 1 from DIRSEG WHERE  DS_CODDIR = {nCodDirectiva}")
+            Dim cmd As SqlClient.SqlCommand
+            If rows = 1 Then
+                cmd = New SqlClient.SqlCommand("update DIRSEG set " +
+                                                " DS_VIGENT = @DS_VIGENT, " +
+                                                " DS_DESCRI = @DS_DESCRI, " +
+                                                " DS_DIASRE = @DS_DIASRE, " +
+                                                " DS_DIASVT = @DS_DIASVT, " +
+                                                " DS_CANTPC = @DS_CANTPC, " +
+                                                " DS_INTBLO = @DS_INTBLO, " +
+                                                " DS_PASCAR = @DS_PASCAR, " +
+                                                " DS_PASNUM = @DS_PASNUM, " +
+                                                " DS_PASESP = @DS_PASESP, " +
+                                                " DS_MININA = @DS_MININA, " +
+                                                " DS_SEGUNT = @DS_SEGUNT  " +
+                                                " where DS_CODDIR = @DS_CODDIR ")
             Else
-               row = .Rows(0)
+                cmd = New SqlClient.SqlCommand("insert into DIRSEG (DS_VIGENT, DS_DESCRI, DS_DIASRE, DS_DIASVT, DS_CANTPC, DS_INTBLO, " +
+                                "DS_PASCAR, DS_PASNUM, DS_PASESP, DS_MININA, DS_SEGUNT, DS_CODDIR) " +
+                                " values (@DS_VIGENT, @DS_DESCRI, @DS_DIASRE, @DS_DIASVT, @DS_CANTPC, @DS_INTBLO, @DS_PASCAR, @DS_PASNUM, " +
+                                " @DS_PASESP, @DS_MININA, @DS_SEGUNT, @DS_CODDIR) ")
             End If
 
-            row("DS_CODDIR") = nCodDirectiva
-            row("DS_VIGENT") = 0
-            row("DS_DESCRI") = Trim(txtNombre.Text)
-            row("DS_DIASRE") = Val(txtDIASRE.Text)
-            row("DS_DIASVT") = Val(txtDIASVT.Text)
-            row("DS_CANTPC") = Val(txtCANTPC.Text)
-            row("DS_INTBLO") = Val(txtINTBLO.Text)
-            row("DS_PASCAR") = Val(txtPASCAR.Text)
-            row("DS_PASNUM") = Val(txtPASNUM.Text)
-            row("DS_PASESP") = Val(txtPASESP.Text)
-            row("DS_MININA") = Val(txtMININA.Text)
-            row("DS_SEGUNT") = IIf(chkSeguridadNT.Checked, 1, 0)
+            cmd.Parameters.Add("DS_CODDIR", SqlDbType.Int).Value = nCodDirectiva
+            cmd.Parameters.Add("DS_VIGENT", SqlDbType.Int).Value = 0
+            cmd.Parameters.Add("DS_DESCRI", SqlDbType.VarChar, 50).Value = txtNombre.Text.Trim
+            cmd.Parameters.Add("DS_DIASRE", SqlDbType.Int).Value = Val(txtDIASRE.Text)
+            cmd.Parameters.Add("DS_DIASVT", SqlDbType.Int).Value = Val(txtDIASVT.Text)
+            cmd.Parameters.Add("DS_CANTPC", SqlDbType.Int).Value = Val(txtCANTPC.Text)
+            cmd.Parameters.Add("DS_INTBLO", SqlDbType.Int).Value = Val(txtINTBLO.Text)
+            cmd.Parameters.Add("DS_PASCAR", SqlDbType.Int).Value = Val(txtPASCAR.Text)
+            cmd.Parameters.Add("DS_PASNUM", SqlDbType.Int).Value = Val(txtPASNUM.Text)
+            cmd.Parameters.Add("DS_PASESP", SqlDbType.Int).Value = Val(txtPASESP.Text)
+            cmd.Parameters.Add("DS_MININA", SqlDbType.Int).Value = Val(txtMININA.Text)
+            cmd.Parameters.Add("DS_SEGUNT", SqlDbType.Int).Value = IIf(chkSeguridadNT.Checked, 1, 0)
 
-            If .Rows.Count = 0 Then
-               .Rows.Add(row)
-            End If
+            Prex.Utils.DataAccess.Execute(cmd)
 
-         End With
+            Return True
 
-         da.Update(ds)
-         ds.AcceptChanges()
-
-         ds = Nothing
-
-         Return True
-
-      Catch ex As Exception
-         TratarError(ex, "GuardarDirectiva")
+        Catch ex As Exception
+            TratarError(ex, "GuardarDirectiva")
       End Try
 
    End Function
