@@ -274,6 +274,7 @@ Public Class frmMain
 
                             LeerArchivoEncriptado(RUTAENCR_RA & "\PrExEncr_RA.txt", sUsuEncr_RA, sPwdEncr_RA)
                             sPwdEncr_RA = ObternerPasswordRunAsCyberark(sPwdEncr_RA)
+                            GuardarExcelEncryptParaCiti(sUsuEncr_RA, sPwdEncr_RA)
                             RunProgram(sUsuEncr_RA, sPwdEncr_RA, DOMINIO_DEFAULT, sRuta, sParametros)
                         Else
                             Process.Start(sRuta, sParametros)
@@ -322,6 +323,15 @@ Public Class frmMain
         End Try
 
     End Function
+
+    Private Sub GuardarExcelEncryptParaCiti(ByVal usuario As String, ByVal pass As String)
+        Try
+            If ID_SISTEMA <= 0 Then Exit Sub
+            Prex.Utils.Security.Encrypt.GuardarArchivoEncriptado(IO.Path.Combine(CARPETA_LOCAL, "ExcelEncrypt.txt"), usuario, pass)
+        Catch ex As Exception
+
+        End Try
+    End Sub
 
     Private Sub btnIr_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnIr.Click
 
@@ -507,7 +517,7 @@ Public Class frmMain
 
         oComm.Connection = oConn
         oComm.CommandText = "EXEC sp_setapprole 'AppSeguridad' , {Encrypt N 'SegIntWin'} , 'odbc'"
-        oComm.ExecuteNonQuery()
+            oComm.ExecuteNonQuery()
 
         oComm = Nothing
 

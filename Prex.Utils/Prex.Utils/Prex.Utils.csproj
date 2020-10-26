@@ -156,6 +156,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Security\CitiSecurity.cs" />
+    <Compile Include="Security\Encrypt.cs" />
     <Compile Include="Security\Forms\fmrChangePass.cs">
       <SubType>Form</SubType>
     </Compile>
