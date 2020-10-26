@@ -374,19 +374,12 @@ Public Class frmMain
     Private Sub ActualizarRegistro(rowH As Integer)
         Try
             Me.Cursor = Cursors.WaitCursor
-
             Try
-                'If VerificaDuplicado() Then
-                '    MensajeError("No se puede actualizar un registro duplicado [TG_CODTAB, TG_CODCON]")
-                '    gUsuarios.OptionsBehavior.Editable = True
-                '    Exit Sub
-                'End If
-
                 Dim nCodigoTabla As String = CType(cboTabla.SelectedItem, Prex.Utils.Entities.clsItem).Valor.ToString
 
                 Dim Sql As String = "UPDATE TABGEN SET TG_DESCRI='@TG_DESCRI', TG_NUME01=@TG_NUME01, " &
                 " TG_NUME02 = @TG_NUME02, TG_ALFA01 = '@TG_ALFA01', " &
-                  " TG_ALFA02 = '@TG_ALFA02', TG_FECH01 = '@TG_FECH01', TG_FECH02 = '@TG_FECH02', " &
+                  " TG_ALFA02 = '@TG_ALFA02', TG_FECH01 = @TG_FECH01, TG_FECH02 = @TG_FECH02, " &
                   "TG_ALFA03 = '@TG_ALFA03' WHERE TG_CODTAB = @TG_CODTAB and TG_CODCON = @TG_CODCON"
 
                 Sql = ReemplazarVariablesGrilla(Sql)
@@ -424,7 +417,7 @@ Public Class frmMain
                   " TG_ALFA02,TG_FECH01,TG_FECH02,TG_ALFA03) " &
                 "VALUES (" & nCodigoTabla & ",@TG_CODCON, '@TG_DESCRI', " &
                 " @TG_NUME01, @TG_NUME02, '@TG_ALFA01', '@TG_ALFA02', " &
-                " '@TG_FECH01', '@TG_FECH02', '@TG_ALFA03')"
+                " @TG_FECH01, @TG_FECH02, '@TG_ALFA03')"
 
                 Sql = ReemplazarVariablesGrilla(Sql)
 
