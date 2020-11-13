@@ -42,5 +42,9 @@ namespace Prex.Utils
 		{
 			return record.GetAllNames().ContainsKey(name);
 		}
+
+
+		public static string ToCompleteInStr<TipoClave>(this IEnumerable< TipoClave> l) => $"({String.Join(",", l.ToArray())})";
+		
 	}
 }
