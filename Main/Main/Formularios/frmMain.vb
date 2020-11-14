@@ -1,5 +1,4 @@
 Imports System.Data.SqlClient
-Imports System.DirectoryServices
 Imports System.Linq
 Imports Prex.Utils
 
@@ -7,6 +6,11 @@ Public Class frmMain
 
 	Private oAdmLocal As New AdmTablas
 	Private oIconos As New ExtraerIconos
+	Private TransaccionesHabilitadas As List(Of Long)
+	Private TransaccionesInhaabilitadas As List(Of Long)
+	Private ListadoNodosHabilitados As List(Of Integer)
+	Private ListadoMenu As List(Of MenuSistema)
+
 
 	Public Sub New()
 
@@ -36,6 +40,8 @@ Public Class frmMain
 	End Sub
 
 	Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+		CargarTransacciones(UsuarioActual.Codigo)
+		CargarMenu()
 		CargarArbol()
 		CargarMenues(0)
 		SetFooterFechaHora()
@@ -43,7 +49,8 @@ Public Class frmMain
 
 	Private Sub CargarArbol()
 		Try
-			Dim MOSTRAR_MENUS_HABILITADOS = CBool(Val(oAdmLocal.DevolverValor("TABGEN", "TG_NUME01", "", "TG_CODCON = 50 AND TG_CODTAB = " & CType(EnumTablasGenerales.TGL_PARAMETROS_GENERALES, Integer).ToString)))
+
+			Dim MOSTRAR_MENUS_HABILITADOS = True ' IIf(UsuarioActual.Nombre.ToLower = "admin", False, CBool(Val(oAdmLocal.DevolverValor("TABGEN", "TG_NUME01", "", "TG_CODCON = 50 AND TG_CODTAB = " & CType(EnumTablasGenerales.TGL_PARAMETROS_GENERALES, Integer).ToString))))
 			Dim sqlWhere = String.Empty
 
 			If MOSTRAR_MENUS_HABILITADOS Then
@@ -86,11 +93,11 @@ Public Class frmMain
 																				AND       HA_CODOBJ = " & codUsuario & " )))) 
 										 OR            MU_RELMEN = 0"
 
-				Dim listadoHalitaciones As New List(Of Integer)
+				ListadoNodosHabilitados = New List(Of Integer)
 
 				Dim r As SqlDataReader = DataAccess.GetReader(sqlMenuHabilitados)
 				While r.Read()
-					listadoHalitaciones.Add(r("MU_NROMEN"))
+					ListadoNodosHabilitados.Add(r("MU_NROMEN"))
 				End While
 				r.Close()
 
@@ -100,7 +107,7 @@ Public Class frmMain
 										FROM      MENUES
 										WHERE     MU_NIVEL <> 0
 										AND       MU_NIVEL = " & nivelMaximo & " 
-										AND       MU_RELMEN NOT IN " & listadoHalitaciones.Distinct.ToCompleteInStr() & "
+										AND       MU_RELMEN NOT IN " & ListadoNodosHabilitados.Distinct.ToCompleteInStr() & "
 										AND       MU_NROMEN IN (SELECT  DISTINCT MU_RELMEN 
 																FROM    MENUES 
 																WHERE   MU_CODTRA IN (
@@ -117,37 +124,57 @@ Public Class frmMain
 
 					r = DataAccess.GetReader(sqlMenuHabilitados)
 					While r.Read()
-						listadoHalitaciones.Add(r("MU_RELMEN"))
+
+
+						ListadoNodosHabilitados.Add(r("MU_RELMEN"))
 					End While
 					r.Close()
 
 					nivelMaximo -= 1
 				Loop
 
-				sqlWhere = " AND  MU_NROMEN IN " & listadoHalitaciones.Distinct.ToCompleteInStr()
+				sqlWhere = String.Empty ' " AND  MU_NROMEN IN " & ListadoNodosHabilitados.Distinct.ToCompleteInStr()
 			End If
 
 			'antes
-			Dim sSQL = "SELECT * FROM MENUES 
-					   WHERE MU_NIVEL <> 0 " & sqlWhere & "
-					   ORDER BY MU_NIVEL, MU_TRANSA"
+			'Dim sSQL = "SELECT * FROM MENUES 
+			'		   WHERE MU_NIVEL <> 0 " & sqlWhere & "
+			'		   ORDER BY MU_NIVEL, MU_TRANSA"
 
-			Dim ds As DataSet = oAdmLocal.AbrirDataset(sSQL)
+			'Dim ds As DataSet = oAdmLocal.AbrirDataset(sSQL)
 
+			'tvMenu.Nodes.Clear()
+
+			'With ds.Tables(0)
+
+			'	nodo = tvMenu.Nodes.Add("K0", "Menú", "Menu")
+
+			'	For Each dr As DataRow In .Rows
+			'		If TieneTransaccionesRecursivasMenu(Long.Parse(dr("MU_NROMEN"))) Then
+
+			'			tvMenu.BeginUpdate()
+			'			Dim nuevoNodo() = tvMenu.Nodes.Find("K" & dr("MU_RELMEN").ToString, True)
+			'			If nuevoNodo.Length > 0 Then
+			'				nuevoNodo(0).Nodes.Add("K" & dr("MU_NROMEN").ToString, dr("MU_TRANSA").ToString, "Cerrada")
+			'			End If
+			'			tvMenu.EndUpdate()
+			'		End If
+			'	Next
+			'End With
 			tvMenu.Nodes.Clear()
+			Dim nodo = tvMenu.Nodes.Add("K0", "Menú", "Menu")
 
-			With ds.Tables(0)
+			For Each mnu As MenuSistema In ListadoMenu.OrderBy(Function(l) l.MU_NIVEL).ThenBy(Function(l) l.MU_TRANSA).Where(Function(m) m.MU_NIVEL <> 0)
+				If TieneTransaccionesRecursivasMenu(mnu.MU_NROMEN) Then
 
-				nodo = tvMenu.Nodes.Add("K0", "Menú", "Menu")
-
-				For Each dr As DataRow In .Rows
 					tvMenu.BeginUpdate()
-					nuevoNodo = tvMenu.Nodes.Find("K" & dr("MU_RELMEN").ToString, True)
-					nuevoNodo(0).Nodes.Add("K" & dr("MU_NROMEN").ToString, dr("MU_TRANSA").ToString, "Cerrada")
+					Dim nuevoNodo() = tvMenu.Nodes.Find("K" & mnu.MU_RELMEN.ToString, True)
+					If nuevoNodo.Length > 0 Then
+						nuevoNodo(0).Nodes.Add("K" & mnu.MU_NROMEN.ToString, mnu.MU_TRANSA, "Cerrada")
+					End If
 					tvMenu.EndUpdate()
-				Next
-			End With
-
+				End If
+			Next
 			nodo.Expand()
 
 		Catch ex As Exception
@@ -157,111 +184,122 @@ Public Class frmMain
 	End Sub
 
 	Private Sub CargarMenues(ByVal nMenu As Long)
-
-		Dim sSQL As String = ""
-		Dim ds As DataSet
-		Dim nodo As ListViewItem
-
 		Try
 
-			LimpiarIL()
+			Dim ds As DataSet
+			Dim nodo As ListViewItem
+			Dim sqlWhere = String.Empty
 
-			'Cargo las carpetas
-			sSQL = "SELECT    * " &
-				   "FROM      MENUES " &
-				   "WHERE     MU_RELMEN = " & nMenu.ToString & " " &
-				   "ORDER BY  MU_NIVEL DESC, MU_TRANSA ASC"
-			ds = oAdmLocal.AbrirDataset(sSQL)
+			Me.Cursor = Cursors.WaitCursor
 
-			lvTrans.Items.Clear()
+			Try
 
-			For Each dr As DataRow In ds.Tables(0).Rows
-				If dr("MU_CODTRA") = 0 Then
-					' Adding the text value of a folder in the list view
-					nodo = lvTrans.Items.Add("C" & dr("MU_NROMEN").ToString, dr("MU_TRANSA").ToString, "Carpeta")
+				LimpiarIL()
+				'Dim lst As List(Of Integer) = ListadoNodosHabilitados.Distinct.Where(Function(l) TieneTransaccionesRecursivasMenu(l)).ToList
+				'Cargo las carpetas
+				'Dim sSQL = "SELECT    * " &
+				'	   "FROM      MENUES " &
+				'	   "WHERE     MU_RELMEN = " & nMenu.ToString & " " & sqlWhere &
+				'	   "ORDER BY  MU_NIVEL DESC, MU_TRANSA ASC"
+				'ds = oAdmLocal.AbrirDataset(sSQL)
 
-					' We add the description value to the list view ,
-					' if the column is empty in db, the value of the list view will be empty
-					nodo.SubItems.Add(dr("MU_DESCRI".ToString))
+				lvTrans.Items.Clear()
 
-				Else
-					nodo = lvTrans.Items.Add(dr("MU_TRANSA").ToString)
+				'For Each dr As DataRow In ds.Tables(0).Rows
+				For Each itemMenu As MenuSistema In ListadoMenu.OrderByDescending(Function(l) l.MU_NIVEL).ThenBy(Function(l) l.MU_TRANSA).Where(Function(l) l.MU_RELMEN = nMenu)
+					If itemMenu.MU_CODTRA = 0 Then
+						If Not TieneTransaccionesRecursivasMenu(itemMenu.MU_NROMEN) Then Continue For
 
-					' We add the description value to the list view ,
-					' if the column is empty in db, the value of the list view will be empty
-					nodo.SubItems.Add(dr("MU_DESCRI".ToString))
-					nodo.Name = "T" & dr("MU_CODTRA").ToString
-					nodo.Tag = dr("MU_COMAND").ToString
+						' Adding the text value of a folder in the list view
+						nodo = lvTrans.Items.Add("C" & itemMenu.MU_NROMEN.ToString, itemMenu.MU_TRANSA, "Carpeta")
 
-					' We add an icon to the list view row deppending the value of the .exe that
-					' we find in the column MU_COMAND in db
-					' Important: Find any one of this values in the collection of icons of the list view
+						' We add the description value to the list view ,
+						' if the column is empty in db, the value of the list view will be empty
+						nodo.SubItems.Add(itemMenu.MU_DESCRI)
 
-					Select Case dr("MU_COMAND").ToString().Trim()
-						Case "VBP04295.EXE"
-							If InStr("4102, 4104, 4103, 4105, 4106, 4107, 4194, 4101, 4195, 4196, 6191", dr("MU_CODTRA").ToString, CompareMethod.Text) > 0 Then
-								nodo.ImageKey = "Controles"
-							Else
-								nodo.ImageKey = "Formularios"
-							End If
-						Case "VBP04395.EXE"
-							nodo.ImageKey = "Procesos"
-						Case "VBP04865.EXE"
-							nodo.ImageKey = "Actualizador"
-						Case "VBP04721.EXE"
-							nodo.ImageKey = "Administracion"
-						Case "VBP08800.EXE"
-							nodo.ImageKey = "Calculadora"
-						Case "VBP04098.EXE"
-							nodo.ImageKey = "Consolida"
-						Case "VBP04000.EXE"
-							nodo.ImageKey = "Consultas"
-						Case "VBP04725.EXE"
-							nodo.ImageKey = "Equivalencias"
-						Case "VBP04893.EXE"
-							nodo.ImageKey = "Feriados"
-						Case "VBP09001.EXE"
-							nodo.ImageKey = "GeneraTXT"
-						Case "VBP04711.EXE"
-							nodo.ImageKey = "Logs"
-						Case "VBP70199.EXE"
-							nodo.ImageKey = "Notas"
-						Case "VBP04730.EXE"
-							nodo.ImageKey = "Relaciones"
-						Case "VBP04720.EXE"
-							nodo.ImageKey = "Seguridad"
-						Case "VBP04999.EXE"
-							nodo.ImageKey = "Spool"
-						Case "VBP04723.EXE"
-							nodo.ImageKey = "Tabgen"
+					ElseIf TransaccionHabilitadaEnUsuario(itemMenu.MU_CODTRA, UsuarioActual.Codigo) Then
+						nodo = lvTrans.Items.Add(itemMenu.MU_TRANSA.ToString)
 
-							'We needs an exe to asign the ExportExcel icon
-							'  Case ""
-							'     nodo.ImageKey = "ExportExcel"
-						Case Else
-							nodo.ImageKey = "Transaccion"
+						' We add the description value to the list view ,
+						' if the column is empty in db, the value of the list view will be empty
+						nodo.SubItems.Add(itemMenu.MU_DESCRI)
+						nodo.Name = "T" & itemMenu.MU_CODTRA.ToString
+						nodo.Tag = itemMenu.MU_COMAND
+
+						' We add an icon to the list view row deppending the value of the .exe that
+						' we find in the column MU_COMAND in db
+						' Important: Find any one of this values in the collection of icons of the list view
+
+						Select Case itemMenu.MU_COMAND
+							Case "VBP04295.EXE"
+								If InStr("4102, 4104, 4103, 4105, 4106, 4107, 4194, 4101, 4195, 4196, 6191", itemMenu.MU_CODTRA.ToString, CompareMethod.Text) > 0 Then
+									nodo.ImageKey = "Controles"
+								Else
+									nodo.ImageKey = "Formularios"
+								End If
+							Case "VBP04395.EXE"
+								nodo.ImageKey = "Procesos"
+							Case "VBP04865.EXE"
+								nodo.ImageKey = "Actualizador"
+							Case "VBP04721.EXE"
+								nodo.ImageKey = "Administracion"
+							Case "VBP08800.EXE"
+								nodo.ImageKey = "Calculadora"
+							Case "VBP04098.EXE"
+								nodo.ImageKey = "Consolida"
+							Case "VBP04000.EXE"
+								nodo.ImageKey = "Consultas"
+							Case "VBP04725.EXE"
+								nodo.ImageKey = "Equivalencias"
+							Case "VBP04893.EXE"
+								nodo.ImageKey = "Feriados"
+							Case "VBP09001.EXE"
+								nodo.ImageKey = "GeneraTXT"
+							Case "VBP04711.EXE"
+								nodo.ImageKey = "Logs"
+							Case "VBP70199.EXE"
+								nodo.ImageKey = "Notas"
+							Case "VBP04730.EXE"
+								nodo.ImageKey = "Relaciones"
+							Case "VBP04720.EXE"
+								nodo.ImageKey = "Seguridad"
+							Case "VBP04999.EXE"
+								nodo.ImageKey = "Spool"
+							Case "VBP04723.EXE"
+								nodo.ImageKey = "Tabgen"
+
+								'We needs an exe to asign the ExportExcel icon
+								'  Case ""
+								'     nodo.ImageKey = "ExportExcel"
+							Case Else
+								nodo.ImageKey = "Transaccion"
 
 
-					End Select
+						End Select
 
-					' Here we add the transaction code to the list view
-					nodo.SubItems.Add(dr("MU_CODTRA"))
+						' Here we add the transaction code to the list view
+						nodo.SubItems.Add(itemMenu.MU_CODTRA)
 
+					End If
+				Next
+
+				ds = Nothing
+
+				Dim oNodo() As TreeNode = tvMenu.Nodes.Find("K" & nMenu.ToString, True)
+				If oNodo.Length > 0 Then
+					tvMenu.SelectedNode = oNodo(0)
 				End If
-			Next
+				ResizeColumns()
 
-			ds = Nothing
+			Catch ex As Exception
+				TratarError(ex, "CargarMenues(" & nMenu.ToString & ")")
+			End Try
 
-			Dim oNodo() As TreeNode = tvMenu.Nodes.Find("K" & nMenu.ToString, True)
-
-			tvMenu.SelectedNode = oNodo(0)
-			'tvMenu.SelectedNode.Expand()
-			ResizeColumns()
-		Catch ex As Exception
-			TratarError(ex, "CargarMenues(" & nMenu.ToString & ")")
+		Finally
+			Me.Cursor = Cursors.Default
 		End Try
-
 	End Sub
+
 	Private Sub ResizeColumns()
 		Dim colCodTran = 80
 		Dim colMenu = ((lvTrans.Width - colCodTran) / 3) - 10
@@ -278,27 +316,63 @@ Public Class frmMain
 		End If
 	End Sub
 
+
+	Private DiccionarioMenuTransacciones As New Dictionary(Of Integer, List(Of Long))
+
+	Private Function TieneTransaccionesRecursivasMenu(ByVal codMenuRel As Integer) As Boolean
+		If UsuarioActual.Nombre.ToLower = "admin" Then Return True
+		If DiccionarioMenuTransacciones.ContainsKey(codMenuRel) Then Return DiccionarioMenuTransacciones(codMenuRel).Any
+
+
+		Dim encontre As Boolean = False
+
+		Dim sql = "with cte as
+					(
+						SELECT * FROM MENUES WHERE MU_NROMEN = " & codMenuRel.ToString() & "
+						union all
+						SELECT M.* FROM MENUES M
+						inner join cte on M.MU_RELMEN = CTE.MU_NROMEN
+					)
+					select distinct MU_CODTRA from cte "
+
+
+		Dim reader As SqlDataReader = Prex.Utils.DataAccess.GetReader(sql)
+		While reader.Read
+			If Not DiccionarioMenuTransacciones.ContainsKey(codMenuRel) Then
+				DiccionarioMenuTransacciones.Add(codMenuRel, New List(Of Long))
+			End If
+			Dim codTran = Long.Parse(reader("MU_CODTRA"))
+			If TransaccionHabilitadaEnUsuario(codTran, UsuarioActual.Codigo) Then
+				encontre = True
+				DiccionarioMenuTransacciones(codMenuRel).Add(codTran)
+			End If
+		End While
+		reader.Close()
+
+		Return encontre
+	End Function
+
 	Private Sub txtCodTra_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCodTra.KeyDown
 
-		On Error Resume Next
-
-		Dim sSQL As String
-		Dim ds As DataSet
+		'Dim sSQL As String
+		'Dim ds As DataSet
 
 		If e.KeyCode = Keys.Return Then
 
-			sSQL = "SELECT    TOP 1 * " &
-				   "FROM      MENUES " &
-				   "WHERE     MU_CODTRA = " & Val(txtCodTra.Text) & " "
+			'sSQL = "SELECT    TOP 1 * " &
+			'	   "FROM      MENUES " &
+			'	   "WHERE     MU_CODTRA = " & Val(txtCodTra.Text) & " "
 
-			ds = oAdmLocal.AbrirDataset(sSQL)
+			'ds = oAdmLocal.AbrirDataset(sSQL)
 
-			If ds.Tables(0).Rows.Count = 0 Then
+			'If ds.Tables(0).Rows.Count = 0 Then
+			Dim itemMenu As MenuSistema = ListadoMenu.FirstOrDefault(Function(m) m.MU_CODTRA = Val(txtCodTra.Text))
+			If itemMenu Is Nothing Then
 				MensajeError("Transacción inexistente")
 			ElseIf UsuarioActual.Nombre.ToLower() = "admin" Then
-				EjecutarTransaccion(Val(txtCodTra.Text), ds.Tables(0).Rows(0)("MU_COMAND").ToString)
+				EjecutarTransaccion(Val(txtCodTra.Text), itemMenu.MU_COMAND)
 			Else
-				EjecutarTransaccion(Val(txtCodTra.Text), ds.Tables(0).Rows(0)("MU_COMAND").ToString, UsuarioActual.Codigo)
+				EjecutarTransaccion(Val(txtCodTra.Text), itemMenu.MU_COMAND, UsuarioActual.Codigo)
 			End If
 
 		End If
@@ -540,7 +614,31 @@ Public Class frmMain
 	End Function
 
 	Private Function TransaccionHabilitadaEnUsuario(ByVal nCodTransaccion As Long, ByVal nCodUsuario As Long) As Boolean
+		If UsuarioActual.Nombre.ToLower = "admin" Then Return True
 
+		If TransaccionesHabilitadas Is Nothing OrElse TransaccionesInhaabilitadas Is Nothing Then
+
+			CargarTransacciones(nCodUsuario)
+		End If
+
+		If TransaccionesHabilitadas.Contains(nCodTransaccion) Then Return True
+		If TransaccionesInhaabilitadas.Contains(nCodTransaccion) Then Return False
+
+		Return False
+	End Function
+
+	Private Sub CargarMenu()
+		Dim sSQL = "SELECT * FROM MENUES ORDER BY  MU_NIVEL DESC, MU_TRANSA ASC"
+		Dim reader As SqlDataReader = Prex.Utils.DataAccess.GetReader(sSQL)
+		ListadoMenu = New List(Of MenuSistema)
+
+		While reader.Read
+			ListadoMenu.Add(New MenuSistema(reader))
+		End While
+		reader.Close()
+	End Sub
+
+	Private Sub CargarTransacciones(ByVal nCodUsuario As Long)
 		Dim sHabs As String = ""
 		Dim sInHabs As String = ""
 		Dim oAdmUsuarios As New AdmUsuarios
@@ -557,11 +655,10 @@ Public Class frmMain
 
 		End If
 
-		If sHabs.Split(",").Where(Function(s) s.Trim().Length > 0).Contains(nCodTransaccion) Then Return True
-		If sInHabs.Split(",").Where(Function(s) s.Trim().Length > 0).Contains(nCodTransaccion) Then Return False
+		TransaccionesHabilitadas = sHabs.Split(",").Where(Function(s) s.Trim().Length > 0).Select(Function(s) Long.Parse(s)).ToList()
+		TransaccionesInhaabilitadas = sInHabs.Split(",").Where(Function(s) s.Trim().Length > 0).Select(Function(s) Long.Parse(s)).ToList()
+	End Sub
 
-		Return False
-	End Function
 
 	Public Function MenuesSeguridadIntegrada(ByVal sNombreUsuario As String) As String
 
@@ -778,6 +875,12 @@ Err_Trap:
 	Private Sub mnuActualizar_Click(sender As Object, e As EventArgs) Handles mnuActualizar.Click
 		Try
 			Me.Cursor = Cursors.WaitCursor
+			DiccionarioMenuTransacciones.Clear()
+			TransaccionesHabilitadas = Nothing
+			TransaccionesInhaabilitadas = Nothing
+			ListadoNodosHabilitados = Nothing
+			CargarMenu()
+			CargarTransacciones(UsuarioActual.Codigo)
 			CargarArbol()
 			CargarMenues(0)
 		Finally
@@ -787,6 +890,10 @@ Err_Trap:
 
 	Private Sub frmMain_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
 		GuardarLOG(AccionesLOG.AL_SALIDA_SISTEMA, "Salida del sistema", CODIGO_TRANSACCION)
+	End Sub
+
+	Private Sub mnuMain_ItemClicked(sender As Object, e As ToolStripItemClickedEventArgs) Handles mnuMain.ItemClicked
+
 	End Sub
 
 
@@ -814,3 +921,4 @@ Err_Trap:
 	'    End If
 	'End Sub
 End Class
+
