@@ -10,7 +10,17 @@ Public Class frmMain
 	Private TransaccionesInhaabilitadas As List(Of Long)
 	Private ListadoNodosHabilitados As List(Of Integer)
 	Private ListadoMenu As List(Of MenuSistema)
+	Private _mostrarSoloMenuesHabilitados As Boolean? = Nothing
 
+	Private ReadOnly Property MostrarSoloMenuesHabilitados As Boolean
+		Get
+			If Not _mostrarSoloMenuesHabilitados.HasValue Then
+				_mostrarSoloMenuesHabilitados = IIf(UsuarioActual.Nombre.ToLower = "admin", False, CBool(Val(oAdmLocal.DevolverValor("TABGEN", "TG_NUME01", "", "TG_CODCON = 50 AND TG_CODTAB = " & CType(EnumTablasGenerales.TGL_PARAMETROS_GENERALES, Integer).ToString))))
+			End If
+
+			Return _mostrarSoloMenuesHabilitados.Value
+		End Get
+	End Property
 
 	Public Sub New()
 
@@ -23,6 +33,9 @@ Public Class frmMain
 		lblUsuario.Text = UsuarioActual.Descripcion
 		lblEntidad.Text = NOMBRE_ENTIDAD ' UsuarioActual.Entidad
 		CargarILMenu()
+		CargarMenu()
+		CargarTransacciones(UsuarioActual.Codigo)
+
 	End Sub
 
 	Private Sub CargarILMenu()
@@ -40,20 +53,22 @@ Public Class frmMain
 	End Sub
 
 	Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-		CargarTransacciones(UsuarioActual.Codigo)
-		CargarMenu()
-		CargarArbol()
-		CargarMenues(0)
-		SetFooterFechaHora()
+		Try
+			Cursor = Cursors.WaitCursor
+			CargarArbol()
+			CargarMenues(0)
+			SetFooterFechaHora()
+		Finally
+			Cursor = Cursors.Default
+		End Try
 	End Sub
 
 	Private Sub CargarArbol()
 		Try
 
-			Dim MOSTRAR_MENUS_HABILITADOS = True ' IIf(UsuarioActual.Nombre.ToLower = "admin", False, CBool(Val(oAdmLocal.DevolverValor("TABGEN", "TG_NUME01", "", "TG_CODCON = 50 AND TG_CODTAB = " & CType(EnumTablasGenerales.TGL_PARAMETROS_GENERALES, Integer).ToString))))
 			Dim sqlWhere = String.Empty
 
-			If MOSTRAR_MENUS_HABILITADOS Then
+			If MostrarSoloMenuesHabilitados Then
 
 
 				Dim codUsuario = UsuarioActual.Codigo
@@ -162,7 +177,7 @@ Public Class frmMain
 			'	Next
 			'End With
 			tvMenu.Nodes.Clear()
-			Dim nodo = tvMenu.Nodes.Add("K0", "Menú", "Menu")
+			Dim nodo = tvMenu.Nodes.Add("K0", "Menú", "Menu", "Menu")
 
 			For Each mnu As MenuSistema In ListadoMenu.OrderBy(Function(l) l.MU_NIVEL).ThenBy(Function(l) l.MU_TRANSA).Where(Function(m) m.MU_NIVEL <> 0)
 				If TieneTransaccionesRecursivasMenu(mnu.MU_NROMEN) Then
@@ -217,7 +232,7 @@ Public Class frmMain
 						' if the column is empty in db, the value of the list view will be empty
 						nodo.SubItems.Add(itemMenu.MU_DESCRI)
 
-					ElseIf TransaccionHabilitadaEnUsuario(itemMenu.MU_CODTRA, UsuarioActual.Codigo) Then
+					ElseIf Not MostrarSoloMenuesHabilitados OrElse TransaccionHabilitadaEnUsuario(itemMenu.MU_CODTRA, UsuarioActual.Codigo) Then
 						nodo = lvTrans.Items.Add(itemMenu.MU_TRANSA.ToString)
 
 						' We add the description value to the list view ,
@@ -320,7 +335,7 @@ Public Class frmMain
 	Private DiccionarioMenuTransacciones As New Dictionary(Of Integer, List(Of Long))
 
 	Private Function TieneTransaccionesRecursivasMenu(ByVal codMenuRel As Integer) As Boolean
-		If UsuarioActual.Nombre.ToLower = "admin" Then Return True
+		If UsuarioActual.Nombre.ToLower = "admin" OrElse Not MostrarSoloMenuesHabilitados Then Return True
 		If DiccionarioMenuTransacciones.ContainsKey(codMenuRel) Then Return DiccionarioMenuTransacciones(codMenuRel).Any
 
 
@@ -879,6 +894,7 @@ Err_Trap:
 			TransaccionesHabilitadas = Nothing
 			TransaccionesInhaabilitadas = Nothing
 			ListadoNodosHabilitados = Nothing
+			_mostrarSoloMenuesHabilitados = Nothing
 			CargarMenu()
 			CargarTransacciones(UsuarioActual.Codigo)
 			CargarArbol()
