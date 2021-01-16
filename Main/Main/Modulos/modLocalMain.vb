@@ -249,18 +249,15 @@ Maneja_Error:
 
 	Public Function InicioCITI() As Boolean
 		GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "InicioCITI")
-		Dim sNombre As String = String.Empty
-		Dim sPerfil As String
-		'        Dim sPerfil2 = String.Empty
 		Try
-
-			sPerfil = Nothing
 			Dim sgResponse As String = String.Empty
 
 			Dim SGInterface As SGInterface = FactorySGInstance.getInstanceInterface()
 			Dim returnValue As Integer = -1
 			returnValue = SGInterface.RsmsLogin(ID_SISTEMA.ToString(), "Gestión RI", SG_CONFIG, sgResponse)
 			If (returnValue = 1) Then
+				Dim sNombre As String = String.Empty
+				Dim sPerfil As String
 				'SC08822|SC08822
 				'SG_ME66396_160771_3265|#######
 				'MessageBox.Show(frmMain, "Login devuelve: " & sgResponse, "Login SGLibrary", MessageBoxButtons.OK)

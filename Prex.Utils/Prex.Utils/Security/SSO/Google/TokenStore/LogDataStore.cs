@@ -42,11 +42,11 @@ namespace Prex.Utils.Security.SSO.Google
 				try
 				{
 					string contents = Newtonsoft.Json.JsonConvert.SerializeObject((object)value);
-					Logging.Log.GuardarLog(Logging.AccionesLOG.AL_INGRESO_SISTEMA, $"Autenticacion Google {Environment.NewLine} Usuario: {Configuration.PrexConfig.UsuarioActual.Codigo} / Token:{contents}");
+					//Logging.Log.GuardarLog(Logging.AccionesLOG.AL_INGRESO_SISTEMA, $"Autenticacion Google {Environment.NewLine} Usuario: {Configuration.PrexConfig.UsuarioActual.Codigo} / Token:{contents}");
 				}
 				catch (Exception ex)
 				{
-					Logging.Log.GuardarLog(Logging.AccionesLOG.AL_ERROR_SISTEMA, $"Error al guardar json Token{Environment.NewLine}Detalle: {ex.Message}");
+					//Logging.Log.GuardarLog(Logging.AccionesLOG.AL_ERROR_SISTEMA, $"Error al guardar json Token{Environment.NewLine}Detalle: {ex.Message}");
 				}
 			});
 		}

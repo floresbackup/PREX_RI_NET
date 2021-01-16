@@ -17,6 +17,9 @@ using System.Text;
 using System.Threading;
 using Google.Apis.Iam.v1;
 using Google.Apis.Iam.v1.Data;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using Google.Apis.Admin.Directory.directory_v1;
 
 namespace AdminSDKResellerQuickstart
 {
@@ -27,6 +30,29 @@ namespace AdminSDKResellerQuickstart
 	{
 		static void Main(string[] args)
 		{
+
+			var usuarioNaranja = Prex.Utils.Security.NaranjaSecurity.AutenticarConGoogle("raul.gatti");
+
+
+			try
+			{
+				DirectoryService directoryService = new DirectoryService(new BaseClientService.Initializer()
+				{
+					HttpClientInitializer = usuarioNaranja.credentials,
+					ApplicationName = "",
+				});
+
+				var d = directoryService.Users.Get("raul.gatti@naranjax.com");
+				d.Projection = UsersResource.GetRequest.ProjectionEnum.Full;
+				d.ViewType = UsersResource.GetRequest.ViewTypeEnum.DomainPublic;
+				var uu = d.Execute();
+				var json = Newtonsoft.Json.JsonConvert.SerializeObject(uu);
+			}
+			catch (Exception ex)
+			{
+
+			}
+			
 
 			//PruebaGSuite();
 
@@ -52,13 +78,28 @@ namespace AdminSDKResellerQuickstart
 				ApplicationName = "",
 			});
 
+
 			try
 			{
-				var s = new Google.Apis.Admin.Directory.directory_v1.UsersResource(service);
-				var usuario = s.Get("cyberx");
+				DirectoryService directoryService = new DirectoryService(new BaseClientService.Initializer()
+				{
+					HttpClientInitializer = credential,
+					ApplicationName = "",
+				});
+
+				var d = directoryService.Users.Get(usuarioNaranja.Id);
+				d.Projection = UsersResource.GetRequest.ProjectionEnum.Full;
+				var uu = d.Execute();
+
+
+				var s = new UsersResource(service);
+				var usuario = s.Get("raul.gatti");
+				usuario.Projection = Google.Apis.Admin.Directory.directory_v1.UsersResource.GetRequest.ProjectionEnum.Full;
+
 				if (usuario != null)
 				{
-					var u = usuario.Execute();
+					var u = usuario.ExecuteAsStream();
+					string json = new StreamReader(u).ReadToEnd();
 				}
 			}
 			catch (Exception ex)

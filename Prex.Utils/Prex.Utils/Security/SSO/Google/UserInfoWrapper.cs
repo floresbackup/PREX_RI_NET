@@ -1,4 +1,5 @@
-﻿using Google.Apis.Oauth2.v2.Data;
+﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Oauth2.v2.Data;
 using Newtonsoft.Json;
 
 namespace Prex.Utils.Security.SSO.Google
@@ -35,7 +36,7 @@ namespace Prex.Utils.Security.SSO.Google
 		[JsonProperty("picture")]
 		public virtual string Foto { get; set; }
 
-
+		public UserCredential credentials { get; set; }
 		public UserInfoWrapper()
 		{ }
 

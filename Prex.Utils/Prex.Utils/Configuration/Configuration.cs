@@ -90,9 +90,9 @@ namespace Prex.Utils
 
         public string CONN_LOCAL         { get; internal set; }
         public string CONN_LOCAL_ADO => CONN_LOCAL.Substring(CONN_LOCAL.IndexOf(';')+1, CONN_LOCAL.Length-(CONN_LOCAL.IndexOf(';') + 1));
-        public  string FFECHA     { get; internal set; }
+        public  string FFECHA            { get; internal set; }
         public string CARPETA_LOCAL      { get; internal set; }
-        public string RUTAENCR_RA { get; protected set; }
+        public string RUTAENCR_RA        { get; protected set; }
         public string RUTA_BIN           { get; internal set; }
         public string RUTA_AYUDA         { get; internal set; }
         public string NOMBRE_INI_LOCAL   { get; internal set; }
@@ -143,11 +143,11 @@ namespace Prex.Utils
         public string STR_REASON         { get; internal set; }
         public string CYBERRARKPASS      { get; internal set; }
 
-        public Usuario UsuarioActual { get; internal set; }
+        public Usuario UsuarioActual     { get; internal set; }
 
         //Naranja
         public string FILE_GOOGLE_CREDENTIALS { get; internal set; }
-        public bool AUTENTICACIONGOOGLE { get; internal set; }
+        public bool AUTENTICACIONGOOGLE       { get; internal set; }
         #endregion
 
         #region Contructor
@@ -245,7 +245,7 @@ namespace Prex.Utils
 
         public static bool TieneConfigLocal =>/* _config != null &&*/ File.Exists(ARCHIVO_CONFIG_LOCAL);
 
-        public static void LeerXML()
+        public static void LeerXML() 
         {
             try
             {
@@ -263,7 +263,6 @@ namespace Prex.Utils
                 {
                     throw new Exception("No se encontró archivo Prex.config");
                 }
-
 
 
                 if (_config.AUTENTICACIONSQL)
@@ -288,7 +287,6 @@ namespace Prex.Utils
                     }
 
                 }
-
                 LeerXMLLocal();
             }
             catch (Exception ex)

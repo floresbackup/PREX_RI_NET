@@ -1,9 +1,12 @@
 ﻿using Prex.Utils.CitCiberarkService;
 using System;
+using System.Data;
+using System.Data.OleDb;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
+using System.Windows.Forms;
 
 namespace Prex.Utils.Security
 {
@@ -57,8 +60,14 @@ namespace Prex.Utils.Security
 				sCertifcatePath = certifcatePath;
 
 				sCertificatePwd = certificatePassword;
-
-				client.ClientCredentials.ClientCertificate.Certificate = new X509Certificate2(sCertifcatePath, sCertificatePwd);
+				try
+				{
+					client.ClientCredentials.ClientCertificate.Certificate = new X509Certificate2(sCertifcatePath, sCertificatePwd);
+				}
+				catch (Exception ex)
+				{
+					throw new Exception("No se puede abrir el certificado X509", ex);
+				}
 
 				PasswordRequest pr = new PasswordRequest
 				{
@@ -80,35 +89,111 @@ namespace Prex.Utils.Security
 				throw ex;
 			}
 		}
-	}
 
-/*
-		public static string GetPassWordCyberRark(string WSDL, string certifcatePath, string certificatePassword, string appId, string safe, string folder, string objectText, string reason)
+
+
+		public static (string connectionString, string password) ConsultarCyberRark(string WSDL, string certifcatePath, string certificatePassword, string appId, string safe, string folder, string objectText, string reason)
 		{
-			//Para referencia del servicio
-			//https://stackoverflow.com/questions/9482773/web-service-without-adding-a-reference
+			if (Configuration.PrexConfig.ID_SISTEMA <= 0)
+				return (string.Empty, string.Empty);
+		
 			try
 			{
-				AIMServiceSoapClient 
-				var pass = string.Empty;
+				//MessageBox.Show($"WSDL: {WSDL}, CertifcatePath: {certifcatePath}, " +
+				//		$"CertifcatePass: {certificatePassword}, APPID: {appId}, " +
+				//		$"SAFE: {safe}, STR_FOLDER: {folder}, " +
+				//		$"STR_OBJECT: {objectText}, STR_REASON: {reason}", "Parametros del servicio: ", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-				WebService ws = new WebService(WSDL, "GetPassword");
-				ws.Params.Add("AppID", appId);
-				ws.Params.Add("Safe", safe);
-				ws.Params.Add("Folder", folder);
-				ws.Params.Add("Object", objectText);
-				ws.Params.Add("Reason", reason);
-				ws.Invoke();
+				var pass = GetPassWordCyberRark(WSDL, certifcatePath, certificatePassword, appId, safe, folder, objectText, reason);
+				//MessageBox.Show("CyberRark Pass: " & pass);
+				if (pass.IsNullOrEmpty()) return (string.Empty, string.Empty);
+				pass = pass.Trim();
 
-				return ws.ResultString;
+				var builder = new OleDbConnectionStringBuilder(Configuration.PrexConfig.CONN_LOCAL);
+				var passAnt = string.Empty;
+				var teniaPass = false;
+
+				if (builder.ContainsKey("Password"))
+				{
+					passAnt = builder["Password"].ToString();
+
+					teniaPass = true;
+					builder.Remove("Password");
+
+				}
+
+				builder.Add("Password", pass);
+
+
+				try
+				{
+					var conn = new OleDbConnection(builder.ConnectionString);
+					conn.Open();
+					if (conn.State == ConnectionState.Open)
+					{
+						conn.Close();
+					}
+
+					Configuration.PrexConfig.CYBERRARKPASS = pass;
+					Configuration.PrexConfig.CONN_LOCAL = builder.ConnectionString;
+
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message, "Error armando conexion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+
+					builder.Remove("Password");
+
+					if (teniaPass)
+					{
+						builder.Add("Password", passAnt);
+						pass = passAnt;
+					}
+				}
+
+				return (Configuration.PrexConfig.CONN_LOCAL, pass);
+
 			}
-			catch (Exception ex)
+			catch (Exception ex2)
 			{
-				Prex.Utils.ManejarErrores.TratarError(ex, "GetPassWordCyberRark");
-				return string.Empty;
-			}
-		}
+				MessageBox.Show(ex2.Message, "Error GetPassWordCyberRark", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+				return (string.Empty, string.Empty);
+			}
+
+		}
 	}
-	*/
+
+
+
+	/*
+			public static string GetPassWordCyberRark(string WSDL, string certifcatePath, string certificatePassword, string appId, string safe, string folder, string objectText, string reason)
+			{
+				//Para referencia del servicio
+				//https://stackoverflow.com/questions/9482773/web-service-without-adding-a-reference
+				try
+				{
+					AIMServiceSoapClient 
+					var pass = string.Empty;
+
+					WebService ws = new WebService(WSDL, "GetPassword");
+					ws.Params.Add("AppID", appId);
+					ws.Params.Add("Safe", safe);
+					ws.Params.Add("Folder", folder);
+					ws.Params.Add("Object", objectText);
+					ws.Params.Add("Reason", reason);
+					ws.Invoke();
+
+					return ws.ResultString;
+				}
+				catch (Exception ex)
+				{
+					Prex.Utils.ManejarErrores.TratarError(ex, "GetPassWordCyberRark");
+					return string.Empty;
+				}
+			}
+
+		}
+		*/
 }

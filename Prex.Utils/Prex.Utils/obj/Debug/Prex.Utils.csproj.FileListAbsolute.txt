@@ -95,3 +95,5 @@ C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Go
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Oauth2.v2.dll
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Oauth2.v2.pdb
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Oauth2.v2.xml
+C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\System.ValueTuple.dll
+C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\System.ValueTuple.xml

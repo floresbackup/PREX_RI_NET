@@ -2629,6 +2629,9 @@ Reinicio:
 				sParam(0) = oPro.Nombre
 				sParam(1) = oPro.Parametros
 				For Each oVar In oVariables
+					If ValorVariable(oVar) Is Nothing Then
+						Continue For
+					End If
 					sParam(1) = Replace(sParam(1), oVar.Nombre, ValorVariable(oVar).ToString())
 				Next
 				ProcesosPrevios = CallByName(Me, sParam(0), vbMethod, sParam(1))
@@ -2645,32 +2648,34 @@ Reinicio:
 	Private Function ValorVariable(ByVal oVar As clsVariables) As Object
 		Dim vReemplazo As Object = Nothing
 		Dim oItem As Prex.Utils.Entities.clsItem
+		Dim control = Controles("_" & oVar.Nombre)
+		If control Is Nothing Then Return Nothing
 
 		Select Case oVar.Tipo
 			Case 0
 				If oVar.Help = 1 Then
-					oItem = CType(Controles("_" & oVar.Nombre), ComboBox).SelectedItem
+					oItem = CType(control, ComboBox).SelectedItem
 					vReemplazo = oItem.Valor
 				ElseIf oVar.Help = 2 Then
-					vReemplazo = Val(Controles("_" & oVar.Nombre).Text)
+					vReemplazo = Val(control.Text)
 				ElseIf oVar.Help = 3 Then
-					vReemplazo = Val(Controles("_" & oVar.Nombre).Text)
+					vReemplazo = Val(control.Text)
 				ElseIf oVar.Help = 4 Then
-					vReemplazo = Controles("_" & oVar.Nombre).Tag
+					vReemplazo = control.Tag
 				Else
-					vReemplazo = Val(Controles("_" & oVar.Nombre).Text)
+					vReemplazo = Val(control.Text)
 				End If
 
 			Case 1
 				If oVar.Help Then
-					oItem = CType(Controles("_" & oVar.Nombre), ComboBox).SelectedItem
+					oItem = CType(control, ComboBox).SelectedItem
 					vReemplazo = oItem.Valor
 				Else
-					vReemplazo = Controles("_" & oVar.Nombre)
+					vReemplazo = control
 				End If
 
 			Case 2
-				vReemplazo = CType(Controles("_" & oVar.Nombre), DateTimePicker).Value
+				vReemplazo = CType(control, DateTimePicker).Value
 
 		End Select
 		Return vReemplazo

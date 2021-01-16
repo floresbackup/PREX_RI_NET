@@ -95,7 +95,7 @@ namespace Prex.Utils.Security.SSO.Google
                 scopes, 
                 usuario,
                 CancellationToken.None,
-                new SQLGoogleDataStore()).Result;
+                new LogDataStore()).Result;
 
 
             return UserCredentials;

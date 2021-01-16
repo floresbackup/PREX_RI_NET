@@ -230,14 +230,25 @@ Module modFunciones
             End If
 
 
-            Dim cyberrarkPass As String = ConsultarCyberRark()
+            Dim r = Prex.Utils.Security.CitiSecurity.ConsultarCyberRark(WSDL, CertificatePath, CertificatePass, APPID, SAFE, STR_FOLDER, STR_OBJECT, STR_REASON)
+
+            If Not String.IsNullOrEmpty(r.Item1) Then
+                CYBERRARKPASS = r.Item1
+            End If
+
+            If Not String.IsNullOrEmpty(r.Item2) Then
+                CONN_LOCAL = r.Item2
+            End If
+
+
+            'ConsultarCyberRark()
 
             If AUTENTICACIONSQL Then
                 If File.Exists(CARPETA_LOCAL & "TEMP\conn.enc") Then
                     Dim sUser As String = ""
                     Dim sPass As String = ""
                     LeerArchivoEncriptado(CARPETA_LOCAL & "TEMP\conn.enc", sUser, sPass)
-                    CONN_LOCAL = CONN_LOCAL & ";User id=" & sUser & ";Password=" & IIf(cyberrarkPass.Length = 0, sPass, cyberrarkPass) & ";"
+                    CONN_LOCAL = CONN_LOCAL & ";User id=" & sUser & ";Password=" & IIf(String.IsNullOrEmpty(CYBERRARKPASS), sPass, CYBERRARKPASS) & ";"
                 Else
                     If Command().Trim <> "" And Command().ToUpper <> "/IDE" Then
                         MensajeError("No se encuentra el archivo encriptado con la conexion SQL")
@@ -246,68 +257,70 @@ Module modFunciones
                 End If
 
             End If
+            If Not String.IsNullOrEmpty(CYBERRARKPASS) Then
+                MessageBox.Show($"CYBERRARKPASS {CYBERRARKPASS} - CONN_LOCAL {CONN_LOCAL}")
+            End If
         Catch ex As Exception
             TratarError(ex, "LeerXML")
         End Try
-
     End Sub
 
-    Public Function ConsultarCyberRark() As String
-        CYBERRARKPASS = String.Empty
-        If ID_SISTEMA > 0 Then
+    'Public Function ConsultarCyberRark() As String
+    '    CYBERRARKPASS = String.Empty
+    '    If ID_SISTEMA > 0 Then
 
-            Try
-
-
-                'MessageBox.Show($"WSDL: {WSDL}, CertifcatePath: {CertifcatePath}, " & vbCrLf &
-                '		$"CertifcatePass: {CertifcatePass}, APPID: {APPID}, " & vbCrLf &
-                '		$"SAFE: {SAFE}, STR_FOLDER: {STR_FOLDER}, " & vbCrLf &
-                '		$"STR_OBJECT: {STR_OBJECT}, STR_REASON: {STR_REASON}", "Parametros del servicio: ", MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '        Try
 
 
-                Dim pass As String = Prex.Utils.Security.CitiSecurity.GetPassWordCyberRark(WSDL, CertificatePath, CertificatePass, APPID, SAFE, STR_FOLDER, STR_OBJECT, STR_REASON)
+    '            'MessageBox.Show($"WSDL: {WSDL}, CertifcatePath: {CertifcatePath}, " & vbCrLf &
+    '            '		$"CertifcatePass: {CertifcatePass}, APPID: {APPID}, " & vbCrLf &
+    '            '		$"SAFE: {SAFE}, STR_FOLDER: {STR_FOLDER}, " & vbCrLf &
+    '            '		$"STR_OBJECT: {STR_OBJECT}, STR_REASON: {STR_REASON}", "Parametros del servicio: ", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-                'MessageBox.Show("CyberRark Pass: " & pass)
+
+    '            Dim pass As String = Prex.Utils.Security.CitiSecurity.GetPassWordCyberRark(WSDL, CertificatePath, CertificatePass, APPID, SAFE, STR_FOLDER, STR_OBJECT, STR_REASON)
+
+    '            'MessageBox.Show("CyberRark Pass: " & pass)
 
 
-                Dim builder As New OleDb.OleDbConnectionStringBuilder(CONN_LOCAL)
-                Dim passAnt = String.Empty
-                Dim teniaPass As Boolean = False
+    '            Dim builder As New OleDb.OleDbConnectionStringBuilder(CONN_LOCAL)
+    '            Dim passAnt = String.Empty
+    '            Dim teniaPass As Boolean = False
 
-                If builder.ContainsKey("Password") Then
-                    passAnt = builder("Password")
-                    teniaPass = True
-                    builder.Remove("Password")
-                End If
-                builder.Add("Password", pass)
+    '            If builder.ContainsKey("Password") Then
+    '                passAnt = builder("Password")
+    '                teniaPass = True
+    '                builder.Remove("Password")
+    '            End If
+    '            builder.Add("Password", pass)
 
-                Try
-                    Dim conn As New OleDb.OleDbConnection(builder.ConnectionString)
-                    conn.Open()
-                    If (conn.State = ConnectionState.Open) Then
-                        conn.Close()
-                    End If
-                    CYBERRARKPASS = pass
-                Catch ex As OleDb.OleDbException
-                    builder.Remove("Password")
-                    If teniaPass Then
-                        builder.Add("Password", passAnt)
-                        pass = passAnt
-                    End If
-                End Try
+    '            Try
+    '                Dim conn As New OleDb.OleDbConnection(builder.ConnectionString)
+    '                conn.Open()
+    '                If (conn.State = ConnectionState.Open) Then
+    '                    conn.Close()
+    '                End If
+    '                CYBERRARKPASS = pass
+    '            Catch ex As OleDb.OleDbException
+    '                builder.Remove("Password")
+    '                If teniaPass Then
+    '                    builder.Add("Password", passAnt)
+    '                    pass = passAnt
+    '                End If
+    '            End Try
 
-                CONN_LOCAL = builder.ConnectionString
+    '            CONN_LOCAL = builder.ConnectionString
 
-                Return pass.Trim
-            Catch ex As Exception
-                'MessageBox.Show(ex.Message, "Error GetPassWordCyberRark", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return String.Empty
-            End Try
+    '            Return pass.Trim
+    '        Catch ex As Exception
+    '            MessageBox.Show(ex.Message, "Error GetPassWordCyberRark", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '            Return String.Empty
+    '        End Try
 
-        Else
-            Return String.Empty
-        End If
-    End Function
+    '    Else
+    '        Return String.Empty
+    '    End If
+    'End Function
 
     Public Sub TratarError(ByVal ex As Exception,
                            Optional ByVal sFuncion As String = "",
@@ -327,7 +340,7 @@ Module modFunciones
         If sCustomError <> "" Then
             frm.txtDescripcion.Text = sCustomError
         Else
-            frm.txtDescripcion.Text = ex.Message
+            frm.txtDescripcion.Text = ex.Message & vbCrLf & ex.StackTrace
         End If
 
         frm.txtDescripcion.Text = frm.txtDescripcion.Text & vbCrLf & vbCrLf & "TRAZA:" & vbCrLf & ex.StackTrace
@@ -728,17 +741,17 @@ Module modFunciones
                           Optional ByVal nCodigoTransaccion As Long = -1,
                           Optional ByVal nCodigoUsuario As Long = -1)
 
-        On Error Resume Next
+        Try
 
-        Dim oAdmLOG As New AdmTablas
-        Dim sSQL As String
+            Dim oAdmLOG As New AdmTablas
+            Dim sSQL As String
 
-        oAdmLOG.ConnectionString = CONN_LOCAL
-        ValidarCamposNuevosLogSis(oAdmLOG)
-        If nCodigoUsuario = -1 Then nCodigoUsuario = UsuarioActual.Codigo
-        If nCodigoTransaccion = 0 Then nCodigoTransaccion = -1
+            oAdmLOG.ConnectionString = CONN_LOCAL
+            ValidarCamposNuevosLogSis(oAdmLOG)
+            If nCodigoUsuario = -1 Then nCodigoUsuario = UsuarioActual.Codigo
+            If nCodigoTransaccion = 0 Then nCodigoTransaccion = -1
 
-        sSQL = "INSERT " &
+            sSQL = "INSERT " &
              "INTO 			LOGSIS " &
              "					( " &
              "						LS_CODUSU, " &
@@ -759,18 +772,21 @@ Module modFunciones
              "						@EXTRA, " &
              "                      @WKSTAT) "
 
-        sSQL = sSQL.Replace("@CODUSU", nCodigoUsuario)
-        sSQL = sSQL.Replace("@FECLOG", FechaSQL(DateTime.Now))
-        sSQL = sSQL.Replace("@HORLOG", "'" & Format(DateTime.Now, "HH:mm:ss") & "'")
-        sSQL = sSQL.Replace("@ACCION", nAccionLOG)
-        sSQL = sSQL.Replace("@CODTRA", nCodigoTransaccion)
-        sSQL = sSQL.Replace("@EXTRA", "'" & sExtra.Replace("'", "") & "'")
-        sSQL = sSQL.Replace("@WKSTAT", "'" & System.Environment.MachineName & "'")
+            sSQL = sSQL.Replace("@CODUSU", nCodigoUsuario)
+            sSQL = sSQL.Replace("@FECLOG", FechaSQL(DateTime.Now))
+            sSQL = sSQL.Replace("@HORLOG", "'" & Format(DateTime.Now, "HH:mm:ss") & "'")
+            sSQL = sSQL.Replace("@ACCION", nAccionLOG)
+            sSQL = sSQL.Replace("@CODTRA", nCodigoTransaccion)
+            sSQL = sSQL.Replace("@EXTRA", "'" & sExtra.Replace("'", "") & "'")
+            sSQL = sSQL.Replace("@WKSTAT", "'" & System.Environment.MachineName & "'")
 
-        oAdmLOG.EjecutarComandoAsincrono(sSQL, "", 0, Nothing, True)
+            oAdmLOG.EjecutarComandoAsincrono(sSQL, "", 0, Nothing, True)
 
-        oAdmLOG = Nothing
+            oAdmLOG = Nothing
 
+        Catch ex As Exception
+            Throw New Exception("Ocurrio un error en GuardarLOG ", ex)
+        End Try
     End Sub
 
     Public Function CalculateMD5(ByVal sCadena As String) As String

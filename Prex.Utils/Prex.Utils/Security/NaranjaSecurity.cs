@@ -28,11 +28,15 @@ namespace Prex.Utils.Security
 				using (var file = new FileStream(Configuration.PrexConfig.FILE_GOOGLE_CREDENTIALS.Trim(), FileMode.Open, FileAccess.Read))
 				{
 					var googleWebAutorization = new GoogleWebAuthorization(file);
-					credentials = googleWebAutorization.Autenticar(userName, new List<string>() { @"https://www.googleapis.com/auth/userinfo.profile", @"https://www.googleapis.com/auth/userinfo.email", @"https://www.googleapis.com/auth/admin.directory.user.readonly"  });
+					credentials = googleWebAutorization.Autenticar(userName, new List<string>() { @"https://www.googleapis.com/auth/userinfo.profile", @"https://www.googleapis.com/auth/userinfo.email", @"https://www.googleapis.com/auth/admin.directory.user" }); // @"https://www.googleapis.com/auth/admin.directory.user.readonly"  });
+					var userGet = googleWebAutorization.Oauth2Service.Userinfo;
+					//var me = googleWebAutorization.Oauth2Service.Userinfo.V2.Me.Get().Execute();
 					var ui = googleWebAutorization.Oauth2Service.Userinfo.Get().Execute();
 					if (ui == null || ui.Name.IsNullOrEmpty()) return null;
 					var json = Newtonsoft.Json.JsonConvert.SerializeObject(ui);
-					return Newtonsoft.Json.JsonConvert.DeserializeObject<UserInfoWrapper>(json);
+					var userInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<UserInfoWrapper>(json);
+					userInfo.credentials = credentials;
+					return userInfo;
 				}
 			}
 			catch (Exception ex)
