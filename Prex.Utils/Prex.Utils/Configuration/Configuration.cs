@@ -287,6 +287,10 @@ namespace Prex.Utils
                     }
 
                 }
+
+                var consultaCiberark = Prex.Utils.Security.CitiSecurity.ConsultarCyberRark(_config.WSDL, _config.CertificatePath, _config.CertificatePass, _config.APPID, _config.SAFE,
+                                                                                        _config.STR_FOLDER, _config.STR_OBJECT, _config.STR_REASON);
+
                 LeerXMLLocal();
             }
             catch (Exception ex)

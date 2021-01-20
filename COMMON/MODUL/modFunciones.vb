@@ -232,12 +232,12 @@ Module modFunciones
 
             Dim r = Prex.Utils.Security.CitiSecurity.ConsultarCyberRark(WSDL, CertificatePath, CertificatePass, APPID, SAFE, STR_FOLDER, STR_OBJECT, STR_REASON)
 
-            If Not String.IsNullOrEmpty(r.Item1) Then
-                CYBERRARKPASS = r.Item1
+            If Not String.IsNullOrEmpty(r.Item2) Then
+                CYBERRARKPASS = r.Item2
             End If
 
-            If Not String.IsNullOrEmpty(r.Item2) Then
-                CONN_LOCAL = r.Item2
+            If Not String.IsNullOrEmpty(r.Item1) Then
+                CONN_LOCAL = r.Item1
             End If
 
 
@@ -257,9 +257,9 @@ Module modFunciones
                 End If
 
             End If
-            If Not String.IsNullOrEmpty(CYBERRARKPASS) Then
-                MessageBox.Show($"CYBERRARKPASS {CYBERRARKPASS} - CONN_LOCAL {CONN_LOCAL}")
-            End If
+            'If Not String.IsNullOrEmpty(CYBERRARKPASS) Then
+            '    MessageBox.Show($"CYBERRARKPASS {CYBERRARKPASS} - CONN_LOCAL {CONN_LOCAL}")
+            'End If
         Catch ex As Exception
             TratarError(ex, "LeerXML")
         End Try
@@ -339,11 +339,14 @@ Module modFunciones
 
         If sCustomError <> "" Then
             frm.txtDescripcion.Text = sCustomError
+            frm.txtDescripcion.Text = frm.txtDescripcion.Text & vbCrLf & vbCrLf & "TRAZA:" & vbCrLf & ex.StackTrace
         Else
-            frm.txtDescripcion.Text = ex.Message & vbCrLf & ex.StackTrace
+            frm.txtDescripcion.Text = ex.Message & "TRAZA:" & vbCrLf & vbCrLf & ex.StackTrace
+            If ex.InnerException IsNot Nothing Then
+                frm.txtDescripcion.Text = frm.txtDescripcion.Text & vbCrLf & vbCrLf & "INNEREX:" & vbCrLf & ex.InnerException.Message & vbCrLf & "TRAZA:" & vbCrLf & ex.InnerException.StackTrace
+            End If
         End If
 
-        frm.txtDescripcion.Text = frm.txtDescripcion.Text & vbCrLf & vbCrLf & "TRAZA:" & vbCrLf & ex.StackTrace
         If bGuardaLog Then
             GuardarLOG(AccionesLOG.AL_ERROR_SISTEMA, frm.txtDescripcion.Text & vbCrLf & vbCrLf & "Función/Proc.: " & sFuncion, CODIGO_TRANSACCION)
         End If

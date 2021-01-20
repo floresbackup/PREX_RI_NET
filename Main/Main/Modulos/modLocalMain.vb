@@ -249,12 +249,14 @@ Maneja_Error:
 
 	Public Function InicioCITI() As Boolean
 		GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "InicioCITI")
+		Dim paso = "FactorySGInstance.getInstanceInterface"
 		Try
 			Dim sgResponse As String = String.Empty
-
 			Dim SGInterface As SGInterface = FactorySGInstance.getInstanceInterface()
 			Dim returnValue As Integer = -1
+			paso = "SGInterface.RsmsLogin"
 			returnValue = SGInterface.RsmsLogin(ID_SISTEMA.ToString(), "Gestión RI", SG_CONFIG, sgResponse)
+
 			If (returnValue = 1) Then
 				Dim sNombre As String = String.Empty
 				Dim sPerfil As String
@@ -279,6 +281,8 @@ Maneja_Error:
 				sPerfil = SGInterface.AccFunctions().Replace("[", String.Empty).Replace("]", String.Empty).Trim
 				'MessageBox.Show(frmMain, "Functions: " & sPerfil, "Login SGLibrary", MessageBoxButtons.OK)
 
+				paso = "AdmTablas"
+
 				Dim oAdmTablas As New AdmTablas
 
 				oAdmTablas.ConnectionString = CONN_LOCAL
@@ -293,6 +297,8 @@ Maneja_Error:
 
 				GuardarLOG(AccionesLOG.AL_INGRESO_SISTEMA, "Perfil: " & sPerfil & " - SG Response: " & sgResponse)
 
+				paso = "frmMain.ActualizarSeguridad"
+
 				If Not frmMain.ActualizarSeguridad(sPerfil.Replace("[", String.Empty).Replace("]", String.Empty).Trim) Then
 					Throw New Exception("No se encontró [DP_CODTRA] para el perfil " & sPerfil)
 				End If
@@ -303,7 +309,7 @@ Maneja_Error:
 			End If
 
 		Catch ex As Exception
-			TratarError(ex, "InicioCiti")
+			TratarError(ex, $"InicioCiti - {paso}")
 			Return False
 		End Try
 
