@@ -169,6 +169,10 @@ namespace Prex.Utils
                     CONN_LOCAL = Encoding.UTF8.GetString(Convert.FromBase64String(valor));
                 else if (nombre.Equals("SIMBOLO_DECIMAL"))
                     SIMBOLO_DECIMAL = valor.Substring(0, 1);
+                else if (nombre.Equals("CertificatePass"))
+                {
+                    CertificatePass = Encoding.UTF8.GetString(Convert.FromBase64String(valor));
+                }
                 else
                 {
                     var propertyInfo = this.GetType().GetProperty(nombre);
