@@ -108,6 +108,7 @@ Partial Class FrmAltaUsuarioNaranja
 		'
 		'btnAceptar
 		'
+		Me.btnAceptar.DialogResult = System.Windows.Forms.DialogResult.OK
 		Me.btnAceptar.Location = New System.Drawing.Point(176, 167)
 		Me.btnAceptar.Margin = New System.Windows.Forms.Padding(4)
 		Me.btnAceptar.Name = "btnAceptar"

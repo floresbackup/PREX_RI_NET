@@ -488,11 +488,13 @@ Public Class frmInicioSesion
         NOMBRE_ENTIDAD = cboEntidad.Text
         CODIGO_ENTIDAD = Val(LlaveCombo(cboEntidad))
         UsuarioActual.Entidad = CODIGO_ENTIDAD
-        UsuarioActual.Codigo = oAdmTablas.DevolverValor("USUARI", "US_CODUSU", "US_NOMBRE='" & txtUsuario.Text & "'")
+        UsuarioActual.Codigo = oAdmTablas.DevolverValor("USUARI", "US_CODUSU", "US_NOMBRE='" & txtUsuario.Text & "'", 0)
         UsuarioActual.Nombre = txtUsuario.Text.Trim
-        UsuarioActual.Descripcion = oAdmTablas.DevolverValor("USUARI", "US_DESCRI", "US_NOMBRE='" & txtUsuario.Text & "'")
+        UsuarioActual.Descripcion = oAdmTablas.DevolverValor("USUARI", "US_DESCRI", "US_NOMBRE='" & txtUsuario.Text & "'", String.Empty)
         UsuarioActual.Dominio = cboDominio.Text
-        Prex.Utils.Configuration.CargarUsuarioActual(UsuarioActual.Nombre)
+        If UsuarioActual.Codigo > 0 Then
+            Prex.Utils.Configuration.CargarUsuarioActual(UsuarioActual.Nombre)
+        End If
     End Sub
 
     Private Function AutenticarGoogle(reintento As Boolean) As Boolean
@@ -509,10 +511,13 @@ Public Class frmInicioSesion
 
                 If ds Is Nothing Then
                     CODIGO_ENTIDAD = Val(LlaveCombo(cboEntidad))
-                    Dim frm As New FrmAltaUsuarioNaranja(txtUsuario.Text.Trim, userInfo.Nombre, userInfo.Apellido)
-                    frm.ShowDialog()
-                    SetearDatosDeAcceso()
-                    Return True
+                    Dim frm As New FrmAltaUsuarioNaranja(txtUsuario.Text.Trim, userInfo)
+                    If frm.ShowDialog() = DialogResult.OK Then
+                        SetearDatosDeAcceso()
+                        Return True
+                    Else
+                        Return False
+                    End If
                 Else
                     SetearDatosDeAcceso()
                     Return True

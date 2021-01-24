@@ -1,13 +1,11 @@
-﻿using DevExpress.Printing.Core.PdfExport.Metafile;
+﻿using Google.Apis.Admin.Directory.directory_v1;
+using Google.Apis.Admin.Directory.directory_v1.Data;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Auth.OAuth2.Flows;
-using Google.Apis.Auth.OAuth2.Requests;
-using Google.Apis.Auth.OAuth2.Responses;
-using Google.Apis.Gmail.v1;
 using Google.Apis.Oauth2.v2;
 using Google.Apis.Reseller.v1;
 using Google.Apis.Services;
-using Microsoft.Win32;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -19,29 +17,17 @@ namespace Prex.Utils.Security.SSO.Google
     {
 		#region Variables
 
-		private GmailService gmailService;
         private ResellerService gsuiteResellerService;
         private Oauth2Service oauth2Service;
-		#endregion
+        private DirectoryService gsuiteDirectoryService;
+        #endregion
 
-		#region Propiedades
+        #region Propiedades
 
-		public string ApplicationName => "Prex";
+        public string ApplicationName => "Prex";
         public UserCredential UserCredentials { get; private set; }
         public ClientSecrets ClientSecrets { get; private set; }
-        public GmailService GmailService
-        {
-            get 
-            {
-                if (gmailService != null) return gmailService;
-                return gmailService = new GmailService(new BaseClientService.Initializer()
-                {
-                    HttpClientInitializer = UserCredentials,
-                    ApplicationName = ApplicationName,
-                });
-                
-            }
-        }
+
 
         public Oauth2Service Oauth2Service
         {
@@ -58,11 +44,25 @@ namespace Prex.Utils.Security.SSO.Google
             }
 
         }
-		#endregion
 
-		#region Constructores
+        public DirectoryService GSuiteDirectoryService
+        {
+            get 
+            {
+                if (gsuiteDirectoryService != null) return gsuiteDirectoryService;
 
-		public ResellerService GsuiteService
+                return gsuiteDirectoryService = new DirectoryService(new BaseClientService.Initializer()
+                {
+                    HttpClientInitializer = UserCredentials,
+                    ApplicationName = ApplicationName,
+                });
+            }
+        }
+        #endregion
+
+        #region Constructores
+
+        public ResellerService GsuiteService
         {
             get 
             {
@@ -74,6 +74,8 @@ namespace Prex.Utils.Security.SSO.Google
                 });
             }
         }
+
+
 
         public GoogleWebAuthorization(string jsonCredentials)
         {
@@ -95,7 +97,7 @@ namespace Prex.Utils.Security.SSO.Google
                 scopes, 
                 usuario,
                 CancellationToken.None,
-                new LogDataStore()).Result;
+                new SQLGoogleDataStore()).Result;
 
 
             return UserCredentials;
@@ -115,6 +117,42 @@ namespace Prex.Utils.Security.SSO.Google
             
             var refreshToken = cred.Flow.RefreshTokenAsync(usuario, UserCredentials.Token.RefreshToken, CancellationToken.None).Result;
           
+        }
+
+        public UserDirectoryInfoWrapper GetDirectoryData(string userEmail)
+        {
+			try
+			{
+                var d = GSuiteDirectoryService.Users.Get(userEmail);
+                d.Projection = UsersResource.GetRequest.ProjectionEnum.Full;
+                d.ViewType = UsersResource.GetRequest.ViewTypeEnum.DomainPublic;
+                var user = d.Execute();
+                if (user == null) return null;
+                var jsonUser = JsonConvert.SerializeObject(user, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+                return JsonConvert.DeserializeObject<UserDirectoryInfoWrapper>(jsonUser);
+			}
+			catch (System.Exception ex)
+			{
+                return null;
+			}
+        }
+
+        public UserInfoWrapper GetUserInfo()
+        {
+			try
+			{
+                var ui = Oauth2Service.Userinfo.Get().Execute();
+                if (ui == null || ui.Name.IsNullOrEmpty()) return null;
+                var json = JsonConvert.SerializeObject(ui);
+                var userInfo = JsonConvert.DeserializeObject<UserInfoWrapper>(json);
+                userInfo.DirectoryData = GetDirectoryData(userInfo.Email);
+                userInfo.credentials = UserCredentials;
+                return userInfo;
+            }
+            catch (System.Exception ex)
+            {
+                return null;
+            }
         }
     }
 
