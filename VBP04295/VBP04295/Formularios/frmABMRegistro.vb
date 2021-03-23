@@ -8,6 +8,7 @@ Public Class frmABMRegistro
 	Private Const TOP_CONTROLES As Long = 10
 	Private MODO_APE As String
 	Private sSQL_Update As String
+	Private sSQL_Actualizar As String
 	Private oAdmTablas As New AdmTablas
 	Private listColumnasExistentes As List(Of clsColumnas)
 	Private dicControlesValorAnterior As Dictionary(Of String, Control)
@@ -17,7 +18,8 @@ Public Class frmABMRegistro
 						 ByVal sQuery As String,
 						 ByVal sCaption As String,
 						 ByVal sModo As String,
-						 ByVal sQueryConsulta As String)
+						 ByVal sQueryConsulta As String,
+						 ByVal sQueryActualizar As String)
 
 		Dim oCol As clsColumnas
 		Dim oField As DataColumn
@@ -33,6 +35,7 @@ Public Class frmABMRegistro
 		Me.Text = sCaption
 
 		sSQL_Update = sQuery
+		sSQL_Actualizar = sQueryActualizar
 
 		MODO_APE = sModo
 
@@ -409,9 +412,9 @@ Public Class frmABMRegistro
 
 			'Agregar valores default
 			Dim cmdDefault As SqlCommand
-			If MODO_APE = "A" Then
+			Dim updateDefault As String = String.Empty
+			If MODO_APE = "A" AndAlso Not sSQL_Actualizar.IsNullOrEmpty Then
 				Dim dataDefault As SqlClient.SqlDataReader = DataAccess.GetSingleReader(sSQL_Update)
-				Dim updateDefault As String = String.Empty
 				Dim parametros As New Dictionary(Of String, Object)
 				If dataDefault.Read() Then
 					For i As Integer = 0 To dataDefault.FieldCount() - 1
@@ -450,19 +453,36 @@ Public Class frmABMRegistro
 
 						End If
 					Next
-					If Not updateDefault.IsNullOrEmpty Then
-						updateDefault += $" WHERE DC_FECVIG = @DC_FECVIG AND DC_CODENT = @DC_CODENT AND DC_CODPAR = @DC_CODPAR AND DC_CAMPO8 = @DC_CAMPO8 AND DC_CODCON = @DC_CODCON AND DC_CUADRO = @DC_CUADRO"
-						cmdDefault = New SqlCommand(updateDefault)
-						For Each parametro As KeyValuePair(Of String, Object) In parametros
+
+					'If Not updateDefault.IsNullOrEmpty Then
+					'	updateDefault += $" WHERE DC_FECVIG = @DC_FECVIG AND DC_CODENT = @DC_CODENT AND DC_CODPAR = @DC_CODPAR AND DC_CAMPO8 = @DC_CAMPO8 AND DC_CODCON = @DC_CODCON AND DC_CUADRO = @DC_CUADRO"
+					'	cmdDefault = New SqlCommand(updateDefault)
+					'	For Each parametro As KeyValuePair(Of String, Object) In parametros
+					'		cmdDefault.Parameters.AddWithValue(parametro.Key, parametro.Value)
+					'	Next
+					'	cmdDefault.Parameters.AddWithValue("DC_FECVIG", parametrosInsert("DC_FECVIG"))
+					'	cmdDefault.Parameters.AddWithValue("DC_CODENT", parametrosInsert("DC_CODENT"))
+					'	cmdDefault.Parameters.AddWithValue("DC_CODPAR", parametrosInsert("DC_CODPAR"))
+					'	cmdDefault.Parameters.AddWithValue("DC_CAMPO8", parametrosInsert("DC_CAMPO8"))
+					'	cmdDefault.Parameters.AddWithValue("DC_CODCON", parametrosInsert("DC_CODCON"))
+					'	cmdDefault.Parameters.AddWithValue("DC_CUADRO", parametrosInsert("DC_CUADRO"))
+					'End If
+
+					updateDefault += " " + sSQL_Actualizar.Substring(sSQL_Actualizar.LastIndexOf("WHERE "))
+					cmdDefault = New SqlCommand(updateDefault)
+
+					For Each parametro As KeyValuePair(Of String, Object) In parametros
+						If updateDefault.Contains($"@{parametro.Key}") AndAlso Not cmdDefault.Parameters.Contains(parametro.Key) Then
 							cmdDefault.Parameters.AddWithValue(parametro.Key, parametro.Value)
-						Next
-						cmdDefault.Parameters.AddWithValue("DC_FECVIG", parametrosInsert("DC_FECVIG"))
-						cmdDefault.Parameters.AddWithValue("DC_CODENT", parametrosInsert("DC_CODENT"))
-						cmdDefault.Parameters.AddWithValue("DC_CODPAR", parametrosInsert("DC_CODPAR"))
-						cmdDefault.Parameters.AddWithValue("DC_CAMPO8", parametrosInsert("DC_CAMPO8"))
-						cmdDefault.Parameters.AddWithValue("DC_CODCON", parametrosInsert("DC_CODCON"))
-						cmdDefault.Parameters.AddWithValue("DC_CUADRO", parametrosInsert("DC_CUADRO"))
-					End If
+						End If
+					Next
+
+					For Each item As KeyValuePair(Of String, Object) In parametrosInsert
+						If sSQL_Actualizar.Contains($"@{item.Key}") AndAlso Not cmdDefault.Parameters.Contains(item.Key) Then
+							cmdDefault.Parameters.AddWithValue(item.Key, item.Value)
+						End If
+					Next
+
 				End If
 			End If
 GuardaDataRow:
@@ -486,8 +506,13 @@ GuardaDataRow:
 				Prex.Utils.DataAccess.Execute(cmdInsert)
 
 				If cmdDefault IsNot Nothing AndAlso Not cmdDefault.CommandText.IsNullOrEmpty() Then
-					Prex.Utils.DataAccess.Execute(cmdDefault)
+					Try
+						DataAccess.Execute(cmdDefault)
+					Catch ex As Exception
+						GuardarLOG(AccionesLOG.ModificacionDeDatos, $"Error grabando datos default: {cmdDefault.CommandText}", CODIGO_TRANSACCION, UsuarioActual.Codigo)
+					End Try
 				End If
+
 			Else
 				If MODO_APE <> "B" Then
 					sUpdate = sUpdate.Substring(0, sUpdate.Length - 1) & " " & sSQL

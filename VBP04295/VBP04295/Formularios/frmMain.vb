@@ -867,7 +867,11 @@ Public Class frmMain
 			Me.Enabled = True
 
 			Dim oForm As New frmABMRegistro()
-			oForm.PasarDatos(oConsulta.CodCon, sSQL, "Modificar registro", MODO_APE, ReemplazarVariables(oConsulta.Query, PanControles.Controls))
+			If oConsulta.ActualizaQuery.IsNullOrEmpty Then
+				oForm.PasarDatos(oConsulta.CodCon, sSQL, "Modificar registro", MODO_APE, ReemplazarVariables(oConsulta.Query, PanControles.Controls), String.Empty)
+			Else
+				oForm.PasarDatos(oConsulta.CodCon, sSQL, "Modificar registro", MODO_APE, ReemplazarVariables(oConsulta.Query, PanControles.Controls), ReemplazarVariables(oConsulta.ActualizaQuery, PanControles.Controls))
+			End If
 
 			If INPUT_GENERAL = "CERRAR_FORMULARIO_YAA" Then
 				oForm.Close()
