@@ -440,6 +440,10 @@ Public Class frmMain
 							LeerArchivoEncriptado(RUTAENCR_RA & "\PrExEncr_RA.txt", sUsuEncr_RA, sPwdEncr_RA)
 							sPwdEncr_RA = ObternerPasswordRunAsCyberark(sPwdEncr_RA)
 							GuardarExcelEncryptParaCiti(sUsuEncr_RA, sPwdEncr_RA)
+
+							'sUsuEncr_RA = "ricardo@alephcrm.com"
+							'sPwdEncr_RA = "Ignacio2002"
+
 							RunProgram(sUsuEncr_RA, sPwdEncr_RA, DOMINIO_DEFAULT, sRuta, sParametros)
 						Else
 							Process.Start(sRuta, sParametros)

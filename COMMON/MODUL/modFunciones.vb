@@ -119,8 +119,11 @@ Module modFunciones
         eTexto = 1
         eFecha = 2
     End Enum
-
     Public Sub LeerXML()
+        LeerXML(True)
+    End Sub
+
+    Public Sub LeerXML(consultarCyberRark As Boolean)
 
         Try
 
@@ -229,16 +232,10 @@ Module modFunciones
 
             End If
 
-
-            Dim r = Prex.Utils.Security.CitiSecurity.ConsultarCyberRark(WSDL, CertificatePath, CertificatePass, APPID, SAFE, STR_FOLDER, STR_OBJECT, STR_REASON)
-
-            If Not String.IsNullOrEmpty(r.Item2) Then
-                CYBERRARKPASS = r.Item2
+            If consultarCyberRark Then
+                ObtenerConnectionCyberark()
             End If
 
-            If Not String.IsNullOrEmpty(r.Item1) Then
-                CONN_LOCAL = r.Item1
-            End If
 
 
             'ConsultarCyberRark()
@@ -263,6 +260,18 @@ Module modFunciones
         Catch ex As Exception
             TratarError(ex, "LeerXML")
         End Try
+    End Sub
+
+    Public Sub ObtenerConnectionCyberark()
+        Dim r = Prex.Utils.Security.CitiSecurity.ConsultarCyberRark(WSDL, CertificatePath, CertificatePass, APPID, SAFE, STR_FOLDER, STR_OBJECT, STR_REASON)
+
+        If Not String.IsNullOrEmpty(r.Item2) Then
+            CYBERRARKPASS = r.Item2
+        End If
+
+        If Not String.IsNullOrEmpty(r.Item1) Then
+            CONN_LOCAL = r.Item1
+        End If
     End Sub
 
     'Public Function ConsultarCyberRark() As String

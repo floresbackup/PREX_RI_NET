@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace Prex.Utils
@@ -200,7 +201,8 @@ namespace Prex.Utils
 #if DEBUG
 				return @"C:\Prex\DebugLocal\Prex.config";
 #else
-				return Environment.CurrentDirectory + @"\Prex.config";
+                return Directory.GetCurrentDirectory() + @"\Prex.config";
+				//return Environment.CurrentDirectory + @"\Prex.config";
 #endif
             }
         }
@@ -249,16 +251,18 @@ namespace Prex.Utils
 
         public static bool TieneConfigLocal =>/* _config != null &&*/ File.Exists(ARCHIVO_CONFIG_LOCAL);
 
-        public static void LeerXML() 
+        public static void LeerXML() => LeerXML(ARCHIVO_CONFIG, true);
+
+        public static void LeerXML(string pathConfig, bool consultarCiberark) 
         {
             try
             {
                 string sTemp = string.Empty;
 
-                if (File.Exists(ARCHIVO_CONFIG))
+                if (File.Exists(pathConfig))
                 {
                     var prexConfig = new XmlDocument();
-                    prexConfig.Load(ARCHIVO_CONFIG);
+                    prexConfig.Load(pathConfig);
 
                     _config = new PrexConfig(prexConfig);
 
@@ -292,8 +296,10 @@ namespace Prex.Utils
 
                 }
 
-                var consultaCiberark = Prex.Utils.Security.CitiSecurity.ConsultarCyberRark(_config.WSDL, _config.CertificatePath, _config.CertificatePass, _config.APPID, _config.SAFE,
-                                                                                        _config.STR_FOLDER, _config.STR_OBJECT, _config.STR_REASON);
+                if (consultarCiberark)
+                {
+                    ConsultarCyberark();
+                }
 
                 LeerXMLLocal();
             }
@@ -301,6 +307,13 @@ namespace Prex.Utils
             {
                 throw new Exception("Ocurrió un error al leer archivo Prex.config", ex);
             }
+        }
+
+        public static object ConsultarCyberark()
+        {
+            return Prex.Utils.Security.CitiSecurity.ConsultarCyberRark(_config.WSDL, _config.CertificatePath, _config.CertificatePass, _config.APPID, _config.SAFE,
+                                                                    _config.STR_FOLDER, _config.STR_OBJECT, _config.STR_REASON);
+
         }
 
         public static void LeerXMLLocal()
