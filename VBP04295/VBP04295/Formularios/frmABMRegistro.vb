@@ -386,7 +386,7 @@ Public Class frmABMRegistro
 						End If
 					End If
 
-					If oCol.VisibleABM AndAlso (oCol.Habilitada OrElse oCol.Formula.Trim().Length() > 0) Then
+					If oCol.VisibleABM Then
 						sUpdate = sUpdate & " [" & oCol.Campo & "] = " & sValor & ","
 
 						'AGREGADO PARA QUE ESCRIBA LOG DE LAS MODIFICACIONES MANUALES
