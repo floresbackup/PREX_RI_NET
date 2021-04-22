@@ -509,7 +509,7 @@ GuardaDataRow:
 					Try
 						DataAccess.Execute(cmdDefault)
 					Catch ex As Exception
-						GuardarLOG(AccionesLOG.ModificacionDeDatos, $"Error grabando datos default: {cmdDefault.CommandText}", CODIGO_TRANSACCION, UsuarioActual.Codigo)
+						'GuardarLOG(AccionesLOG.ModificacionDeDatos, $"Error grabando datos default: {cmdDefault.CommandText}", CODIGO_TRANSACCION, UsuarioActual.Codigo)
 					End Try
 				End If
 
