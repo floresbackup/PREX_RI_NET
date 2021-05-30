@@ -507,6 +507,13 @@ Public Class frmInicioSesion
                 If userInfo Is Nothing OrElse userInfo.Nombre.IsNullOrEmpty Then
                     Return False
                 End If
+
+                If userInfo.DirectoryData.customSchemas.PREX Is Nothing OrElse
+                        userInfo.DirectoryData.customSchemas?.PREX?.Role?.IsNullOrEmpty() Then
+                    Throw New UnauthorizedAccessException("rol_access_denied")
+                End If
+
+
                 Dim ds = oAdmUsuarios.ValidarUsuario(txtUsuario.Text)
 
                 If ds Is Nothing Then
@@ -534,6 +541,9 @@ Public Class frmInicioSesion
                             End If
                         Case "access_denied"
                             MensajesForms.MostrarError("Se denegó el acceso a la aplicación.")
+                            Return False
+                        Case "rol_access_denied"
+                            MensajesForms.MostrarError("No posee permisos para acceder a la aplicación. Contáctese con el administrador.")
                             Return False
                         Case Else
 
