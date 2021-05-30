@@ -508,7 +508,7 @@ Public Class frmInicioSesion
                     Return False
                 End If
 
-                If userInfo.DirectoryData.customSchemas.PREX Is Nothing OrElse
+                If userInfo.DirectoryData?.customSchemas?.PREX Is Nothing OrElse
                         userInfo.DirectoryData.customSchemas?.PREX?.Role?.IsNullOrEmpty() Then
                     Throw New UnauthorizedAccessException("rol_access_denied")
                 End If
