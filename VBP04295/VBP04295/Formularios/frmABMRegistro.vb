@@ -114,6 +114,7 @@ Public Class frmABMRegistro
 				End With
 
 				'SI NO LLEVA UN COMBO DE HELP PONGO UN TEXBOX O DATEPICKER
+				'TODO: Usar MaxLargo y probar que funcione el Largo como limitador de carga de datos. Revisar si funciona el multilinea
 				If oCol.Help = 0 Then
 					If TipoDatosADO(oCol.Tipo) <> "Fecha/Hora" Then
 
