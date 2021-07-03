@@ -117,13 +117,23 @@ Public Class frmABMRegistro
 				'TODO: Usar MaxLargo y probar que funcione el Largo como limitador de carga de datos. Revisar si funciona el multilinea
 				If oCol.Help = 0 Then
 					If TipoDatosADO(oCol.Tipo) <> "Fecha/Hora" Then
+						Dim cntLineas = 1
+						Dim txtInput As DevExpress.XtraEditors.BaseEdit
 
-						Dim txtInput As New DevExpress.XtraEditors.TextEdit
+						If oCol.MaxLargo > 50 AndAlso oCol.Formula = "" Then
+							cntLineas = Math.Min(Math.Ceiling((oCol.MaxLargo / 50)), 5)
+							txtInput = New DevExpress.XtraEditors.MemoEdit
+							CType(txtInput, DevExpress.XtraEditors.MemoEdit).Properties.MaxLength = oCol.Largo
+							CType(txtInput, DevExpress.XtraEditors.MemoEdit).Properties.LinesCount = cntLineas
+						Else
+							txtInput = New DevExpress.XtraEditors.TextEdit
+							CType(txtInput, DevExpress.XtraEditors.TextEdit).Properties.MaxLength = oCol.Largo
+						End If
 
 						With txtInput
 							.Name = "_txtInput" & oCol.Orden
 							.Visible = oCol.VisibleABM
-							.Properties.MaxLength = oCol.Largo
+							.Height = .Height * cntLineas
 							.TabIndex = nTabOrden
 							.TabStop = oCol.Habilitada
 							.Top = TOP_CONTROLES + (25 * (nCont - 1))
@@ -240,7 +250,7 @@ Public Class frmABMRegistro
 						If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
 							CType(Cont.Controls("_fecInput" & oCol.Orden.ToString), DevExpress.XtraEditors.DateEdit).DateTime = oCol.Valor
 						Else
-							CType(Cont.Controls("_txtInput" & oCol.Orden), DevExpress.XtraEditors.TextEdit).Text = oCol.Valor.ToString
+							CType(Cont.Controls("_txtInput" & oCol.Orden), DevExpress.XtraEditors.MemoEdit).Text = oCol.Valor.ToString
 						End If
 					Else
 						SelComboDevExpress(CType(Cont.Controls("_cboInput" & oCol.Orden.ToString), DevExpress.XtraEditors.ComboBoxEdit), "K" & oCol.Valor.ToString)
@@ -605,8 +615,8 @@ GuardaDataRow:
 						If (TypeOf (dicControlesValorAnterior(sKey)) Is DevExpress.XtraEditors.ComboBoxEdit) Then
 							CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.ComboBoxEdit).SelectedText = ds.Tables(0).Rows(0).Item(0).ToString()
 						End If
-						If (TypeOf (dicControlesValorAnterior(sKey)) Is DevExpress.XtraEditors.TextEdit) Then
-							CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.TextEdit).Text = ds.Tables(0).Rows(0).Item(0).ToString()
+						If (TypeOf (dicControlesValorAnterior(sKey)) Is DevExpress.XtraEditors.MemoEdit) Then
+							CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.MemoEdit).Text = ds.Tables(0).Rows(0).Item(0).ToString()
 						End If
 					End If
 				ElseIf dicControlesValorAnterior.ContainsKey(sKey) Then

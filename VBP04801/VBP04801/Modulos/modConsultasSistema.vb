@@ -71,64 +71,65 @@ Module modConsultasSistema
 
       For Each dr As DataRow In dt.Rows
 
-         'Columnas
-         oCol = New clsColumnas
+            'Columnas
+            oCol = New clsColumnas
 
-         oCol.CodCon = nCodCon
-         oCol.Orden = Convert.ToInt16(dr("DS_ORDEN").ToString)
-         oCol.Campo = dr("DS_CAMPO").ToString
-         oCol.Tipo = Convert.ToInt16(dr("DS_TIPO").ToString)
-         oCol.Largo = Convert.ToInt16(dr("DS_LARGO").ToString)
-         oCol.Formato = dr("DS_FORMAT").ToString
-         oCol.Titulo = dr("DS_TITULO").ToString
-         oCol.Help = Convert.ToInt16(dr("DS_HELP").ToString)
-         oCol.HelpQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_HELQUE").ToString))
-         oCol.Formula = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_FORMUL").ToString))
-         oCol.Habilitada = Convert.ToBoolean(Convert.ToInt32(dr("DS_HABILI")))
-         oCol.Visible = Convert.ToBoolean(Convert.ToInt32(dr("DS_VISIBL")))
-         oCol.Clave = Convert.ToBoolean(Convert.ToInt32(dr("DS_LLAVE")))
-         oCol.DrillDown = Convert.ToBoolean(Convert.ToInt32(dr("DS_DRILLD")))
-         oCol.DrillDownQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_DRIQUE").ToString))
-         oCol.Reemplazar = Convert.ToBoolean(Convert.ToInt32(dr("DS_REEMPL")))
-         oCol.VisibleABM = Convert.ToBoolean(Convert.ToInt32(dr("DS_VISABM")))
-         oCol.DrillDownProceso = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_DRIPRE").ToString))
-         oCol.Key = oCol.Campo
+            oCol.CodCon = nCodCon
+            oCol.Orden = Convert.ToInt16(dr("DS_ORDEN").ToString)
+            oCol.Campo = dr("DS_CAMPO").ToString
+            oCol.Tipo = Convert.ToInt16(dr("DS_TIPO").ToString)
+            oCol.Largo = Convert.ToInt16(dr("DS_LARGO").ToString)
+            oCol.MaxLargo = Convert.ToInt16(dr("DS_MAXLAR").ToString)
+            oCol.Formato = dr("DS_FORMAT").ToString
+            oCol.Titulo = dr("DS_TITULO").ToString
+            oCol.Help = Convert.ToInt16(dr("DS_HELP").ToString)
+            oCol.HelpQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_HELQUE").ToString))
+            oCol.Formula = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_FORMUL").ToString))
+            oCol.Habilitada = Convert.ToBoolean(Convert.ToInt32(dr("DS_HABILI")))
+            oCol.Visible = Convert.ToBoolean(Convert.ToInt32(dr("DS_VISIBL")))
+            oCol.Clave = Convert.ToBoolean(Convert.ToInt32(dr("DS_LLAVE")))
+            oCol.DrillDown = Convert.ToBoolean(Convert.ToInt32(dr("DS_DRILLD")))
+            oCol.DrillDownQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_DRIQUE").ToString))
+            oCol.Reemplazar = Convert.ToBoolean(Convert.ToInt32(dr("DS_REEMPL")))
+            oCol.VisibleABM = Convert.ToBoolean(Convert.ToInt32(dr("DS_VISABM")))
+            oCol.DrillDownProceso = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("DS_DRIPRE").ToString))
+            oCol.Key = oCol.Campo
 
-         oColumnas.Add(oCol, oCol.Key)
+            oColumnas.Add(oCol, oCol.Key)
 
-         oCol = Nothing
+            oCol = Nothing
 
-         'Formatos de Estilo
-         oFmt = New clsFormatosColumnas
+            'Formatos de Estilo
+            oFmt = New clsFormatosColumnas
 
-         Dim sFormat() As String = dr("DS_FORMAT").ToString.Split(";")
+            Dim sFormat() As String = dr("DS_FORMAT").ToString.Split(";")
 
-         If sFormat.Length > 1 Then
+            If sFormat.Length > 1 Then
 
-            If sFormat(0).Trim <> "" Then oFmt.Formato = sFormat(0).Trim
-            If Val(sFormat(1)) <> -2147483643 Then oFmt.Fondo = Val(sFormat(1))
-            If Val(sFormat(2)) <> -2147483630 Then oFmt.Frente = Val(sFormat(2))
-            If sFormat(3).Trim <> "Tahoma" Then oFmt.Fuente = sFormat(3).Trim
+                If sFormat(0).Trim <> "" Then oFmt.Formato = sFormat(0).Trim
+                If Val(sFormat(1)) <> -2147483643 Then oFmt.Fondo = Val(sFormat(1))
+                If Val(sFormat(2)) <> -2147483630 Then oFmt.Frente = Val(sFormat(2))
+                If sFormat(3).Trim <> "Tahoma" Then oFmt.Fuente = sFormat(3).Trim
 
-            If CBool(Val(sFormat(4))) Then oFmt.Negrita = CBool(Val(sFormat(4)))
-            If CBool(Val(sFormat(5))) Then oFmt.Subrayado = CBool(Val(sFormat(5)))
-            If CBool(Val(sFormat(6))) Then oFmt.Tachado = CBool(Val(sFormat(6)))
-            If Val(sFormat(7)) <> 8 Then oFmt.Tamano = Val(sFormat(7))
-            If Val(sFormat(8)) <> 0 Then oFmt.Ancho = Convert.ToInt32(Val(sFormat(8)) / 15)
+                If CBool(Val(sFormat(4))) Then oFmt.Negrita = CBool(Val(sFormat(4)))
+                If CBool(Val(sFormat(5))) Then oFmt.Subrayado = CBool(Val(sFormat(5)))
+                If CBool(Val(sFormat(6))) Then oFmt.Tachado = CBool(Val(sFormat(6)))
+                If Val(sFormat(7)) <> 8 Then oFmt.Tamano = Val(sFormat(7))
+                If Val(sFormat(8)) <> 0 Then oFmt.Ancho = Convert.ToInt32(Val(sFormat(8)) / 15)
 
-            oFmt.Columna = dr("DS_CAMPO").ToString
-            oFmt.Key = oFmt.Columna
+                oFmt.Columna = dr("DS_CAMPO").ToString
+                oFmt.Key = oFmt.Columna
 
-            If sFormat.Length > 9 Then
-               oFmt.Condicion = sFormat(9).Trim
+                If sFormat.Length > 9 Then
+                    oFmt.Condicion = sFormat(9).Trim
+                End If
+
+                oFormato.Add(oFmt, oFmt.Key)
             End If
 
-            oFormato.Add(oFmt, oFmt.Key)
-         End If
+            oFmt = Nothing
 
-         oFmt = Nothing
-
-      Next
+        Next
 
       ad = Nothing
       dt = Nothing
