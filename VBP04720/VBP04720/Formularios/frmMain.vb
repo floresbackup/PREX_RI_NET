@@ -836,7 +836,7 @@ Public Class frmMain
 
    End Sub
 
-   Private Sub btnUsuarioBaja_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUsuarioBaja.Click
+   Private Sub btnUsuarioBaja_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBajaUsuario.Click
 
       Dim nCodUsuario As Long
       Dim dFecBaja As Date
@@ -882,7 +882,42 @@ Public Class frmMain
 
    End Sub
 
-   Private Sub btnCambiarPassUsuario_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCambiarPassUsuario.Click
+
+    Private Sub btnEliminarUsuario_Click(sender As Object, e As EventArgs) Handles btnEliminarUsuario.Click
+
+        Dim nCodUsuario As Long
+        Dim dFecBaja As Date
+        Dim sMotivoError As String = ""
+        Dim sSQL As String
+
+        If gUsuarios.RowCount > 0 Then
+
+            nCodUsuario = ValGrilla(gUsuarios, "US_CODUSU")
+            dFecBaja = CDate(ValGrilla(gUsuarios, "US_FECBAJ"))
+
+            If nCodUsuario > 1 Then
+                If Pregunta("¿Realmente desea eliminar el usuario seleccionado?") = Windows.Forms.DialogResult.Yes Then
+                    If Pregunta("Atención: esta operación no se puede deshacer. ¿Desea continuar?") = Windows.Forms.DialogResult.Yes Then
+
+                        sSQL = $"delete from USUARI WHERE US_CODUSU = { nCodUsuario}"
+
+                        If oAdmLocal.EjecutarComandoAsincrono(sSQL, sMotivoError) Then
+                            cargarUsuarios()
+                        Else
+                            MensajeError(sMotivoError)
+                        End If
+
+                    End If
+                End If
+            Else
+                MensajeError("No se puede eliminar el usuario seleccionado")
+            End If
+
+        End If
+
+    End Sub
+
+    Private Sub btnCambiarPassUsuario_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCambiarPassUsuario.Click
 
       Dim oPass As New frmCambiarPass
 
@@ -1466,4 +1501,5 @@ Public Class frmMain
       End If
 
    End Sub
+
 End Class
