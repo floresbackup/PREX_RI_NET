@@ -250,7 +250,7 @@ Public Class frmABMRegistro
 						If TipoDatosADO(oCol.Tipo) = "Fecha/Hora" Then
 							CType(Cont.Controls("_fecInput" & oCol.Orden.ToString), DevExpress.XtraEditors.DateEdit).DateTime = oCol.Valor
 						Else
-							CType(Cont.Controls("_txtInput" & oCol.Orden), DevExpress.XtraEditors.MemoEdit).Text = oCol.Valor.ToString
+							CType(Cont.Controls("_txtInput" & oCol.Orden), DevExpress.XtraEditors.BaseEdit).Text = oCol.Valor.ToString
 						End If
 					Else
 						SelComboDevExpress(CType(Cont.Controls("_cboInput" & oCol.Orden.ToString), DevExpress.XtraEditors.ComboBoxEdit), "K" & oCol.Valor.ToString)
@@ -406,9 +406,13 @@ Public Class frmABMRegistro
 
 
 						If GENERAR_LOG_SQL And (TIPO_LOG_SQL = 1 Or TIPO_LOG_SQL = 2 Or TIPO_LOG_SQL = 3) Then
+							Dim valor = sValor
+							If MODO_APE = "A" Then
+								valor = $"@{oCol.Campo}"
+							End If
 							sVarLogAct = sVarLogAct +
-									oCol.Titulo + ": " +
-									sValor + ", "
+										oCol.Titulo + ": " +
+										valor + ", "
 							If oCol.ValorAnterior Is Nothing Then
 								sVarLogAnt = sVarLogAnt + oCol.Titulo + ": , "
 
@@ -504,6 +508,7 @@ GuardaDataRow:
 				cmdInsert.CommandText = $"INSERT INTO {sTabla} ({String.Join(",", parametrosInsert.Keys)}) VALUES ("
 				Dim i = 0
 				For Each paramInsert As KeyValuePair(Of String, Object) In parametrosInsert
+					sVarLogAct = sVarLogAct.Replace($"@{paramInsert.Key}", paramInsert.Value)
 					If i = 0 Then
 						cmdInsert.CommandText += $"@{paramInsert.Key}"
 					Else
