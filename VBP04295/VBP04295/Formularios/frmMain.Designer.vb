@@ -52,6 +52,12 @@ Partial Class frmMain
 		Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
 		Me.btnEjecutar = New System.Windows.Forms.ToolStripButton()
 		Me.ToolTipText = New System.Windows.Forms.ToolTip(Me.components)
+		Me.popMnuTotalizador = New System.Windows.Forms.ContextMenuStrip(Me.components)
+		Me.mnuRecuento = New System.Windows.Forms.ToolStripMenuItem()
+		Me.mnuSuma = New System.Windows.Forms.ToolStripMenuItem()
+		Me.mnuPromedio = New System.Windows.Forms.ToolStripMenuItem()
+		Me.mnuMinimo = New System.Windows.Forms.ToolStripMenuItem()
+		Me.mnuMaximo = New System.Windows.Forms.ToolStripMenuItem()
 		CType(Me.PanControles, System.ComponentModel.ISupportInitialize).BeginInit()
 		Me.PanControles.SuspendLayout()
 		CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -67,6 +73,7 @@ Partial Class frmMain
 		CType(Me.PanTool, System.ComponentModel.ISupportInitialize).BeginInit()
 		Me.PanTool.SuspendLayout()
 		Me.ToolBarra.SuspendLayout()
+		Me.popMnuTotalizador.SuspendLayout()
 		Me.SuspendLayout()
 		'
 		'Skin
@@ -79,9 +86,8 @@ Partial Class frmMain
 		Me.PanControles.Controls.Add(Me.PanTop)
 		Me.PanControles.Dock = System.Windows.Forms.DockStyle.Top
 		Me.PanControles.Location = New System.Drawing.Point(0, 0)
-		Me.PanControles.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
 		Me.PanControles.Name = "PanControles"
-		Me.PanControles.Size = New System.Drawing.Size(847, 134)
+		Me.PanControles.Size = New System.Drawing.Size(635, 109)
 		Me.PanControles.TabIndex = 0
 		'
 		'PanTop
@@ -94,40 +100,36 @@ Partial Class frmMain
 		Me.PanTop.Dock = System.Windows.Forms.DockStyle.Top
 		Me.PanTop.Location = New System.Drawing.Point(0, 0)
 		Me.PanTop.LookAndFeel.UseDefaultLookAndFeel = False
-		Me.PanTop.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
 		Me.PanTop.Name = "PanTop"
-		Me.PanTop.Size = New System.Drawing.Size(847, 66)
+		Me.PanTop.Size = New System.Drawing.Size(635, 54)
 		Me.PanTop.TabIndex = 6
 		'
 		'lblSubtitulo
 		'
-		Me.lblSubtitulo.Location = New System.Drawing.Point(45, 36)
-		Me.lblSubtitulo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.lblSubtitulo.Location = New System.Drawing.Point(34, 29)
 		Me.lblSubtitulo.Name = "lblSubtitulo"
-		Me.lblSubtitulo.Size = New System.Drawing.Size(0, 16)
+		Me.lblSubtitulo.Size = New System.Drawing.Size(0, 13)
 		Me.lblSubtitulo.TabIndex = 2
 		'
 		'lblTitulo
 		'
 		Me.lblTitulo.Appearance.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
 		Me.lblTitulo.Appearance.Options.UseFont = True
-		Me.lblTitulo.Location = New System.Drawing.Point(16, 11)
-		Me.lblTitulo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.lblTitulo.Location = New System.Drawing.Point(12, 9)
 		Me.lblTitulo.Name = "lblTitulo"
-		Me.lblTitulo.Size = New System.Drawing.Size(0, 17)
+		Me.lblTitulo.Size = New System.Drawing.Size(0, 13)
 		Me.lblTitulo.TabIndex = 1
 		'
 		'picLogo
 		'
 		Me.picLogo.Dock = System.Windows.Forms.DockStyle.Right
 		Me.picLogo.EditValue = Global.VBP04295.My.Resources.Resources.logo_prex
-		Me.picLogo.Location = New System.Drawing.Point(766, 2)
-		Me.picLogo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.picLogo.Location = New System.Drawing.Point(574, 2)
 		Me.picLogo.Name = "picLogo"
 		Me.picLogo.Properties.Appearance.BackColor = System.Drawing.Color.Transparent
 		Me.picLogo.Properties.Appearance.Options.UseBackColor = True
 		Me.picLogo.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder
-		Me.picLogo.Size = New System.Drawing.Size(79, 62)
+		Me.picLogo.Size = New System.Drawing.Size(59, 50)
 		Me.picLogo.TabIndex = 0
 		'
 		'PrintingSystem1
@@ -148,15 +150,13 @@ Partial Class frmMain
 		Me.Grid.EmbeddedNavigator.Buttons.Edit.Visible = False
 		Me.Grid.EmbeddedNavigator.Buttons.EndEdit.Visible = False
 		Me.Grid.EmbeddedNavigator.Buttons.Remove.Visible = False
-		Me.Grid.EmbeddedNavigator.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
 		Me.Grid.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.Grid.Location = New System.Drawing.Point(0, 0)
 		Me.Grid.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat
 		Me.Grid.LookAndFeel.UseWindowsXPTheme = True
 		Me.Grid.MainView = Me.GridView1
-		Me.Grid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
 		Me.Grid.Name = "Grid"
-		Me.Grid.Size = New System.Drawing.Size(847, 359)
+		Me.Grid.Size = New System.Drawing.Size(635, 292)
 		Me.Grid.TabIndex = 6
 		Me.Grid.UseEmbeddedNavigator = True
 		Me.Grid.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.GridView1})
@@ -187,10 +187,9 @@ Partial Class frmMain
 		Me.PanGrid.Controls.Add(Me.PanGrilla)
 		Me.PanGrid.Controls.Add(Me.PanTool)
 		Me.PanGrid.Dock = System.Windows.Forms.DockStyle.Fill
-		Me.PanGrid.Location = New System.Drawing.Point(0, 134)
-		Me.PanGrid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.PanGrid.Location = New System.Drawing.Point(0, 109)
 		Me.PanGrid.Name = "PanGrid"
-		Me.PanGrid.Size = New System.Drawing.Size(847, 395)
+		Me.PanGrid.Size = New System.Drawing.Size(635, 321)
 		Me.PanGrid.TabIndex = 3
 		'
 		'PanGrilla
@@ -198,10 +197,9 @@ Partial Class frmMain
 		Me.PanGrilla.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder
 		Me.PanGrilla.Controls.Add(Me.Grid)
 		Me.PanGrilla.Dock = System.Windows.Forms.DockStyle.Fill
-		Me.PanGrilla.Location = New System.Drawing.Point(0, 36)
-		Me.PanGrilla.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.PanGrilla.Location = New System.Drawing.Point(0, 29)
 		Me.PanGrilla.Name = "PanGrilla"
-		Me.PanGrilla.Size = New System.Drawing.Size(847, 359)
+		Me.PanGrilla.Size = New System.Drawing.Size(635, 292)
 		Me.PanGrilla.TabIndex = 1
 		'
 		'PanTool
@@ -210,9 +208,8 @@ Partial Class frmMain
 		Me.PanTool.Controls.Add(Me.ToolBarra)
 		Me.PanTool.Dock = System.Windows.Forms.DockStyle.Top
 		Me.PanTool.Location = New System.Drawing.Point(0, 0)
-		Me.PanTool.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
 		Me.PanTool.Name = "PanTool"
-		Me.PanTool.Size = New System.Drawing.Size(847, 36)
+		Me.PanTool.Size = New System.Drawing.Size(635, 29)
 		Me.PanTool.TabIndex = 0
 		'
 		'ToolBarra
@@ -222,7 +219,7 @@ Partial Class frmMain
 		Me.ToolBarra.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnAlta, Me.btnModif, Me.btnBaja, Me.btnNDesde, Me.ToolStripSeparator2, Me.btnMostrarBuscador, Me.btnImprimir, Me.btnExportar, Me.btnCopiar, Me.ToolStripSeparator5, Me.btnDrillDown, Me.ToolStripSeparator6, Me.btnComent, Me.btnAdjuntarArchivo, Me.ToolStripSeparator4, Me.btnEjecutar})
 		Me.ToolBarra.Location = New System.Drawing.Point(0, 0)
 		Me.ToolBarra.Name = "ToolBarra"
-		Me.ToolBarra.Size = New System.Drawing.Size(847, 36)
+		Me.ToolBarra.Size = New System.Drawing.Size(635, 29)
 		Me.ToolBarra.TabIndex = 0
 		Me.ToolBarra.TabStop = True
 		Me.ToolBarra.Text = "ToolStrip1"
@@ -233,7 +230,7 @@ Partial Class frmMain
 		Me.btnAlta.Image = Global.VBP04295.My.Resources.Resources.Note_New
 		Me.btnAlta.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnAlta.Name = "btnAlta"
-		Me.btnAlta.Size = New System.Drawing.Size(29, 33)
+		Me.btnAlta.Size = New System.Drawing.Size(24, 26)
 		Me.btnAlta.Text = "Alta"
 		'
 		'btnModif
@@ -242,7 +239,7 @@ Partial Class frmMain
 		Me.btnModif.Image = Global.VBP04295.My.Resources.Resources.Note_Edit
 		Me.btnModif.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnModif.Name = "btnModif"
-		Me.btnModif.Size = New System.Drawing.Size(29, 33)
+		Me.btnModif.Size = New System.Drawing.Size(24, 26)
 		Me.btnModif.Text = "Modificación"
 		'
 		'btnBaja
@@ -251,7 +248,7 @@ Partial Class frmMain
 		Me.btnBaja.Image = Global.VBP04295.My.Resources.Resources.Note_Delete
 		Me.btnBaja.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnBaja.Name = "btnBaja"
-		Me.btnBaja.Size = New System.Drawing.Size(29, 33)
+		Me.btnBaja.Size = New System.Drawing.Size(24, 26)
 		Me.btnBaja.Text = "Baja"
 		'
 		'btnNDesde
@@ -260,13 +257,13 @@ Partial Class frmMain
 		Me.btnNDesde.Image = Global.VBP04295.My.Resources.Resources.Note_Add
 		Me.btnNDesde.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnNDesde.Name = "btnNDesde"
-		Me.btnNDesde.Size = New System.Drawing.Size(29, 33)
+		Me.btnNDesde.Size = New System.Drawing.Size(24, 26)
 		Me.btnNDesde.Text = "Nuevo desde"
 		'
 		'ToolStripSeparator2
 		'
 		Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-		Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 36)
+		Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 29)
 		'
 		'btnMostrarBuscador
 		'
@@ -275,7 +272,7 @@ Partial Class frmMain
 		Me.btnMostrarBuscador.Image = CType(resources.GetObject("btnMostrarBuscador.Image"), System.Drawing.Image)
 		Me.btnMostrarBuscador.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnMostrarBuscador.Name = "btnMostrarBuscador"
-		Me.btnMostrarBuscador.Size = New System.Drawing.Size(29, 33)
+		Me.btnMostrarBuscador.Size = New System.Drawing.Size(24, 26)
 		Me.btnMostrarBuscador.Text = "Mostrar/Ocultar buscador en grilla"
 		Me.btnMostrarBuscador.ToolTipText = "Mostrar/Ocultar buscador"
 		'
@@ -286,7 +283,7 @@ Partial Class frmMain
 		Me.btnImprimir.Image = CType(resources.GetObject("btnImprimir.Image"), System.Drawing.Image)
 		Me.btnImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnImprimir.Name = "btnImprimir"
-		Me.btnImprimir.Size = New System.Drawing.Size(29, 33)
+		Me.btnImprimir.Size = New System.Drawing.Size(24, 26)
 		Me.btnImprimir.Text = "Vista previa"
 		Me.btnImprimir.ToolTipText = "Vista previa impresión"
 		'
@@ -296,7 +293,7 @@ Partial Class frmMain
 		Me.btnExportar.Image = CType(resources.GetObject("btnExportar.Image"), System.Drawing.Image)
 		Me.btnExportar.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnExportar.Name = "btnExportar"
-		Me.btnExportar.Size = New System.Drawing.Size(29, 33)
+		Me.btnExportar.Size = New System.Drawing.Size(24, 26)
 		Me.btnExportar.ToolTipText = "Exportar a Excel"
 		'
 		'btnCopiar
@@ -306,27 +303,27 @@ Partial Class frmMain
 		Me.btnCopiar.Image = Global.VBP04295.My.Resources.Resources.Copy
 		Me.btnCopiar.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnCopiar.Name = "btnCopiar"
-		Me.btnCopiar.Size = New System.Drawing.Size(29, 33)
+		Me.btnCopiar.Size = New System.Drawing.Size(24, 26)
 		Me.btnCopiar.ToolTipText = "Copiar resultados"
 		'
 		'ToolStripSeparator5
 		'
 		Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-		Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 36)
+		Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 29)
 		'
 		'btnDrillDown
 		'
 		Me.btnDrillDown.Image = Global.VBP04295.My.Resources.Resources.Grid_2
 		Me.btnDrillDown.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnDrillDown.Name = "btnDrillDown"
-		Me.btnDrillDown.Size = New System.Drawing.Size(104, 33)
+		Me.btnDrillDown.Size = New System.Drawing.Size(86, 26)
 		Me.btnDrillDown.Text = "Drill Down"
 		Me.btnDrillDown.ToolTipText = "Presenta el drill down"
 		'
 		'ToolStripSeparator6
 		'
 		Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-		Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 36)
+		Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 29)
 		'
 		'btnComent
 		'
@@ -334,7 +331,7 @@ Partial Class frmMain
 		Me.btnComent.Image = Global.VBP04295.My.Resources.Resources.Note
 		Me.btnComent.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnComent.Name = "btnComent"
-		Me.btnComent.Size = New System.Drawing.Size(29, 33)
+		Me.btnComent.Size = New System.Drawing.Size(24, 26)
 		Me.btnComent.Text = "Comentarios"
 		Me.btnComent.ToolTipText = "Ver/Agregar comentarios"
 		'
@@ -345,31 +342,72 @@ Partial Class frmMain
 		Me.btnAdjuntarArchivo.Image = CType(resources.GetObject("btnAdjuntarArchivo.Image"), System.Drawing.Image)
 		Me.btnAdjuntarArchivo.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnAdjuntarArchivo.Name = "btnAdjuntarArchivo"
-		Me.btnAdjuntarArchivo.Size = New System.Drawing.Size(29, 33)
+		Me.btnAdjuntarArchivo.Size = New System.Drawing.Size(24, 26)
 		Me.btnAdjuntarArchivo.ToolTipText = "Adjuntar un archivo"
 		'
 		'ToolStripSeparator4
 		'
 		Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-		Me.ToolStripSeparator4.Size = New System.Drawing.Size(6, 36)
+		Me.ToolStripSeparator4.Size = New System.Drawing.Size(6, 29)
 		'
 		'btnEjecutar
 		'
 		Me.btnEjecutar.Image = CType(resources.GetObject("btnEjecutar.Image"), System.Drawing.Image)
 		Me.btnEjecutar.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnEjecutar.Name = "btnEjecutar"
-		Me.btnEjecutar.Size = New System.Drawing.Size(137, 33)
+		Me.btnEjecutar.Size = New System.Drawing.Size(113, 26)
 		Me.btnEjecutar.Text = "Presentar Datos"
+		'
+		'popMnuTotalizador
+		'
+		Me.popMnuTotalizador.ImageScalingSize = New System.Drawing.Size(20, 20)
+		Me.popMnuTotalizador.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuRecuento, Me.mnuSuma, Me.mnuPromedio, Me.mnuMinimo, Me.mnuMaximo})
+		Me.popMnuTotalizador.Name = "popMnuTotalizador"
+		Me.popMnuTotalizador.Size = New System.Drawing.Size(181, 136)
+		'
+		'mnuRecuento
+		'
+		Me.mnuRecuento.Name = "mnuRecuento"
+		Me.mnuRecuento.Size = New System.Drawing.Size(180, 22)
+		Me.mnuRecuento.Tag = "3"
+		Me.mnuRecuento.Text = "&Recuento"
+		'
+		'mnuSuma
+		'
+		Me.mnuSuma.Name = "mnuSuma"
+		Me.mnuSuma.Size = New System.Drawing.Size(180, 22)
+		Me.mnuSuma.Tag = "0"
+		Me.mnuSuma.Text = "&Suma"
+		'
+		'mnuPromedio
+		'
+		Me.mnuPromedio.Name = "mnuPromedio"
+		Me.mnuPromedio.Size = New System.Drawing.Size(180, 22)
+		Me.mnuPromedio.Tag = "4"
+		Me.mnuPromedio.Text = "&Promedio"
+		'
+		'mnuMinimo
+		'
+		Me.mnuMinimo.Name = "mnuMinimo"
+		Me.mnuMinimo.Size = New System.Drawing.Size(180, 22)
+		Me.mnuMinimo.Tag = "1"
+		Me.mnuMinimo.Text = "&Mínimo"
+		'
+		'mnuMaximo
+		'
+		Me.mnuMaximo.Name = "mnuMaximo"
+		Me.mnuMaximo.Size = New System.Drawing.Size(180, 22)
+		Me.mnuMaximo.Tag = "2"
+		Me.mnuMaximo.Text = "Má&ximo"
 		'
 		'frmMain
 		'
-		Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+		Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-		Me.ClientSize = New System.Drawing.Size(847, 529)
+		Me.ClientSize = New System.Drawing.Size(635, 430)
 		Me.Controls.Add(Me.PanGrid)
 		Me.Controls.Add(Me.PanControles)
 		Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-		Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
 		Me.Name = "frmMain"
 		Me.Text = " VBP04295"
 		Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
@@ -391,6 +429,7 @@ Partial Class frmMain
 		Me.PanTool.PerformLayout()
 		Me.ToolBarra.ResumeLayout(False)
 		Me.ToolBarra.PerformLayout()
+		Me.popMnuTotalizador.ResumeLayout(False)
 		Me.ResumeLayout(False)
 
 	End Sub
@@ -426,4 +465,10 @@ Partial Class frmMain
     Friend WithEvents btnCopiar As ToolStripButton
     Friend WithEvents btnAdjuntarArchivo As ToolStripButton
     Friend WithEvents btnMostrarBuscador As ToolStripButton
+	Friend WithEvents popMnuTotalizador As ContextMenuStrip
+	Friend WithEvents mnuRecuento As ToolStripMenuItem
+	Friend WithEvents mnuSuma As ToolStripMenuItem
+	Friend WithEvents mnuPromedio As ToolStripMenuItem
+	Friend WithEvents mnuMinimo As ToolStripMenuItem
+	Friend WithEvents mnuMaximo As ToolStripMenuItem
 End Class

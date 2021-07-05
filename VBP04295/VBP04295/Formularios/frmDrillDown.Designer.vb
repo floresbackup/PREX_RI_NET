@@ -33,6 +33,7 @@ Partial Class frmDrillDown
 		Me.Bar1 = New DevExpress.XtraBars.Bar()
 		Me.cmdImprimir = New DevExpress.XtraBars.BarButtonItem()
 		Me.cmdGuardar = New DevExpress.XtraBars.BarButtonItem()
+		Me.cmdCopiarGrilla = New DevExpress.XtraBars.BarButtonItem()
 		Me.cmdGuardarLaoyut = New DevExpress.XtraBars.BarButtonItem()
 		Me.cmdResetLaoyut = New DevExpress.XtraBars.BarButtonItem()
 		Me.cmdCerrar = New DevExpress.XtraBars.BarButtonItem()
@@ -49,7 +50,6 @@ Partial Class frmDrillDown
 		Me.mnuMinimo = New System.Windows.Forms.ToolStripMenuItem()
 		Me.mnuMaximo = New System.Windows.Forms.ToolStripMenuItem()
 		Me.BarButtonItem1 = New DevExpress.XtraBars.BarButtonItem()
-		Me.cmdCopiarGrilla = New DevExpress.XtraBars.BarButtonItem()
 		CType(Me.PanTop, System.ComponentModel.ISupportInitialize).BeginInit()
 		Me.PanTop.SuspendLayout()
 		CType(Me.picLogo.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -71,17 +71,15 @@ Partial Class frmDrillDown
 		Me.PanTop.Dock = System.Windows.Forms.DockStyle.Top
 		Me.PanTop.Location = New System.Drawing.Point(0, 0)
 		Me.PanTop.LookAndFeel.UseDefaultLookAndFeel = False
-		Me.PanTop.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.PanTop.Name = "PanTop"
-		Me.PanTop.Size = New System.Drawing.Size(839, 66)
+		Me.PanTop.Size = New System.Drawing.Size(719, 54)
 		Me.PanTop.TabIndex = 16
 		'
 		'lblSubtitulo
 		'
-		Me.lblSubtitulo.Location = New System.Drawing.Point(28, 34)
-		Me.lblSubtitulo.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+		Me.lblSubtitulo.Location = New System.Drawing.Point(24, 28)
 		Me.lblSubtitulo.Name = "lblSubtitulo"
-		Me.lblSubtitulo.Size = New System.Drawing.Size(58, 16)
+		Me.lblSubtitulo.Size = New System.Drawing.Size(47, 13)
 		Me.lblSubtitulo.TabIndex = 2
 		Me.lblSubtitulo.Text = "Drill Down"
 		'
@@ -89,10 +87,9 @@ Partial Class frmDrillDown
 		'
 		Me.lblTitulo.Appearance.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
 		Me.lblTitulo.Appearance.Options.UseFont = True
-		Me.lblTitulo.Location = New System.Drawing.Point(14, 11)
-		Me.lblTitulo.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+		Me.lblTitulo.Location = New System.Drawing.Point(12, 9)
 		Me.lblTitulo.Name = "lblTitulo"
-		Me.lblTitulo.Size = New System.Drawing.Size(69, 17)
+		Me.lblTitulo.Size = New System.Drawing.Size(56, 13)
 		Me.lblTitulo.TabIndex = 1
 		Me.lblTitulo.Text = "Drill Down"
 		'
@@ -100,13 +97,12 @@ Partial Class frmDrillDown
 		'
 		Me.picLogo.Dock = System.Windows.Forms.DockStyle.Right
 		Me.picLogo.EditValue = Global.VBP04295.My.Resources.Resources.Grid_2
-		Me.picLogo.Location = New System.Drawing.Point(768, 2)
-		Me.picLogo.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+		Me.picLogo.Location = New System.Drawing.Point(658, 2)
 		Me.picLogo.Name = "picLogo"
 		Me.picLogo.Properties.Appearance.BackColor = System.Drawing.Color.Transparent
 		Me.picLogo.Properties.Appearance.Options.UseBackColor = True
 		Me.picLogo.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder
-		Me.picLogo.Size = New System.Drawing.Size(69, 62)
+		Me.picLogo.Size = New System.Drawing.Size(59, 50)
 		Me.picLogo.TabIndex = 0
 		'
 		'PanelControl1
@@ -114,10 +110,9 @@ Partial Class frmDrillDown
 		Me.PanelControl1.Controls.Add(Me.Grid)
 		Me.PanelControl1.Controls.Add(Me.StandaloneBarDockControl1)
 		Me.PanelControl1.Dock = System.Windows.Forms.DockStyle.Fill
-		Me.PanelControl1.Location = New System.Drawing.Point(0, 66)
-		Me.PanelControl1.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+		Me.PanelControl1.Location = New System.Drawing.Point(0, 54)
 		Me.PanelControl1.Name = "PanelControl1"
-		Me.PanelControl1.Size = New System.Drawing.Size(839, 476)
+		Me.PanelControl1.Size = New System.Drawing.Size(719, 384)
 		Me.PanelControl1.TabIndex = 24
 		'
 		'Grid
@@ -130,15 +125,13 @@ Partial Class frmDrillDown
 		Me.Grid.EmbeddedNavigator.Buttons.Edit.Visible = False
 		Me.Grid.EmbeddedNavigator.Buttons.EndEdit.Visible = False
 		Me.Grid.EmbeddedNavigator.Buttons.Remove.Visible = False
-		Me.Grid.EmbeddedNavigator.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.Grid.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-		Me.Grid.Location = New System.Drawing.Point(2, 45)
+		Me.Grid.Location = New System.Drawing.Point(2, 37)
 		Me.Grid.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat
 		Me.Grid.LookAndFeel.UseWindowsXPTheme = True
 		Me.Grid.MainView = Me.GridView1
-		Me.Grid.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.Grid.Name = "Grid"
-		Me.Grid.Size = New System.Drawing.Size(835, 429)
+		Me.Grid.Size = New System.Drawing.Size(715, 345)
 		Me.Grid.TabIndex = 7
 		Me.Grid.UseEmbeddedNavigator = True
 		Me.Grid.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.GridView1})
@@ -168,9 +161,8 @@ Partial Class frmDrillDown
 		Me.StandaloneBarDockControl1.Dock = System.Windows.Forms.DockStyle.Top
 		Me.StandaloneBarDockControl1.Location = New System.Drawing.Point(2, 2)
 		Me.StandaloneBarDockControl1.Manager = Me.BarManager1
-		Me.StandaloneBarDockControl1.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.StandaloneBarDockControl1.Name = "StandaloneBarDockControl1"
-		Me.StandaloneBarDockControl1.Size = New System.Drawing.Size(835, 43)
+		Me.StandaloneBarDockControl1.Size = New System.Drawing.Size(715, 35)
 		Me.StandaloneBarDockControl1.Text = "StandaloneBarDockControl1"
 		'
 		'BarManager1
@@ -221,6 +213,16 @@ Partial Class frmDrillDown
 		Me.cmdGuardar.Name = "cmdGuardar"
 		Me.cmdGuardar.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph
 		'
+		'cmdCopiarGrilla
+		'
+		Me.cmdCopiarGrilla.Border = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat
+		Me.cmdCopiarGrilla.Caption = "Copiar Datos"
+		Me.cmdCopiarGrilla.Id = 8
+		Me.cmdCopiarGrilla.ImageOptions.Image = CType(resources.GetObject("cmdCopiarGrilla.ImageOptions.Image"), System.Drawing.Image)
+		Me.cmdCopiarGrilla.ImageOptions.LargeImage = CType(resources.GetObject("cmdCopiarGrilla.ImageOptions.LargeImage"), System.Drawing.Image)
+		Me.cmdCopiarGrilla.Name = "cmdCopiarGrilla"
+		Me.cmdCopiarGrilla.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph
+		'
 		'cmdGuardarLaoyut
 		'
 		Me.cmdGuardarLaoyut.Border = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat
@@ -269,17 +271,15 @@ Partial Class frmDrillDown
 		Me.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top
 		Me.barDockControlTop.Location = New System.Drawing.Point(0, 0)
 		Me.barDockControlTop.Manager = Me.BarManager1
-		Me.barDockControlTop.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
-		Me.barDockControlTop.Size = New System.Drawing.Size(839, 0)
+		Me.barDockControlTop.Size = New System.Drawing.Size(719, 0)
 		'
 		'barDockControlBottom
 		'
 		Me.barDockControlBottom.CausesValidation = False
 		Me.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-		Me.barDockControlBottom.Location = New System.Drawing.Point(0, 542)
+		Me.barDockControlBottom.Location = New System.Drawing.Point(0, 438)
 		Me.barDockControlBottom.Manager = Me.BarManager1
-		Me.barDockControlBottom.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
-		Me.barDockControlBottom.Size = New System.Drawing.Size(839, 25)
+		Me.barDockControlBottom.Size = New System.Drawing.Size(719, 23)
 		'
 		'barDockControlLeft
 		'
@@ -287,17 +287,15 @@ Partial Class frmDrillDown
 		Me.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left
 		Me.barDockControlLeft.Location = New System.Drawing.Point(0, 0)
 		Me.barDockControlLeft.Manager = Me.BarManager1
-		Me.barDockControlLeft.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
-		Me.barDockControlLeft.Size = New System.Drawing.Size(0, 542)
+		Me.barDockControlLeft.Size = New System.Drawing.Size(0, 438)
 		'
 		'barDockControlRight
 		'
 		Me.barDockControlRight.CausesValidation = False
 		Me.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right
-		Me.barDockControlRight.Location = New System.Drawing.Point(839, 0)
+		Me.barDockControlRight.Location = New System.Drawing.Point(719, 0)
 		Me.barDockControlRight.Manager = Me.BarManager1
-		Me.barDockControlRight.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
-		Me.barDockControlRight.Size = New System.Drawing.Size(0, 542)
+		Me.barDockControlRight.Size = New System.Drawing.Size(0, 438)
 		'
 		'Bar4
 		'
@@ -314,40 +312,40 @@ Partial Class frmDrillDown
 		Me.popMnuTotalizador.ImageScalingSize = New System.Drawing.Size(20, 20)
 		Me.popMnuTotalizador.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuRecuento, Me.mnuSuma, Me.mnuPromedio, Me.mnuMinimo, Me.mnuMaximo})
 		Me.popMnuTotalizador.Name = "popMnuTotalizador"
-		Me.popMnuTotalizador.Size = New System.Drawing.Size(144, 124)
+		Me.popMnuTotalizador.Size = New System.Drawing.Size(181, 136)
 		'
 		'mnuRecuento
 		'
 		Me.mnuRecuento.Name = "mnuRecuento"
-		Me.mnuRecuento.Size = New System.Drawing.Size(143, 24)
+		Me.mnuRecuento.Size = New System.Drawing.Size(180, 22)
 		Me.mnuRecuento.Tag = "3"
 		Me.mnuRecuento.Text = "&Recuento"
 		'
 		'mnuSuma
 		'
 		Me.mnuSuma.Name = "mnuSuma"
-		Me.mnuSuma.Size = New System.Drawing.Size(143, 24)
+		Me.mnuSuma.Size = New System.Drawing.Size(180, 22)
 		Me.mnuSuma.Tag = "0"
 		Me.mnuSuma.Text = "&Suma"
 		'
 		'mnuPromedio
 		'
 		Me.mnuPromedio.Name = "mnuPromedio"
-		Me.mnuPromedio.Size = New System.Drawing.Size(143, 24)
+		Me.mnuPromedio.Size = New System.Drawing.Size(180, 22)
 		Me.mnuPromedio.Tag = "4"
 		Me.mnuPromedio.Text = "&Promedio"
 		'
 		'mnuMinimo
 		'
 		Me.mnuMinimo.Name = "mnuMinimo"
-		Me.mnuMinimo.Size = New System.Drawing.Size(143, 24)
+		Me.mnuMinimo.Size = New System.Drawing.Size(180, 22)
 		Me.mnuMinimo.Tag = "1"
 		Me.mnuMinimo.Text = "&Mínimo"
 		'
 		'mnuMaximo
 		'
 		Me.mnuMaximo.Name = "mnuMaximo"
-		Me.mnuMaximo.Size = New System.Drawing.Size(143, 24)
+		Me.mnuMaximo.Size = New System.Drawing.Size(180, 22)
 		Me.mnuMaximo.Tag = "2"
 		Me.mnuMaximo.Text = "Má&ximo"
 		'
@@ -361,22 +359,12 @@ Partial Class frmDrillDown
 		Me.BarButtonItem1.Name = "BarButtonItem1"
 		Me.BarButtonItem1.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph
 		'
-		'cmdCopiarGrilla
-		'
-		Me.cmdCopiarGrilla.Border = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat
-		Me.cmdCopiarGrilla.Caption = "Copiar Datos"
-		Me.cmdCopiarGrilla.Id = 8
-		Me.cmdCopiarGrilla.ImageOptions.Image = CType(resources.GetObject("cmdCopiarGrilla.ImageOptions.Image"), System.Drawing.Image)
-		Me.cmdCopiarGrilla.ImageOptions.LargeImage = CType(resources.GetObject("cmdCopiarGrilla.ImageOptions.LargeImage"), System.Drawing.Image)
-		Me.cmdCopiarGrilla.Name = "cmdCopiarGrilla"
-		Me.cmdCopiarGrilla.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph
-		'
 		'frmDrillDown
 		'
 		Me.AllowDrop = True
-		Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 16.0!)
+		Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-		Me.ClientSize = New System.Drawing.Size(839, 567)
+		Me.ClientSize = New System.Drawing.Size(719, 461)
 		Me.Controls.Add(Me.PanelControl1)
 		Me.Controls.Add(Me.PanTop)
 		Me.Controls.Add(Me.barDockControlLeft)
@@ -384,7 +372,6 @@ Partial Class frmDrillDown
 		Me.Controls.Add(Me.barDockControlBottom)
 		Me.Controls.Add(Me.barDockControlTop)
 		Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-		Me.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.Name = "frmDrillDown"
 		Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
 		Me.Text = "Drill Down"

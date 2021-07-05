@@ -9,6 +9,7 @@ Imports DevExpress.XtraCharts.Localization
 Imports DevExpress.XtraEditors.Controls
 Imports DevExpress.XtraGrid
 Imports DevExpress.XtraGrid.Localization
+Imports DevExpress.XtraGrid.Menu
 Imports DevExpress.XtraGrid.Views.Base
 Imports DevExpress.XtraPivotGrid.Localization
 Imports DevExpress.XtraPrinting.Localization
@@ -2768,6 +2769,58 @@ Reinicio:
 
 	End Function
 
+	Private isInitMenuHeader As Boolean
+	Private itemColumna As DevExpress.Utils.Menu.DXMenuItem
+	Private columnMenu As DevExpress.XtraGrid.Columns.GridColumn = Nothing
+	Private Sub GridView1_PopupMenuShowing(sender As Object, e As DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventArgs) Handles GridView1.PopupMenuShowing
+		For Each item As DevExpress.Utils.Menu.DXMenuItem In e.Menu.Items
+			item.Visible = True
+		Next
+		If e.HitInfo.InColumnPanel Then
+			columnMenu = e.HitInfo.Column
+			InicializarMenuTotalizadores(e.Menu)
+			e.Allow = True
+		ElseIf e.HitInfo.InGroupColumn Then
+			columnMenu = e.HitInfo.Column
+			e.Allow = True
+
+		Else
+			e.Allow = False
+			columnMenu = Nothing
+		End If
+	End Sub
+
+
+	Private Sub InicializarMenuTotalizadores(menuGrilla As GridViewMenu)
+
+		itemColumna = New DevExpress.Utils.Menu.DXMenuItem("Totalizar: " & columnMenu.Caption)
+		itemColumna.Appearance.BackColor = SystemColors.ActiveBorder
+		itemColumna.BeginGroup = True
+		menuGrilla.Items.Add(itemColumna)
+
+		For Each item As ToolStripItem In popMnuTotalizador.Items
+			Dim i As New DevExpress.Utils.Menu.DXMenuItem(item.Text)
+			i.Tag = item.Tag
+			If menuGrilla.Items.Count() = 0 Then
+				i.BeginGroup = True
+			Else
+				AddHandler i.Click, AddressOf mnuRecuento_Click
+			End If
+			menuGrilla.Items.Add(i)
+		Next
+		isInitMenuHeader = True
+	End Sub
+
+	Private Sub mnuRecuento_Click(sender As Object, e As EventArgs)
+		'Dim summary As DevExpress.XtraGrid.GridGroupSummaryItem = Me.GridView1.GroupSummary.Add()
+		'summary.SummaryType = CType(sender, DevExpress.Utils.Menu.DXMenuItem).Tag
+		'summary.FieldName = columnMenu.FieldName
+		'summary.ShowInGroupColumnFooter = columnMenu
+		columnMenu.Summary.Clear()
+		Dim summaryItem As DevExpress.XtraGrid.GridColumnSummaryItem = columnMenu.Summary.Add(CType(sender, DevExpress.Utils.Menu.DXMenuItem).Tag)
+		summaryItem.DisplayFormat = CType(sender, DevExpress.Utils.Menu.DXMenuItem).Caption.Replace("&", String.Empty) & " = {0}"
+		GridView1.Appearance.FooterPanel.BackColor = SystemColors.ActiveBorder
+	End Sub
 
 	Private Sub GridView1_GridMenuItemClick(ByVal sender As Object, ByVal e As DevExpress.XtraGrid.Views.Grid.GridMenuItemClickEventArgs) Handles GridView1.GridMenuItemClick
 
