@@ -1861,40 +1861,29 @@ Salir:
 		oItem = cboArchivos.SelectedItem
 
 		Select Case oItem.Valor
-
 			Case 6301 To 6303
-				PreparaTxt = PreparaTXT_Anticipos(sTabla, dFecha)
-
+				Return PreparaTXT_Anticipos(sTabla, dFecha)
 			Case 5601
-				PreparaTxt = PreparaTXT_5601(sTabla, dFecha)
-
+				Return PreparaTXT_5601(sTabla, dFecha)
 			Case 5603
-				PreparaTxt = PreparaTXT_5603(sTabla, dFecha)
-
+				Return PreparaTXT_5603(sTabla, dFecha)
 			Case 5605
-				PreparaTxt = PreparaTXT_5605(sTabla, dFecha)
-
+				Return PreparaTXT_5605(sTabla, dFecha)
 			Case 5607
-				PreparaTxt = PreparaTXT_5607(sTabla, dFecha)
-
+				Return PreparaTXT_5607(sTabla, dFecha)
 			Case 5610
-				PreparaTxt = PreparaTXT_5610(sTabla, dFecha)
-
+				Return PreparaTXT_5610(sTabla, dFecha)
 			Case 5611
-				PreparaTxt = PreparaTXT_5611(sTabla, dFecha)
-
+				Return PreparaTXT_5611(sTabla, dFecha)
 			'Case 4401
-			'   PreparaTxt = PreparaTXT_4401(sTabla, dFecha)
-
+			'   Return PreparaTXT_4401(sTabla, dFecha)
 			Case 4300 To 4399
-				PreparaTxt = PreparaTXT_Dinamico(nCod, dFecha)
-
+				Return PreparaTXT_Dinamico(nCod, dFecha)
 			Case Else
-
-				PreparaTxt = PreparaTXT_Dinamico(oItem.Valor, dFecha)
-
+				Return PreparaTXT_Dinamico(oItem.Valor, dFecha)
 		End Select
 
+		Return False
 	End Function
 
 	Private Function PreparaTXT_Anticipos(ByVal sTabla As String,
