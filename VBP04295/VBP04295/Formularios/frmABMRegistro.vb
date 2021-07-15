@@ -482,8 +482,10 @@ Public Class frmABMRegistro
 					'	cmdDefault.Parameters.AddWithValue("DC_CODCON", parametrosInsert("DC_CODCON"))
 					'	cmdDefault.Parameters.AddWithValue("DC_CUADRO", parametrosInsert("DC_CUADRO"))
 					'End If
+					If sSQL_Actualizar.IndexOf("WHERE") <> -1 Then
+						updateDefault += " " + sSQL_Actualizar.Substring(sSQL_Actualizar.LastIndexOf("WHERE "))
+					End If
 
-					updateDefault += " " + sSQL_Actualizar.Substring(sSQL_Actualizar.LastIndexOf("WHERE "))
 					cmdDefault = New SqlCommand(updateDefault)
 
 					For Each parametro As KeyValuePair(Of String, Object) In parametros
