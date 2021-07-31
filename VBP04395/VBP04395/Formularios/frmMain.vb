@@ -610,9 +610,9 @@ Public Class frmMain
                 Throw New Exception("Proceso sin datos de salida [NombreSalida]")
             End If
 
-            Dim response As String = Prex.Utils.Misc.Http.PeticionesHttp.GetResponse(proceso.FullUri.ToString(), Prex.Utils.Configuration.PrexConfig.CertificateCitiDocsPath, Prex.Utils.Configuration.PrexConfig.CertificateCitiDocsPass)
+            Dim response As Prex.Utils.Misc.Http.ResponseResult = Prex.Utils.Misc.Http.PeticionesHttp.GetResponse(proceso.FullUri.ToString(), Prex.Utils.Configuration.PrexConfig.CertificateCitiDocsPath, Prex.Utils.Configuration.PrexConfig.CertificateCitiDocsPass)
             actualizarDetalle("Guardando detalle")
-            If Not response.IsNullOrEmpty Then
+            If Not response.Content.IsNullOrEmpty() Then
                 'GrabarEnSalida
             End If
             Return EstadoProceso.FinalizadoOK
