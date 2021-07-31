@@ -482,23 +482,26 @@ Public Class frmABMRegistro
 					'	cmdDefault.Parameters.AddWithValue("DC_CODCON", parametrosInsert("DC_CODCON"))
 					'	cmdDefault.Parameters.AddWithValue("DC_CUADRO", parametrosInsert("DC_CUADRO"))
 					'End If
-					If sSQL_Actualizar.IndexOf("WHERE") <> -1 Then
-						updateDefault += " " + sSQL_Actualizar.Substring(sSQL_Actualizar.LastIndexOf("WHERE "))
+					If Not updateDefault.IsNullOrEmpty Then
+						If sSQL_Actualizar.IndexOf("WHERE") <> -1 Then
+							updateDefault += " " + sSQL_Actualizar.Substring(sSQL_Actualizar.LastIndexOf("WHERE"))
+						End If
+
+
+						cmdDefault = New SqlCommand(updateDefault)
+
+						For Each parametro As KeyValuePair(Of String, Object) In parametros
+							If updateDefault.Contains($"@{parametro.Key}") AndAlso Not cmdDefault.Parameters.Contains(parametro.Key) Then
+								cmdDefault.Parameters.AddWithValue(parametro.Key, parametro.Value)
+							End If
+						Next
+
+						For Each item As KeyValuePair(Of String, Object) In parametrosInsert
+							If sSQL_Actualizar.Contains($"@{item.Key}") AndAlso Not cmdDefault.Parameters.Contains(item.Key) Then
+								cmdDefault.Parameters.AddWithValue(item.Key, item.Value)
+							End If
+						Next
 					End If
-
-					cmdDefault = New SqlCommand(updateDefault)
-
-					For Each parametro As KeyValuePair(Of String, Object) In parametros
-						If updateDefault.Contains($"@{parametro.Key}") AndAlso Not cmdDefault.Parameters.Contains(parametro.Key) Then
-							cmdDefault.Parameters.AddWithValue(parametro.Key, parametro.Value)
-						End If
-					Next
-
-					For Each item As KeyValuePair(Of String, Object) In parametrosInsert
-						If sSQL_Actualizar.Contains($"@{item.Key}") AndAlso Not cmdDefault.Parameters.Contains(item.Key) Then
-							cmdDefault.Parameters.AddWithValue(item.Key, item.Value)
-						End If
-					Next
 
 				End If
 			End If
