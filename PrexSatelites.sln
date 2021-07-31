@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prex.Utils", "Prex.Utils\Pr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuscadorNovedadesCentral", "BuscadorNovedadesCentral\BuscadorNovedadesCentral.csproj", "{59DA1F0C-A36B-4769-B212-18B5DA9603D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POCWebSeviceCitiDocs", "POCWebSeviceCitiDocs\POCWebSeviceCitiDocs.csproj", "{F6437468-4104-4EE4-AB0A-B673F58B52D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,14 @@ Global
 		{59DA1F0C-A36B-4769-B212-18B5DA9603D5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{59DA1F0C-A36B-4769-B212-18B5DA9603D5}.Release|x86.ActiveCfg = Release|Any CPU
 		{59DA1F0C-A36B-4769-B212-18B5DA9603D5}.Release|x86.Build.0 = Release|Any CPU
+		{F6437468-4104-4EE4-AB0A-B673F58B52D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6437468-4104-4EE4-AB0A-B673F58B52D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6437468-4104-4EE4-AB0A-B673F58B52D8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F6437468-4104-4EE4-AB0A-B673F58B52D8}.Debug|x86.Build.0 = Debug|Any CPU
+		{F6437468-4104-4EE4-AB0A-B673F58B52D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6437468-4104-4EE4-AB0A-B673F58B52D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6437468-4104-4EE4-AB0A-B673F58B52D8}.Release|x86.ActiveCfg = Release|Any CPU
+		{F6437468-4104-4EE4-AB0A-B673F58B52D8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
