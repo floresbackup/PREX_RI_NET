@@ -143,8 +143,12 @@ namespace Prex.Utils
 		public string STR_OBJECT_AD      { get; internal set; }
         public string STR_REASON         { get; internal set; }
         public string CYBERRARKPASS      { get; internal set; }
+        //CitiDocs
+        public string CertificateCitiDocsPath { get; internal set; }
+        public string CertificateCitiDocsPass { get; internal set; }
 
         public Usuario UsuarioActual     { get; internal set; }
+
 
         //Naranja
         public string FILE_GOOGLE_CREDENTIALS { get; internal set; }
@@ -171,11 +175,11 @@ namespace Prex.Utils
                 else if (nombre.Equals("SIMBOLO_DECIMAL"))
                     SIMBOLO_DECIMAL = valor.Substring(0, 1);
                 else if (nombre.Equals("CertificatePass"))
-                {
                     CertificatePass = Encoding.UTF8.GetString(Convert.FromBase64String(valor));
-                }
+                else if (nombre.Equals("CertificateCitiDocsPass"))
+                    CertificateCitiDocsPass = Encoding.UTF8.GetString(Convert.FromBase64String(valor));
                 else
-                {
+                { 
                     var propertyInfo = this.GetType().GetProperty(nombre);
                     if (propertyInfo != null) propertyInfo.SetValue(this, Convert.ChangeType((propertyInfo.PropertyType.FullName == "System.Boolean" ? (valor.ToString() == "0" ? "false" : "true") : valor), propertyInfo.PropertyType));
                 }

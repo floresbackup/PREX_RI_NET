@@ -212,6 +212,10 @@ Module modFunciones
                             CertificatePath = sTemp
                         Case "CertificatePass"
                             CertificatePass = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
+                        Case "CertificateCitiDocsPath"
+                            CertificateCitiDocsPath = sTemp
+                        Case "CertificateCitiDocsPass"
+                            CertificateCitiDocsPass = System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp))
                         Case "SAFE"
                             SAFE = sTemp
                         Case "STR_FOLDER"

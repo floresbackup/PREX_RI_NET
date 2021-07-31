@@ -81,8 +81,8 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\Main\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=106.11.2.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\RestSharp.106.11.2\lib\net452\RestSharp.dll</HintPath>
+    <Reference Include="RestSharp, Version=106.12.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\..\Main\packages\RestSharp.106.12.0\lib\net452\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\Main\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
@@ -147,8 +147,9 @@
     </Compile>
     <Compile Include="Misc\Forms\ScintillaSQL.cs" />
     <Compile Include="Misc\Functions.cs" />
-    <Compile Include="Misc\Html\GetFileFromWeb.cs" />
-    <Compile Include="Misc\Html\GetHtmlFromWeb.cs" />
+    <Compile Include="Misc\Http\GetFileFromWeb.cs" />
+    <Compile Include="Misc\Http\GetHtmlFromWeb.cs" />
+    <Compile Include="Misc\Http\PeticionesHttp.cs" />
     <Compile Include="Misc\MailSender.cs" />
     <Compile Include="Misc\ManejarErrores.cs" />
     <Compile Include="Misc\MensajesForms.cs" />

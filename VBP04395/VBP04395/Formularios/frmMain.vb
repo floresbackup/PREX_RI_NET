@@ -1,5 +1,5 @@
 Imports System.IO
-Imports System.Linq
+Imports Prex.Utils.ExtensionMehods
 
 Public Class frmMain
     Public ErrorPermiso As Boolean = False
@@ -538,97 +538,128 @@ Public Class frmMain
 
 	End Sub
 
-	Private Sub Ejecutar()
+    Private Sub Ejecutar()
 
-		Dim sSQL As String
-		Dim oItem As ListViewItem
-		Dim oSubItem As ListViewItem.ListViewSubItem
-		Dim bResult As Boolean
+        Dim oItem As ListViewItem
+        Dim oSubItem As ListViewItem.ListViewSubItem
+        Dim ejecutoProceso As EstadoProceso
 
-		For Each oItem In lvSel.Items
-			oSubItem = oItem.SubItems(1)
-			oSubItem.Text = ""
-		Next
+        For Each oItem In lvSel.Items
+            oSubItem = oItem.SubItems(1)
+            oSubItem.Text = ""
+        Next
 
-		oSubItem = Nothing
-		oItem = Nothing
+        oSubItem = Nothing
+        oItem = Nothing
 
-		If ProcesoEnEjecucion() Then
-			Exit Sub
-		End If
+        If ProcesoEnEjecucion() Then
+            Exit Sub
+        End If
 
-		If Not ProcesosPrevios() Then
-			Exit Sub
-		End If
+        If Not ProcesosPrevios() Then
+            Exit Sub
+        End If
 
-		Dim uncheckAll = True
+        Dim uncheckAll = True
 
-		For Each oItem In lvSel.Items
+        For Each oItem In lvSel.Items
+            oSubItem = oItem.SubItems(1)
+            If oItem.Checked Then
+                uncheckAll = False
+                oSubItem.Text = "Procesando..."
+                Application.DoEvents()
+                Dim proceso As clsSubProcesosSistema = CType(oSubProcesos(oItem.Tag), clsSubProcesosSistema)
+                GuardarLOG(AccionesLOG.EjecucionSubProceso, "Sub Proceso: " + proceso.CodPro.ToString + " - " + proceso.Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+                GuardarControlSubProceso(proceso, 1, "INICIADO")
 
-			oSubItem = oItem.SubItems(1)
+                If proceso.CodPro > ClsSubProcesosSistemaWebService.CodProcesoWebService Then
+                    Dim procesoWeb = CType(proceso, ClsSubProcesosSistemaWebService)
+                    ejecutoProceso = EjecutarProcesoWeService(procesoWeb, Sub(estado As String) oSubItem.Text = estado)
+                Else
+                    'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
+                    ejecutoProceso = EjecutarProcesoSQL(proceso, Sub(estado As String) oSubItem.Text = estado)
+                End If
 
-			If oItem.Checked Then
-				uncheckAll = False
-				oSubItem.Text = "Procesando..."
+                If ejecutoProceso = EstadoProceso.Cancelado Then
+                    Exit For
+                End If
 
-				Application.DoEvents()
+            Else
+                oSubItem.Text = "Omitido"
+            End If
 
-				GuardarLOG(AccionesLOG.EjecucionSubProceso, "Sub Proceso: " + oSubProcesos(oItem.Tag).CodPro.ToString + " - " + oSubProcesos(oItem.Tag).Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+            Application.DoEvents()
+        Next
 
-				'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
-				GuardarControlSubProceso(oSubProcesos(oItem.Tag), 1, "INICIADO")
+        ProcesoEnEjecucion(True)
+        If uncheckAll Then
+            MensajeInformacion("ATENCION! Proceso Finalizado sin tareas selecciondas.")
+        Else
+            If ejecutoProceso = EstadoProceso.FinalizadoOK Then
+                MensajeInformacion("Proceso Finalizado")
+            ElseIf ejecutoProceso = EstadoProceso.EnError Then
+                MensajeError("Se produjo un error durante el proceso y el mismo fué abortado.")
+            End If
+        End If
 
-				sSQL = ReemplazarVariables(oSubProcesos(oItem.Tag).Query.ToString.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro)
-				sSQL = ProcesosEmbebidos(ReemplazarVariables(oProcesos.Query.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro) & sSQL)
+    End Sub
 
-				bResult = ProcesoAsincrono(sSQL)
+    Private Function EjecutarProcesoWeService(proceso As ClsSubProcesosSistemaWebService, actualizarDetalle As Action(Of String)) As EstadoProceso
+        Try
+            If proceso.NombreSalida.IsNullOrEmpty Then
+                Throw New Exception("Proceso sin datos de salida [NombreSalida]")
+            End If
 
-				If bResult Then
-					If bCancelProcAsinc Then
-						oSubItem.Text = "Cancelado"
+            Dim response As String = Prex.Utils.Misc.Http.PeticionesHttp.GetResponse(proceso.FullUri.ToString(), Prex.Utils.Configuration.PrexConfig.CertificateCitiDocsPath, Prex.Utils.Configuration.PrexConfig.CertificateCitiDocsPass)
+            actualizarDetalle("Guardando detalle")
+            If Not response.IsNullOrEmpty Then
+                'GrabarEnSalida
+            End If
+            Return EstadoProceso.FinalizadoOK
+        Catch ex As Exception
+            GuardarLOG(AccionesLOG.ErrorSubProceso, "Sub Proceso: " + proceso.CodPro.ToString + " - " + proceso.Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+            Return EstadoProceso.EnError
+        End Try
+    End Function
 
-						If Pregunta("¿Desea continuar con el resto de los procesos?") = Windows.Forms.DialogResult.No Then
-							Exit For
-						End If
-					Else
-						oSubItem.Text = "Finalizado"
-						GuardarLOG(AccionesLOG.FinSubProceso, "Sub Proceso: " + oSubProcesos(oItem.Tag).CodPro.ToString + " - " + oSubProcesos(oItem.Tag).Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+    Private Function EjecutarProcesoSQL(proceso As clsSubProcesosSistema, actualizarDetalle As Action(Of String)) As EstadoProceso
+        Dim sSQL = ReemplazarVariables(proceso.Query.ToString.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro)
+        sSQL = ProcesosEmbebidos(ReemplazarVariables(oProcesos.Query.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro) & sSQL)
 
-						'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
-						GuardarControlSubProceso(oSubProcesos(oItem.Tag), 2, "FINALIZADO")
-					End If
-				Else
-					oSubItem.Text = "Error"
+        If ProcesoAsincrono(sSQL) Then
+            If CancelarProceso() Then
+                actualizarDetalle("Cancelado")
+                Return EstadoProceso.Cancelado
+            End If
 
-					GuardarLOG(AccionesLOG.ErrorSubProceso, "Sub Proceso: " + oSubProcesos(oItem.Tag).CodPro.ToString + " - " + oSubProcesos(oItem.Tag).Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+            actualizarDetalle("Finalizado")
+            GuardarLOG(AccionesLOG.FinSubProceso, "Sub Proceso: " + proceso.CodPro.ToString + " - " + proceso.Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
 
-					'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
-					GuardarControlSubProceso(oSubProcesos(oItem.Tag), 3, "ERROR")
+            'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
+            GuardarControlSubProceso(proceso, 2, "FINALIZADO")
+            Return EstadoProceso.FinalizadoOK
+        Else
+            actualizarDetalle("Error")
 
-					Exit For
-				End If
+            GuardarLOG(AccionesLOG.ErrorSubProceso, "Sub Proceso: " + proceso.CodPro.ToString + " - " + proceso.Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
 
-			Else
-				oSubItem.Text = "Omitido"
-			End If
+            'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
+            GuardarControlSubProceso(proceso, 3, "ERROR")
 
-			Application.DoEvents()
-		Next
+            Return EstadoProceso.EnError
+        End If
+    End Function
 
-		ProcesoEnEjecucion(True)
-		If uncheckAll Then
-			MensajeInformacion("ATENCION! Proceso Finalizado sin tareas selecciondas.")
-		Else
-			If bResult Then
-				MensajeInformacion("Proceso Finalizado")
-			Else
-				MensajeError("Se produjo un error durante el proceso y el mismo fué abortado.")
-			End If
-		End If
+    Private Function CancelarProceso() As Boolean
+        If bCancelProcAsinc Then
+            If Pregunta("¿Desea continuar con el resto de los procesos?") = Windows.Forms.DialogResult.No Then
+                Return True
+            End If
+        End If
+        Return False
+    End Function
 
-	End Sub
-
-	Private Function ProcesoEnEjecucion(Optional ByVal bFinProceso As Boolean = False) As Boolean
+    Private Function ProcesoEnEjecucion(Optional ByVal bFinProceso As Boolean = False) As Boolean
 
 		Dim ds As DataSet
 		Dim row As DataRow

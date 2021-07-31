@@ -79,7 +79,6 @@ C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Go
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Auth.PlatformServices.dll
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Core.dll
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.dll
-C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Gmail.v1.dll
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.PlatformServices.dll
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Reseller.v1.dll
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.pdb
@@ -88,8 +87,6 @@ C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Go
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Auth.xml
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Core.pdb
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Core.xml
-C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Gmail.v1.pdb
-C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Gmail.v1.xml
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Reseller.v1.pdb
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Reseller.v1.xml
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Oauth2.v2.dll
@@ -97,3 +94,6 @@ C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Go
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Oauth2.v2.xml
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\System.ValueTuple.dll
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\System.ValueTuple.xml
+C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Admin.Directory.directory_v1.dll
+C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Admin.Directory.directory_v1.pdb
+C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\bin\Debug\Google.Apis.Admin.Directory.directory_v1.xml

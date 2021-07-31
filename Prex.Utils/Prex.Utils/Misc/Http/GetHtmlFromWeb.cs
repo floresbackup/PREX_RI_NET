@@ -1,7 +1,7 @@
 ﻿using RestSharp;
 using System;
 
-namespace Prex.Utils.Misc.Html
+namespace Prex.Utils.Misc.Http
 {
 	public static class GetHtmlFromWeb
 	{

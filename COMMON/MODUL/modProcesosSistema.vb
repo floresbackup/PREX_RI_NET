@@ -49,24 +49,18 @@ Module modConsultasSistema
 
       ad.Fill(dt)
 
-      For Each dr As DataRow In dt.Rows
+        For Each dr As DataRow In dt.Rows
+            If nCodPro > ClsSubProcesosSistemaWebService.CodProcesoWebService Then
+                oSub = New ClsSubProcesosSistemaWebService(dr)
+            Else
+                oSub = New clsSubProcesosSistema(dr)
+            End If
 
-         oSub = New clsSubProcesosSistema
+            oSubProcesos.Add(oSub, oSub.Key)
+            oSub = Nothing
+        Next
 
-         oSub.CodPro = nCodPro
-         oSub.Orden = dr("PD_ORDEN")
-         oSub.Nombre = dr("PD_NOMBRE")
-         oSub.Query = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("PD_QUERY")))
-         oSub.Estado = dr("PD_ESTADO")
-         oSub.Key = dr("PD_ORDEN").ToString
-
-         oSubProcesos.Add(oSub, oSub.Key)
-
-         oSub = Nothing
-
-      Next
-
-      ad = Nothing
+        ad = Nothing
       dt = Nothing
 
       sSQL = "SELECT    * " & _

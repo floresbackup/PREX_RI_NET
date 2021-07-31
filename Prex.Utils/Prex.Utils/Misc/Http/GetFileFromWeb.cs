@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Prex.Utils.Misc.Html
+namespace Prex.Utils.Misc.Http
 {
 	public class URLHelp : IDisposable
 	{

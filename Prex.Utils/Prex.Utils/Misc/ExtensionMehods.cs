@@ -26,6 +26,14 @@ namespace Prex.Utils
 			
 			return false;
 		}
+		public static bool EsIgual(this string original, string compareString)
+		{
+			if (original == null && compareString == null) return true;
+			if (original.IsNullOrEmpty() && !compareString.IsNullOrEmpty()) return false;
+			if (!original.IsNullOrEmpty() && compareString.IsNullOrEmpty()) return false;
+
+			return original.ToLower() == compareString.ToLower();
+		}
 
 
 		public static Dictionary<string, int> GetAllNames(this IDataRecord record)
@@ -45,6 +53,13 @@ namespace Prex.Utils
 
 
 		public static string ToCompleteInStr<TipoClave>(this IEnumerable< TipoClave> l) => $"({String.Join(",", l.ToArray())})";
-		
+
+		public static bool IsValidUri(this string url)
+		{
+			if (Uri.TryCreate(url, UriKind.Absolute, out Uri validatedUri)) 
+				return (validatedUri.Scheme == Uri.UriSchemeHttp || validatedUri.Scheme == Uri.UriSchemeHttps);
+
+			return false;
+		}
 	}
 }

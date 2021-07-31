@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prex.Utils", "..\Prex.Utils
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prueba", "..\Prueba\Prueba.csproj", "{936F28D0-6F25-41EE-86E3-81CD15DAABFD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Satelites", "Satelites", "{96FA642B-C014-46D0-AAD8-D86E7700B4CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -214,6 +216,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A645B438-E10C-4172-AC68-AD545BFFAEE2} = {96FA642B-C014-46D0-AAD8-D86E7700B4CE}
+		{AB9C7E32-8D38-456A-A87A-D4C411B4EEB6} = {96FA642B-C014-46D0-AAD8-D86E7700B4CE}
+		{407C539F-1BB9-4D47-B9D5-EBCB1BE78B4E} = {96FA642B-C014-46D0-AAD8-D86E7700B4CE}
+		{936F28D0-6F25-41EE-86E3-81CD15DAABFD} = {96FA642B-C014-46D0-AAD8-D86E7700B4CE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {01E7A9AB-C05D-40AC-B069-C79EF5A3FE47}

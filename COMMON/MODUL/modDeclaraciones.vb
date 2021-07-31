@@ -116,7 +116,10 @@ Module modDeclaraciones
     Public STR_OBJECT As String
     Public STR_OBJECT_AD As String
     Public STR_REASON As String
-	Public CYBERRARKPASS As String
+    Public CYBERRARKPASS As String
+    'CitiWeBServiceConsulta
+    Public CertificateCitiDocsPath As String
+    Public CertificateCitiDocsPass As String
 
     'Naraja
     Public FILE_GOOGLE_CREDENTIALS As String
