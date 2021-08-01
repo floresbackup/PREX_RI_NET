@@ -20,36 +20,29 @@ namespace Prex.Utils.Misc.Http
 
 	public static class PeticionesHttp
 	{
-		public static ResponseResult GetResponse(string url)
-		{
-			return ExecuteRequest(url, string.Empty, Method.GET, null);
-		}
-
-		public static ResponseResult GetResponse(string url, string certificatePath, string secretKey)
-		{
-			if (!File.Exists(certificatePath))
-				throw new ArgumentException("No se encuentra ruta o archivo certificado");
-
-			if (Path.GetExtension(certificatePath) != ".pfx")
-				throw new ArgumentException("El certificado debe ser PFX");
-
-			return ExecuteRequest(url, string.Empty, Method.GET, BuildCertificado(certificatePath, secretKey));
-		}
+		public static ResponseResult GetResponse(string url) => ExecuteRequest(url, string.Empty, Method.GET, null);
+		public static ResponseResult GetResponse(string url, string certificatePath, string secretKey) => ExecuteRequest(url, string.Empty, Method.GET, BuildCertificado(certificatePath, secretKey));
 
 
 		public static ResponseResult PostRequest(string url, string body, string certificatePath, string secretKey) => ExecuteRequest(url, body, Method.POST, BuildCertificado(certificatePath, secretKey));
-
 		public static ResponseResult PostRequest(string url, string body) => ExecuteRequest(url, body, Method.POST, null);
 
 		private static X509Certificate2 BuildCertificado(string certificatePath, string secretKey)
 		{
+
 			if (!File.Exists(certificatePath))
 				throw new ArgumentException("No se encuentra ruta o archivo certificado");
 
 			if (Path.GetExtension(certificatePath) != ".pfx")
 				throw new ArgumentException("El certificado debe ser PFX");
-
-			return new X509Certificate2(certificatePath, secretKey);
+			try
+			{
+				return new X509Certificate2(certificatePath, secretKey);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("No fue posible construir certificado.", ex);
+			}
 		}
 
 		private static ResponseResult ExecuteRequest(string url, string body, Method httpMethod, X509Certificate2 certificate)

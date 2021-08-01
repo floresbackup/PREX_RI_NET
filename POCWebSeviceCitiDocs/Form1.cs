@@ -30,7 +30,8 @@ namespace POCWebSeviceCitiDocs
 
 		private void btnDialogCertificado_Click(object sender, EventArgs e)
 		{
-			fileDialog.Filter = "*.pfx";
+			fileDialog.FileName = string.Empty;
+			fileDialog.Filter = "|*.pfx";
 			txtCertPath.Text = string.Empty;
 			if (fileDialog.ShowDialog() == DialogResult.OK)
 				txtCertPath.Text = fileDialog.FileName;
@@ -82,6 +83,15 @@ namespace POCWebSeviceCitiDocs
 					txtResponse.Text = "NoContent";
 					lblStatusCode.Text = string.Empty;
 				}
+
+			}
+			catch (Exception ex)
+			{
+				txtResponse.Text = ex.Message;
+				if (ex.InnerException != null)
+					txtResponse.Text += $" - InnerException: {ex.InnerException.Message}";
+
+				lblStatusCode.Text = "Error";
 			}
 			finally
 			{
@@ -101,7 +111,7 @@ namespace POCWebSeviceCitiDocs
 				if (txtUrl.Text.IsNullOrEmpty()) throw new Exception("Debe completar url");
 				if (!txtUrl.Text.IsValidUri()) throw new Exception("Formato url inválido");
 				if (HttpMethod == null) throw new Exception("Debe elegir un método HTTP");
-				if (HttpMethod == HttpMethod.Post && txtRequestBody.Text.IsNullOrEmpty()) throw new Exception("Debe completar el BODY para realizar un método POST");
+				//if (HttpMethod == HttpMethod.Post && txtRequestBody.Text.IsNullOrEmpty()) throw new Exception("Debe completar el BODY para realizar un método POST");
 				if (!txtCertPath.IsNullOrEmpty())
 				{
 					if (txtCertPass.IsNullOrEmpty()) throw new Exception("Debe especificar password del certificado");
