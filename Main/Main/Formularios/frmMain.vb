@@ -439,29 +439,21 @@ Public Class frmMain
 
 							LeerArchivoEncriptado(RUTAENCR_RA & "\PrExEncr_RA.txt", sUsuEncr_RA, sPwdEncr_RA)
 							sPwdEncr_RA = ObternerPasswordRunAsCyberark(sPwdEncr_RA)
-							GuardarExcelEncryptParaCiti(sUsuEncr_RA, sPwdEncr_RA)
 
-							'sUsuEncr_RA = "ricardo@alephcrm.com"
-							'sPwdEncr_RA = "Ignacio2002"
+
 
 							RunProgram(sUsuEncr_RA, sPwdEncr_RA, DOMINIO_DEFAULT, sRuta, sParametros)
 						Else
 							Process.Start(sRuta, sParametros)
 						End If
-						'Else
-						'    oTrx.StartInfo.FileName = sRuta 'RUTA_BIN & sPrograma
-						'    oTrx.StartInfo.Arguments = sParametros
-						'    oTrx.StartInfo.UseShellExecute = True
-						'    oTrx.StartInfo.WorkingDirectory = RUTA_BIN
-						'    oTrx.Start()
-
-						'    oTrx.WaitForExit()
-						'End If
 					Else
 						MensajeError("No se encuentra el programa " & sPrograma)
 					End If
 				ElseIf IO.File.Exists(NormalizarRuta(RUTA_BIN) & "Informes\" & sPrograma) Then
-					System.Diagnostics.Process.Start(NormalizarRuta(RUTA_BIN) & "Informes/" & sPrograma)
+
+					GuardarExcelEncryptParaCiti()
+
+					Process.Start(NormalizarRuta(RUTA_BIN) & "Informes/" & sPrograma)
 				Else
 					MensajeError("No se encuentra el archivo " & sPrograma)
 				End If
@@ -493,12 +485,32 @@ Public Class frmMain
 
 	End Function
 
-	Private Sub GuardarExcelEncryptParaCiti(ByVal usuario As String, ByVal pass As String)
-		Try
-			If ID_SISTEMA <= 0 Then Exit Sub
-			Prex.Utils.Security.Encrypt.GuardarArchivoEncriptado(IO.Path.Combine(CARPETA_LOCAL, "ExcelEncrypt.txt"), usuario, pass)
-		Catch ex As Exception
+	Private Sub GuardarExcelEncryptParaCiti()
+		If ID_SISTEMA <= 0 Then Exit Sub
 
+		Dim sUsuEncr = String.Empty
+		Try
+			Dim builder As New OleDb.OleDbConnectionStringBuilder(Configuration.PrexConfig.CONN_LOCAL)
+			sUsuEncr = builder("User ID").ToString()
+		Catch ex As Exception
+			Throw New Exception("Ocurrió un error al obtener usuario desde la cadena de conexión", ex)
+		End Try
+
+		Dim sPwdEncr = String.Empty
+		Try
+			sPwdEncr = ObternerPasswordRunAsCyberark(sPwdEncr)
+		Catch ex As Exception
+			Throw New Exception("Ocurrió un error al obtener password desde Cyberark", ex)
+		End Try
+
+		If String.IsNullOrEmpty(sPwdEncr) Then
+			Throw New Exception("Cyberark devolvió password vacio")
+		End If
+
+		Try
+			GuardarArchivoEncriptado(IO.Path.Combine(CARPETA_LOCAL, "ExcelEncrypt.txt"), sUsuEncr, sPwdEncr)
+		Catch ex As Exception
+			Throw New Exception("Ocurrió un error al guardar archivo ExcelEncrypt.txt", ex)
 		End Try
 	End Sub
 
