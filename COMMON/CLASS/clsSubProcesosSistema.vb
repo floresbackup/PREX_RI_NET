@@ -43,21 +43,21 @@ Public Class ClsSubProcesosSistemaWebService
 		End Get
 	End Property
 
-	'QUERY: "url|parametro1,parametro2|NombreSalida|TipoSalida"
+	'QUERY: "httpMthod;url;parametro1|parametro2;body;NombreSalida;TipoSalida;LiteralFinArchivo;QtyCampos"
 	'QUERY: "http://urlservicion.com?@1&@2|parametro1,parametro2|TABLAXXX|Tabla"
 	Public Sub New(dr As DataRow)
 		MyBase.New(dr)
-
+		'TODO: httpMethod, Body, LiteralFinArchivo y QtyCampos
 		If Query.Length > 0 Then
 			Dim i = 0
 
-			Dim split As String() = Query.Split("|")
+			Dim split As String() = Query.Split(";")
 			For i = 0 To split.Length - 1
 				Select Case i
 					Case 0
 						Url = split(i)
 					Case 1
-						Parametros = split(i).Split(",")
+						Parametros = split(i).Split("|")
 					Case 2
 						NombreSalida = split(i)
 					Case 3

@@ -126,14 +126,11 @@
   <metadata name="ToolBarra.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>85, 19</value>
   </metadata>
-  <metadata name="ToolBarra.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>85, 19</value>
-  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnImprimir.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAGRSURBVDhPjdFBSwJRFAVg1/2Gtm4j6Ae0atu+TZuClrVo
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGRSURBVDhPjdFBSwJRFAVg1/2Gtm4j6Ae0atu+TZuClrVo
         URkJSiIVigVCqGRGidAkapGGBmVkQoEEKYOikkqKhopGisLJ+0ZDa5q8cGBg5nzvvXmy3qxuHYGi2jn9
         M/S++/nvoZeNZksy9M3o2LQ4MizA+SLiyLBAMlMSR/4DypWP7yP00q0K8xNIpt6wprZheeOExbDvxc19
         lCE9qFsVph+gslrngvk2BQdfgTdTw3k4yRC39wkWLiQNUPkwUoCJb8MYBa5yQKbehCcYg8bgxK7VLw3Q
@@ -146,7 +143,7 @@
   <data name="btnExportar.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEnSURBVDhPY5DJkvlPCDOAgEzDfzBGByAF//79w4nBBgA1
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEnSURBVDhPY5DJkvlPCDOAgEzDfzBGByAF//79w4nBBgA1
         xnXexG8AzDYQ26JFC2E7UFPXll9gA7h0uv+bBcxDNQSbJmyaYbhs5j2wQVDtqF5ANgQmBjLEJHorWDOM
         jqo68D8oYw00bKCKsbkAJA6iYYYgGwZioxiArAndsKruJRANQNw5Yz3YEA6NDlQDcGFs8kG5y/6zKLcg
         DCCE0Q3IrFsADkgZPT9EYOICIOeDNP1/vf//lXqG/9+eHQJ7CaSZJAN+TGP4//+WC9iQp68+/L/54CXx

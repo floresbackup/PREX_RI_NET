@@ -445,7 +445,7 @@ Public Class frmMain
     End Sub
 
     Private Sub btnExportar_Click(sender As Object, e As EventArgs) Handles btnExportar.Click
-        frmExportar.PasarViewResultados("", Me.lblTitulo.Text, gDiseno)
+        frmExportar.PasarViewResultados("", Me.lblTitulo.Text, gDiseno, DevExpress.Export.ExportType.WYSIWYG)
         frmExportar.ShowDialog()
         GuardarLOG(AccionesLOG.Exportación_LOG, "Fecha desde: " & txtDesde.Text & "; Fecha Hasta: " & txtHasta.Text & "; Nombre Usuario Contiene: " & Trim(txtUsuario.Text), CODIGO_TRANSACCION, UsuarioActual.Codigo)
     End Sub

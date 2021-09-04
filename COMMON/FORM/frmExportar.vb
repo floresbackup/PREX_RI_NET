@@ -1,12 +1,19 @@
 Imports DevExpress.XtraGrid.Views
 Imports DevExpress.XtraPrinting
+Imports DevExpress.Spreadsheet
 
 Public Class frmExportar
 
    Private oGvwResults As Grid.GridView
    Private sFiltro As String
+    Private exportType As DevExpress.Export.ExportType = DevExpress.Export.ExportType.DataAware
 
-   Public Sub PasarViewResultados(ByVal sDefaultFileName As String, ByVal sNombreConsulta As String, ByRef oGvw As Grid.GridView)
+    Public Sub PasarViewResultados(ByVal sDefaultFileName As String, ByVal sNombreConsulta As String, ByRef oGvw As Grid.GridView, ByVal typeExport As DevExpress.Export.ExportType)
+        exportType = typeExport
+        PasarViewResultados(sDefaultFileName, sNombreConsulta, oGvw)
+    End Sub
+
+    Public Sub PasarViewResultados(ByVal sDefaultFileName As String, ByVal sNombreConsulta As String, ByRef oGvw As Grid.GridView)
         oGvwResults = oGvw
         txtPageTitle.Text = sNombreConsulta
         txtFileName.Text = sDefaultFileName
@@ -52,26 +59,40 @@ Public Class frmExportar
 
     Private Sub cmdAceptar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAceptar.Click
 
-      If DatosOK() Then
-         Exportar()
-      End If
+        If DatosOK() Then
+            Exportar()
+        End If
 
-   End Sub
+    End Sub
 
-   Private Sub Exportar()
+    Private Sub Exportar()
 
-      Try
+        Try
 
-         Select Case Me.cboExportarA.SelectedIndex
+            Select Case Me.cboExportarA.SelectedIndex
 
-            Case 0 'Planilla Excel
+                Case 0 'Planilla Excel
 
                     Dim oOptions As New XlsExportOptionsEx
 
                     oOptions.Suppress65536RowsWarning = False
                     oOptions.Suppress256ColumnsWarning = False
                     oOptions.ApplyFormattingToEntireColumn = DevExpress.Utils.DefaultBoolean.False
+                    oOptions.ExportType = exportType
+
                     oGvwResults.ExportToXls(txtFileName.Text.Trim, oOptions)
+
+                    If exportType = DevExpress.Export.ExportType.WYSIWYG Then
+                        Dim workbook As New Workbook()
+                        workbook.LoadDocument(txtFileName.Text.Trim)
+
+
+                        For Each sheet As Worksheet In workbook.Worksheets
+                            sheet.Columns.AutoFit(0, sheet.Columns.LastUsedIndex)
+                        Next sheet
+
+                        workbook.SaveDocument(txtFileName.Text.Trim)
+                    End If
 
                 Case 1 'Archivo PDF
 

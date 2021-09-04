@@ -66,6 +66,7 @@
     <OutputPath>Z:\BIN\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Docs.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Printing.v17.2.Core">
       <Private>False</Private>
     </Reference>

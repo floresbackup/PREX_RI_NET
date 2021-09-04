@@ -73,6 +73,7 @@
     <Reference Include="ABCpdf, Version=7.0.1.9, Culture=neutral, PublicKeyToken=a7a0b3f5184f2169, processorArchitecture=MSIL">
       <HintPath>..\..\BIN\ABCpdf.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Docs.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Printing.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
       <Private>False</Private>
     </Reference>

@@ -68,6 +68,7 @@
     <Reference Include="DevExpress.Dialogs.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
       <Private>False</Private>
     </Reference>
+    <Reference Include="DevExpress.Docs.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Printing.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
       <Private>False</Private>
     </Reference>

@@ -614,6 +614,14 @@ Public Class frmMain
             actualizarDetalle("Guardando detalle")
             If Not response.Content.IsNullOrEmpty() Then
                 'GrabarEnSalida
+                'La tabla va existir
+                'Deberia leer los campos de la tabla y excluirlos del contenido del responde, solo grabamos datos
+                Dim registros = response.Content.Split("|")
+                For Each item As String In registros
+                    'contar cantidad de items, segun campos de la tabla, los primeros son la cebecera, luego datos.
+                    'el final del archivo tiene un literal que dice "fin de archivo"
+                    'grabe siempre con campo.trim()
+                Next
             End If
             Return EstadoProceso.FinalizadoOK
         Catch ex As Exception

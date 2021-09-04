@@ -46,7 +46,9 @@ Partial Class frmMain
 		Me.PrintableComponentLink1 = New DevExpress.XtraPrinting.PrintableComponentLink(Me.components)
 		Me.GridDiseno = New DevExpress.XtraGrid.GridControl()
 		Me.gDiseno = New DevExpress.XtraGrid.Views.Grid.GridView()
+		Me.colId = New DevExpress.XtraGrid.Columns.GridColumn()
 		Me.colUsuario = New DevExpress.XtraGrid.Columns.GridColumn()
+		Me.colEstacionTrabajo = New DevExpress.XtraGrid.Columns.GridColumn()
 		Me.colFecha = New DevExpress.XtraGrid.Columns.GridColumn()
 		Me.colHora = New DevExpress.XtraGrid.Columns.GridColumn()
 		Me.colCodTrans = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -69,8 +71,6 @@ Partial Class frmMain
 		Me.ToolTipText = New System.Windows.Forms.ToolTip(Me.components)
 		Me.colExtra = New DevExpress.XtraGrid.Columns.GridColumn()
 		Me.GridColumn1 = New DevExpress.XtraGrid.Columns.GridColumn()
-		Me.colEstacionTrabajo = New DevExpress.XtraGrid.Columns.GridColumn()
-		Me.colId = New DevExpress.XtraGrid.Columns.GridColumn()
 		CType(Me.PanControles, System.ComponentModel.ISupportInitialize).BeginInit()
 		Me.PanControles.SuspendLayout()
 		Me.GroupBox1.SuspendLayout()
@@ -111,9 +111,8 @@ Partial Class frmMain
 		Me.PanControles.Controls.Add(Me.PanTop)
 		Me.PanControles.Dock = System.Windows.Forms.DockStyle.Top
 		Me.PanControles.Location = New System.Drawing.Point(0, 0)
-		Me.PanControles.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
 		Me.PanControles.Name = "PanControles"
-		Me.PanControles.Size = New System.Drawing.Size(847, 193)
+		Me.PanControles.Size = New System.Drawing.Size(635, 157)
 		Me.PanControles.TabIndex = 0
 		'
 		'GroupBox1
@@ -134,144 +133,128 @@ Partial Class frmMain
 		Me.GroupBox1.Controls.Add(Me.Label1)
 		Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
 		Me.GroupBox1.Font = New System.Drawing.Font("Tahoma", 8.25!)
-		Me.GroupBox1.Location = New System.Drawing.Point(0, 66)
-		Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.GroupBox1.Location = New System.Drawing.Point(0, 54)
 		Me.GroupBox1.Name = "GroupBox1"
-		Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
-		Me.GroupBox1.Size = New System.Drawing.Size(847, 127)
+		Me.GroupBox1.Size = New System.Drawing.Size(635, 103)
 		Me.GroupBox1.TabIndex = 7
 		Me.GroupBox1.TabStop = False
 		Me.GroupBox1.Text = "Filtros de la consulta"
 		'
 		'txtAcciones
 		'
-		Me.txtAcciones.Location = New System.Drawing.Point(123, 84)
-		Me.txtAcciones.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.txtAcciones.Location = New System.Drawing.Point(92, 68)
 		Me.txtAcciones.Name = "txtAcciones"
-		Me.txtAcciones.Size = New System.Drawing.Size(95, 22)
+		Me.txtAcciones.Size = New System.Drawing.Size(71, 20)
 		Me.txtAcciones.TabIndex = 7
 		'
 		'txtUsuario
 		'
-		Me.txtUsuario.Location = New System.Drawing.Point(501, 84)
-		Me.txtUsuario.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.txtUsuario.Location = New System.Drawing.Point(376, 68)
 		Me.txtUsuario.Name = "txtUsuario"
-		Me.txtUsuario.Size = New System.Drawing.Size(228, 22)
+		Me.txtUsuario.Size = New System.Drawing.Size(171, 20)
 		Me.txtUsuario.TabIndex = 7
 		'
 		'txtDescripcion
 		'
-		Me.txtDescripcion.Location = New System.Drawing.Point(501, 52)
-		Me.txtDescripcion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.txtDescripcion.Location = New System.Drawing.Point(376, 42)
 		Me.txtDescripcion.Name = "txtDescripcion"
-		Me.txtDescripcion.Size = New System.Drawing.Size(228, 22)
+		Me.txtDescripcion.Size = New System.Drawing.Size(171, 20)
 		Me.txtDescripcion.TabIndex = 6
 		'
 		'txtCodigosTransaccion
 		'
-		Me.txtCodigosTransaccion.Location = New System.Drawing.Point(501, 22)
-		Me.txtCodigosTransaccion.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.txtCodigosTransaccion.Location = New System.Drawing.Point(376, 18)
 		Me.txtCodigosTransaccion.Name = "txtCodigosTransaccion"
-		Me.txtCodigosTransaccion.Size = New System.Drawing.Size(228, 22)
+		Me.txtCodigosTransaccion.Size = New System.Drawing.Size(171, 20)
 		Me.txtCodigosTransaccion.TabIndex = 5
 		'
 		'cmdConsultar
 		'
-		Me.cmdConsultar.Location = New System.Drawing.Point(737, 84)
-		Me.cmdConsultar.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.cmdConsultar.Location = New System.Drawing.Point(553, 68)
 		Me.cmdConsultar.Name = "cmdConsultar"
-		Me.cmdConsultar.Size = New System.Drawing.Size(105, 28)
+		Me.cmdConsultar.Size = New System.Drawing.Size(79, 23)
 		Me.cmdConsultar.TabIndex = 8
 		Me.cmdConsultar.Text = "&Consultar"
 		'
 		'cmdBuscarAcciones
 		'
 		Me.cmdBuscarAcciones.ImageOptions.Image = Global.VBP04711.My.Resources.Resources.edit_find_3
-		Me.cmdBuscarAcciones.Location = New System.Drawing.Point(225, 81)
-		Me.cmdBuscarAcciones.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.cmdBuscarAcciones.Location = New System.Drawing.Point(169, 66)
 		Me.cmdBuscarAcciones.Name = "cmdBuscarAcciones"
-		Me.cmdBuscarAcciones.Size = New System.Drawing.Size(31, 28)
+		Me.cmdBuscarAcciones.Size = New System.Drawing.Size(23, 23)
 		Me.cmdBuscarAcciones.TabIndex = 4
 		'
 		'txtHasta
 		'
 		Me.txtHasta.EditValue = Nothing
-		Me.txtHasta.Location = New System.Drawing.Point(123, 54)
-		Me.txtHasta.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.txtHasta.Location = New System.Drawing.Point(92, 44)
 		Me.txtHasta.Name = "txtHasta"
 		Me.txtHasta.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
 		Me.txtHasta.Properties.CalendarTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-		Me.txtHasta.Size = New System.Drawing.Size(133, 22)
+		Me.txtHasta.Size = New System.Drawing.Size(100, 20)
 		Me.txtHasta.TabIndex = 2
 		'
 		'txtDesde
 		'
 		Me.txtDesde.EditValue = Nothing
-		Me.txtDesde.Location = New System.Drawing.Point(123, 25)
-		Me.txtDesde.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.txtDesde.Location = New System.Drawing.Point(92, 20)
 		Me.txtDesde.Name = "txtDesde"
 		Me.txtDesde.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
 		Me.txtDesde.Properties.CalendarTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-		Me.txtDesde.Size = New System.Drawing.Size(133, 22)
+		Me.txtDesde.Size = New System.Drawing.Size(100, 20)
 		Me.txtDesde.TabIndex = 1
 		'
 		'Label4
 		'
 		Me.Label4.AutoSize = True
-		Me.Label4.Location = New System.Drawing.Point(285, 87)
-		Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+		Me.Label4.Location = New System.Drawing.Point(214, 71)
 		Me.Label4.Name = "Label4"
-		Me.Label4.Size = New System.Drawing.Size(187, 17)
+		Me.Label4.Size = New System.Drawing.Size(147, 13)
 		Me.Label4.TabIndex = 1
 		Me.Label4.Text = "Nombre del usuario contiene:"
 		'
 		'Label5
 		'
 		Me.Label5.AutoSize = True
-		Me.Label5.Location = New System.Drawing.Point(285, 58)
-		Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+		Me.Label5.Location = New System.Drawing.Point(214, 47)
 		Me.Label5.Name = "Label5"
-		Me.Label5.Size = New System.Drawing.Size(197, 17)
+		Me.Label5.Size = New System.Drawing.Size(156, 13)
 		Me.Label5.TabIndex = 2
 		Me.Label5.Text = "Descripción de trans. contiene:"
 		'
 		'Label6
 		'
 		Me.Label6.AutoSize = True
-		Me.Label6.Location = New System.Drawing.Point(285, 28)
-		Me.Label6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+		Me.Label6.Location = New System.Drawing.Point(214, 23)
 		Me.Label6.Name = "Label6"
-		Me.Label6.Size = New System.Drawing.Size(120, 17)
+		Me.Label6.Size = New System.Drawing.Size(96, 13)
 		Me.Label6.TabIndex = 3
 		Me.Label6.Text = "Códigos de trans.:"
 		'
 		'Label3
 		'
 		Me.Label3.AutoSize = True
-		Me.Label3.Location = New System.Drawing.Point(16, 87)
-		Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+		Me.Label3.Location = New System.Drawing.Point(12, 71)
 		Me.Label3.Name = "Label3"
-		Me.Label3.Size = New System.Drawing.Size(66, 17)
+		Me.Label3.Size = New System.Drawing.Size(53, 13)
 		Me.Label3.TabIndex = 0
 		Me.Label3.Text = "Acciones:"
 		'
 		'Label2
 		'
 		Me.Label2.AutoSize = True
-		Me.Label2.Location = New System.Drawing.Point(16, 58)
-		Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+		Me.Label2.Location = New System.Drawing.Point(12, 47)
 		Me.Label2.Name = "Label2"
-		Me.Label2.Size = New System.Drawing.Size(87, 17)
+		Me.Label2.Size = New System.Drawing.Size(71, 13)
 		Me.Label2.TabIndex = 0
 		Me.Label2.Text = "Hasta Fecha:"
 		'
 		'Label1
 		'
 		Me.Label1.AutoSize = True
-		Me.Label1.Location = New System.Drawing.Point(17, 28)
-		Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+		Me.Label1.Location = New System.Drawing.Point(13, 23)
 		Me.Label1.Name = "Label1"
-		Me.Label1.Size = New System.Drawing.Size(91, 17)
+		Me.Label1.Size = New System.Drawing.Size(73, 13)
 		Me.Label1.TabIndex = 0
 		Me.Label1.Text = "Desde Fecha:"
 		'
@@ -285,40 +268,36 @@ Partial Class frmMain
 		Me.PanTop.Dock = System.Windows.Forms.DockStyle.Top
 		Me.PanTop.Location = New System.Drawing.Point(0, 0)
 		Me.PanTop.LookAndFeel.UseDefaultLookAndFeel = False
-		Me.PanTop.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
 		Me.PanTop.Name = "PanTop"
-		Me.PanTop.Size = New System.Drawing.Size(847, 66)
+		Me.PanTop.Size = New System.Drawing.Size(635, 54)
 		Me.PanTop.TabIndex = 6
 		'
 		'lblSubtitulo
 		'
-		Me.lblSubtitulo.Location = New System.Drawing.Point(45, 36)
-		Me.lblSubtitulo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.lblSubtitulo.Location = New System.Drawing.Point(34, 29)
 		Me.lblSubtitulo.Name = "lblSubtitulo"
-		Me.lblSubtitulo.Size = New System.Drawing.Size(0, 16)
+		Me.lblSubtitulo.Size = New System.Drawing.Size(0, 13)
 		Me.lblSubtitulo.TabIndex = 2
 		'
 		'lblTitulo
 		'
 		Me.lblTitulo.Appearance.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
 		Me.lblTitulo.Appearance.Options.UseFont = True
-		Me.lblTitulo.Location = New System.Drawing.Point(16, 11)
-		Me.lblTitulo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.lblTitulo.Location = New System.Drawing.Point(12, 9)
 		Me.lblTitulo.Name = "lblTitulo"
-		Me.lblTitulo.Size = New System.Drawing.Size(0, 17)
+		Me.lblTitulo.Size = New System.Drawing.Size(0, 13)
 		Me.lblTitulo.TabIndex = 1
 		'
 		'picLogo
 		'
 		Me.picLogo.Dock = System.Windows.Forms.DockStyle.Right
 		Me.picLogo.EditValue = Global.VBP04711.My.Resources.Resources.logo_prex
-		Me.picLogo.Location = New System.Drawing.Point(766, 2)
-		Me.picLogo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.picLogo.Location = New System.Drawing.Point(574, 2)
 		Me.picLogo.Name = "picLogo"
 		Me.picLogo.Properties.Appearance.BackColor = System.Drawing.Color.Transparent
 		Me.picLogo.Properties.Appearance.Options.UseBackColor = True
 		Me.picLogo.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder
-		Me.picLogo.Size = New System.Drawing.Size(79, 62)
+		Me.picLogo.Size = New System.Drawing.Size(59, 50)
 		Me.picLogo.TabIndex = 0
 		'
 		'PrintingSystem1
@@ -339,16 +318,14 @@ Partial Class frmMain
 		Me.GridDiseno.EmbeddedNavigator.Buttons.Edit.Visible = False
 		Me.GridDiseno.EmbeddedNavigator.Buttons.EndEdit.Visible = False
 		Me.GridDiseno.EmbeddedNavigator.Buttons.Remove.Visible = False
-		Me.GridDiseno.EmbeddedNavigator.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
 		Me.GridDiseno.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.GridDiseno.Location = New System.Drawing.Point(0, 0)
 		Me.GridDiseno.LookAndFeel.Style = DevExpress.LookAndFeel.LookAndFeelStyle.UltraFlat
 		Me.GridDiseno.LookAndFeel.UseWindowsXPTheme = True
 		Me.GridDiseno.MainView = Me.gDiseno
-		Me.GridDiseno.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
 		Me.GridDiseno.Name = "GridDiseno"
 		Me.GridDiseno.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.RepositoryItemSpinEdit1, Me.RepositoryItemSpinEdit2, Me.RepositoryItemSpinEdit3})
-		Me.GridDiseno.Size = New System.Drawing.Size(847, 300)
+		Me.GridDiseno.Size = New System.Drawing.Size(635, 244)
 		Me.GridDiseno.TabIndex = 16
 		Me.GridDiseno.UseEmbeddedNavigator = True
 		Me.GridDiseno.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gDiseno})
@@ -367,6 +344,8 @@ Partial Class frmMain
 		Me.gDiseno.OptionsBehavior.Editable = False
 		Me.gDiseno.OptionsBehavior.ReadOnly = True
 		Me.gDiseno.OptionsMenu.EnableColumnMenu = False
+		Me.gDiseno.OptionsPrint.PrintDetails = True
+		Me.gDiseno.OptionsPrint.PrintPreview = True
 		Me.gDiseno.OptionsView.AutoCalcPreviewLineCount = True
 		Me.gDiseno.OptionsView.BestFitMode = DevExpress.XtraGrid.Views.Grid.GridBestFitMode.Full
 		Me.gDiseno.OptionsView.ShowPreview = True
@@ -374,6 +353,15 @@ Partial Class frmMain
 		Me.gDiseno.PreviewFieldName = "LS_EXTRA"
 		Me.gDiseno.RowHeight = 19
 		Me.gDiseno.SortInfo.AddRange(New DevExpress.XtraGrid.Columns.GridColumnSortInfo() {New DevExpress.XtraGrid.Columns.GridColumnSortInfo(Me.colId, DevExpress.Data.ColumnSortOrder.Ascending)})
+		'
+		'colId
+		'
+		Me.colId.Caption = "Id"
+		Me.colId.FieldName = "LS_SECUEN"
+		Me.colId.Name = "colId"
+		Me.colId.OptionsColumn.AllowEdit = False
+		Me.colId.Visible = True
+		Me.colId.VisibleIndex = 0
 		'
 		'colUsuario
 		'
@@ -385,6 +373,15 @@ Partial Class frmMain
 		Me.colUsuario.OptionsColumn.AllowEdit = False
 		Me.colUsuario.Visible = True
 		Me.colUsuario.VisibleIndex = 1
+		'
+		'colEstacionTrabajo
+		'
+		Me.colEstacionTrabajo.Caption = "Estación de Trabajo"
+		Me.colEstacionTrabajo.FieldName = "LS_WKSTAT"
+		Me.colEstacionTrabajo.Name = "colEstacionTrabajo"
+		Me.colEstacionTrabajo.OptionsColumn.AllowEdit = False
+		Me.colEstacionTrabajo.Visible = True
+		Me.colEstacionTrabajo.VisibleIndex = 2
 		'
 		'colFecha
 		'
@@ -472,10 +469,9 @@ Partial Class frmMain
 		Me.PanGrid.Controls.Add(Me.PanGrilla)
 		Me.PanGrid.Controls.Add(Me.PanTool)
 		Me.PanGrid.Dock = System.Windows.Forms.DockStyle.Fill
-		Me.PanGrid.Location = New System.Drawing.Point(0, 193)
-		Me.PanGrid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.PanGrid.Location = New System.Drawing.Point(0, 157)
 		Me.PanGrid.Name = "PanGrid"
-		Me.PanGrid.Size = New System.Drawing.Size(847, 336)
+		Me.PanGrid.Size = New System.Drawing.Size(635, 273)
 		Me.PanGrid.TabIndex = 3
 		'
 		'PanGrilla
@@ -483,10 +479,9 @@ Partial Class frmMain
 		Me.PanGrilla.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder
 		Me.PanGrilla.Controls.Add(Me.GridDiseno)
 		Me.PanGrilla.Dock = System.Windows.Forms.DockStyle.Fill
-		Me.PanGrilla.Location = New System.Drawing.Point(0, 36)
-		Me.PanGrilla.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+		Me.PanGrilla.Location = New System.Drawing.Point(0, 29)
 		Me.PanGrilla.Name = "PanGrilla"
-		Me.PanGrilla.Size = New System.Drawing.Size(847, 300)
+		Me.PanGrilla.Size = New System.Drawing.Size(635, 244)
 		Me.PanGrilla.TabIndex = 1
 		'
 		'PanTool
@@ -495,9 +490,8 @@ Partial Class frmMain
 		Me.PanTool.Controls.Add(Me.ToolBarra)
 		Me.PanTool.Dock = System.Windows.Forms.DockStyle.Top
 		Me.PanTool.Location = New System.Drawing.Point(0, 0)
-		Me.PanTool.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
 		Me.PanTool.Name = "PanTool"
-		Me.PanTool.Size = New System.Drawing.Size(847, 36)
+		Me.PanTool.Size = New System.Drawing.Size(635, 29)
 		Me.PanTool.TabIndex = 0
 		'
 		'ToolBarra
@@ -507,7 +501,7 @@ Partial Class frmMain
 		Me.ToolBarra.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnNuevaConsulta, Me.ToolStripSeparator5, Me.btnImprimir, Me.btnExportar, Me.ToolStripButton2, Me.ToolStripSeparator1, Me.btnVerAdjunto})
 		Me.ToolBarra.Location = New System.Drawing.Point(0, 0)
 		Me.ToolBarra.Name = "ToolBarra"
-		Me.ToolBarra.Size = New System.Drawing.Size(847, 36)
+		Me.ToolBarra.Size = New System.Drawing.Size(635, 29)
 		Me.ToolBarra.TabIndex = 0
 		Me.ToolBarra.Text = "ToolStrip1"
 		'
@@ -516,20 +510,20 @@ Partial Class frmMain
 		Me.btnNuevaConsulta.Image = Global.VBP04711.My.Resources.Resources.document_new_5
 		Me.btnNuevaConsulta.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnNuevaConsulta.Name = "btnNuevaConsulta"
-		Me.btnNuevaConsulta.Size = New System.Drawing.Size(136, 33)
+		Me.btnNuevaConsulta.Size = New System.Drawing.Size(115, 26)
 		Me.btnNuevaConsulta.Text = "Nueva Consulta"
 		'
 		'ToolStripSeparator5
 		'
 		Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-		Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 36)
+		Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 29)
 		'
 		'btnImprimir
 		'
 		Me.btnImprimir.Image = CType(resources.GetObject("btnImprimir.Image"), System.Drawing.Image)
 		Me.btnImprimir.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnImprimir.Name = "btnImprimir"
-		Me.btnImprimir.Size = New System.Drawing.Size(110, 33)
+		Me.btnImprimir.Size = New System.Drawing.Size(91, 26)
 		Me.btnImprimir.Text = "Vista previa"
 		Me.btnImprimir.ToolTipText = "Vista previa impresión"
 		'
@@ -538,7 +532,7 @@ Partial Class frmMain
 		Me.btnExportar.Image = CType(resources.GetObject("btnExportar.Image"), System.Drawing.Image)
 		Me.btnExportar.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnExportar.Name = "btnExportar"
-		Me.btnExportar.Size = New System.Drawing.Size(89, 33)
+		Me.btnExportar.Size = New System.Drawing.Size(75, 26)
 		Me.btnExportar.Text = "Exportar"
 		'
 		'ToolStripButton2
@@ -546,20 +540,20 @@ Partial Class frmMain
 		Me.ToolStripButton2.Image = Global.VBP04711.My.Resources.Resources.Copy
 		Me.ToolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.ToolStripButton2.Name = "ToolStripButton2"
-		Me.ToolStripButton2.Size = New System.Drawing.Size(77, 33)
+		Me.ToolStripButton2.Size = New System.Drawing.Size(66, 26)
 		Me.ToolStripButton2.Text = "Copiar"
 		'
 		'ToolStripSeparator1
 		'
 		Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-		Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 36)
+		Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 29)
 		'
 		'btnVerAdjunto
 		'
 		Me.btnVerAdjunto.Image = Global.VBP04711.My.Resources.Resources.page_attach
 		Me.btnVerAdjunto.ImageTransparentColor = System.Drawing.Color.Magenta
 		Me.btnVerAdjunto.Name = "btnVerAdjunto"
-		Me.btnVerAdjunto.Size = New System.Drawing.Size(83, 33)
+		Me.btnVerAdjunto.Size = New System.Drawing.Size(70, 26)
 		Me.btnVerAdjunto.Text = "Ver Txts"
 		'
 		'colExtra
@@ -577,33 +571,14 @@ Partial Class frmMain
 		Me.GridColumn1.Visible = True
 		Me.GridColumn1.VisibleIndex = 0
 		'
-		'colEstacionTrabajo
-		'
-		Me.colEstacionTrabajo.Caption = "Estación de Trabajo"
-		Me.colEstacionTrabajo.FieldName = "LS_WKSTAT"
-		Me.colEstacionTrabajo.Name = "colEstacionTrabajo"
-		Me.colEstacionTrabajo.OptionsColumn.AllowEdit = False
-		Me.colEstacionTrabajo.Visible = True
-		Me.colEstacionTrabajo.VisibleIndex = 2
-		'
-		'colId
-		'
-		Me.colId.Caption = "Id"
-		Me.colId.FieldName = "LS_SECUEN"
-		Me.colId.Name = "colId"
-		Me.colId.OptionsColumn.AllowEdit = False
-		Me.colId.Visible = True
-		Me.colId.VisibleIndex = 0
-		'
 		'frmMain
 		'
-		Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+		Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-		Me.ClientSize = New System.Drawing.Size(847, 529)
+		Me.ClientSize = New System.Drawing.Size(635, 430)
 		Me.Controls.Add(Me.PanGrid)
 		Me.Controls.Add(Me.PanControles)
 		Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-		Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
 		Me.Name = "frmMain"
 		Me.Text = "Gestión RI | 4711 - 02 - Consulta de LOG del sistema"
 		Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
