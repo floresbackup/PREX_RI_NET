@@ -656,8 +656,8 @@ Partial Class frmMain
     Friend WithEvents colCodTrans As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents colTransaccion As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents colAccion As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents colExtra As DevExpress.XtraGrid.Columns.GridColumn
-    Private WithEvents GridDiseno As DevExpress.XtraGrid.GridControl
+	Friend WithEvents colExtra As DevExpress.XtraGrid.Columns.GridColumn
+	Private WithEvents GridDiseno As DevExpress.XtraGrid.GridControl
     Private WithEvents gDiseno As DevExpress.XtraGrid.Views.Grid.GridView
     Friend WithEvents RepositoryItemSpinEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit
     Friend WithEvents RepositoryItemSpinEdit2 As DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit

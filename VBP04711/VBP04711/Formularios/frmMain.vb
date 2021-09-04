@@ -445,13 +445,36 @@ Public Class frmMain
     End Sub
 
     Private Sub btnExportar_Click(sender As Object, e As EventArgs) Handles btnExportar.Click
-        frmExportar.PasarViewResultados("", Me.lblTitulo.Text, gDiseno, DevExpress.Export.ExportType.WYSIWYG)
+        frmExportar.PasarViewResultados("", Me.lblTitulo.Text, gDiseno)
         frmExportar.ShowDialog()
         GuardarLOG(AccionesLOG.Exportación_LOG, "Fecha desde: " & txtDesde.Text & "; Fecha Hasta: " & txtHasta.Text & "; Nombre Usuario Contiene: " & Trim(txtUsuario.Text), CODIGO_TRANSACCION, UsuarioActual.Codigo)
     End Sub
 
     Private Sub ToolStripButton2_Click(sender As Object, e As EventArgs) Handles ToolStripButton2.Click
-        gDiseno.CopyToClipboard()
+
+        Dim gridCopy As New DevExpress.XtraGrid.GridControl()
+        gridCopy.BindingContext = BindingContext
+        Dim view As New DevExpress.XtraGrid.Views.Grid.GridView(gridCopy)
+
+        view.Assign(gDiseno, False)
+        Dim col As New DevExpress.XtraGrid.Columns.GridColumn
+        col.Caption = "Extra"
+        col.FieldName = "LS_EXTRA"
+        col.Name = "colExtra"
+        col.Visible = True
+        col.VisibleIndex = 6
+        view.Columns.Add(col)
+
+        gridCopy.MainView = view
+        gridCopy.DataSource = GridDiseno.DataSource
+
+        view.OptionsClipboard.ClipboardMode = DevExpress.Export.ClipboardMode.PlainText
+        view.OptionsClipboard.CopyColumnHeaders = DevExpress.Utils.DefaultBoolean.True
+        view.OptionsClipboard.CopyCollapsedData = DevExpress.Utils.DefaultBoolean.True
+        view.OptionsSelection.MultiSelect = True
+        view.SelectAll()
+        view.CopyToClipboard()
+
         GuardarLOG(AccionesLOG.Copia_LOG, "Fecha desde: " & txtDesde.Text & "; Fecha Hasta: " & txtHasta.Text & "; Nombre Usuario Contiene: " & Trim(txtUsuario.Text), CODIGO_TRANSACCION, UsuarioActual.Codigo)
         MessageBox.Show(Me, "Se han copiado los resultados al portapapeles", "Copiar", MessageBoxButtons.OK, MessageBoxIcon.Information)
 

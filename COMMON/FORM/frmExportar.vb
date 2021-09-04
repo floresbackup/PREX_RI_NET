@@ -6,12 +6,7 @@ Public Class frmExportar
 
    Private oGvwResults As Grid.GridView
    Private sFiltro As String
-    Private exportType As DevExpress.Export.ExportType = DevExpress.Export.ExportType.DataAware
 
-    Public Sub PasarViewResultados(ByVal sDefaultFileName As String, ByVal sNombreConsulta As String, ByRef oGvw As Grid.GridView, ByVal typeExport As DevExpress.Export.ExportType)
-        exportType = typeExport
-        PasarViewResultados(sDefaultFileName, sNombreConsulta, oGvw)
-    End Sub
 
     Public Sub PasarViewResultados(ByVal sDefaultFileName As String, ByVal sNombreConsulta As String, ByRef oGvw As Grid.GridView)
         oGvwResults = oGvw
@@ -78,12 +73,11 @@ Public Class frmExportar
                     oOptions.Suppress65536RowsWarning = False
                     oOptions.Suppress256ColumnsWarning = False
                     oOptions.ApplyFormattingToEntireColumn = DevExpress.Utils.DefaultBoolean.False
-                    oOptions.ExportType = exportType
+                    oOptions.ExportType = DevExpress.Export.ExportType.WYSIWYG
 
                     oGvwResults.ExportToXls(txtFileName.Text.Trim, oOptions)
 
-                    If exportType = DevExpress.Export.ExportType.WYSIWYG Then
-                        Dim workbook As New Workbook()
+                    Dim workbook As New Workbook()
                         workbook.LoadDocument(txtFileName.Text.Trim)
 
 
@@ -92,35 +86,35 @@ Public Class frmExportar
                         Next sheet
 
                         workbook.SaveDocument(txtFileName.Text.Trim)
-                    End If
+
 
                 Case 1 'Archivo PDF
 
                     Dim oOptions As New PdfExportOptions
 
                     oOptions.Compressed = True
-               oOptions.ImageQuality = PdfJpegImageQuality.Highest
-               oOptions.DocumentOptions.Title = "Titulo"
-               oOptions.DocumentOptions.Subject = "Subtitulo"
-               oOptions.DocumentOptions.Author = Application.CompanyName & " - " & Application.ProductName & " " & Application.ProductVersion
+                    oOptions.ImageQuality = PdfJpegImageQuality.Highest
+                    oOptions.DocumentOptions.Title = "Titulo"
+                    oOptions.DocumentOptions.Subject = "Subtitulo"
+                    oOptions.DocumentOptions.Author = Application.CompanyName & " - " & Application.ProductName & " " & Application.ProductVersion
 
-               oGvwResults.ExportToPdf(txtFileName.Text.Trim)
+                    oGvwResults.ExportToPdf(txtFileName.Text.Trim)
 
-            Case 2 'Archivo HTML
-               Dim oOptions As New HtmlExportOptions
+                Case 2 'Archivo HTML
+                    Dim oOptions As New HtmlExportOptions
 
-               oOptions.PageBorderColor = txtColor.BackColor
-               oOptions.Title = txtPageTitle.Text.Trim
-               oOptions.PageBorderWidth = txtBorderWidth.Value
-               oOptions.ExportMode = HtmlExportMode.SingleFile
-               oOptions.RemoveSecondarySymbols = True
+                    oOptions.PageBorderColor = txtColor.BackColor
+                    oOptions.Title = txtPageTitle.Text.Trim
+                    oOptions.PageBorderWidth = txtBorderWidth.Value
+                    oOptions.ExportMode = HtmlExportMode.SingleFile
+                    oOptions.RemoveSecondarySymbols = True
 
-               oGvwResults.ExportToHtml(txtFileName.Text.Trim, oOptions)
+                    oGvwResults.ExportToHtml(txtFileName.Text.Trim, oOptions)
 
-            Case 3 'Archivo de Texto
-               oGvwResults.ExportToText(txtFileName.Text.Trim)
+                Case 3 'Archivo de Texto
+                    oGvwResults.ExportToText(txtFileName.Text.Trim)
 
-            Case 4 'Archivo delimitado
+                Case 4 'Archivo delimitado
                     Dim oOptions As New CsvExportOptions
                     oOptions.SkipEmptyColumns = False
                     oOptions.SkipEmptyRows = True
@@ -128,17 +122,16 @@ Public Class frmExportar
                     oOptions.Separator = txtSep.Text.Trim
                     oOptions.QuoteStringsWithSeparators = chkTexto.Checked
 
+
                     oGvwResults.ExportToCsv(txtFileName.Text.Trim, oOptions)
                     'oGvwResults.ExportToText(txtFileName.Text.Trim, oOptions)
 
                 Case 5 'Texto enriquecido
-               Dim oOptions As New RtfExportOptions
+                    Dim oOptions As New RtfExportOptions
+                    oGvwResults.ExportToRtf(txtFileName.Text.Trim)
+            End Select
 
-               oGvwResults.ExportToRtf(txtFileName.Text.Trim)
-
-         End Select
-
-         If chkAbrir.Checked Then
+            If chkAbrir.Checked Then
             Process.Start(txtFileName.Text.Trim)
          End If
 
