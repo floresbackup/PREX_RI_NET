@@ -45,7 +45,7 @@ namespace BuscadorNovedadesCentral
 				{
 					Console.WriteLine($"Buscando novedades del tipo {tipo}...");
 
-					var html = Prex.Utils.Misc.Html.GetHtmlFromWeb.GetHtmlString(tipo, url);
+					var html = Prex.Utils.Misc.Http.GetHtmlFromWeb.GetHtmlString(tipo, url);
 					if (html.Contains("No existen registros"))
 					{
 						Console.Write("    [No existen registros]");

@@ -46,6 +46,8 @@
 			this.label6 = new System.Windows.Forms.Label();
 			this.btnLimpiarCampos = new System.Windows.Forms.Button();
 			this.lblStatusCode = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
+			this.cmbHttpRequestType = new System.Windows.Forms.ComboBox();
 			((System.ComponentModel.ISupportInitialize)(this.txtRequestBody.Properties)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txtResponse.Properties)).BeginInit();
 			this.SuspendLayout();
@@ -68,7 +70,7 @@
 			// 
 			// btnProcesar
 			// 
-			this.btnProcesar.Location = new System.Drawing.Point(540, 274);
+			this.btnProcesar.Location = new System.Drawing.Point(540, 305);
 			this.btnProcesar.Name = "btnProcesar";
 			this.btnProcesar.Size = new System.Drawing.Size(75, 35);
 			this.btnProcesar.TabIndex = 8;
@@ -150,7 +152,7 @@
 			// txtRequestBody
 			// 
 			this.txtRequestBody.Enabled = false;
-			this.txtRequestBody.Location = new System.Drawing.Point(123, 172);
+			this.txtRequestBody.Location = new System.Drawing.Point(123, 203);
 			this.txtRequestBody.Name = "txtRequestBody";
 			this.txtRequestBody.Size = new System.Drawing.Size(490, 96);
 			this.txtRequestBody.TabIndex = 6;
@@ -158,7 +160,7 @@
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(38, 173);
+			this.label5.Location = new System.Drawing.Point(38, 204);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(83, 13);
 			this.label5.TabIndex = 11;
@@ -166,19 +168,19 @@
 			// 
 			// txtResponse
 			// 
-			this.txtResponse.Location = new System.Drawing.Point(15, 330);
+			this.txtResponse.Location = new System.Drawing.Point(15, 362);
 			this.txtResponse.Name = "txtResponse";
 			this.txtResponse.Properties.Appearance.BackColor = System.Drawing.Color.LemonChiffon;
 			this.txtResponse.Properties.Appearance.Options.UseBackColor = true;
 			this.txtResponse.Properties.ReadOnly = true;
-			this.txtResponse.Size = new System.Drawing.Size(598, 205);
+			this.txtResponse.Size = new System.Drawing.Size(598, 173);
 			this.txtResponse.TabIndex = 9;
 			// 
 			// label6
 			// 
 			this.label6.AutoSize = true;
 			this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label6.Location = new System.Drawing.Point(12, 314);
+			this.label6.Location = new System.Drawing.Point(12, 345);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(67, 13);
 			this.label6.TabIndex = 13;
@@ -186,7 +188,7 @@
 			// 
 			// btnLimpiarCampos
 			// 
-			this.btnLimpiarCampos.Location = new System.Drawing.Point(459, 274);
+			this.btnLimpiarCampos.Location = new System.Drawing.Point(459, 305);
 			this.btnLimpiarCampos.Name = "btnLimpiarCampos";
 			this.btnLimpiarCampos.Size = new System.Drawing.Size(75, 35);
 			this.btnLimpiarCampos.TabIndex = 7;
@@ -198,17 +200,42 @@
 			// 
 			this.lblStatusCode.AutoSize = true;
 			this.lblStatusCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblStatusCode.Location = new System.Drawing.Point(85, 314);
+			this.lblStatusCode.Location = new System.Drawing.Point(85, 345);
 			this.lblStatusCode.Name = "lblStatusCode";
 			this.lblStatusCode.Size = new System.Drawing.Size(67, 13);
 			this.lblStatusCode.TabIndex = 13;
 			this.lblStatusCode.Text = "Response:";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(55, 172);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(66, 13);
+			this.label7.TabIndex = 15;
+			this.label7.Text = "Media Type:";
+			// 
+			// cmbHttpRequestType
+			// 
+			this.cmbHttpRequestType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
+			this.cmbHttpRequestType.FormattingEnabled = true;
+			this.cmbHttpRequestType.Items.AddRange(new object[] {
+            "application/json",
+            "text/plain",
+            "application/xml",
+            "Ninguno (vacio)"});
+			this.cmbHttpRequestType.Location = new System.Drawing.Point(123, 169);
+			this.cmbHttpRequestType.Name = "cmbHttpRequestType";
+			this.cmbHttpRequestType.Size = new System.Drawing.Size(159, 21);
+			this.cmbHttpRequestType.TabIndex = 14;
 			// 
 			// FrmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(627, 547);
+			this.Controls.Add(this.label7);
+			this.Controls.Add(this.cmbHttpRequestType);
 			this.Controls.Add(this.lblStatusCode);
 			this.Controls.Add(this.label6);
 			this.Controls.Add(this.txtResponse);
@@ -257,6 +284,8 @@
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Button btnLimpiarCampos;
 		private System.Windows.Forms.Label lblStatusCode;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.ComboBox cmbHttpRequestType;
 	}
 }
 

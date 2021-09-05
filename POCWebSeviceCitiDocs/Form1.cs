@@ -20,6 +20,15 @@ namespace POCWebSeviceCitiDocs
 				return null;
 			}
 		}
+		private string MediaType
+		{
+			get
+			{
+				if (cmbHttpRequestType.Text.IsNullOrEmpty()) return null;
+				if (cmbHttpRequestType.Text.Contains("Ninguno (vacio)")) return null;
+				return cmbHttpRequestType.Text.Trim();
+			}
+		}
 
 		public FrmMain() => InitializeComponent();
 
@@ -61,15 +70,15 @@ namespace POCWebSeviceCitiDocs
 				{
 					case "GET":
 						if (txtCertPath.Text.IsNullOrEmpty())
-							response = PeticionesHttp.GetResponse(txtUrl.Text);
+							response = PeticionesHttp.GetResponse(txtUrl.Text, MediaType);
 						else
-							response = PeticionesHttp.GetResponse(txtUrl.Text, txtCertPath.Text, txtCertPass.Text);
+							response = PeticionesHttp.GetResponse(txtUrl.Text, txtCertPath.Text, txtCertPass.Text, MediaType);
 						break;
 					case "POST":
 						if (txtCertPath.Text.IsNullOrEmpty())
-							response = PeticionesHttp.PostRequest(txtUrl.Text, txtRequestBody.Text.Trim());
+							response = PeticionesHttp.PostRequest(txtUrl.Text, txtRequestBody.Text.Trim(), MediaType);
 						else
-							response = PeticionesHttp.PostRequest(txtUrl.Text, txtRequestBody.Text.Trim(), txtCertPath.Text, txtCertPass.Text);
+							response = PeticionesHttp.PostRequest(txtUrl.Text, txtRequestBody.Text.Trim(), txtCertPath.Text, txtCertPass.Text, MediaType);
 						break;
 				}
 
@@ -111,6 +120,8 @@ namespace POCWebSeviceCitiDocs
 				if (txtUrl.Text.IsNullOrEmpty()) throw new Exception("Debe completar url");
 				if (!txtUrl.Text.IsValidUri()) throw new Exception("Formato url inválido");
 				if (HttpMethod == null) throw new Exception("Debe elegir un método HTTP");
+				if (String.IsNullOrEmpty(MediaType) && !String.IsNullOrEmpty(txtRequestBody.Text.Trim())) throw new Exception("Debe elegir Media Type");
+
 				//if (HttpMethod == HttpMethod.Post && txtRequestBody.Text.IsNullOrEmpty()) throw new Exception("Debe completar el BODY para realizar un método POST");
 				if (!txtCertPath.IsNullOrEmpty())
 				{
@@ -135,6 +146,7 @@ namespace POCWebSeviceCitiDocs
 			txtUrl.Text = string.Empty;
 			cmbHttpMethod.Text = string.Empty;
 			lblStatusCode.Text = string.Empty;
+			cmbHttpMethod.Text = string.Empty;
 		}
 	}
 }
