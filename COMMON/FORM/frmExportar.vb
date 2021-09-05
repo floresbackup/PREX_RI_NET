@@ -78,14 +78,14 @@ Public Class frmExportar
                     oGvwResults.ExportToXls(txtFileName.Text.Trim, oOptions)
 
                     Dim workbook As New Workbook()
-                        workbook.LoadDocument(txtFileName.Text.Trim)
+                    workbook.LoadDocument(txtFileName.Text.Trim)
 
 
-                        For Each sheet As Worksheet In workbook.Worksheets
-                            sheet.Columns.AutoFit(0, sheet.Columns.LastUsedIndex)
-                        Next sheet
+                    For Each sheet As Worksheet In workbook.Worksheets
+                        sheet.Columns.AutoFit(0, sheet.Columns.LastUsedIndex)
+                    Next sheet
 
-                        workbook.SaveDocument(txtFileName.Text.Trim)
+                    workbook.SaveDocument(txtFileName.Text.Trim)
 
 
                 Case 1 'Archivo PDF
