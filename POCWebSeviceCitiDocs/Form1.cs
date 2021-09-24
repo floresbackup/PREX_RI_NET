@@ -10,6 +10,22 @@ namespace POCWebSeviceCitiDocs
 	public partial class FrmMain : Form
 	{
 
+		private SecurityProtocolType? ProtocolType
+		{
+			get 
+			{
+				SecurityProtocolType? protocol = null;
+
+				if (ckSsl3.Checked) protocol = protocol == null ? SecurityProtocolType.Ssl3 : protocol | SecurityProtocolType.Ssl3;
+				if (ckTls1.Checked) protocol = protocol == null ? SecurityProtocolType.Tls : protocol | SecurityProtocolType.Tls;
+				if (ckTls11.Checked) protocol = protocol == null ? SecurityProtocolType.Tls11 : protocol | SecurityProtocolType.Tls11;
+				if (ckTls12.Checked) protocol = protocol == null ? SecurityProtocolType.Tls12 : protocol | SecurityProtocolType.Tls12;
+
+				return protocol;
+			}
+		}
+
+
 		private HttpMethod HttpMethod 
 		{
 			get 
@@ -40,7 +56,7 @@ namespace POCWebSeviceCitiDocs
 		private void btnDialogCertificado_Click(object sender, EventArgs e)
 		{
 			fileDialog.FileName = string.Empty;
-			fileDialog.Filter = "|*.pfx";
+			fileDialog.Filter = "|*.*";
 			txtCertPath.Text = string.Empty;
 			if (fileDialog.ShowDialog() == DialogResult.OK)
 				txtCertPath.Text = fileDialog.FileName;
@@ -69,16 +85,10 @@ namespace POCWebSeviceCitiDocs
 				switch (HttpMethod.Method)
 				{
 					case "GET":
-						if (txtCertPath.Text.IsNullOrEmpty())
-							response = PeticionesHttp.GetResponse(txtUrl.Text, MediaType);
-						else
-							response = PeticionesHttp.GetResponse(txtUrl.Text, txtCertPath.Text, txtCertPass.Text, MediaType);
+						response = GetResponse();
 						break;
 					case "POST":
-						if (txtCertPath.Text.IsNullOrEmpty())
-							response = PeticionesHttp.PostRequest(txtUrl.Text, txtRequestBody.Text.Trim(), MediaType);
-						else
-							response = PeticionesHttp.PostRequest(txtUrl.Text, txtRequestBody.Text.Trim(), txtCertPath.Text, txtCertPass.Text, MediaType);
+						response = PostResponse();
 						break;
 				}
 
@@ -96,10 +106,7 @@ namespace POCWebSeviceCitiDocs
 			}
 			catch (Exception ex)
 			{
-				txtResponse.Text = ex.Message;
-				if (ex.InnerException != null)
-					txtResponse.Text += $" - InnerException: {ex.InnerException.Message}";
-
+				txtResponse.Text = ex.GetFullTextStack();
 				lblStatusCode.Text = "Error";
 			}
 			finally
@@ -110,6 +117,55 @@ namespace POCWebSeviceCitiDocs
 
 				Cursor.Current = Cursors.Default;
 			}
+		}
+
+		private ResponseResult PostResponse()
+		{
+			ResponseResult response = null;
+
+			if (selRestSharp.Checked)
+			{
+				if (txtCertPath.Text.IsNullOrEmpty())
+					response = PeticionesHttp.PostRequest(txtUrl.Text, txtRequestBody.Text.Trim(), MediaType, ProtocolType);
+				else
+					response = PeticionesHttp.PostRequest(txtUrl.Text, txtRequestBody.Text.Trim(), txtCertPath.Text, txtCertPass.Text, MediaType, ProtocolType);
+			}
+
+			if (selNetRequest.Checked)
+			{
+				if (txtCertPath.Text.IsNullOrEmpty())
+					response = PeticionesHttp.GestionarPeticion(txtUrl.Text, txtRequestBody.Text.Trim(), HttpMethod.Post, MediaType, null, null, ProtocolType);
+				else
+					response = PeticionesHttp.GestionarPeticion(txtUrl.Text, string.Empty, HttpMethod.Post, MediaType, null, txtCertPath.Text, txtCertPass.Text, null, ProtocolType);
+
+			}
+			return response;
+
+		}
+
+		private ResponseResult GetResponse()
+		{
+			ResponseResult response = null;
+
+			if (selRestSharp.Checked)
+			{
+				if (txtCertPath.Text.IsNullOrEmpty())
+					response = PeticionesHttp.GetResponse(txtUrl.Text, MediaType, ProtocolType);
+				else
+					response = PeticionesHttp.GetResponse(txtUrl.Text, txtCertPath.Text, txtCertPass.Text, MediaType, ProtocolType);
+			}
+
+			if (selNetRequest.Checked)
+			{
+				if (txtCertPath.Text.IsNullOrEmpty())
+					response = PeticionesHttp.GestionarPeticion(txtUrl.Text, string.Empty, HttpMethod.Get, MediaType, null, null, ProtocolType);
+				else
+					response = PeticionesHttp.GestionarPeticion(txtUrl.Text, string.Empty, HttpMethod.Get, MediaType, null, txtCertPath.Text, txtCertPass.Text, null, ProtocolType);
+
+			}
+
+			return response;
+
 		}
 
 		private bool ValidarDatosEntrada()
@@ -148,5 +204,6 @@ namespace POCWebSeviceCitiDocs
 			lblStatusCode.Text = string.Empty;
 			cmbHttpMethod.Text = string.Empty;
 		}
+
 	}
 }

@@ -61,5 +61,22 @@ namespace Prex.Utils
 
 			return false;
 		}
+
+
+		/// <summary>
+		/// Convierte una excepcion en un texo para luego ser logeada
+		/// </summary>
+		public static string GetFullTextStack(this Exception ex)
+		{
+			string TxtTmp = "";
+			while (ex is object)
+			{
+				TxtTmp += ex.Message + Environment.NewLine;
+				ex = ex.InnerException;
+			}
+
+			return TxtTmp;
+		}
+
 	}
 }
