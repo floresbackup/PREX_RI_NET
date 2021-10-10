@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Prex.Utils.Misc.Http
@@ -63,8 +64,10 @@ namespace Prex.Utils.Misc.Http
 
             if (securityProtocolType != null)
                 ServicePointManager.SecurityProtocol = securityProtocolType.Value;
+            
+            ServicePointManager.ServerCertificateValidationCallback = delegate (object sender, X509Certificate certificate2, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
 
-			var client = new RestClient(url);
+            var client = new RestClient(url);
             if (certificate != null)
 				client.ClientCertificates = new X509CertificateCollection() { certificate };
 
@@ -101,10 +104,13 @@ namespace Prex.Utils.Misc.Http
             //https://www.it-swarm-es.com/es/c%23/el-cliente-y-el-servidor-no-pueden-comunicarse-porque-no-poseen-un-algoritmo-comun-asp.net-c-iis/1048821062/
             if (securityProtocolType != null)
                 ServicePointManager.SecurityProtocol = securityProtocolType.Value;
+            
+            ServicePointManager.ServerCertificateValidationCallback = delegate (object sender, X509Certificate certificate2, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
 
             HttpWebRequest request = WebRequest.Create(new Uri(url)) as HttpWebRequest;
             if (certificate != null)
                 request.ClientCertificates = new X509CertificateCollection() { certificate };
+
 
             string returnContent;
             request.Method = method.ToString();
