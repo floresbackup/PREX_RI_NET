@@ -1,408 +1,418 @@
+Imports System.Data.SqlClient
 Imports System.IO
+Imports System.Linq
+Imports System.Net
 Imports Prex.Utils.ExtensionMehods
 
 Public Class frmMain
-    Public ErrorPermiso As Boolean = False
-    Private oAdmlocal As New AdmTablas
-    Private oProcesando As frmProcesando
-    Private bCancelProcAsinc As Boolean
-    Private nSegundos As Integer
+	Public ErrorPermiso As Boolean = False
+	Private oAdmlocal As New AdmTablas
+	Private oProcesando As frmProcesando
+	Private bCancelProcAsinc As Boolean
+	Private nSegundos As Integer
 
-    Public Sub AnalizarCommand()
+	Public Sub AnalizarCommand()
 
-        Try
+		Try
 
-            Dim sParametros() As String
-            Dim sItemParam() As String
-            Dim nCodigoUsuario As Long
-            Dim nCodigoTransaccion As Long
-            Dim nCodigoEntidad As Long
-            Dim nC As Integer
+			Dim sParametros() As String
+			Dim sItemParam() As String
+			Dim nCodigoUsuario As Long
+			Dim nCodigoTransaccion As Long
+			Dim nCodigoEntidad As Long
+			Dim nC As Integer
 
-            '''''' USUARIO ''''''
+			'''''' USUARIO ''''''
 
-            sParametros = Command.Split("/")
+			sParametros = Command.Split("/")
 
-            For nC = 0 To sParametros.Length - 1
+			For nC = 0 To sParametros.Length - 1
 
-                sItemParam = sParametros(nC).Trim.Split(":")
+				sItemParam = sParametros(nC).Trim.Split(":")
 
-                If sItemParam.Length = 2 Then
+				If sItemParam.Length = 2 Then
 
-                    Select Case sItemParam(0).Trim.ToUpper
-                        Case "U"
-                            nCodigoUsuario = Val(sItemParam(1))
-                        Case "T"
-                            nCodigoTransaccion = Val(sItemParam(1))
-                        Case "E"
-                            nCodigoEntidad = Val(sItemParam(1))
-                    End Select
+					Select Case sItemParam(0).Trim.ToUpper
+						Case "U"
+							nCodigoUsuario = Val(sItemParam(1))
+						Case "T"
+							nCodigoTransaccion = Val(sItemParam(1))
+						Case "E"
+							nCodigoEntidad = Val(sItemParam(1))
+					End Select
 
-                End If
-            Next
+				End If
+			Next
 
-            If nCodigoUsuario = 0 Then
-                MensajeError("El parámetro código usuario es inválido.")
-                Application.Exit()
-            End If
+			If nCodigoUsuario = 0 Then
+				MensajeError("El parámetro código usuario es inválido.")
+				Application.Exit()
+			End If
 
-            If nCodigoTransaccion = 0 Then
-                MensajeError("El parámetro código de transacción es inválido.")
-                Application.Exit()
-            End If
+			If nCodigoTransaccion = 0 Then
+				MensajeError("El parámetro código de transacción es inválido.")
+				Application.Exit()
+			End If
 
-            If nCodigoEntidad = 0 Then
-                MensajeError("El parámetro código de entidad es inválido.")
-                Application.Exit()
-            End If
+			If nCodigoEntidad = 0 Then
+				MensajeError("El parámetro código de entidad es inválido.")
+				Application.Exit()
+			End If
 
-            CODIGO_TRANSACCION = nCodigoTransaccion
-            CODIGO_ENTIDAD = nCodigoEntidad
+			CODIGO_TRANSACCION = nCodigoTransaccion
+			CODIGO_ENTIDAD = nCodigoEntidad
 
-            PresentarDatos(nCodigoTransaccion, nCodigoUsuario, nCodigoEntidad)
+			PresentarDatos(nCodigoTransaccion, nCodigoUsuario, nCodigoEntidad)
 
-        Catch ex As Exception
-            TratarError(ex, "AnalizarCommand")
-            Application.Exit()
-        End Try
+		Catch ex As Exception
+			TratarError(ex, "AnalizarCommand")
+			Application.Exit()
+		End Try
 
-    End Sub
+	End Sub
 
-    Private Sub PresentarDatos(ByVal nCodigoTransaccion As Long, ByVal nCodigoUsuario As Long, ByVal nCodigoEntidad As Long)
-        Try
-            Try
-                Dim sSQL As String
-                Dim ds As DataSet
+	Private Sub PresentarDatos(ByVal nCodigoTransaccion As Long, ByVal nCodigoUsuario As Long, ByVal nCodigoEntidad As Long)
+		Try
+			Try
+				Dim sSQL As String
+				Dim ds As DataSet
 
-                ''''' USUARIO '''''
+				''''' USUARIO '''''
 
-                sSQL = "SELECT    US_CODUSU, US_NOMBRE, US_DESCRI, US_ADMIN " &
-                "FROM      USUARI " &
-                "WHERE     US_CODUSU = " & nCodigoUsuario
-                ds = oAdmlocal.AbrirDataset(sSQL)
+				sSQL = "SELECT    US_CODUSU, US_NOMBRE, US_DESCRI, US_ADMIN " &
+				"FROM      USUARI " &
+				"WHERE     US_CODUSU = " & nCodigoUsuario
+				ds = oAdmlocal.AbrirDataset(sSQL)
 
-                With ds.Tables(0)
+				With ds.Tables(0)
 
-                    If .Rows.Count = 0 Then
-                        Throw New Security.SecurityException("Falla de seguridad - US_CODUSU: " & nCodigoUsuario)
-                    Else
-                        UsuarioActual.Codigo = nCodigoUsuario
-                        UsuarioActual.Nombre = .Rows(0).Item("US_NOMBRE")
-                        UsuarioActual.Descripcion = .Rows(0).Item("US_DESCRI")
-                        UsuarioActual.Admin = .Rows(0).Item("US_ADMIN")
-                        UsuarioActual.SoloLectura = False
-                        lblUsuario.Text = UsuarioActual.Descripcion
-                    End If
+					If .Rows.Count = 0 Then
+						Throw New System.Security.SecurityException("Falla de seguridad - US_CODUSU: " & nCodigoUsuario)
+					Else
+						UsuarioActual.Codigo = nCodigoUsuario
+						UsuarioActual.Nombre = .Rows(0).Item("US_NOMBRE")
+						UsuarioActual.Descripcion = .Rows(0).Item("US_DESCRI")
+						UsuarioActual.Admin = .Rows(0).Item("US_ADMIN")
+						UsuarioActual.SoloLectura = False
+						lblUsuario.Text = UsuarioActual.Descripcion
+					End If
 
-                End With
+				End With
 
-                ds = Nothing
+				ds = Nothing
 
-                ''''' ENTIDAD '''''
+				''''' ENTIDAD '''''
 
-                sSQL = "SELECT    TG_CODCON, TG_DESCRI " &
-                "FROM      TABGEN " &
-                "WHERE     TG_CODTAB = 1 " &
-                "AND       TG_CODCON = " & nCodigoEntidad
-                ds = oAdmlocal.AbrirDataset(sSQL)
+				sSQL = "SELECT    TG_CODCON, TG_DESCRI " &
+				"FROM      TABGEN " &
+				"WHERE     TG_CODTAB = 1 " &
+				"AND       TG_CODCON = " & nCodigoEntidad
+				ds = oAdmlocal.AbrirDataset(sSQL)
 
-                With ds.Tables(0)
+				With ds.Tables(0)
 
-                    If .Rows.Count = 0 Then
-                        Throw New Security.SecurityException("Parámetro de entidad no válido - TG_CODCON: " & nCodigoEntidad)
-                    Else
-                        NOMBRE_ENTIDAD = .Rows(0).Item("TG_DESCRI")
-                        lblEntidad.Text = NOMBRE_ENTIDAD
-                    End If
+					If .Rows.Count = 0 Then
+						Throw New System.Security.SecurityException("Parámetro de entidad no válido - TG_CODCON: " & nCodigoEntidad)
+					Else
+						NOMBRE_ENTIDAD = .Rows(0).Item("TG_DESCRI")
+						lblEntidad.Text = NOMBRE_ENTIDAD
+					End If
 
-                End With
+				End With
 
-                ds = Nothing
+				ds = Nothing
 
-                ''''' TRANSACCION '''''
+				''''' TRANSACCION '''''
 
-                sSQL = "SELECT    MU_TRANSA, MU_DESCRI " &
-                "FROM      MENUES " &
-                "WHERE     MU_CODTRA = " & nCodigoTransaccion
-                ds = oAdmlocal.AbrirDataset(sSQL)
+				sSQL = "SELECT    MU_TRANSA, MU_DESCRI " &
+				"FROM      MENUES " &
+				"WHERE     MU_CODTRA = " & nCodigoTransaccion
+				ds = oAdmlocal.AbrirDataset(sSQL)
 
-                With ds.Tables(0)
+				With ds.Tables(0)
 
 
-                    If .Rows.Count = 0 Then
-                        Throw New Security.SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto - MU_CODTRA: " & nCodigoTransaccion)
-                    Else
-                        lblTransaccion.Text = .Rows(0).Item("MU_DESCRI")
-                        Me.Text = "Transacción:" & CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA")
-                    End If
+					If .Rows.Count = 0 Then
+						Throw New System.Security.SecurityException("Error en la línea de comandos. Parámetro de transacción incorrecto - MU_CODTRA: " & nCodigoTransaccion)
+					Else
+						lblTransaccion.Text = .Rows(0).Item("MU_DESCRI")
+						Me.Text = "Transacción:" & CODIGO_TRANSACCION.ToString & " - " & .Rows(0).Item("MU_TRANSA")
+					End If
 
-                End With
+				End With
 
-                ds = Nothing
+				ds = Nothing
 
-                lblVersion.Text = "Versión: " & Application.ProductVersion
+				lblVersion.Text = "Versión: " & Application.ProductVersion
 
-            Catch ex As Security.SecurityException
-                MensajeError(ex.Message)
-                ErrorPermiso = True
-            End Try
-        Catch ex As Exception
-            TratarError(ex, "PresentarDatos")
-            ErrorPermiso = True
-        End Try
-    End Sub
+			Catch ex As System.Security.SecurityException
+				MensajeError(ex.Message)
+				ErrorPermiso = True
+			End Try
+		Catch ex As Exception
+			TratarError(ex, "PresentarDatos")
+			ErrorPermiso = True
+		End Try
+	End Sub
 
-    Public Sub New()
+	Public Sub New()
 
-        ' Llamada necesaria para el Diseñador de Windows Forms.
-        InitializeComponent()
+		' Llamada necesaria para el Diseñador de Windows Forms.
+		InitializeComponent()
 
-        ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
-        oAdmlocal.ConnectionString = CONN_LOCAL
-        AnalizarCommand()
+		' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+		oAdmlocal.ConnectionString = CONN_LOCAL
+		AnalizarCommand()
 
-    End Sub
+	End Sub
 
-    Private Sub btnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSalir.Click
-        Me.Close()
-    End Sub
+	Private Sub btnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSalir.Click
+		Me.Close()
+	End Sub
 
-    Private Sub CargarProceso(ByVal nCodPro As Long)
+	Private Sub CargarProceso(ByVal nCodPro As Long)
 
-        Dim sSQL As String
-        Dim ad As OleDb.OleDbDataAdapter
-        Dim dt As DataTable
-        Dim nC As Integer = 0
+		Dim sSQL As String
+		Dim ad As OleDb.OleDbDataAdapter
+		Dim dt As DataTable
+		Dim nC As Integer = 0
 
-        'ENCABEZADO
-        ''''''''''''''''''''''''''''''''''''
-        sSQL = "SELECT    * " &
-             "FROM      PROCAB " &
-             "WHERE     PC_CODTRA = " & nCodPro
-        ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
-        dt = New DataTable
+
+
+
+		'ENCABEZADO
+		''''''''''''''''''''''''''''''''''''
+		sSQL = "SELECT    * " &
+			 "FROM      PROCAB " &
+			 "WHERE     PC_CODTRA = " & nCodPro
+		ad = New OleDb.OleDbDataAdapter(sSQL, CONN_LOCAL)
+		dt = New DataTable
 		ad.Fill(dt)
 		If dt.Rows.Count > 0 Then
 			nCodPro = dt.Rows(0).Item("PC_CODPRO")
 			AbrirProceso(nCodPro)
 		End If
 
+		Dim ss = "POST;https://fcbd5352-c20c-48cb-b8e4-21b75897cad0.mock.pstmn.io/CitiDocs;LALA|LALA|LALA|;CitiDocsTest;TABLA;FIN DE ARCHIVO;23"
+
+		Dim base = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(ss))
+
 		dt = Nothing
-        ad = Nothing
+		ad = Nothing
 
-        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        'VARIABLES
-        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        For Each oVar As clsVariables In oVariablesProc
+		''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+		'VARIABLES
+		''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+		For Each oVar As clsVariables In oVariablesProc
 
-            nC = nC + 1
+			nC = nC + 1
 
-            Dim lblInput As New Label
+			Dim lblInput As New Label
 
-            'Labels
-            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            If oVar.Help <> 2 And oVar.Help <> 3 Then
-                lblInput.Name = "_lbl" & oVar.Nombre
-                lblInput.Text = oVar.Titulo & ":"
-                lblInput.Location = New System.Drawing.Point(5, panTop.Height + 23 * oVar.Orden - 17)
-                lblInput.Size() = New System.Drawing.Size(200, 18)
-                panControles.Controls.Add(lblInput)
-            End If
+			'Labels
+			''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+			If oVar.Help <> 2 And oVar.Help <> 3 Then
+				lblInput.Name = "_lbl" & oVar.Nombre
+				lblInput.Text = oVar.Titulo & ":"
+				lblInput.Location = New System.Drawing.Point(5, panTop.Height + 23 * oVar.Orden - 17)
+				lblInput.Size() = New System.Drawing.Size(200, 18)
+				panControles.Controls.Add(lblInput)
+			End If
 
-            Select Case oVar.Help
-                Case 0
-                    If oVar.Tipo = 2 Then
+			Select Case oVar.Help
+				Case 0
+					If oVar.Tipo = 2 Then
 
-                        Dim oFecha As New DateTimePicker
+						Dim oFecha As New DateTimePicker
 
-                        With oFecha
-                            .Name = "_" & oVar.Nombre
-                            .CustomFormat = "dd/MM/yyyy"
-                            .Format = DateTimePickerFormat.Custom
-                            .Visible = True
-                            .Value = DateAdd(DateInterval.Day, -DateTime.Today.Day, DateTime.Today)
-                            .Location = New System.Drawing.Point(210, panTop.Height + 23 * oVar.Orden - 21)
-                            .Size() = New System.Drawing.Size(130, 18)
+						With oFecha
+							.Name = "_" & oVar.Nombre
+							.CustomFormat = "dd/MM/yyyy"
+							.Format = DateTimePickerFormat.Custom
+							.Visible = True
+							.Value = DateAdd(DateInterval.Day, -DateTime.Today.Day, DateTime.Today)
+							.Location = New System.Drawing.Point(210, panTop.Height + 23 * oVar.Orden - 21)
+							.Size() = New System.Drawing.Size(130, 18)
 
-                        End With
+						End With
 
-                        panControles.Controls.Add(oFecha)
+						panControles.Controls.Add(oFecha)
 
-                    Else
+					Else
 
-                        Dim oTextBox As New TextBox
+						Dim oTextBox As New TextBox
 						oTextBox.Tag = oVar
 						oTextBox.Name = "_" & oVar.Nombre
-                        oTextBox.Text = ""
-                        oTextBox.Location = New System.Drawing.Point(210, panTop.Height + 23 * oVar.Orden - 21)
-                        oTextBox.Size() = New System.Drawing.Size(130, 18)
-                        panControles.Controls.Add(oTextBox)
-                        AddHandler oTextBox.KeyPress, AddressOf oTextBox_KeyPress
-                    End If
+						oTextBox.Text = ""
+						oTextBox.Location = New System.Drawing.Point(210, panTop.Height + 23 * oVar.Orden - 21)
+						oTextBox.Size() = New System.Drawing.Size(130, 18)
+						panControles.Controls.Add(oTextBox)
+						AddHandler oTextBox.KeyPress, AddressOf oTextBox_KeyPress
+					End If
 
-                Case 1 'SQL
-                    Dim oCombo As New Windows.Forms.ComboBox
+				Case 1 'SQL
+					Dim oCombo As New Windows.Forms.ComboBox
 
-                    oCombo.Name = "_" & oVar.Nombre
-                    oCombo.Location = New System.Drawing.Point(210, panTop.Height + 23 * oVar.Orden - 21)
-                    oCombo.Size() = New System.Drawing.Size(400, 18)
-                    oCombo.DropDownStyle = ComboBoxStyle.DropDownList
-                    panControles.Controls.Add(oCombo)
-                    CargarCombo(oCombo, oVar.HelpQuery)
-                    oCombo.Text = "<Seleccione...>"
+					oCombo.Name = "_" & oVar.Nombre
+					oCombo.Location = New System.Drawing.Point(210, panTop.Height + 23 * oVar.Orden - 21)
+					oCombo.Size() = New System.Drawing.Size(400, 18)
+					oCombo.DropDownStyle = ComboBoxStyle.DropDownList
+					panControles.Controls.Add(oCombo)
+					CargarCombo(oCombo, oVar.HelpQuery)
+					oCombo.Text = "<Seleccione...>"
 
 
-                Case 2 'ENTIDAD
-                    Dim oTextBox As New TextBox
+				Case 2 'ENTIDAD
+					Dim oTextBox As New TextBox
 					oTextBox.Tag = oVar
 
 					oTextBox.Name = "_" & oVar.Nombre
-                    oTextBox.Text = CODIGO_ENTIDAD
-                    oTextBox.Visible = False
-                    nC = nC - 1
-                    panControles.Controls.Add(oTextBox)
+					oTextBox.Text = CODIGO_ENTIDAD
+					oTextBox.Visible = False
+					nC = nC - 1
+					panControles.Controls.Add(oTextBox)
 
-                Case 3 'CUADRO
-                    Dim oTextBox As New TextBox
+				Case 3 'CUADRO
+					Dim oTextBox As New TextBox
 					oTextBox.Tag = oVar
 
 					oTextBox.Name = "_" & oVar.Nombre
-                    oTextBox.Text = oAdmlocal.DevolverValor("TABGEN", "TG_CODCON", "TG_CODTAB = 2 AND TG_NUME01 = " & CODIGO_TRANSACCION, "0").ToString
-                    oTextBox.Visible = False
-                    nC = nC - 1
-                    panControles.Controls.Add(oTextBox)
+					oTextBox.Text = oAdmlocal.DevolverValor("TABGEN", "TG_CODCON", "TG_CODTAB = 2 AND TG_NUME01 = " & CODIGO_TRANSACCION, "0").ToString
+					oTextBox.Visible = False
+					nC = nC - 1
+					panControles.Controls.Add(oTextBox)
 
-                Case 4 'CONDICIONAL
-                    Dim oCheckBox As New CheckBox
+				Case 4 'CONDICIONAL
+					Dim oCheckBox As New CheckBox
 
-                    oCheckBox.Name = "_" & oVar.Nombre
-                    oCheckBox.Location = New System.Drawing.Point(210, panTop.Height + 23 * oVar.Orden - 19)
-                    oCheckBox.Size() = New System.Drawing.Size(120, 18)
-                    oCheckBox.Text = ""
-                    oCheckBox.Tag = oVar.HelpQuery
-                    panControles.Controls.Add(oCheckBox)
+					oCheckBox.Name = "_" & oVar.Nombre
+					oCheckBox.Location = New System.Drawing.Point(210, panTop.Height + 23 * oVar.Orden - 19)
+					oCheckBox.Size() = New System.Drawing.Size(120, 18)
+					oCheckBox.Text = ""
+					oCheckBox.Tag = oVar.HelpQuery
+					panControles.Controls.Add(oCheckBox)
 
-            End Select
+			End Select
 
-        Next
+		Next
 
-        panControles.Height = panTop.Height + 23 * nC + 3
+		panControles.Height = panTop.Height + 23 * nC + 3
 
-        Dim oItem As ListViewItem
+		Dim oItem As ListViewItem
 
-        For Each oSub As clsSubProcesosSistema In oSubProcesos
+		For Each oSub As clsSubProcesosSistema In oSubProcesos
 
-            If oSub.Estado = 0 Then
+			If oSub.Estado = 0 Then
 
-                oItem = New ListViewItem
+				oItem = New ListViewItem
 
-                oItem.Text = oSub.Nombre
-                oItem.Tag = oSub.Key
+				oItem.Text = oSub.Nombre
+				oItem.Tag = oSub.Key
 
-                oItem.SubItems.Add(New ListViewItem.ListViewSubItem(oItem, ""))
+				oItem.SubItems.Add(New ListViewItem.ListViewSubItem(oItem, ""))
 
-                lvSel.Items.Add(oItem)
+				lvSel.Items.Add(oItem)
 
-                oItem = Nothing
+				oItem = Nothing
 
-            End If
+			End If
 
-        Next
+		Next
 
-    End Sub
+	End Sub
 
-    Private Sub oTextBox_KeyPress(sender As Object, e As KeyPressEventArgs)
-        If e.KeyChar = "." AndAlso System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator <> "." Then
-            e.KeyChar = ","
-        End If
-    End Sub
+	Private Sub oTextBox_KeyPress(sender As Object, e As KeyPressEventArgs)
+		If e.KeyChar = "." AndAlso System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator <> "." Then
+			e.KeyChar = ","
+		End If
+	End Sub
 
-    Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        CargarProceso(CODIGO_TRANSACCION)
-    End Sub
+	Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+		CargarProceso(CODIGO_TRANSACCION)
+	End Sub
 
-    Private Function DatosOK() As Boolean
+	Private Function DatosOK() As Boolean
 
-        For Each oVar As clsVariables In oVariablesProc
+		For Each oVar As clsVariables In oVariablesProc
 
-            If oVar.Help = 1 Then
+			If oVar.Help = 1 Then
 
-                If CType(Controles("_" & oVar.Nombre), ComboBox).SelectedItem Is Nothing Then
-                    MensajeError("Debe especificar " & oVar.Titulo)
-                    Controles("_" & oVar.Nombre).Focus()
-                    Exit Function
-                End If
+				If CType(Controles("_" & oVar.Nombre), ComboBox).SelectedItem Is Nothing Then
+					MensajeError("Debe especificar " & oVar.Titulo)
+					Controles("_" & oVar.Nombre).Focus()
+					Exit Function
+				End If
 
-            ElseIf oVar.Help = 0 Then
+			ElseIf oVar.Help = 0 Then
 
-                If oVar.Tipo = 0 Then
+				If oVar.Tipo = 0 Then
 
-                    If Not IsNumeric(Controles("_" & oVar.Nombre).Text) Then
-                        MensajeError("Debe especificar " & oVar.Titulo)
-                        Controles("_" & oVar.Nombre).Focus()
-                        Exit Function
-                    End If
+					If Not IsNumeric(Controles("_" & oVar.Nombre).Text) Then
+						MensajeError("Debe especificar " & oVar.Titulo)
+						Controles("_" & oVar.Nombre).Focus()
+						Exit Function
+					End If
 
-                Else
+				Else
 
-                    If Controles("_" & oVar.Nombre).Text.Trim = "" Then
-                        MensajeError("Debe especificar " & oVar.Titulo)
-                        Controles("_" & oVar.Nombre).Focus()
-                        Exit Function
-                    End If
+					If Controles("_" & oVar.Nombre).Text.Trim = "" Then
+						MensajeError("Debe especificar " & oVar.Titulo)
+						Controles("_" & oVar.Nombre).Focus()
+						Exit Function
+					End If
 
-                End If
+				End If
 
-            End If
+			End If
 
-        Next
+		Next
 
-        Return True
+		Return True
 
-    End Function
+	End Function
 
-    Private Function Controles(ByVal sNombre As String) As Windows.Forms.Control
+	Private Function Controles(ByVal sNombre As String) As Windows.Forms.Control
 
-        For Each oCtl As Windows.Forms.Control In panControles.Controls
+		For Each oCtl As Windows.Forms.Control In panControles.Controls
 
-            If oCtl.Name = sNombre Then
-                Return oCtl
-                Exit Function
-            End If
+			If oCtl.Name = sNombre Then
+				Return oCtl
+				Exit Function
+			End If
 
-        Next
+		Next
 
-        Return Nothing
+		Return Nothing
 
-    End Function
+	End Function
 
-    Private Function ProcesosPrevios() As Boolean
-        If oProcesosInt Is Nothing OrElse oProcesosInt.Count() = 0 Then Return True
-        Dim sParam(1) As String
+	Private Function ProcesosPrevios() As Boolean
+		If oProcesosInt Is Nothing OrElse oProcesosInt.Count() = 0 Then Return True
+		Dim sParam(1) As String
 
-        For Each oPro As clsProcesosPrevios In oProcesosInt
-            sParam(0) = oPro.Nombre
-            sParam(1) = oPro.Parametros
-            For Each oVar As clsVariables In oVariablesProc
-                sParam(1) = Replace(sParam(1), oVar.Nombre, ValorVariable(oVar))
-            Next
-            ProcesosPrevios = CallByName(Me, sParam(0), vbMethod, sParam(1))
-            If Not ProcesosPrevios Then
-                Exit For
-            End If
-        Next
+		For Each oPro As clsProcesosPrevios In oProcesosInt
+			sParam(0) = oPro.Nombre
+			sParam(1) = oPro.Parametros
+			For Each oVar As clsVariables In oVariablesProc
+				sParam(1) = Replace(sParam(1), oVar.Nombre, ValorVariable(oVar))
+			Next
+			ProcesosPrevios = CallByName(Me, sParam(0), vbMethod, sParam(1))
+			If Not ProcesosPrevios Then
+				Exit For
+			End If
+		Next
 
-        If oProcesosInt.Count = 0 Then
-            Return True
-        Else
-            Return ProcesosPrevios
-        End If
+		If oProcesosInt.Count = 0 Then
+			Return True
+		Else
+			Return ProcesosPrevios
+		End If
 
-    End Function
+	End Function
 
-    Private Function ValorVariable(ByVal oVar As clsVariables) As Object
+	Private Function ValorVariable(ByVal oVar As clsVariables) As Object
 
-        Dim vReemplazo As Object = Nothing
+		Dim vReemplazo As Object = Nothing
 		Dim oItem As Prex.Utils.Entities.clsItem
 
 		Select Case oVar.Tipo
@@ -538,136 +548,210 @@ Public Class frmMain
 
 	End Sub
 
-    Private Sub Ejecutar()
+	Private Sub Ejecutar()
 
-        Dim oItem As ListViewItem
-        Dim oSubItem As ListViewItem.ListViewSubItem
-        Dim ejecutoProceso As EstadoProceso
+		Dim oItem As ListViewItem
+		Dim oSubItem As ListViewItem.ListViewSubItem
+		Dim ejecutoProceso As EstadoProceso
 
-        For Each oItem In lvSel.Items
-            oSubItem = oItem.SubItems(1)
-            oSubItem.Text = ""
-        Next
+		For Each oItem In lvSel.Items
+			oSubItem = oItem.SubItems(1)
+			oSubItem.Text = ""
+		Next
 
-        oSubItem = Nothing
-        oItem = Nothing
+		oSubItem = Nothing
+		oItem = Nothing
 
-        If ProcesoEnEjecucion() Then
-            Exit Sub
-        End If
+		If ProcesoEnEjecucion() Then
+			Exit Sub
+		End If
 
-        If Not ProcesosPrevios() Then
-            Exit Sub
-        End If
+		If Not ProcesosPrevios() Then
+			Exit Sub
+		End If
 
-        Dim uncheckAll = True
+		Dim uncheckAll = True
 
-        For Each oItem In lvSel.Items
-            oSubItem = oItem.SubItems(1)
-            If oItem.Checked Then
-                uncheckAll = False
-                oSubItem.Text = "Procesando..."
-                Application.DoEvents()
-                Dim proceso As clsSubProcesosSistema = CType(oSubProcesos(oItem.Tag), clsSubProcesosSistema)
-                GuardarLOG(AccionesLOG.EjecucionSubProceso, "Sub Proceso: " + proceso.CodPro.ToString + " - " + proceso.Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
-                GuardarControlSubProceso(proceso, 1, "INICIADO")
+		For Each oItem In lvSel.Items
+			oSubItem = oItem.SubItems(1)
+			If oItem.Checked Then
+				uncheckAll = False
+				oSubItem.Text = "Procesando..."
+				Application.DoEvents()
+				Dim proceso As clsSubProcesosSistema = CType(oSubProcesos(oItem.Tag), clsSubProcesosSistema)
+				GuardarLOG(AccionesLOG.EjecucionSubProceso, "Sub Proceso: " + proceso.CodPro.ToString + " - " + proceso.Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+				GuardarControlSubProceso(proceso, 1, "INICIADO")
 
-                If proceso.CodPro > ClsSubProcesosSistemaWebService.CodProcesoWebService Then
-                    Dim procesoWeb = CType(proceso, ClsSubProcesosSistemaWebService)
-                    ejecutoProceso = EjecutarProcesoWeService(procesoWeb, Sub(estado As String) oSubItem.Text = estado)
-                Else
-                    'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
-                    ejecutoProceso = EjecutarProcesoSQL(proceso, Sub(estado As String) oSubItem.Text = estado)
-                End If
+				If proceso.CodPro > ClsSubProcesosSistemaWebService.CodProcesoWebService Then
+					Dim procesoWeb = CType(proceso, ClsSubProcesosSistemaWebService)
+					ejecutoProceso = EjecutarProcesoWeService(procesoWeb, Sub(estado As String) oSubItem.Text = estado)
+				Else
+					'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
+					ejecutoProceso = EjecutarProcesoSQL(proceso, Sub(estado As String) oSubItem.Text = estado)
+				End If
 
-                If ejecutoProceso = EstadoProceso.Cancelado Then
-                    Exit For
-                End If
+				If ejecutoProceso = EstadoProceso.Cancelado Then
+					Exit For
+				End If
 
-            Else
-                oSubItem.Text = "Omitido"
-            End If
+			Else
+				oSubItem.Text = "Omitido"
+			End If
 
-            Application.DoEvents()
-        Next
+			Application.DoEvents()
+		Next
 
-        ProcesoEnEjecucion(True)
-        If uncheckAll Then
-            MensajeInformacion("ATENCION! Proceso Finalizado sin tareas selecciondas.")
-        Else
-            If ejecutoProceso = EstadoProceso.FinalizadoOK Then
-                MensajeInformacion("Proceso Finalizado")
-            ElseIf ejecutoProceso = EstadoProceso.EnError Then
-                MensajeError("Se produjo un error durante el proceso y el mismo fué abortado.")
-            End If
-        End If
+		ProcesoEnEjecucion(True)
+		If uncheckAll Then
+			MensajeInformacion("ATENCION! Proceso Finalizado sin tareas selecciondas.")
+		Else
+			If ejecutoProceso = EstadoProceso.FinalizadoOK Then
+				MensajeInformacion("Proceso Finalizado")
+			ElseIf ejecutoProceso = EstadoProceso.EnError Then
+				MensajeError("Se produjo un error durante el proceso y el mismo fué abortado.")
+			End If
+		End If
 
-    End Sub
+	End Sub
 
-    Private Function EjecutarProcesoWeService(proceso As ClsSubProcesosSistemaWebService, actualizarDetalle As Action(Of String)) As EstadoProceso
-        Try
-            If proceso.NombreSalida.IsNullOrEmpty Then
-                Throw New Exception("Proceso sin datos de salida [NombreSalida]")
-            End If
+	Private Function EjecutarProcesoWeService(proceso As ClsSubProcesosSistemaWebService, actualizarDetalle As Action(Of String)) As EstadoProceso
+		Try
+			If proceso.NombreSalida.IsNullOrEmpty Then
+				Throw New Exception("Proceso sin datos de salida [NombreSalida]")
+			End If
 
-            Dim response As Prex.Utils.Misc.Http.ResponseResult = Prex.Utils.Misc.Http.PeticionesHttp.GetResponse(proceso.FullUri.ToString(), Prex.Utils.Configuration.PrexConfig.CertificateCitiDocsPath, Prex.Utils.Configuration.PrexConfig.CertificateCitiDocsPass, "")
-            actualizarDetalle("Guardando detalle")
-            If Not response.Content.IsNullOrEmpty() Then
-                'GrabarEnSalida
-                'La tabla va existir
-                'Deberia leer los campos de la tabla y excluirlos del contenido del responde, solo grabamos datos
-                Dim registros = response.Content.Split("|")
-                For Each item As String In registros
-                    'contar cantidad de items, segun campos de la tabla, los primeros son la cebecera, luego datos.
-                    'el final del archivo tiene un literal que dice "fin de archivo"
-                    'grabe siempre con campo.trim()
-                Next
-            End If
-            Return EstadoProceso.FinalizadoOK
-        Catch ex As Exception
-            GuardarLOG(AccionesLOG.ErrorSubProceso, "Sub Proceso: " + proceso.CodPro.ToString + " - " + proceso.Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
-            Return EstadoProceso.EnError
-        End Try
-    End Function
+			Dim response As Prex.Utils.Misc.Http.ResponseResult
+			If Not Prex.Utils.Configuration.PrexConfig.CertificateCitiDocsPath.IsNullOrEmpty Then
+				response = Prex.Utils.Misc.Http.PeticionesHttp.GestionarPeticion(proceso.FullUri.ToString(),
+																			proceso.BodyRequest,
+																			proceso.HttpMethod,
+																			proceso.ContentType,
+																			Nothing,
+																			Prex.Utils.Configuration.PrexConfig.CertificateCitiDocsPath,
+																			Prex.Utils.Configuration.PrexConfig.CertificateCitiDocsPass,
+																			Nothing,
+																			proceso.ServiceProtocol)
+			Else
+				response = Prex.Utils.Misc.Http.PeticionesHttp.GestionarPeticion(proceso.FullUri.ToString(),
+																			proceso.BodyRequest,
+																			proceso.HttpMethod,
+																			proceso.ContentType,
+																			Nothing,
+																			Nothing,
+																			proceso.ServiceProtocol)
+			End If
 
-    Private Function EjecutarProcesoSQL(proceso As clsSubProcesosSistema, actualizarDetalle As Action(Of String)) As EstadoProceso
-        Dim sSQL = ReemplazarVariables(proceso.Query.ToString.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro)
-        sSQL = ProcesosEmbebidos(ReemplazarVariables(oProcesos.Query.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro) & sSQL)
+			actualizarDetalle("Guardando detalle")
+			If response.StatusCode = HttpStatusCode.OK AndAlso Not response.Content.IsNullOrEmpty() Then
+				'GrabarEnSalida
+				'La tabla va existir
+				'Deberia leer los campos de la tabla y excluirlos del contenido del response, solo grabamos datos
+				Dim registros As String() = response.Content.Trim.Split("|")
+				If registros Is Nothing OrElse registros.Length = 0 Then
+					Return EstadoProceso.EnError
+				End If
 
-        If ProcesoAsincrono(sSQL) Then
-            If CancelarProceso() Then
-                actualizarDetalle("Cancelado")
-                Return EstadoProceso.Cancelado
-            End If
+				Select Case proceso.TipoSalida
+					Case TipoSalidaProcesoWeb.TABLA
+						GrabarRespuestaServiceSQL(proceso, registros)
+					Case TipoSalidaProcesoWeb.TXT
+						File.WriteAllLines(proceso.NombreSalida, registros.Skip(proceso.CantidadCampos))
+				End Select
+			End If
+			Return EstadoProceso.FinalizadoOK
+		Catch ex As Exception
+			GuardarLOG(AccionesLOG.ErrorSubProceso, "Sub Proceso: " + proceso.CodPro.ToString + " - " + proceso.Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+			Return EstadoProceso.EnError
+		End Try
+	End Function
 
-            actualizarDetalle("Finalizado")
-            GuardarLOG(AccionesLOG.FinSubProceso, "Sub Proceso: " + proceso.CodPro.ToString + " - " + proceso.Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
 
-            'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
-            GuardarControlSubProceso(proceso, 2, "FINALIZADO")
-            Return EstadoProceso.FinalizadoOK
-        Else
-            actualizarDetalle("Error")
+	Private Sub GrabarRespuestaServiceSQL(proceso As ClsSubProcesosSistemaWebService, registros As String())
+		If proceso.NombreSalida.IsNullOrEmpty Then Throw New ArgumentNullException("Nombre tabla")
 
-            GuardarLOG(AccionesLOG.ErrorSubProceso, "Sub Proceso: " + proceso.CodPro.ToString + " - " + proceso.Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+		oAdmlocal.EjecutarComandoAsincrono($"truncate table {proceso.NombreSalida}")
 
-            'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
-            GuardarControlSubProceso(proceso, 3, "ERROR")
+		Dim cmdInsert As New SqlCommand($"Insert into {proceso.NombreSalida} values (")
+		Dim campos = 1
+		Dim separador As String = String.Empty
+		For campos = 1 To proceso.CantidadCampos
+			Dim parametroNombre = $"Param_{campos}"
+			cmdInsert.Parameters.Add(parametroNombre, SqlDbType.VarChar)
+			If cmdInsert.Parameters.Count > 1 Then
+				separador = ", "
+			End If
+			cmdInsert.CommandText = $"{cmdInsert.CommandText}{separador}@{parametroNombre}"
+		Next
+		cmdInsert.CommandText = $"{cmdInsert.CommandText})"
+		If cmdInsert.Parameters.Count = 0 Then Throw New Exception("Comando DB sin parámetros")
 
-            Return EstadoProceso.EnError
-        End If
-    End Function
 
-    Private Function CancelarProceso() As Boolean
-        If bCancelProcAsinc Then
-            If Pregunta("¿Desea continuar con el resto de los procesos?") = Windows.Forms.DialogResult.No Then
-                Return True
-            End If
-        End If
-        Return False
-    End Function
+		Dim i = 0
+		Dim registroActual = 1
 
-    Private Function ProcesoEnEjecucion(Optional ByVal bFinProceso As Boolean = False) As Boolean
+		For i = 0 To registros.Length - 1
+			'contar cantidad de items, segun campos de la tabla, los primeros son la cebecera, luego datos.
+			If i <= proceso.CantidadCampos - 1 Then Continue For
+
+			Dim valorCampo As String = registros(i).Trim
+
+			'el final del archivo tiene un literal que dice "fin de archivo"
+			If proceso.LiteralFinArchivo.EsIgual(valorCampo) Then Exit For
+
+			cmdInsert.Parameters($"Param_{registroActual}").Value = valorCampo
+
+			'controlo si estoy en el mismo registro
+			If registroActual = proceso.CantidadCampos Then
+				registroActual = 1
+				If Not oAdmlocal.EjecutarComandoSQL(cmdInsert) Then
+					Throw New Exception("Ocurrio un error al grabar detalle webservice")
+				End If
+			Else
+				registroActual += 1
+			End If
+
+		Next
+
+	End Sub
+
+	Private Function EjecutarProcesoSQL(proceso As clsSubProcesosSistema, actualizarDetalle As Action(Of String)) As EstadoProceso
+		Dim sSQL = ReemplazarVariables(proceso.Query.ToString.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro)
+		sSQL = ProcesosEmbebidos(ReemplazarVariables(oProcesos.Query.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro) & sSQL)
+
+		If ProcesoAsincrono(sSQL) Then
+			If CancelarProceso() Then
+				actualizarDetalle("Cancelado")
+				Return EstadoProceso.Cancelado
+			End If
+
+			actualizarDetalle("Finalizado")
+			GuardarLOG(AccionesLOG.FinSubProceso, "Sub Proceso: " + proceso.CodPro.ToString + " - " + proceso.Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+
+			'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
+			GuardarControlSubProceso(proceso, 2, "FINALIZADO")
+			Return EstadoProceso.FinalizadoOK
+		Else
+			actualizarDetalle("Error")
+
+			GuardarLOG(AccionesLOG.ErrorSubProceso, "Sub Proceso: " + proceso.CodPro.ToString + " - " + proceso.Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
+
+			'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
+			GuardarControlSubProceso(proceso, 3, "ERROR")
+
+			Return EstadoProceso.EnError
+		End If
+	End Function
+
+	Private Function CancelarProceso() As Boolean
+		If bCancelProcAsinc Then
+			If Pregunta("¿Desea continuar con el resto de los procesos?") = Windows.Forms.DialogResult.No Then
+				Return True
+			End If
+		End If
+		Return False
+	End Function
+
+	Private Function ProcesoEnEjecucion(Optional ByVal bFinProceso As Boolean = False) As Boolean
 
 		Dim ds As DataSet
 		Dim row As DataRow
@@ -780,220 +864,220 @@ Public Class frmMain
 
 	Private Function ProcesoAsincrono(ByVal sSQL As String) As Boolean
 
-        Dim oConnection As ADODB.Connection
-        Dim oCommand As ADODB.Command
-        Dim oError As ADODB.Error
-        Dim nErrCount As Integer = 0
-        Dim sError As String = ""
-        Dim sLog As String = "2"
+		Dim oConnection As ADODB.Connection
+		Dim oCommand As ADODB.Command
+		Dim oError As ADODB.Error
+		Dim nErrCount As Integer = 0
+		Dim sError As String = ""
+		Dim sLog As String = "2"
 
-        bCancelProcAsinc = False
+		bCancelProcAsinc = False
 
-        nSegundos = 0
+		nSegundos = 0
 
-        oConnection = New ADODB.Connection
-        oConnection.ConnectionString = CONN_LOCAL
-        oConnection.Open()
+		oConnection = New ADODB.Connection
+		oConnection.ConnectionString = CONN_LOCAL
+		oConnection.Open()
 
-        oCommand = New ADODB.Command
-        oCommand.CommandType = ADODB.CommandTypeEnum.adCmdText
-        oCommand.CommandText = sSQL
-        oCommand.ActiveConnection = oConnection
-        oCommand.CommandTimeout = 0
+		oCommand = New ADODB.Command
+		oCommand.CommandType = ADODB.CommandTypeEnum.adCmdText
+		oCommand.CommandText = sSQL
+		oCommand.ActiveConnection = oConnection
+		oCommand.CommandTimeout = 0
 
-        On Error Resume Next
+		On Error Resume Next
 
-        tmrProceso.Enabled = True
+		tmrProceso.Enabled = True
 
-        oCommand.Execute(, , ADODB.ExecuteOptionEnum.adAsyncExecute Or ADODB.ExecuteOptionEnum.adExecuteNoRecords)
+		oCommand.Execute(, , ADODB.ExecuteOptionEnum.adAsyncExecute Or ADODB.ExecuteOptionEnum.adExecuteNoRecords)
 
-        Do While oCommand.State = ADODB.ObjectStateEnum.adStateExecuting
-            If bCancelProcAsinc Then
-                oCommand.Cancel()
-            End If
-            Application.DoEvents()
-        Loop
+		Do While oCommand.State = ADODB.ObjectStateEnum.adStateExecuting
+			If bCancelProcAsinc Then
+				oCommand.Cancel()
+			End If
+			Application.DoEvents()
+		Loop
 
-        tmrProceso.Enabled = False
+		tmrProceso.Enabled = False
 
-        If oConnection.Errors.Count > 0 Then
-            For Each oError In oConnection.Errors
-                If oError.Number Then
-                    sError = sError & oError.Number & " - " & oError.Description & vbCrLf & vbCrLf
-                    nErrCount = nErrCount + 1
-                End If
-            Next
-            oConnection.Errors.Clear()
-        End If
+		If oConnection.Errors.Count > 0 Then
+			For Each oError In oConnection.Errors
+				If oError.Number Then
+					sError = sError & oError.Number & " - " & oError.Description & vbCrLf & vbCrLf
+					nErrCount = nErrCount + 1
+				End If
+			Next
+			oConnection.Errors.Clear()
+		End If
 
-        If nErrCount > 0 Then
-            If Pregunta("Se produjeron " & nErrCount & " errores.¿Desea visualizarlos?") = vbYes Then
-                File.WriteAllText("Y:\PREX_RI\LOG_SQL.TXT", sSQL)
-                frmErrores.PasarDatos(sError)
-                frmErrores.ShowDialog()
-            End If
-        Else
-            If Not bCancelProcAsinc Then
-                'oConnection.CommitTrans
-            End If
-            Return True
-        End If
+		If nErrCount > 0 Then
+			If Pregunta("Se produjeron " & nErrCount & " errores.¿Desea visualizarlos?") = vbYes Then
+				File.WriteAllText("Y:\PREX_RI\LOG_SQL.TXT", sSQL)
+				frmErrores.PasarDatos(sError)
+				frmErrores.ShowDialog()
+			End If
+		Else
+			If Not bCancelProcAsinc Then
+				'oConnection.CommitTrans
+			End If
+			Return True
+		End If
 
-        oCommand = Nothing
-        oConnection.Close()
-        oConnection = Nothing
+		oCommand = Nothing
+		oConnection.Close()
+		oConnection = Nothing
 
-    End Function
+	End Function
 
-    Private Sub tmrProceso_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrProceso.Tick
-        nSegundos += 1
-        VerStatus()
-    End Sub
+	Private Sub tmrProceso_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrProceso.Tick
+		nSegundos += 1
+		VerStatus()
+	End Sub
 
-    Private Sub VerStatus()
+	Private Sub VerStatus()
 
-        Dim ds As DataSet
-        Dim sSQL As String
-        Dim sDescri As String = ""
-        Dim bFlag As Boolean
+		Dim ds As DataSet
+		Dim sSQL As String
+		Dim sDescri As String = ""
+		Dim bFlag As Boolean
 
-        Try
+		Try
 
-            sSQL = "SELECT    * " &
-                "FROM      PROEXE (NOLOCK)" &
-                "WHERE     PE_CODPRO=" & oProcesos.CodPro.ToString
-            ds = oAdmlocal.AbrirDataset(sSQL)
+			sSQL = "SELECT    * " &
+				"FROM      PROEXE (NOLOCK)" &
+				"WHERE     PE_CODPRO=" & oProcesos.CodPro.ToString
+			ds = oAdmlocal.AbrirDataset(sSQL)
 
-            With ds.Tables(0)
-                For Each row As DataRow In .Rows
-                    If row("PE_ESTADO") >= 0 And row("PE_ESTADO") <= 100 Then
-                        PB.Value = row("PE_ESTADO")
-                    End If
+			With ds.Tables(0)
+				For Each row As DataRow In .Rows
+					If row("PE_ESTADO") >= 0 And row("PE_ESTADO") <= 100 Then
+						PB.Value = row("PE_ESTADO")
+					End If
 
-                    sDescri = row("PE_DESCRI")
+					sDescri = row("PE_DESCRI")
 
-                    If row("PE_ESTADO") = -1 Then
-                        MensajeInformacion(sDescri)
-                        bFlag = True
-                    End If
+					If row("PE_ESTADO") = -1 Then
+						MensajeInformacion(sDescri)
+						bFlag = True
+					End If
 
-                    If Not bFlag Then
-                        'lvPro.SelectedItem.SubItems(1) = sDescri
-                        'lvSel.SelectedItems(0).SubItems(1).Text = sDescri
-                        'sbMain.SimpleText = sDescri
-                    End If
+					If Not bFlag Then
+						'lvPro.SelectedItem.SubItems(1) = sDescri
+						'lvSel.SelectedItems(0).SubItems(1).Text = sDescri
+						'sbMain.SimpleText = sDescri
+					End If
 
-                    lblUsuario.Text = "Tiempo transcurrido: " & Format(TimeSerial(0, 0, nSegundos), "HH:mm:ss") & " - " & sDescri
+					lblUsuario.Text = "Tiempo transcurrido: " & Format(TimeSerial(0, 0, nSegundos), "HH:mm:ss") & " - " & sDescri
 
-                    Application.DoEvents()
-                Next
-            End With
+					Application.DoEvents()
+				Next
+			End With
 
-        Catch ex As Exception
-            ex = Nothing
-        End Try
+		Catch ex As Exception
+			ex = Nothing
+		End Try
 
-        ds = Nothing
+		ds = Nothing
 
-    End Sub
+	End Sub
 
-    Private Function ProcesosEmbebidos(ByVal sSQLPro As String) As String
+	Private Function ProcesosEmbebidos(ByVal sSQLPro As String) As String
 
-        Dim ds As DataSet
-        Dim sSQL As String
+		Dim ds As DataSet
+		Dim sSQL As String
 
-        Try
+		Try
 
-            sSQL = "SELECT    * " &
-                "FROM      PROEMB (NOLOCK) "
-            ds = oAdmlocal.AbrirDataset(sSQL)
+			sSQL = "SELECT    * " &
+				"FROM      PROEMB (NOLOCK) "
+			ds = oAdmlocal.AbrirDataset(sSQL)
 
-            With ds.Tables(0)
-                For Each row As DataRow In .Rows
+			With ds.Tables(0)
+				For Each row As DataRow In .Rows
 
-                    If (Not row("PE_QUERY") Is DBNull.Value) And (Not row("PE_NOMBRE") Is DBNull.Value) Then
-                        sSQLPro = ReemplazarProc(sSQLPro, row("PE_NOMBRE"), row("PE_VARIAB"), row("PE_QUERY"))
-                    End If
+					If (Not row("PE_QUERY") Is DBNull.Value) And (Not row("PE_NOMBRE") Is DBNull.Value) Then
+						sSQLPro = ReemplazarProc(sSQLPro, row("PE_NOMBRE"), row("PE_VARIAB"), row("PE_QUERY"))
+					End If
 
-                Next
-            End With
+				Next
+			End With
 
-        Catch ex As Exception
-            TratarError(ex, "ProcesosEmbebidos")
-        End Try
+		Catch ex As Exception
+			TratarError(ex, "ProcesosEmbebidos")
+		End Try
 
-        Return sSQLPro
+		Return sSQLPro
 
-    End Function
+	End Function
 
-    Private Function ReemplazarProc(ByVal sSQL As String, ByVal sNombre As String,
-                                   ByVal sVariab As String, ByVal sQuery As String)
+	Private Function ReemplazarProc(ByVal sSQL As String, ByVal sNombre As String,
+								   ByVal sVariab As String, ByVal sQuery As String)
 
-        Dim sTemp As String
-        Dim sVariables As String
-        Dim nPos As Integer
-        Dim nPos2 As Integer
-        Dim sVars() As String
-        Dim sVarsOrig() As String
-        Dim nC As Integer
-        Dim sGuardo As String
+		Dim sTemp As String
+		Dim sVariables As String
+		Dim nPos As Integer
+		Dim nPos2 As Integer
+		Dim sVars() As String
+		Dim sVarsOrig() As String
+		Dim nC As Integer
+		Dim sGuardo As String
 
-        sQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(sQuery))
-        sQuery = Replace(sQuery, Chr(0), "")
-        sQuery = Replace(sQuery, "@CODPRO", oProcesos.CodPro, , , vbTextCompare)
-        sQuery = Replace(sQuery, "@CODUSU", UsuarioActual.CODIGO, , , vbTextCompare)
-        sQuery = Replace(sQuery, "@CODIGO_ENTIDAD", CODIGO_ENTIDAD, , , vbTextCompare)
-        sQuery = Replace(sQuery, "@CODIGO_TRANSACCION", CODIGO_TRANSACCION, , , vbTextCompare)
+		sQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(sQuery))
+		sQuery = Replace(sQuery, Chr(0), "")
+		sQuery = Replace(sQuery, "@CODPRO", oProcesos.CodPro, , , vbTextCompare)
+		sQuery = Replace(sQuery, "@CODUSU", UsuarioActual.Codigo, , , vbTextCompare)
+		sQuery = Replace(sQuery, "@CODIGO_ENTIDAD", CODIGO_ENTIDAD, , , vbTextCompare)
+		sQuery = Replace(sQuery, "@CODIGO_TRANSACCION", CODIGO_TRANSACCION, , , vbTextCompare)
 
-        sGuardo = sQuery
+		sGuardo = sQuery
 
 InicioBucle:
 
-        sQuery = sGuardo
+		sQuery = sGuardo
 
-        nPos = InStr(1, sSQL, "SYS." & UCase(sNombre), vbTextCompare)
-        If nPos Then
+		nPos = InStr(1, sSQL, "SYS." & UCase(sNombre), vbTextCompare)
+		If nPos Then
 
-            nPos2 = InStr(nPos, sSQL, ")")
-            sTemp = Mid(sSQL, nPos, nPos2 - nPos + 1)
-            sVariables = Replace(sTemp, "SYS." & UCase(sNombre), "", , , vbTextCompare)
-            sVariables = Replace(sVariables, "(", "")
-            sVariables = Replace(sVariables, ")", "")
+			nPos2 = InStr(nPos, sSQL, ")")
+			sTemp = Mid(sSQL, nPos, nPos2 - nPos + 1)
+			sVariables = Replace(sTemp, "SYS." & UCase(sNombre), "", , , vbTextCompare)
+			sVariables = Replace(sVariables, "(", "")
+			sVariables = Replace(sVariables, ")", "")
 
-            sVars = Split(Trim(sVariables), ",")
+			sVars = Split(Trim(sVariables), ",")
 
-            If UBound(sVars) < 1 Then
-                sQuery = Replace(sQuery, sVariab, Trim(sVariables))
-            Else
-                sVarsOrig = Split(sVariab, ",")
+			If UBound(sVars) < 1 Then
+				sQuery = Replace(sQuery, sVariab, Trim(sVariables))
+			Else
+				sVarsOrig = Split(sVariab, ",")
 
-                For nC = LBound(sVarsOrig) To UBound(sVarsOrig)
-                    sQuery = Replace(sQuery, Trim(sVarsOrig(nC)), sVars(nC), , , vbTextCompare)
-                Next nC
-            End If
+				For nC = LBound(sVarsOrig) To UBound(sVarsOrig)
+					sQuery = Replace(sQuery, Trim(sVarsOrig(nC)), sVars(nC), , , vbTextCompare)
+				Next nC
+			End If
 
-            sSQL = Replace(sSQL, sTemp, sQuery, , , vbTextCompare)
-            GoTo InicioBucle
-        End If
+			sSQL = Replace(sSQL, sTemp, sQuery, , , vbTextCompare)
+			GoTo InicioBucle
+		End If
 
-        Return sSQL
+		Return sSQL
 
-    End Function
+	End Function
 
-    Private Sub cmdTodo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdTodo.Click
+	Private Sub cmdTodo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdTodo.Click
 
-        For Each item As ListViewItem In lvSel.Items
-            item.Checked = True
-        Next
+		For Each item As ListViewItem In lvSel.Items
+			item.Checked = True
+		Next
 
-    End Sub
+	End Sub
 
-    Private Sub cmdInv_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdInv.Click
+	Private Sub cmdInv_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdInv.Click
 
-        For Each item As ListViewItem In lvSel.Items
-            item.Checked = Not item.Checked
-        Next
+		For Each item As ListViewItem In lvSel.Items
+			item.Checked = Not item.Checked
+		Next
 
-    End Sub
+	End Sub
 
 End Class
