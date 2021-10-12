@@ -1677,8 +1677,11 @@ Salir:
 
 											Case "N"
 												Dim num = NoNulo(rowAux("TR_DATOFIJO"), False)
-												If num = 0 Then
-													sLine &= Format(0, Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
+												If String.IsNullOrEmpty(num) OrElse num.ToString() = "0" Then
+													Dim valorFormato = CType(Formato(nOrden), clsFormato).FormatoCampo
+													If Not String.IsNullOrEmpty(valorFormato) Then
+														sLine &= Format(0, Strings.Left(valorFormato, CType(Formato(nOrden), clsFormato).Longitud))
+													End If
 												Else
 													If IsNumeric(rowAux("TR_DATOFIJO")) Then
 														sLine &= Format(Val(rowAux("TR_DATOFIJO")), Strings.Left(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud))
@@ -1714,8 +1717,11 @@ Salir:
 										Case "N"
 											Dim num = NoNulo(rowTrabajo(sCampo), False)
 
-											If num = 0 Then
-												sLine &= Format(0 * Val("1" & "".PadLeft(CType(Formato(nOrden), clsFormato).Decimales, "0")), CType(Formato(nOrden), clsFormato).FormatoCampo)
+											If String.IsNullOrEmpty(num) OrElse num.ToString() = "0" Then
+												Dim valorFormato = CType(Formato(nOrden), clsFormato).FormatoCampo
+												If Not String.IsNullOrEmpty(valorFormato) Then
+													sLine &= Format(0 * Val("1" & "".PadLeft(CType(Formato(nOrden), clsFormato).Decimales, "0")), valorFormato)
+												End If
 											Else
 
 												vDato = Val(rowTrabajo(sCampo))
@@ -1728,11 +1734,12 @@ Salir:
 														sLine &= Format(vDato, Microsoft.VisualBasic.Strings.Right(CType(Formato(nOrden), clsFormato).FormatoCampo, CType(Formato(nOrden), clsFormato).Longitud - 1))
 													End If
 												End If
-
-												If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then
-													sLine &= ";"
-												End If
 											End If
+
+											If Strings.Right(rowAux("TR_DATOFIJO").ToString, 1) = ";" Then
+												sLine &= ";"
+											End If
+
 										Case "T"
 											vDato = NoNulo(rowTrabajo(sCampo), False)
 
