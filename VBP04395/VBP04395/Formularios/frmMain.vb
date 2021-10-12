@@ -658,8 +658,10 @@ Public Class frmMain
 						File.WriteAllLines(proceso.NombreSalida, registros.Skip(proceso.CantidadCampos))
 				End Select
 			End If
+			actualizarDetalle("Finalizado")
 			Return EstadoProceso.FinalizadoOK
 		Catch ex As Exception
+			actualizarDetalle("Error")
 			GuardarLOG(AccionesLOG.ErrorSubProceso, "Sub Proceso: " + proceso.CodPro.ToString + " - " + proceso.Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
 			Return EstadoProceso.EnError
 		End Try
@@ -669,7 +671,7 @@ Public Class frmMain
 	Private Sub GrabarRespuestaServiceSQL(proceso As ClsSubProcesosSistemaWebService, registros As String())
 		If proceso.NombreSalida.IsNullOrEmpty Then Throw New ArgumentNullException("Nombre tabla")
 
-		oAdmlocal.EjecutarComandoAsincrono($"truncate table {proceso.NombreSalida}")
+		'oAdmlocal.EjecutarComandoAsincrono($"truncate table {proceso.NombreSalida}")
 
 		Dim cmdInsert As New SqlCommand($"Insert into {proceso.NombreSalida} values (")
 		Dim campos = 1
