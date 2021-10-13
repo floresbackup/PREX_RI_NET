@@ -50,11 +50,11 @@ Module modConsultasSistema
       ad.Fill(dt)
 
         For Each dr As DataRow In dt.Rows
-            If nCodPro > ClsSubProcesosSistemaWebService.CodProcesoWebService Then
-                oSub = New ClsSubProcesosSistemaWebService(dr)
-            Else
-                oSub = New clsSubProcesosSistema(dr)
-            End If
+            'If nCodPro > ClsSubProcesosSistemaWebService.CodProcesoWebService Then
+            '    oSub = New ClsSubProcesosSistemaWebService(dr)
+            'Else
+            oSub = New clsSubProcesosSistema(dr)
+            'End If
 
             oSubProcesos.Add(oSub, oSub.Key)
             oSub = Nothing

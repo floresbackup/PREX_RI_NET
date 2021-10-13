@@ -582,12 +582,16 @@ Public Class frmMain
 				GuardarLOG(AccionesLOG.EjecucionSubProceso, "Sub Proceso: " + proceso.CodPro.ToString + " - " + proceso.Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
 				GuardarControlSubProceso(proceso, 1, "INICIADO")
 
-				If proceso.CodPro > ClsSubProcesosSistemaWebService.CodProcesoWebService Then
-					Dim procesoWeb = CType(proceso, ClsSubProcesosSistemaWebService)
+
+				Dim sSQL = ReemplazarVariables(proceso.Query.ToString.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro)
+				sSQL = ProcesosEmbebidos(ReemplazarVariables(oProcesos.Query.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro) & sSQL)
+
+				If TypeOf (sSQL) Is ClsSubProcesosSistemaWebService Then
+					Dim procesoWeb = CType(sSQL, ClsSubProcesosSistemaWebService)
 					ejecutoProceso = EjecutarProcesoWeService(procesoWeb, Sub(estado As String) oSubItem.Text = estado)
 				Else
 					'AGREGADO PARA QUE GENERE UN DETALLE DE LOS PROCESOS EJECUTADOS
-					ejecutoProceso = EjecutarProcesoSQL(proceso, Sub(estado As String) oSubItem.Text = estado)
+					ejecutoProceso = EjecutarProcesoSQL(sSQL, proceso, Sub(estado As String) oSubItem.Text = estado)
 				End If
 
 				If ejecutoProceso = EstadoProceso.Cancelado Then
@@ -618,6 +622,11 @@ Public Class frmMain
 		Try
 			If proceso.NombreSalida.IsNullOrEmpty Then
 				Throw New Exception("Proceso sin datos de salida [NombreSalida]")
+			End If
+
+			If CancelarProceso() Then
+				actualizarDetalle("Cancelado")
+				Return EstadoProceso.Cancelado
 			End If
 
 			Dim response As Prex.Utils.Misc.Http.ResponseResult
@@ -716,11 +725,8 @@ Public Class frmMain
 
 	End Sub
 
-	Private Function EjecutarProcesoSQL(proceso As clsSubProcesosSistema, actualizarDetalle As Action(Of String)) As EstadoProceso
-		Dim sSQL = ReemplazarVariables(proceso.Query.ToString.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro)
-		sSQL = ProcesosEmbebidos(ReemplazarVariables(oProcesos.Query.Replace(Chr(0), ""), panControles.Controls, oProcesos.CodPro) & sSQL)
-
-		If ProcesoAsincrono(sSQL) Then
+	Private Function EjecutarProcesoSQL(ByVal sSql As String, proceso As clsSubProcesosSistema, actualizarDetalle As Action(Of String)) As EstadoProceso
+		If ProcesoAsincrono(sSql) Then
 			If CancelarProceso() Then
 				actualizarDetalle("Cancelado")
 				Return EstadoProceso.Cancelado
@@ -983,33 +989,31 @@ Public Class frmMain
 
 	End Sub
 
-	Private Function ProcesosEmbebidos(ByVal sSQLPro As String) As String
-
-		Dim ds As DataSet
-		Dim sSQL As String
-
+	Private Function ProcesosEmbebidos(ByVal sSQLPro As String) As Object
 		Try
 
-			sSQL = "SELECT    * " &
+			Dim sSQL = "SELECT    * " &
 				"FROM      PROEMB (NOLOCK) "
-			ds = oAdmlocal.AbrirDataset(sSQL)
+			Dim ds = oAdmlocal.AbrirDataset(sSQL)
 
 			With ds.Tables(0)
 				For Each row As DataRow In .Rows
 
 					If (Not row("PE_QUERY") Is DBNull.Value) And (Not row("PE_NOMBRE") Is DBNull.Value) Then
-						sSQLPro = ReemplazarProc(sSQLPro, row("PE_NOMBRE"), row("PE_VARIAB"), row("PE_QUERY"))
+						If row("PE_NOMBRE").ToString().ToLower() = "webservice" Then
+							Dim procesoWeb = ReemplazarWebService(sSQLPro, row("PE_NOMBRE"), row("PE_VARIAB"), row("PE_QUERY"))
+							If Not procesoWeb Is Nothing Then Return procesoWeb
+						Else
+							sSQLPro = ReemplazarProc(sSQLPro, row("PE_NOMBRE"), row("PE_VARIAB"), row("PE_QUERY"))
+						End If
 					End If
 
 				Next
 			End With
-
+			Return sSQLPro
 		Catch ex As Exception
 			TratarError(ex, "ProcesosEmbebidos")
 		End Try
-
-		Return sSQLPro
-
 	End Function
 
 	Private Function ReemplazarProc(ByVal sSQL As String, ByVal sNombre As String,
@@ -1047,6 +1051,7 @@ InicioBucle:
 			sVariables = Replace(sVariables, ")", "")
 
 			sVars = Split(Trim(sVariables), ",")
+			'TODO:Aca levantar las variables nuevas para el webservice.
 
 			If UBound(sVars) < 1 Then
 				sQuery = Replace(sQuery, sVariab, Trim(sVariables))
@@ -1063,6 +1068,30 @@ InicioBucle:
 		End If
 
 		Return sSQL
+
+	End Function
+
+
+	Private Function ReemplazarWebService(ByVal sSQL As String, ByVal sNombre As String,
+								   ByVal sVariab As String, ByVal sQuery As String) As ClsSubProcesosSistemaWebService
+
+		sQuery = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(sQuery))
+		sQuery = Replace(sQuery, Chr(0), "")
+
+		dim nPos = InStr(1, sSQL, "SYS." & UCase(sNombre), vbTextCompare)
+		If nPos Then
+
+			Dim nPos2 = InStr(nPos, sSQL, ")")
+			Dim sTemp = Mid(sSQL, nPos, nPos2 - nPos + 1)
+			Dim sVariables = Replace(sTemp, "SYS." & UCase(sNombre), "", , , vbTextCompare)
+			sVariables = Replace(sVariables, "(", "")
+			sVariables = Replace(sVariables, ")", "")
+
+			Dim sVars As String() = Split(Trim(sVariables), ",")
+			Return New ClsSubProcesosSistemaWebService(sVars)
+		End If
+
+		Return Nothing
 
 	End Function
 
