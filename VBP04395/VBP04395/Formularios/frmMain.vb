@@ -661,7 +661,7 @@ Public Class frmMain
 						Dim registros As String() = response.Content.Trim.Split("|")
 
 						If registros Is Nothing OrElse registros.Length = 0 Then
-							Throw New Exception($"Respuesta con registros vacio")
+							Throw New Exception($"Respuesta con registros vacíos")
 						End If
 
 						If registros.Count <= (proceso.CantidadCampos * 2) Then
@@ -679,7 +679,7 @@ Public Class frmMain
 								File.WriteAllLines(proceso.NombreSalida, registros.Skip(proceso.CantidadCampos))
 						End Select
 					Else
-						Throw New Exception($"Respuesta webservice vacia")
+						Throw New Exception($"Respuesta webservice vacía")
 					End If
 
 				Case Else
