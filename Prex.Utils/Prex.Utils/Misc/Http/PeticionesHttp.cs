@@ -1,4 +1,4 @@
-﻿using RestSharp;
+﻿//using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,9 +15,9 @@ namespace Prex.Utils.Misc.Http
 		public HttpStatusCode StatusCode { get; private set; }
 		public string Content { get; private set; }
 
-		public ResponseResult(IRestResponse restResponse): this(restResponse.StatusCode, restResponse.Content)
-		{
-		}
+		//public ResponseResult(IRestResponse restResponse): this(restResponse.StatusCode, restResponse.Content)
+		//{
+		//}
 
         public ResponseResult(HttpStatusCode httpStatusCode, string content)
         {
@@ -30,13 +30,13 @@ namespace Prex.Utils.Misc.Http
 
     public static class PeticionesHttp
 	{
-		public static ResponseResult GetResponse(string url, SecurityProtocolType? securityProtocolType = null) => GetResponse(url, null, securityProtocolType);
-		public static ResponseResult GetResponse(string url, string mediaTypeBody, SecurityProtocolType? securityProtocolType = null) => ExecuteRequest(url, string.Empty, Method.GET, null, mediaTypeBody, securityProtocolType);
-		public static ResponseResult GetResponse(string url, string certificatePath, string secretKey, string mediaTypeBody, SecurityProtocolType? securityProtocolType = null) => ExecuteRequest(url, string.Empty, Method.GET, BuildCertificado(certificatePath, secretKey), mediaTypeBody, securityProtocolType);
+		//public static ResponseResult GetResponse(string url, SecurityProtocolType? securityProtocolType = null) => GetResponse(url, null, securityProtocolType);
+		//public static ResponseResult GetResponse(string url, string mediaTypeBody, SecurityProtocolType? securityProtocolType = null) => ExecuteRequest(url, string.Empty, Method.GET, null, mediaTypeBody, securityProtocolType);
+		//public static ResponseResult GetResponse(string url, string certificatePath, string secretKey, string mediaTypeBody, SecurityProtocolType? securityProtocolType = null) => ExecuteRequest(url, string.Empty, Method.GET, BuildCertificado(certificatePath, secretKey), mediaTypeBody, securityProtocolType);
 
 
-		public static ResponseResult PostRequest(string url, string body, string certificatePath, string secretKey, string mediaTypeBody, SecurityProtocolType? securityProtocolType = null) => ExecuteRequest(url, body, Method.POST, BuildCertificado(certificatePath, secretKey), mediaTypeBody, securityProtocolType);
-		public static ResponseResult PostRequest(string url, string body, string mediaTypeBody, SecurityProtocolType? securityProtocolType = null) => ExecuteRequest(url, body, Method.POST, null, mediaTypeBody, securityProtocolType);
+		//public static ResponseResult PostRequest(string url, string body, string certificatePath, string secretKey, string mediaTypeBody, SecurityProtocolType? securityProtocolType = null) => ExecuteRequest(url, body, Method.POST, BuildCertificado(certificatePath, secretKey), mediaTypeBody, securityProtocolType);
+		//public static ResponseResult PostRequest(string url, string body, string mediaTypeBody, SecurityProtocolType? securityProtocolType = null) => ExecuteRequest(url, body, Method.POST, null, mediaTypeBody, securityProtocolType);
 
 		private static X509Certificate2 BuildCertificado(string certificatePath, string secretKey)
 		{
@@ -56,47 +56,47 @@ namespace Prex.Utils.Misc.Http
 			}
 		}
 
-		private static ResponseResult ExecuteRequest(string url, string body, Method httpMethod, X509Certificate2 certificate, string mediaTypeBody, SecurityProtocolType? securityProtocolType)
-		{
+		//		private static ResponseResult ExecuteRequest(string url, string body, Method httpMethod, X509Certificate2 certificate, string mediaTypeBody, SecurityProtocolType? securityProtocolType)
+		//		{
 
-//			ServicePointManager.Expect100Continue = true;
-//			ServicePointManager.DefaultConnectionLimit = 9999;
+		////			ServicePointManager.Expect100Continue = true;
+		////			ServicePointManager.DefaultConnectionLimit = 9999;
 
-            if (securityProtocolType != null)
-                ServicePointManager.SecurityProtocol = securityProtocolType.Value;
-            
-            ServicePointManager.ServerCertificateValidationCallback = delegate (object sender, X509Certificate certificate2, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
+		//            if (securityProtocolType != null)
+		//                ServicePointManager.SecurityProtocol = securityProtocolType.Value;
 
-            var client = new RestClient(url);
-            if (certificate != null)
-				client.ClientCertificates = new X509CertificateCollection() { certificate };
+		//            ServicePointManager.ServerCertificateValidationCallback = delegate (object sender, X509Certificate certificate2, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
 
-			client.Timeout = -1;
+		//            var client = new RestClient(url);
+		//            if (certificate != null)
+		//				client.ClientCertificates = new X509CertificateCollection() { certificate };
 
-			var restrequest = new RestRequest(httpMethod);
-			if (!body.IsNullOrEmpty())
-			{
-				if (mediaTypeBody.IsNullOrEmpty())
-					throw new ArgumentNullException("mediaTypeBody");
+		//			client.Timeout = -1;
 
-				restrequest.AddParameter(mediaTypeBody, body, ParameterType.RequestBody);
-				//restrequest.AddJsonBody(Newtonsoft.Json.JsonConvert.DeserializeObject(body), mediaTypeBody);
-			}
+		//			var restrequest = new RestRequest(httpMethod);
+		//			if (!body.IsNullOrEmpty())
+		//			{
+		//				if (mediaTypeBody.IsNullOrEmpty())
+		//					throw new ArgumentNullException("mediaTypeBody");
 
-			//restrequest.AddHeader("Cache-Control", "no-cache");
-			//restrequest.AddHeader("Accept", "application/json");
-			//restrequest.AddHeader("Content-Type", "application/json");
-			//restrequest.AddParameter("myStuff", ParameterType.RequestBody);
+		//				restrequest.AddParameter(mediaTypeBody, body, ParameterType.RequestBody);
+		//				//restrequest.AddJsonBody(Newtonsoft.Json.JsonConvert.DeserializeObject(body), mediaTypeBody);
+		//			}
 
-			var response = client.Execute(restrequest);
-			var rest = (RestResponse)response;
+		//			//restrequest.AddHeader("Cache-Control", "no-cache");
+		//			//restrequest.AddHeader("Accept", "application/json");
+		//			//restrequest.AddHeader("Content-Type", "application/json");
+		//			//restrequest.AddParameter("myStuff", ParameterType.RequestBody);
 
-			
-			return new ResponseResult(response);
-		}
+		//			var response = client.Execute(restrequest);
+		//			var rest = (RestResponse)response;
 
 
-        public static ResponseResult GestionarPeticion(string url, string data, HttpMethod method, string ContentType, Dictionary<string, string> Headers, TimeSpan? timeOut, SecurityProtocolType? securityProtocolType = null) => GestionarPeticion(url, data, method, ContentType, Headers, null, timeOut, securityProtocolType);
+		//			return new ResponseResult(response);
+		//		}
+
+
+		public static ResponseResult GestionarPeticion(string url, string data, HttpMethod method, string ContentType, Dictionary<string, string> Headers, TimeSpan? timeOut, SecurityProtocolType? securityProtocolType = null) => GestionarPeticion(url, data, method, ContentType, Headers, null, timeOut, securityProtocolType);
         public static ResponseResult GestionarPeticion(string url, string data, HttpMethod method, string ContentType, Dictionary<string, string> Headers, string certificatePath, string secretKey, TimeSpan? timeOut, SecurityProtocolType? securityProtocolType = null) => GestionarPeticion(url, data, method, ContentType, Headers, BuildCertificado(certificatePath, secretKey), timeOut, securityProtocolType);
         private static ResponseResult GestionarPeticion(string url, string data, HttpMethod method, string ContentType, Dictionary<string, string> Headers, X509Certificate2 certificate, TimeSpan? timeOut, SecurityProtocolType? securityProtocolType)
         {

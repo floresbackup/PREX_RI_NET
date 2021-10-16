@@ -651,22 +651,43 @@ Public Class frmMain
 			End If
 
 			actualizarDetalle("Guardando detalle")
-			If response.StatusCode = HttpStatusCode.OK AndAlso Not response.Content.IsNullOrEmpty() Then
-				'GrabarEnSalida
-				'La tabla va existir
-				'Deberia leer los campos de la tabla y excluirlos del contenido del response, solo grabamos datos
-				Dim registros As String() = response.Content.Trim.Split("|")
-				If registros Is Nothing OrElse registros.Length = 0 Then
-					Return EstadoProceso.EnError
-				End If
 
-				Select Case proceso.TipoSalida
-					Case TipoSalidaProcesoWeb.TABLA
-						GrabarRespuestaServiceSQL(proceso, registros)
-					Case TipoSalidaProcesoWeb.TXT
-						File.WriteAllLines(proceso.NombreSalida, registros.Skip(proceso.CantidadCampos))
-				End Select
-			End If
+			Select Case response.StatusCode
+				Case HttpStatusCode.OK
+					If Not response.Content.IsNullOrEmpty() Then
+						'GrabarEnSalida
+						'La tabla va existir
+						'Deberia leer los campos de la tabla y excluirlos del contenido del response, solo grabamos datos
+						Dim registros As String() = response.Content.Trim.Split("|")
+
+						If registros Is Nothing OrElse registros.Length = 0 Then
+							Throw New Exception($"Respuesta con registros vacio")
+						End If
+
+						If registros.Count <= (proceso.CantidadCampos * 2) Then
+							Throw New Exception($"Respuesta sin cantidad mínima de campos (Config CntCampos: {proceso.CantidadCampos})")
+						End If
+
+						If Not registros.Any(Function(r) r.EsIgual(proceso.LiteralFinArchivo)) Then
+							Throw New Exception($"Respuesta sin cadena de fin de archivo (Config LineaFina: {proceso.LiteralFinArchivo})")
+						End If
+
+						Select Case proceso.TipoSalida
+							Case TipoSalidaProcesoWeb.TABLA
+								GrabarRespuestaServiceSQL(proceso, registros)
+							Case TipoSalidaProcesoWeb.TXT
+								File.WriteAllLines(proceso.NombreSalida, registros.Skip(proceso.CantidadCampos))
+						End Select
+					Else
+						Throw New Exception($"Respuesta webservice vacia")
+					End If
+
+				Case Else
+					Throw New Exception($"Respuesta en error - HTTPSTATUSCODE: {response.StatusCode}")
+			End Select
+
+
+
 			actualizarDetalle("Finalizado")
 			Return EstadoProceso.FinalizadoOK
 		Catch ex As Exception

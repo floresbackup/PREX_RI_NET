@@ -7,9 +7,7 @@ C:\Users\Administrador\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Releas
 C:\Users\Administrador\source\repos\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.pdb
 Z:\PrexSatelites\Prex.Utils.dll
 Z:\PrexSatelites\Prex.Utils.pdb
-Z:\BIN\Prex.Utils.dll.config
-Z:\BIN\Prex.Utils.dll
-Z:\BIN\Prex.Utils.pdb
+C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.csprojAssemblyReference.cache
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.Misc.Forms.FrmCopyFiles.resources
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.frmError.resources
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.Misc.Forms.FrmInputGeneral.resources
@@ -18,6 +16,9 @@ C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.csproj.GenerateResource.cache
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.dll.licenses
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.csproj.CoreCompileInputs.cache
+Z:\BIN\Prex.Utils.dll.config
+Z:\BIN\Prex.Utils.dll
+Z:\BIN\Prex.Utils.pdb
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.csproj.CopyComplete
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.dll
 C:\Users\ricardo\Documents\GitHub\PREX_RI_NET\Prex.Utils\Prex.Utils\obj\Release\Prex.Utils.pdb
