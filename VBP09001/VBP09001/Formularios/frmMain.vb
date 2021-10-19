@@ -4,6 +4,7 @@ Imports System.IO
 Imports System.Net
 Imports System.Text
 Imports System.Data.SqlClient
+Imports System.Xml
 
 Public Class frmMain
 
@@ -19,6 +20,17 @@ Public Class frmMain
 		End Get
 	End Property
 
+	Private ReadOnly Property IsGeneradorXML As Boolean
+		Get
+			Return CodigoTxt >= 50000 AndAlso cboArchivos.SelectedItem.Nombre.ToLower().Contains(".xml")
+		End Get
+	End Property
+
+	Private ReadOnly Property CodigoTxt As Long
+		Get
+			Return Long.Parse(cboArchivos.SelectedItem.Valor.ToString())
+		End Get
+	End Property
 	Private ReadOnly Property MesSeleccionado As Integer
 		Get
 			Return CType(cboMes.SelectedItem, Prex.Utils.Entities.clsItem).Valor
@@ -1000,8 +1012,11 @@ Public Class frmMain
 
 					rstAux = Nothing
 				Else
-					oItem = cboArchivos.SelectedItem
-					GenerarTXT(Long.Parse(oItem.Valor.ToString()), dFecPro)
+					If IsGeneradorXML Then
+						GenerarXML(dFecPro)
+					Else
+						GenerarTXT(dFecPro)
+					End If
 				End If
 
 			End If
@@ -1449,11 +1464,23 @@ Salir:
 
 		txtCarpeta.Text = NormalizarRuta(txtCarpeta.Text)
 
-		bTemp = File.Exists(txtCarpeta.Text & cboArchivos.Text)
 
-		If bTemp Then
-			If MsgBox("El archivo ya existe. ¿Desea sobreescribirlo?", vbQuestion + vbYesNo + vbDefaultButton2, "Pregunta") = vbNo Then
-				Exit Function
+		If IsGeneradorXML Then
+			bTemp = Directory.Exists(txtCarpeta.Text & Path.GetFileNameWithoutExtension(cboArchivos.Text))
+			If bTemp Then
+				If MsgBox("El directorio ya existe. ¿Desea sobreescribirlo?", vbQuestion + vbYesNo + vbDefaultButton2, "Pregunta") = vbNo Then
+					Exit Function
+				End If
+				Directory.Delete(txtCarpeta.Text & Path.GetFileNameWithoutExtension(cboArchivos.Text), True)
+			End If
+			Directory.CreateDirectory(txtCarpeta.Text & Path.GetFileNameWithoutExtension(cboArchivos.Text))
+		Else
+			bTemp = File.Exists(txtCarpeta.Text & cboArchivos.Text)
+
+			If bTemp Then
+				If MsgBox("El archivo ya existe. ¿Desea sobreescribirlo?", vbQuestion + vbYesNo + vbDefaultButton2, "Pregunta") = vbNo Then
+					Exit Function
+				End If
 			End If
 		End If
 
@@ -1488,7 +1515,96 @@ Salir:
 
 	End Function
 
-	Private Sub GenerarTXT(ByVal nCod As Long, ByVal dFecha As Date)
+	Private Sub ShowProcesando(mensaje As String)
+		lblStatus.Text = mensaje
+		lblStatus.Visible = True
+		Application.DoEvents()
+		Threading.Thread.Sleep(10)
+	End Sub
+
+	Private Sub GenerarXML(ByVal fecha As Date)
+		Dim procesoFin = False
+		Dim directorio As String = Path.Combine(txtCarpeta.Text & Path.GetFileNameWithoutExtension(cboArchivos.Text))
+		Try
+			Me.Cursor = Cursors.WaitCursor
+
+			ShowProcesando($"Procesando...")
+
+			Dim procesadosCount = 0
+			Dim sSQL = "SELECT    * " &
+				   "FROM      TXTNOM " &
+				   $"WHERE     TN_CODIGO = {CodigoTxt} "
+			Dim dt As DataSet = oAdmLocal.AbrirDataset(sSQL)
+
+			Dim query As String = String.Empty
+			If dt?.Tables(0)?.Rows IsNot Nothing AndAlso dt.Tables(0).Rows.Count > 0 Then
+				query = Encoding.UTF8.GetString(Convert.FromBase64String(dt.Tables(0).Rows(0).Item("TN_PROCES")))
+			End If
+
+			dt.Dispose()
+
+			If String.IsNullOrEmpty(query) Then
+				procesoFin = True
+				ShowProcesando($"Procesados: 0")
+				Exit Sub
+			End If
+
+
+			query = query.Replace("@FECDES", FechaSQL(fecha.AddDays((fecha.Day) * -1 + 1)))
+			query = query.Replace("@FECHAS", FechaSQL(fecha))
+			query = query.Replace("@FECVIG", FechaSQL(fecha))
+			query = query.Replace("@CODENT", CODIGO_ENTIDAD)
+
+			Dim dtQuery As DataSet = oAdmLocal.AbrirDataset(query)
+			If dtQuery?.Tables(0)?.Rows IsNot Nothing Then
+				For Each row As DataRow In dtQuery.Tables(0).Rows
+					procesadosCount += 1
+					ShowProcesando($"Procesando {procesadosCount} ...")
+					Dim dataXml As String = row(0).ToString().Trim()
+
+					Dim fileName As String = row(1).ToString()
+
+					If Not fileName.ToLower().Contains(".xml") Then
+						fileName &= ".xml"
+					End If
+
+					If String.IsNullOrEmpty(dataXml) Then Continue For
+
+					Dim xml As New XmlDocument()
+					xml.LoadXml(dataXml)
+
+					Dim fileXml = Path.Combine(directorio, fileName)
+					If File.Exists(fileXml) Then
+						File.Delete(fileXml)
+					End If
+					xml.Save(fileXml)
+					'GrabarLog(fileXml, fecha, 1)
+				Next
+			End If
+
+			dtQuery.Dispose()
+
+
+			procesoFin = True
+			ShowProcesando($"Procesados {procesadosCount}")
+		Finally
+			cmdGenerar.Enabled = True
+
+			Me.Cursor = Cursors.Default
+
+			If (procesoFin) Then
+				MensajeInformacion("Proceso finalizado")
+				Me.lblStatus.Visible = True
+			End If
+
+
+			If chkOpen.Checked Then
+				Process.Start(directorio)
+			End If
+		End Try
+	End Sub
+
+	Private Sub GenerarTXT(ByVal dFecha As Date)
 
 		Dim oText As StreamWriter
 		Dim sFile As String
@@ -1526,7 +1642,7 @@ Salir:
 			sSQL = "SELECT    MAX(TR_FECHAVIG) AS MAX_FECHA " &
 			   "FROM      TXTREL " &
 			   "WHERE     TR_FECHAVIG <= " & FechaSQL(dFecha) & " " &
-			   "AND       TR_CODIGO = " & nCod
+			   "And       TR_CODIGO = " & CodigoTxt
 
 			rstTemp = oAdmLocal.AbrirDataset(sSQL)
 			If rstTemp IsNot Nothing Then
@@ -1554,8 +1670,8 @@ Salir:
 
 			sSQL = "SELECT    DISTINCT TR_CUADRO, TR_TABLATRABAJO " &
 			   "FROM      TXTREL " &
-			   "WHERE     TR_CODIGO = " & nCod & " " &
-			   "AND       TR_FECHAVIG = " & FechaSQL(dFechaProx) & " " &
+			   "WHERE     TR_CODIGO = " & CodigoTxt & " " &
+			   "And       TR_FECHAVIG = " & FechaSQL(dFechaProx) & " " &
 			   "ORDER BY  TR_CUADRO ASC"
 
 			rstCuadros = oAdmLocal.AbrirDataset(sSQL)
@@ -1564,8 +1680,8 @@ Salir:
 
 			sSQL = "SELECT   * " &
 			   "FROM     TXTDIS " &
-			   "WHERE    TD_CODIGO = " & nCod & " " &
-			   "AND      TD_FECHAVIG = " & FechaSQL(dFechaProx) & " " &
+			   "WHERE    TD_CODIGO = " & CodigoTxt & " " &
+			   "And      TD_FECHAVIG = " & FechaSQL(dFechaProx) & " " &
 			   "ORDER BY TD_ORDEN"
 
 			rstFormato = oAdmLocal.AbrirDataset(sSQL)
@@ -1633,7 +1749,7 @@ Salir:
 					sSQL = "SELECT       * " &
 					   "FROM         " & sTabla & " " &
 					   "WHERE        FECHAVIG = " & FechaSQL(dFecha) & " " &
-					   "AND          CUADRO = '" & sCuadro & "' " &
+					   "And          CUADRO = '" & sCuadro & "' " &
 					   "AND          GENERATXT = 1 " &
 						FiltroTablaTrabajo(sTabla) & " " &
 					   "ORDER BY     CODIGO, CAMPO8, PERIODO"
@@ -1641,13 +1757,13 @@ Salir:
 
 					sSQL = "SELECT       * " &
 					   "FROM         TXTREL " &
-					   "WHERE        TR_CODIGO = " & nCod & " " &
+					   "WHERE        TR_CODIGO = " & CodigoTxt & " " &
 					   "AND          TR_CUADRO = '" & sCuadro & "' " &
 					   "AND          TR_FECHAVIG = " & FechaSQL(dFechaProx) & " " &
 					   "ORDER BY     TR_ORDENTXT ASC"
 					rstAux = oAdmLocal.AbrirDataset(sSQL)
 
-					If rstTrabajo.Tables(0).Rows.Count() > 0 Then
+					If rstTrabajo?.Tables(0)?.Rows IsNot Nothing AndAlso rstTrabajo.Tables(0).Rows.Count() > 0 Then
 
 						For Each rowTrabajo As DataRow In rstTrabajo.Tables(0).Rows
 
