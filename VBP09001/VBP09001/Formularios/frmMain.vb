@@ -1326,11 +1326,13 @@ Salir:
 
 		Dim nGrabaSegTXT = IIf(oAdmLocal.DevolverValor("TABGEN", "ISNULL(TG_NUME02, 0)", " TG_CODTAB = 3 AND TG_CODCON = 60", -9999) = -9999, 0,
 								   oAdmLocal.DevolverValor("TABGEN", "ISNULL(TG_NUME02, 0)", " TG_CODTAB = 3 AND TG_CODCON = 60", ""))
+		Dim fileName = IIf(IsGeneradorXML, Path.GetFileName(sFile), cboArchivos.Text)
+		Dim directorio = IIf(IsGeneradorXML, Path.GetDirectoryName(sFile), txtCarpeta.Text)
 
 		If nGrabaSegTXT = 1 Then
 			AdjuntarArchivo(sFile,
-										 Strings.Left(cboArchivos.Text, InStr(1, cboArchivos.Text, ".", vbTextCompare) - 1) & "_" & DateTime.Now.Year * 10000 + DateTime.Now.Month * 100 + DateTime.Now.Day & "_" & Strings.Right("00" & DateTime.Now.Hour, 2) & ":" & Strings.Right("00" & DateTime.Now.Minute, 2),
-										 Strings.Left(cboArchivos.Text, InStr(1, cboArchivos.Text, ".", vbTextCompare) - 1) & "_" & CStr(Year(dFechaReal) * 100 + Month(dFechaReal)) & "_" & IIf(chkRectivicativa.Checked = True, "R", "N"))
+			Strings.Left(fileName, InStr(1, fileName, ".", vbTextCompare) - 1) & "_" & DateTime.Now.Year * 10000 + DateTime.Now.Month * 100 + DateTime.Now.Day & "_" & Strings.Right("00" & DateTime.Now.Hour, 2) & ":" & Strings.Right("00" & DateTime.Now.Minute, 2),
+			Strings.Left(fileName, InStr(1, fileName, ".", vbTextCompare) - 1) & "_" & CStr(Year(dFechaReal) * 100 + Month(dFechaReal)) & "_" & IIf(chkRectivicativa.Checked = True, "R", "N"))
 
 		End If
 
@@ -1339,13 +1341,13 @@ Salir:
 		'Agregado para que genere LOG
 
 		If chkRectivicativa.Checked = False And nGenerado = 0 Then
-			GuardarLOG(61, "Archivo: " + cboArchivos.Text + ", Ruta: " + txtCarpeta.Text + ", Período: " + CStr(dFechaReal) + ", Filas: " + Str(j), CODIGO_TRANSACCION, UsuarioActual.Codigo)
+			GuardarLOG(61, "Archivo: " + fileName + ", Ruta: " + directorio + ", Período: " + CStr(dFechaReal) + ", Filas: " + Str(j), CODIGO_TRANSACCION, UsuarioActual.Codigo)
 		ElseIf chkRectivicativa.Checked = False And nGenerado >= 1 Then
-			GuardarLOG(63, "Archivo Nro.(" + Str(nGenerado) + "): " + cboArchivos.Text + ", Ruta: " + txtCarpeta.Text + ", Período: " + CStr(dFechaReal) + ", Filas: " + Str(j), CODIGO_TRANSACCION, UsuarioActual.Codigo)
+			GuardarLOG(63, "Archivo Nro.(" + Str(nGenerado) + "): " + fileName + ", Ruta: " + directorio + ", Período: " + CStr(dFechaReal) + ", Filas: " + Str(j), CODIGO_TRANSACCION, UsuarioActual.Codigo)
 		ElseIf chkRectivicativa.Checked = True And nGenerado = 0 Then
-			GuardarLOG(62, "Archivo: " + cboArchivos.Text + ", Ruta: " + txtCarpeta.Text + ", Período: " + CStr(dFechaReal) + ", Filas: " + Str(j), CODIGO_TRANSACCION, UsuarioActual.Codigo)
+			GuardarLOG(62, "Archivo: " + fileName + ", Ruta: " + directorio + ", Período: " + CStr(dFechaReal) + ", Filas: " + Str(j), CODIGO_TRANSACCION, UsuarioActual.Codigo)
 		ElseIf chkRectivicativa.Checked = True And nGenerado >= 1 Then
-			GuardarLOG(64, "Archivo Nro.(" + Str(nGenerado) + "): " + cboArchivos.Text + ", Ruta: " + txtCarpeta.Text + ", Período: " + CStr(dFechaReal) + ", Filas: " + Str(j), CODIGO_TRANSACCION, UsuarioActual.Codigo)
+			GuardarLOG(64, "Archivo Nro.(" + Str(nGenerado) + "): " + fileName + ", Ruta: " + directorio + ", Período: " + CStr(dFechaReal) + ", Filas: " + Str(j), CODIGO_TRANSACCION, UsuarioActual.Codigo)
 		End If
 		' FIN AGREGADO para que genere LOG
 
@@ -1578,7 +1580,7 @@ Salir:
 						File.Delete(fileXml)
 					End If
 					xml.Save(fileXml)
-					'GrabarLog(fileXml, fecha, 1)
+					GrabarLog(fileXml, fecha, procesadosCount)
 				Next
 			End If
 
