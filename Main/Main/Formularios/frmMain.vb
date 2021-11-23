@@ -508,7 +508,7 @@ Public Class frmMain
 		End If
 
 		Try
-			GuardarArchivoEncriptado(IO.Path.Combine(CARPETA_LOCAL, "ExcelEncrypt.txt"), sUsuEncr, sPwdEncr)
+			GuardarArchivoEncriptadoNew(IO.Path.Combine(CARPETA_LOCAL, "ExcelEncrypt.txt"), sUsuEncr, sPwdEncr)
 		Catch ex As Exception
 			Throw New Exception("Ocurrió un error al guardar archivo ExcelEncrypt.txt", ex)
 		End Try

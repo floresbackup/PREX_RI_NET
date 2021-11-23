@@ -700,6 +700,22 @@ Module modFunciones
 
     End Function
 
+    Public Sub GuardarArchivoEncriptadoNew(ByVal sNombreArchivo As String, ByVal sNombreUsuario As String, ByVal sPassword As String)
+
+        On Error Resume Next
+
+        Dim oText As IO.StreamWriter
+
+        oText = IO.File.CreateText(sNombreArchivo)
+
+        oText.WriteLine(Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(sNombreUsuario)))
+        oText.WriteLine(Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(sPassword)))
+        oText.Close()
+
+        oText = Nothing
+
+    End Sub
+
     Public Sub GuardarArchivoEncriptado(ByVal sNombreArchivo As String, ByVal sNombreUsuario As String, ByVal sPassword As String)
 
         On Error Resume Next
@@ -707,6 +723,9 @@ Module modFunciones
         Dim oText As IO.StreamWriter
 
         oText = IO.File.CreateText(sNombreArchivo)
+
+        'var plainTextBytes = System.Text.Encoding.UTF8.GetBytes("S_Mm4[Gi");
+        'var dd = System.Convert.ToBase64String(plainTextBytes);
         oText.WriteLine(sBase64Encode(sNombreUsuario))
         oText.WriteLine(sBase64Encode(sPassword))
         oText.Close()
