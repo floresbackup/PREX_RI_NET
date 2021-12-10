@@ -93,7 +93,15 @@ Public Class frmInicioSesion
             End If
 
         Else
-            txtUsuario.Text = Prex.Utils.Configuration.PrexConfigLocal.LastUser.ToStringOrEmpty()
+            If AUTENTICACIONGOOGLE AndAlso
+                    String.IsNullOrEmpty(Configuration.PrexConfigLocal.LastUser) OrElse (
+                Not String.IsNullOrEmpty(Configuration.PrexConfigLocal.LastUser) AndAlso
+                Configuration.PrexConfigLocal.LastUser.ToStringOrEmpty().ToUpper() <> SystemInformation.UserName.ToStringOrEmpty().ToUpper()) Then
+                txtUsuario.Text = SystemInformation.UserName.ToStringOrEmpty()
+            Else
+                txtUsuario.Text = Prex.Utils.Configuration.PrexConfigLocal.LastUser.ToStringOrEmpty()
+            End If
+
             txtPassword.Focus()
             cboDominio.Items.Add("(Ninguno)")
             cboDominio.Text = "(Ninguno)"
