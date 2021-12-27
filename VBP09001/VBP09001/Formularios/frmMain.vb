@@ -1573,7 +1573,14 @@ Salir:
 					If String.IsNullOrEmpty(dataXml) Then Continue For
 
 					Dim xml As New XmlDocument()
+					dataXml = "<?xml version=""1.0"" encoding=""utf-8"" ?>" + vbCrLf + dataXml
 					xml.LoadXml(dataXml)
+
+					Dim c As System.Xml.XmlNode = xml.FirstChild.NextSibling.FirstChild
+					Dim a As XmlAttribute = xml.CreateAttribute("Version")
+					a.Value = "1.1"
+					c.Attributes.Append(a)
+
 
 					Dim fileXml = Path.Combine(directorio, fileName)
 					If File.Exists(fileXml) Then
