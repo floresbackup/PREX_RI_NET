@@ -628,6 +628,9 @@ GuardaDataRow:
 						If (TypeOf (dicControlesValorAnterior(sKey)) Is DevExpress.XtraEditors.MemoEdit) Then
 							CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.MemoEdit).Text = ds.Tables(0).Rows(0).Item(0).ToString()
 						End If
+						If (TypeOf (dicControlesValorAnterior(sKey)) Is DevExpress.XtraEditors.TextEdit) Then
+							CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.TextEdit).Text = ds.Tables(0).Rows(0).Item(0).ToString()
+						End If
 					End If
 				ElseIf dicControlesValorAnterior.ContainsKey(sKey) Then
 					Dim items = CType(dicControlesValorAnterior(sKey), DevExpress.XtraEditors.ComboBoxEdit).Properties.Items
