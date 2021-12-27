@@ -17,7 +17,7 @@ Public Class clsSubProcesosSistema
 		CodPro = dr("PD_CODPRO")
 		Orden = dr("PD_ORDEN")
 		Nombre = dr("PD_NOMBRE")
-		Query = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("PD_QUERY")))
+		Query = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("PD_QUERY")))
 		Estado = dr("PD_ESTADO")
 		Key = dr("PD_ORDEN").ToString
 	End Sub

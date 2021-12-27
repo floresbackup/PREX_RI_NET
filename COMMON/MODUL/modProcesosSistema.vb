@@ -30,8 +30,8 @@ Module modConsultasSistema
          oProcesos.Transaccion = dr("PC_CODTRA")
          oProcesos.Nombre = dr("PC_NOMBRE")
          oProcesos.Descripcion = dr("PC_DESCRI")
-         oProcesos.Query = System.Text.ASCIIEncoding.ASCII.GetString(Convert.FromBase64String(dr("PC_QUERY").ToString))
-         oProcesos.FechaProceso = dr("PC_FECPRO")
+            oProcesos.Query = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dr("PC_QUERY").ToString))
+            oProcesos.FechaProceso = dr("PC_FECPRO")
          oProcesos.Entidad = dr("PC_CODENT")
 
       Next
