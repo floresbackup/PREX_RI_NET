@@ -26,6 +26,33 @@ Public Class frmMain
 		End Get
 	End Property
 
+	Private ReadOnly Property XmlHeader As String
+		Get
+			If Not IsGeneradorXML Then Return String.Empty
+			If cboArchivos.SelectedItem.Nombre.ToLower().Contains("bcra") Then
+				Return "<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>"
+			ElseIf cboArchivos.SelectedItem.Nombre.ToLower().Contains("uif") Then
+				Return "<?xml version='1.0' encoding='utf-8' ?>"
+			End If
+
+			Return String.Empty
+		End Get
+	End Property
+
+
+	Private ReadOnly Property XmlQuote As String
+		Get
+			If cboArchivos.SelectedItem.Nombre.ToLower().Contains("bcra") Then
+				Return """"
+			ElseIf cboArchivos.SelectedItem.Nombre.ToLower().Contains("uif") Then
+				Return "'"
+			End If
+
+			Return """"
+		End Get
+	End Property
+
+
 	Private ReadOnly Property CodigoTxt As Long
 		Get
 			Return Long.Parse(cboArchivos.SelectedItem.Valor.ToString())
@@ -1283,7 +1310,7 @@ Salir:
 							request.Method = WebRequestMethods.Ftp.UploadFile
 							request.Credentials = New NetworkCredential("reginf", "metropolis")
 							Dim sourceStream As New StreamReader(sArchFTP)
-							Dim fileContents = Encoding.UTF8.GetBytes(sFile)
+							Dim fileContents = System.Text.Encoding.GetEncoding(1252).GetBytes(sFile)
 							sourceStream.Close()
 							request.ContentLength = fileContents.Length
 
@@ -1540,7 +1567,7 @@ Salir:
 
 			Dim query As String = String.Empty
 			If dt?.Tables(0)?.Rows IsNot Nothing AndAlso dt.Tables(0).Rows.Count > 0 Then
-				query = Encoding.UTF8.GetString(Convert.FromBase64String(dt.Tables(0).Rows(0).Item("TN_PROCES")))
+				query = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dt.Tables(0).Rows(0).Item("TN_PROCES")))
 			End If
 
 			dt.Dispose()
@@ -1573,7 +1600,7 @@ Salir:
 					If String.IsNullOrEmpty(dataXml) Then Continue For
 
 					Dim xml As New XmlDocument()
-					dataXml = "<?xml version=""1.0"" encoding=""utf-8"" ?>" + vbCrLf + dataXml
+					dataXml = XmlHeader + vbCrLf + dataXml
 					xml.LoadXml(dataXml)
 
 					Dim c As System.Xml.XmlNode = xml.FirstChild.NextSibling.FirstChild
@@ -1582,11 +1609,22 @@ Salir:
 					c.Attributes.Append(a)
 
 
-					Dim fileXml = Path.Combine(directorio, fileName)
+					Dim fileXml As String = Path.Combine(directorio, fileName)
 					If File.Exists(fileXml) Then
 						File.Delete(fileXml)
 					End If
-					xml.Save(fileXml)
+					'xml.Save(fileXml)
+
+					Dim xmlWriter As New XmlTextWriter(fileXml, System.Text.Encoding.GetEncoding(1252)) With {
+						.QuoteChar = XmlQuote,
+						.Formatting = Formatting.Indented,
+						.Indentation = 4
+					}
+
+					xml.Save(xmlWriter)
+					xmlWriter.Dispose()
+					xmlWriter = Nothing
+
 					GrabarLog(fileXml, fecha, procesadosCount)
 				Next
 			End If
