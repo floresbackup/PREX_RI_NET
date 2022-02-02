@@ -1882,8 +1882,8 @@ Reinicio:
 					sSQL = oConsulta.DrillDownQuery.Trim
 
 					For Each oGridCol As DevExpress.XtraGrid.Columns.GridColumn In GridView1.Columns
-						vValor = GridView1.GetRowCellDisplayText(GridView1.GetSelectedRows(0), oGridCol.FieldName).ToString
 
+						vValor = GetValorSeleccionado(oGridCol.FieldName)
 						If IsDate(vValor) Then
 							vValor = FechaSQL(vValor)
 						ElseIf IsNumeric(vValor) Then
