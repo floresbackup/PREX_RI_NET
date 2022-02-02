@@ -558,7 +558,7 @@ Public Class frmInicioSesion
                     End Select
                 End If
 
-                ManejarErrores.TratarError(ex, "AutenticarGoogle", "Ocurrió un error al intentar autenticar usuario en google", True)
+                ManejarErrores.TratarError(ex, "AutenticarGoogle", "Ocurrió un error al intentar autenticar usuario en google", True, True)
                 Return False
             End Try
         Finally

@@ -17,14 +17,16 @@ namespace Prex.Utils
             Close();
         }
 
-        public void CargarFormulario(Exception ex) => CargarFormulario(ex, string.Empty, ex.Message);
+        public void CargarFormulario(Exception ex) => CargarFormulario(ex, string.Empty, ex.Message, false);
         
-        public void CargarFormulario(Exception ex, string nombreFuncion, string customDescripcion)
+        public void CargarFormulario(Exception ex, string nombreFuncion, string customDescripcion, bool getFullTextStack)
         {
 
             CargarFormulario(ex.GetHashCode().ToString(), string.Empty, nombreFuncion, customDescripcion.Any()? customDescripcion:ex.Message);
             if (ex.Source != null && ex.TargetSite != null) txtOrigen.Text = ex.Source + " - " + ex.TargetSite.Name;
             txtDescripcion.Text = txtDescripcion.Text + Environment.NewLine + "TRAZA:" + Environment.NewLine + ex.StackTrace;
+            if (getFullTextStack)
+                txtDescripcion.Text = txtDescripcion.Text + Environment.NewLine + ex.GetFullTextStack();
         }
         public void CargarFormulario(string codigoError, string textoOriginal, string nombreFuncion, string customDescripcion)
         {
