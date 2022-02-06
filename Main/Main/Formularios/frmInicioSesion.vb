@@ -508,10 +508,11 @@ Public Class frmInicioSesion
     Private Function AutenticarGoogle(reintento As Boolean) As Boolean
         Try
             Me.Cursor = Cursors.WaitCursor
+            Dim userInfo As Security.SSO.Google.UserInfoWrapper = Nothing
             Try
 
 
-                Dim userInfo As Security.SSO.Google.UserInfoWrapper = Security.NaranjaSecurity.AutenticarConGoogle(txtUsuario.Text)
+                userInfo = Security.NaranjaSecurity.AutenticarConGoogle(txtUsuario.Text)
                 If userInfo Is Nothing OrElse userInfo.Nombre.IsNullOrEmpty Then
                     Return False
                 End If
@@ -539,19 +540,32 @@ Public Class frmInicioSesion
                 End If
             Catch ex As Exception
                 If TypeOf ex Is UnauthorizedAccessException Then
+                    Dim extraData = String.Empty
+                    If userInfo IsNot Nothing Then
+                        If userInfo.DirectoryData?.customSchemas?.PREX Is Nothing Then
+                            extraData = " (CustomSchemas.PREX is nothing - "
+                        Else
+                            extraData = $" (CustomSchemas.PREX is Rol - "
+                        End If
+                        If String.IsNullOrEmpty(userInfo.DirectoryData.customSchemas?.PREX?.Role) Then
+                            extraData += "PREX.Role is nothing)"
+                        Else
+                            extraData += $"PREX.Role is {userInfo.DirectoryData.customSchemas?.PREX?.Role})"
+                        End If
+                    End If
                     Select Case ex.Message
                         Case "invalid_grant"
                             If reintento AndAlso Prex.Utils.MensajesForms.MostrarPregunta("No posee los permisos suficientes. ¿Desea volver autenticar?") = DialogResult.Yes Then
                                 Return AutenticarGoogle(False)
                             Else
-                                MensajesForms.MostrarError("Se denegó el acceso a la aplicación.")
+                                MensajesForms.MostrarError("Se denegó el acceso a la aplicación." + extraData)
                                 Return False
                             End If
                         Case "access_denied"
-                            MensajesForms.MostrarError("Se denegó el acceso a la aplicación.")
+                            MensajesForms.MostrarError("Se denegó el acceso a la aplicación." + extraData)
                             Return False
                         Case "rol_access_denied"
-                            MensajesForms.MostrarError("No posee permisos para acceder a la aplicación. Contáctese con el administrador.")
+                            MensajesForms.MostrarError($"No posee permisos para acceder a la aplicación {extraData}. Contáctese con el administrador.")
                             Return False
                         Case Else
 
