@@ -1567,7 +1567,8 @@ Salir:
 
 			Dim query As String = String.Empty
 			If dt?.Tables(0)?.Rows IsNot Nothing AndAlso dt.Tables(0).Rows.Count > 0 Then
-				query = System.Text.Encoding.GetEncoding(1252).GetString(Convert.FromBase64String(dt.Tables(0).Rows(0).Item("TN_PROCES")))
+				Dim tt = Convert.FromBase64String(dt.Tables(0).Rows(0).Item("TN_PROCES"))
+				query = System.Text.Encoding.GetEncoding(1252).GetString(tt)
 			End If
 
 			dt.Dispose()
@@ -1615,7 +1616,7 @@ Salir:
 					End If
 					'xml.Save(fileXml)
 
-					Dim xmlWriter As New XmlTextWriter(fileXml, System.Text.Encoding.GetEncoding(1252)) With {
+					Dim xmlWriter As New XmlTextWriter(fileXml, System.Text.Encoding.UTF8) With {
 						.QuoteChar = XmlQuote,
 						.Formatting = Formatting.Indented,
 						.Indentation = 4
@@ -1624,6 +1625,10 @@ Salir:
 					xml.Save(xmlWriter)
 					xmlWriter.Dispose()
 					xmlWriter = Nothing
+
+					'Dim textXML As String = File.ReadAllText(fileXml)
+					'textXML = textXML.Replace("Windows-1252", "utf-8")
+					'File.WriteAllText(fileXml, textXML)
 
 					GrabarLog(fileXml, fecha, procesadosCount)
 				Next
