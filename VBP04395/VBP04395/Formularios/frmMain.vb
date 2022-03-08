@@ -659,8 +659,7 @@ Public Class frmMain
 						If response.Content.Trim _
 							.Replace(" ", String.Empty) _
 							.Replace("|", String.Empty) _
-							.Replace(proceso.LiteralFinArchivo, String.Empty) _
-							.IsNullOrEmpty() Then
+							.EsIgual(proceso.LiteralFinArchivo) Then
 
 							actualizarDetalle("Finalizado")
 							Return EstadoProceso.FinalizadoOK
