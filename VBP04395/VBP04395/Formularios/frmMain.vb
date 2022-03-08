@@ -655,6 +655,17 @@ Public Class frmMain
 			Select Case response.StatusCode
 				Case HttpStatusCode.OK
 					If Not response.Content.IsNullOrEmpty() Then
+						'Si la respuesta es vacia, no genera nada y devuelve OK
+						If response.Content.Trim _
+							.Replace(" ", String.Empty) _
+							.Replace("|", String.Empty) _
+							.Replace(proceso.LiteralFinArchivo, String.Empty) _
+							.IsNullOrEmpty() Then
+
+							actualizarDetalle("Finalizado")
+							Return EstadoProceso.FinalizadoOK
+						End If
+
 						'GrabarEnSalida
 						'La tabla va existir
 						'Deberia leer los campos de la tabla y excluirlos del contenido del response, solo grabamos datos
