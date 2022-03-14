@@ -30,9 +30,9 @@ Public Class frmMain
 		Get
 			If Not IsGeneradorXML Then Return String.Empty
 			If cboArchivos.SelectedItem.Nombre.ToLower().Contains("bcra") Then
-				Return "<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>"
+				Return "<?xml version=""1.0"" encoding=""UTF-8"" standalone=""yes"" ?>"
 			ElseIf cboArchivos.SelectedItem.Nombre.ToLower().Contains("uif") Then
-				Return "<?xml version='1.0' encoding='utf-8' ?>"
+				Return "<?xml version='1.0' encoding='UTF-8' ?>"
 			End If
 
 			Return String.Empty
