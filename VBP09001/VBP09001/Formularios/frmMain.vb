@@ -1626,9 +1626,10 @@ Salir:
 					xmlWriter.Dispose()
 					xmlWriter = Nothing
 
-					'Dim textXML As String = File.ReadAllText(fileXml)
-					'textXML = textXML.Replace("Windows-1252", "utf-8")
-					'File.WriteAllText(fileXml, textXML)
+					Dim textXML As String = File.ReadAllText(fileXml)
+					textXML = textXML.Replace("Windows-1252", "UTF-8")
+					textXML = textXML.Replace("utf-8", "UTF-8")
+					File.WriteAllText(fileXml, textXML)
 
 					GrabarLog(fileXml, fecha, procesadosCount)
 				Next

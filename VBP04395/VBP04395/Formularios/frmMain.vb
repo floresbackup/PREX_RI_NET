@@ -656,10 +656,9 @@ Public Class frmMain
 				Case HttpStatusCode.OK
 					If Not response.Content.IsNullOrEmpty() Then
 						'Si la respuesta es vacia, no genera nada y devuelve OK
-						If response.Content.Trim _
-							.Replace(" ", String.Empty) _
-							.Replace("|", String.Empty) _
-							.EsIgual(proceso.LiteralFinArchivo) Then
+						Dim respuestaVacia As String = response.Content.ToLower().Replace("|", String.Empty).Replace(proceso.LiteralFinArchivo.ToLower(), String.Empty).Replace(" ", String.Empty)
+
+						If respuestaVacia.Count() = 0 Then
 
 							actualizarDetalle("Finalizado")
 							Return EstadoProceso.FinalizadoOK
@@ -670,8 +669,20 @@ Public Class frmMain
 						'Deberia leer los campos de la tabla y excluirlos del contenido del response, solo grabamos datos
 						Dim registros As String() = response.Content.Trim.Split("|")
 
-						If registros Is Nothing OrElse registros.Length = 0 Then
+						If registros Is Nothing Then
 							Throw New Exception($"Respuesta con registros vacíos")
+						End If
+
+						Dim listResults As IEnumerable(Of String) = response.Content.Trim.ToLower() _
+							.Split("|") _
+							.Where(Function(s) s.Trim <> proceso.LiteralFinArchivo.ToLower()) _
+							.Select(Function(s) s.Replace(" ", String.Empty))
+
+						If listResults.IsNullOrEmpty() OrElse
+							listResults.All(Function(s) s.IsNullOrEmpty()) Then
+
+							actualizarDetalle("Finalizado")
+							Return EstadoProceso.FinalizadoOK
 						End If
 
 						If registros.Count <= (proceso.CantidadCampos * 2) Then
@@ -701,7 +712,7 @@ Public Class frmMain
 			actualizarDetalle("Finalizado")
 			Return EstadoProceso.FinalizadoOK
 		Catch ex As Exception
-			actualizarDetalle("Error")
+			actualizarDetalle($"Error - Detalle: {ex.Message}")
 			GuardarLOG(AccionesLOG.ErrorSubProceso, "Sub Proceso: " + proceso.CodPro.ToString + " - " + proceso.Nombre, CODIGO_TRANSACCION, UsuarioActual.Codigo)
 			Return EstadoProceso.EnError
 		End Try
