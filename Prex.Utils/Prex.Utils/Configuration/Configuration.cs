@@ -185,6 +185,7 @@ namespace Prex.Utils
                 }
 
             }
+            if (CARPETA_LOCAL.Where(c => c == '%').Count() == 2) CARPETA_LOCAL = Environment.ExpandEnvironmentVariables(CARPETA_LOCAL);
             if (!CARPETA_LOCAL.ToStringOrEmpty().EndsWith("\\")) CARPETA_LOCAL += "\\";
 
         }

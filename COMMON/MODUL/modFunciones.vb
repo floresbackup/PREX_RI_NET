@@ -563,10 +563,16 @@ Module modFunciones
 
     Public Function NormalizarRuta(ByVal sRuta As String) As String
 
-        If Right(sRuta, 1) <> "\" Then
-            NormalizarRuta = sRuta & "\"
+        Dim rutaNormalizada As String = sRuta
+
+        If rutaNormalizada.Where(Function(c) c = "%").Count() = 2 Then
+            rutaNormalizada = Environment.ExpandEnvironmentVariables(rutaNormalizada)
+        End If
+
+        If Right(rutaNormalizada, 1) <> "\" Then
+            Return rutaNormalizada & "\"
         Else
-            NormalizarRuta = sRuta
+            Return rutaNormalizada
         End If
 
     End Function
