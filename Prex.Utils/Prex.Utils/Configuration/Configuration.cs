@@ -326,14 +326,14 @@ namespace Prex.Utils
             try
             {
                 if (!TieneConfigLocal)
-                    GuardarXMLLocal();
-                else
                 {
-                    var prexConfig = new XmlDocument();
-                    prexConfig.Load(ARCHIVO_CONFIG_LOCAL);
-                    _configLocal = new PrexConfigLocal(prexConfig);
-                    
+                    GuardarXMLLocal();
                 }
+
+                var prexConfig = new XmlDocument();
+                prexConfig.Load(ARCHIVO_CONFIG_LOCAL);
+                _configLocal = new PrexConfigLocal(prexConfig);
+                
             }
             catch (Exception ex)
             {
@@ -374,6 +374,8 @@ namespace Prex.Utils
             _xmlLocal.AppendChild(dec);
 
             var dsConfig = _xmlLocal.CreateElement("dsConfig");
+
+            if (_configLocal == null) _configLocal = new PrexConfigLocal();
 
             foreach (var property in _configLocal.GetType().GetProperties())
             {
