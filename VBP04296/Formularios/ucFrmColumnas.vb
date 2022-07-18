@@ -309,7 +309,7 @@ Public Class ucFrmColumnas
 
 
 			Catch ex As Exception
-				Prex.Utils.ManejarErrores.TratarError(ex, "ObtenerCampos", String.Empty, True)
+				Prex.Utils.ManejarErrores.TratarError(ex, "ObtenerCampos", String.Empty, True, False)
 			End Try
 		Finally
 			Me.Cursor = Cursors.Default

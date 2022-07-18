@@ -1370,7 +1370,7 @@ Public Class frmMain
 
 
 			Catch ex As Exception
-				Prex.Utils.ManejarErrores.TratarError(ex, "GenerarScript", String.Empty, True)
+				Prex.Utils.ManejarErrores.TratarError(ex, "GenerarScript", String.Empty, True, False)
 			End Try
 
 		Finally
