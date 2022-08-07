@@ -3,6 +3,8 @@ Imports System.Windows.Forms
 Public Class frmDialog
 
 	Private isNew As Boolean = True
+	Private _callBack As Action(Of String, String, Object)
+	Private _tag As Object = Nothing
 
 	Private ReadOnly Property Valor As String
 		Get
@@ -16,7 +18,7 @@ Public Class frmDialog
 
 	Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 		Me.DialogResult = System.Windows.Forms.DialogResult.OK
-		frmMain.PasarDatos(txtNombre.Text, Valor)
+		_callBack.Invoke(txtNombre.Text, Valor, _tag)
 		Me.Close()
 	End Sub
 
@@ -26,11 +28,22 @@ Public Class frmDialog
 	End Sub
 
 	Friend Sub PasarDatos(ByVal sNombre As String,
-						  ByVal sValor As String)
-		isNew = False
+						  ByVal sValor As String,
+						  ByVal callBack As Action(Of String, String, Object))
+		PasarDatos(sNombre, sValor, False, Nothing, callBack)
+
+	End Sub
+
+	Friend Sub PasarDatos(ByVal sNombre As String,
+						  ByVal sValor As String,
+						  ByVal _isNew As Boolean,
+						  ByVal oTag As Object,
+						  ByVal callBack As Action(Of String, String, Object))
+		isNew = _isNew
 		txtNombre.Text = sNombre
 		txtValor.Text = sValor
-
+		_tag = oTag
+		_callBack = callBack
 	End Sub
 
 	Private Sub frmDialog_Load(sender As Object, e As EventArgs) Handles MyBase.Load

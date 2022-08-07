@@ -58,6 +58,7 @@ Partial Class frmMain
 		Me.LabelControl9 = New DevExpress.XtraEditors.LabelControl()
 		Me.txtServidor = New DevExpress.XtraEditors.TextEdit()
 		Me.btnProbarConexion = New DevExpress.XtraEditors.SimpleButton()
+		Me.btnNuevaEntidad = New DevExpress.XtraEditors.SimpleButton()
 		CType(Me.RepositoryItemTextEdit3, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.txtConnString.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
 		CType(Me.txtFFecha.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -84,7 +85,7 @@ Partial Class frmMain
 		'
 		'btnAceptar
 		'
-		Me.btnAceptar.Location = New System.Drawing.Point(524, 529)
+		Me.btnAceptar.Location = New System.Drawing.Point(561, 529)
 		Me.btnAceptar.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.btnAceptar.Name = "btnAceptar"
 		Me.btnAceptar.Size = New System.Drawing.Size(106, 27)
@@ -93,7 +94,7 @@ Partial Class frmMain
 		'
 		'btnCancelar
 		'
-		Me.btnCancelar.Location = New System.Drawing.Point(637, 529)
+		Me.btnCancelar.Location = New System.Drawing.Point(674, 529)
 		Me.btnCancelar.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.btnCancelar.Name = "btnCancelar"
 		Me.btnCancelar.Size = New System.Drawing.Size(106, 27)
@@ -102,17 +103,17 @@ Partial Class frmMain
 		'
 		'txtConnString
 		'
-		Me.txtConnString.Location = New System.Drawing.Point(174, 143)
+		Me.txtConnString.Location = New System.Drawing.Point(173, 141)
 		Me.txtConnString.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.txtConnString.Name = "txtConnString"
 		Me.txtConnString.Properties.ReadOnly = True
-		Me.txtConnString.Size = New System.Drawing.Size(527, 24)
+		Me.txtConnString.Size = New System.Drawing.Size(468, 24)
 		Me.txtConnString.TabIndex = 13
 		Me.txtConnString.Visible = False
 		'
 		'LabelControl1
 		'
-		Me.LabelControl1.Location = New System.Drawing.Point(48, 148)
+		Me.LabelControl1.Location = New System.Drawing.Point(47, 149)
 		Me.LabelControl1.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.LabelControl1.Name = "LabelControl1"
 		Me.LabelControl1.Size = New System.Drawing.Size(120, 16)
@@ -122,7 +123,7 @@ Partial Class frmMain
 		'
 		'btnConnString
 		'
-		Me.btnConnString.Location = New System.Drawing.Point(708, 143)
+		Me.btnConnString.Location = New System.Drawing.Point(649, 143)
 		Me.btnConnString.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.btnConnString.Name = "btnConnString"
 		Me.btnConnString.Size = New System.Drawing.Size(29, 26)
@@ -133,7 +134,7 @@ Partial Class frmMain
 		'txtFFecha
 		'
 		Me.txtFFecha.EditValue = "yyyy/MM/dd"
-		Me.txtFFecha.Location = New System.Drawing.Point(174, 223)
+		Me.txtFFecha.Location = New System.Drawing.Point(173, 224)
 		Me.txtFFecha.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.txtFFecha.Name = "txtFFecha"
 		Me.txtFFecha.Size = New System.Drawing.Size(146, 24)
@@ -141,7 +142,7 @@ Partial Class frmMain
 		'
 		'LabelControl2
 		'
-		Me.LabelControl2.Location = New System.Drawing.Point(63, 228)
+		Me.LabelControl2.Location = New System.Drawing.Point(61, 228)
 		Me.LabelControl2.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.LabelControl2.Name = "LabelControl2"
 		Me.LabelControl2.Size = New System.Drawing.Size(106, 16)
@@ -151,15 +152,15 @@ Partial Class frmMain
 		'txtCarpetaLocal
 		'
 		Me.txtCarpetaLocal.EditValue = "C:\Prex"
-		Me.txtCarpetaLocal.Location = New System.Drawing.Point(174, 255)
+		Me.txtCarpetaLocal.Location = New System.Drawing.Point(173, 255)
 		Me.txtCarpetaLocal.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.txtCarpetaLocal.Name = "txtCarpetaLocal"
-		Me.txtCarpetaLocal.Size = New System.Drawing.Size(527, 24)
+		Me.txtCarpetaLocal.Size = New System.Drawing.Size(572, 24)
 		Me.txtCarpetaLocal.TabIndex = 19
 		'
 		'LabelControl3
 		'
-		Me.LabelControl3.Location = New System.Drawing.Point(85, 261)
+		Me.LabelControl3.Location = New System.Drawing.Point(84, 261)
 		Me.LabelControl3.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.LabelControl3.Name = "LabelControl3"
 		Me.LabelControl3.Size = New System.Drawing.Size(83, 16)
@@ -169,15 +170,15 @@ Partial Class frmMain
 		'txtArchivoConfig
 		'
 		Me.txtArchivoConfig.EditValue = "Prex.config"
-		Me.txtArchivoConfig.Location = New System.Drawing.Point(174, 288)
+		Me.txtArchivoConfig.Location = New System.Drawing.Point(173, 288)
 		Me.txtArchivoConfig.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.txtArchivoConfig.Name = "txtArchivoConfig"
-		Me.txtArchivoConfig.Size = New System.Drawing.Size(527, 24)
+		Me.txtArchivoConfig.Size = New System.Drawing.Size(572, 24)
 		Me.txtArchivoConfig.TabIndex = 21
 		'
 		'LabelControl4
 		'
-		Me.LabelControl4.Location = New System.Drawing.Point(44, 294)
+		Me.LabelControl4.Location = New System.Drawing.Point(40, 294)
 		Me.LabelControl4.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.LabelControl4.Name = "LabelControl4"
 		Me.LabelControl4.Size = New System.Drawing.Size(127, 16)
@@ -186,7 +187,7 @@ Partial Class frmMain
 		'
 		'cmdCarpetaLocal
 		'
-		Me.cmdCarpetaLocal.Location = New System.Drawing.Point(708, 256)
+		Me.cmdCarpetaLocal.Location = New System.Drawing.Point(751, 256)
 		Me.cmdCarpetaLocal.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.cmdCarpetaLocal.Name = "cmdCarpetaLocal"
 		Me.cmdCarpetaLocal.Size = New System.Drawing.Size(29, 26)
@@ -195,7 +196,7 @@ Partial Class frmMain
 		'
 		'SimpleButton3
 		'
-		Me.SimpleButton3.Location = New System.Drawing.Point(708, 289)
+		Me.SimpleButton3.Location = New System.Drawing.Point(751, 289)
 		Me.SimpleButton3.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.SimpleButton3.Name = "SimpleButton3"
 		Me.SimpleButton3.Size = New System.Drawing.Size(29, 26)
@@ -205,7 +206,7 @@ Partial Class frmMain
 		'txtPassword
 		'
 		Me.txtPassword.EditValue = ""
-		Me.txtPassword.Location = New System.Drawing.Point(554, 172)
+		Me.txtPassword.Location = New System.Drawing.Point(495, 172)
 		Me.txtPassword.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.txtPassword.Name = "txtPassword"
 		Me.txtPassword.Properties.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
@@ -214,12 +215,12 @@ Partial Class frmMain
 		'
 		'LabelControl5
 		'
-		Me.LabelControl5.Location = New System.Drawing.Point(423, 177)
+		Me.LabelControl5.Location = New System.Drawing.Point(419, 177)
 		Me.LabelControl5.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.LabelControl5.Name = "LabelControl5"
-		Me.LabelControl5.Size = New System.Drawing.Size(124, 16)
+		Me.LabelControl5.Size = New System.Drawing.Size(70, 16)
 		Me.LabelControl5.TabIndex = 26
-		Me.LabelControl5.Text = "Contraseña conexión:"
+		Me.LabelControl5.Text = "Contraseña:"
 		'
 		'lvConfig
 		'
@@ -228,11 +229,11 @@ Partial Class frmMain
 		Me.lvConfig.FullRowSelect = True
 		Me.lvConfig.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
 		Me.lvConfig.HideSelection = False
-		Me.lvConfig.Location = New System.Drawing.Point(45, 351)
+		Me.lvConfig.Location = New System.Drawing.Point(38, 351)
 		Me.lvConfig.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.lvConfig.MultiSelect = False
 		Me.lvConfig.Name = "lvConfig"
-		Me.lvConfig.Size = New System.Drawing.Size(691, 159)
+		Me.lvConfig.Size = New System.Drawing.Size(742, 159)
 		Me.lvConfig.TabIndex = 28
 		Me.lvConfig.UseCompatibleStateImageBehavior = False
 		Me.lvConfig.View = System.Windows.Forms.View.Details
@@ -277,7 +278,7 @@ Partial Class frmMain
 		'
 		'btnBuscarSgLibrary
 		'
-		Me.btnBuscarSgLibrary.Location = New System.Drawing.Point(708, 321)
+		Me.btnBuscarSgLibrary.Location = New System.Drawing.Point(751, 321)
 		Me.btnBuscarSgLibrary.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.btnBuscarSgLibrary.Name = "btnBuscarSgLibrary"
 		Me.btnBuscarSgLibrary.Size = New System.Drawing.Size(29, 26)
@@ -287,15 +288,15 @@ Partial Class frmMain
 		'txtSGLibrary
 		'
 		Me.txtSGLibrary.EditValue = "config.xml"
-		Me.txtSGLibrary.Location = New System.Drawing.Point(174, 320)
+		Me.txtSGLibrary.Location = New System.Drawing.Point(173, 320)
 		Me.txtSGLibrary.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.txtSGLibrary.Name = "txtSGLibrary"
-		Me.txtSGLibrary.Size = New System.Drawing.Size(527, 24)
+		Me.txtSGLibrary.Size = New System.Drawing.Size(572, 24)
 		Me.txtSGLibrary.TabIndex = 31
 		'
 		'lblSgLibrary
 		'
-		Me.lblSgLibrary.Location = New System.Drawing.Point(56, 326)
+		Me.lblSgLibrary.Location = New System.Drawing.Point(54, 326)
 		Me.lblSgLibrary.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.lblSgLibrary.Name = "lblSgLibrary"
 		Me.lblSgLibrary.Size = New System.Drawing.Size(113, 16)
@@ -304,17 +305,17 @@ Partial Class frmMain
 		'
 		'LabelControl6
 		'
-		Me.LabelControl6.Location = New System.Drawing.Point(447, 146)
+		Me.LabelControl6.Location = New System.Drawing.Point(441, 146)
 		Me.LabelControl6.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.LabelControl6.Name = "LabelControl6"
-		Me.LabelControl6.Size = New System.Drawing.Size(102, 16)
+		Me.LabelControl6.Size = New System.Drawing.Size(48, 16)
 		Me.LabelControl6.TabIndex = 26
-		Me.LabelControl6.Text = "Usuario conexión:"
+		Me.LabelControl6.Text = "Usuario:"
 		'
 		'txtUsuario
 		'
 		Me.txtUsuario.EditValue = ""
-		Me.txtUsuario.Location = New System.Drawing.Point(554, 142)
+		Me.txtUsuario.Location = New System.Drawing.Point(495, 142)
 		Me.txtUsuario.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.txtUsuario.Name = "txtUsuario"
 		Me.txtUsuario.Size = New System.Drawing.Size(146, 24)
@@ -322,16 +323,16 @@ Partial Class frmMain
 		'
 		'ckSeguridadIntegrada
 		'
-		Me.ckSeguridadIntegrada.Location = New System.Drawing.Point(421, 210)
+		Me.ckSeguridadIntegrada.Location = New System.Drawing.Point(495, 204)
 		Me.ckSeguridadIntegrada.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.ckSeguridadIntegrada.Name = "ckSeguridadIntegrada"
-		Me.ckSeguridadIntegrada.Properties.Caption = "Utilizar Seguridad Integrada"
+		Me.ckSeguridadIntegrada.Properties.Caption = "Seguridad Integrada"
 		Me.ckSeguridadIntegrada.Size = New System.Drawing.Size(182, 20)
 		Me.ckSeguridadIntegrada.TabIndex = 34
 		'
 		'LabelControl8
 		'
-		Me.LabelControl8.Location = New System.Drawing.Point(83, 177)
+		Me.LabelControl8.Location = New System.Drawing.Point(82, 178)
 		Me.LabelControl8.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.LabelControl8.Name = "LabelControl8"
 		Me.LabelControl8.Size = New System.Drawing.Size(85, 16)
@@ -341,15 +342,15 @@ Partial Class frmMain
 		'txtBaseDeDatos
 		'
 		Me.txtBaseDeDatos.EditValue = ""
-		Me.txtBaseDeDatos.Location = New System.Drawing.Point(174, 172)
+		Me.txtBaseDeDatos.Location = New System.Drawing.Point(173, 173)
 		Me.txtBaseDeDatos.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.txtBaseDeDatos.Name = "txtBaseDeDatos"
-		Me.txtBaseDeDatos.Size = New System.Drawing.Size(230, 24)
+		Me.txtBaseDeDatos.Size = New System.Drawing.Size(229, 24)
 		Me.txtBaseDeDatos.TabIndex = 25
 		'
 		'LabelControl9
 		'
-		Me.LabelControl9.Location = New System.Drawing.Point(50, 146)
+		Me.LabelControl9.Location = New System.Drawing.Point(49, 147)
 		Me.LabelControl9.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.LabelControl9.Name = "LabelControl9"
 		Me.LabelControl9.Size = New System.Drawing.Size(121, 16)
@@ -359,10 +360,10 @@ Partial Class frmMain
 		'txtServidor
 		'
 		Me.txtServidor.EditValue = ""
-		Me.txtServidor.Location = New System.Drawing.Point(174, 142)
+		Me.txtServidor.Location = New System.Drawing.Point(173, 143)
 		Me.txtServidor.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.txtServidor.Name = "txtServidor"
-		Me.txtServidor.Size = New System.Drawing.Size(230, 24)
+		Me.txtServidor.Size = New System.Drawing.Size(229, 24)
 		Me.txtServidor.TabIndex = 25
 		'
 		'btnProbarConexion
@@ -371,12 +372,25 @@ Partial Class frmMain
 		Me.btnProbarConexion.Appearance.Options.UseImage = True
 		Me.btnProbarConexion.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.Flat
 		Me.btnProbarConexion.ImageOptions.Image = CType(resources.GetObject("btnProbarConexion.ImageOptions.Image"), System.Drawing.Image)
-		Me.btnProbarConexion.Location = New System.Drawing.Point(607, 208)
+		Me.btnProbarConexion.Location = New System.Drawing.Point(649, 145)
 		Me.btnProbarConexion.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
 		Me.btnProbarConexion.Name = "btnProbarConexion"
-		Me.btnProbarConexion.Size = New System.Drawing.Size(131, 27)
+		Me.btnProbarConexion.Size = New System.Drawing.Size(143, 37)
 		Me.btnProbarConexion.TabIndex = 35
 		Me.btnProbarConexion.Text = "&Probar conexión"
+		'
+		'btnNuevaEntidad
+		'
+		Me.btnNuevaEntidad.Appearance.Image = CType(resources.GetObject("SimpleButton1.Appearance.Image"), System.Drawing.Image)
+		Me.btnNuevaEntidad.Appearance.Options.UseImage = True
+		Me.btnNuevaEntidad.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.Flat
+		Me.btnNuevaEntidad.ImageOptions.Image = CType(resources.GetObject("SimpleButton1.ImageOptions.Image"), System.Drawing.Image)
+		Me.btnNuevaEntidad.Location = New System.Drawing.Point(649, 195)
+		Me.btnNuevaEntidad.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+		Me.btnNuevaEntidad.Name = "btnNuevaEntidad"
+		Me.btnNuevaEntidad.Size = New System.Drawing.Size(144, 37)
+		Me.btnNuevaEntidad.TabIndex = 35
+		Me.btnNuevaEntidad.Text = "&Nueva entidad"
 		'
 		'frmMain
 		'
@@ -384,7 +398,8 @@ Partial Class frmMain
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
 		Me.BackgroundImageLayoutStore = System.Windows.Forms.ImageLayout.Tile
 		Me.BackgroundImageStore = Global.PrexConfig.My.Resources.Resources.fondo_degrade_prex_con_cuadro2
-		Me.ClientSize = New System.Drawing.Size(750, 567)
+		Me.ClientSize = New System.Drawing.Size(804, 567)
+		Me.Controls.Add(Me.btnNuevaEntidad)
 		Me.Controls.Add(Me.btnProbarConexion)
 		Me.Controls.Add(Me.ckSeguridadIntegrada)
 		Me.Controls.Add(Me.btnBuscarSgLibrary)
@@ -475,4 +490,5 @@ Partial Class frmMain
     Friend WithEvents LabelControl9 As DevExpress.XtraEditors.LabelControl
     Friend WithEvents txtServidor As DevExpress.XtraEditors.TextEdit
     Friend WithEvents btnProbarConexion As DevExpress.XtraEditors.SimpleButton
+	Friend WithEvents btnNuevaEntidad As DevExpress.XtraEditors.SimpleButton
 End Class

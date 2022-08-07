@@ -9,15 +9,16 @@ Public Class frmMain
 
     Private oConfig As New dsConfig
     Private oItemSel As ListViewItem
+    Private listEntidades As List(Of String)
 
-	Sub New()
+    Sub New()
 
 		' This call is required by the designer.
 		InitializeComponent()
 
-		' Add any initialization after the InitializeComponent() call.
-
-	End Sub
+        ' Add any initialization after the InitializeComponent() call.
+        listEntidades = New List(Of String)
+    End Sub
 
 	Function CrearConnString(Optional ByVal parentForm As Form = Nothing) As String
 
@@ -108,28 +109,47 @@ Public Class frmMain
 
         If Not (oItemSel Is Nothing) Then
             Dim frm As New frmDialog
-            frm.PasarDatos(oItemSel.Text, oItemSel.SubItems.Item(1).Text)
+            frm.PasarDatos(oItemSel.Text, oItemSel.SubItems.Item(1).Text, AddressOf PasarDatosInterno)
             frm.ShowDialog()
             frm = Nothing
         End If
 
     End Sub
 
-    Friend Sub PasarDatos(ByVal sNombre As String,
+    Private Sub PasarDatos(ByVal sNombre As String,
                           ByVal sValor As String)
+        PasarDatosInterno(sNombre, sValor, Nothing)
+    End Sub
+
+    Private Sub PasarDatosInterno(ByVal sNombre As String,
+                          ByVal sValor As String,
+                          ByVal oTag As Object)
 
         Dim oItem As ListViewItem
         Dim bAgrega As Boolean = True
+        Dim nroEntidad = 1
+        If oTag IsNot Nothing AndAlso TypeOf oTag Is String AndAlso oTag.ToString() = "nueva_entidad" Then
+            bAgrega = True
 
-        For Each oItem In lvConfig.Items
-            If oItem.Text = sNombre Then
-                oItem.SubItems.Item(1).Text = sValor
-                bAgrega = False
-            End If
-        Next
+            For Each oItem In lvConfig.Items
+                If TypeOf oItem.Tag Is String AndAlso oItem.Tag.tag.ToString().Contains("nueva_entidad") Then
+                    nroEntidad += 1
+                End If
+            Next
+        Else
+            For Each oItem In lvConfig.Items
+                If oItem.Text = sNombre Then
+                    oItem.SubItems.Item(1).Text = sValor
+                    bAgrega = False
+                End If
+            Next
+        End If
 
         If bAgrega Then
             oItem = lvConfig.Items.Add(sNombre)
+            If nroEntidad > 0 Then
+                oItem.Tag = "nueva_entidad_" + nroEntidad.ToString()
+            End If
             oItem.SubItems.Add(sValor)
         End If
 
@@ -294,11 +314,38 @@ Public Class frmMain
 
             'Configuraciones Variadas
             For Each oItem As ListViewItem In lvConfig.Items
+
+                If oItem.Tag IsNot Nothing AndAlso TypeOf oItem.Tag Is String AndAlso oItem.Tag.ToString() = "nueva_entidad" Then
+                    Application.DoEvents()
+                    Continue For
+                End If
+
                 dr = dt.NewRow()
                 dr("NOMBRE") = oItem.Text
                 dr("VALOR") = oItem.SubItems.Item(1).Text
                 dt.Rows.Add(dr)
                 ds.AcceptChanges()
+
+                Application.DoEvents()
+            Next
+
+            'Configuraciones Entidades
+            Dim rowEntidades As DataRow = Nothing
+            For Each oItem As ListViewItem In lvConfig.Items
+
+                If oItem.Tag IsNot Nothing AndAlso TypeOf oItem.Tag Is String AndAlso oItem.Tag.ToString() = "nueva_entidad" Then
+                    dr = dt.NewRow()
+                    dr("NOMBRE") = oItem.Tag.ToString().Replace("nueva_entidad", "ENTIDAD_NOMBRE")
+                    dr("VALOR") = oItem.Text
+                    dt.Rows.Add(dr)
+                    ds.AcceptChanges()
+
+                    dr = dt.NewRow()
+                    dr("NOMBRE") = oItem.Tag.ToString().Replace("nueva_entidad", "ENTIDAD_CONN_LOCAL")
+                    dr("VALOR") = Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(oItem.SubItems.Item(1).Text))
+                    dt.Rows.Add(dr)
+                    ds.AcceptChanges()
+                End If
 
                 Application.DoEvents()
             Next
@@ -316,10 +363,10 @@ Public Class frmMain
 
     Private Sub MostrarRutaSG(mostrar As Boolean)
         If mostrar Then
-            lvConfig.Location = New Point(39, 285)
+            lvConfig.Location = New Point(38, 285)
             lvConfig.Height = 108
         Else
-            lvConfig.Location = New Point(39, 262)
+            lvConfig.Location = New Point(38, 262)
             lvConfig.Height = 130
         End If
         lblSgLibrary.Visible = mostrar
@@ -348,6 +395,10 @@ Public Class frmMain
     End Sub
 
     Private Sub btnProbarConexion_Click(sender As Object, e As EventArgs) Handles btnProbarConexion.Click
+        ProbarConexion()
+    End Sub
+
+    Private Function ProbarConexion() As Boolean
         Try
             Me.Cursor = Cursors.WaitCursor
             Try
@@ -357,15 +408,37 @@ Public Class frmMain
                 If conn.State = ConnectionState.Open Then
                     MessageBox.Show(Me, "Conexión establecida exitosamente", "Probando conexión con SQL", MessageBoxButtons.OK, MessageBoxIcon.Information)
                     conn.Close()
+                    conn = Nothing
+                    Return True
                 Else
                     MessageBox.Show(Me, "No se pudo establecer conexión, revise los datos ingresados", "Probando conexión con SQL", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                    Return False
                 End If
-                conn = Nothing
             Catch ex As Exception
                 MessageBox.Show(Me, ex.Source & " - " & ex.Message, "Probando conexión con SQL", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return False
             End Try
         Finally
             Me.Cursor = Cursors.Default
         End Try
+    End Function
+
+    Private Sub btnNuevaEntidad_Click(sender As Object, e As EventArgs) Handles btnNuevaEntidad.Click
+        If ProbarConexion() Then
+            Dim frmInputGral As New Prex.Utils.Misc.Forms.FrmInputGeneral()
+            frmInputGral.PasarInfoVentana("Nueva conexión como entidad", "Ingrese el nombre de la entidad:")
+
+            Dim frm As New frmDialog
+            frm.PasarDatos(String.Empty, GetFullConnectionString(), False, "nueva_entidad", AddressOf PasarDatosInterno)
+
+            If frm.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                'txtBaseDeDatos.Text = String.Empty
+                'txtServidor.Text = String.Empty
+                'txtUsuario.Text = String.Empty
+                'txtPassword.Text = String.Empty
+                'ckSeguridadIntegrada.Checked = False
+                lvConfig.Refresh()
+            End If
+        End If
     End Sub
 End Class
