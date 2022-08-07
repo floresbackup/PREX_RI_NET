@@ -232,6 +232,25 @@ Module modFunciones
                             FILE_GOOGLE_CREDENTIALS = sTemp.Trim
                     End Select
 
+                    If row("NOMBRE").ToString.Contains("ENTIDAD_NOMBRE") Then
+                        Dim nroEntidad As Integer = Integer.Parse(row("NOMBRE").ToString.Replace("ENTIDAD_NOMBRE_", String.Empty))
+                        If Not Entidades.ContainsKey(nroEntidad) Then
+                            Entidades.Add(nroEntidad, ("", ""))
+                        End If
+
+                        Entidades(nroEntidad) = (sTemp, Entidades(nroEntidad).conn_local)
+                    End If
+
+                    If row("NOMBRE").ToString.Contains("ENTIDAD_CONN_LOCAL") Then
+                        Dim nroEntidad As Integer = Integer.Parse(row("NOMBRE").ToString.Replace("ENTIDAD_CONN_LOCAL_", String.Empty))
+
+                        If Not Entidades.ContainsKey(nroEntidad) Then
+                            Entidades.Add(nroEntidad, ("", ""))
+                        End If
+
+                        Entidades(nroEntidad) = (Entidades(nroEntidad).nombre, System.Text.ASCIIEncoding.UTF8.GetString(Convert.FromBase64String(sTemp)))
+                    End If
+
                 Next
 
             End If

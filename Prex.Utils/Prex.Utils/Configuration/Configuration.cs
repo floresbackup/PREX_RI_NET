@@ -114,6 +114,8 @@ namespace Prex.Utils
         //GENERAL
         public bool AUTENTICACIONSQL     { get; internal set; }
 
+        public IDictionary<int, (string nombre, string conn_local)> Entidades { get; protected set; }
+
         // BANCO DE CORDOBA
         public bool SEGURIDAD_INTEGRADA  { get; internal set; }
         public string NOMBRE_SQLSERVER   { get; internal set; }
@@ -160,6 +162,7 @@ namespace Prex.Utils
         public PrexConfig()
         {
             UsuarioActual = new Usuario();
+            Entidades = new Dictionary<int, (string nombre, string conn_local)>();
         }
 
         internal PrexConfig(XmlDocument xml) : this()
@@ -170,7 +173,23 @@ namespace Prex.Utils
                 var valor = nodo.LastChild.InnerText;
                 var nombre = nodo.FirstChild.InnerText;
 
-                if (nombre.Equals("CONN_LOCAL"))
+                if (nombre.Contains("ENTIDAD_NOMBRE"))
+                {
+                    var nroEntidad = int.Parse(valor.Replace("ENTIDAD_NOMBRE_", string.Empty));
+                    if (!Entidades.ContainsKey(nroEntidad))
+                        Entidades.Add(nroEntidad, ("", ""));
+
+                    Entidades[nroEntidad] = (valor, Entidades[nroEntidad].conn_local);
+                }
+                else if (nombre.Contains("ENTIDAD_CONN_LOCAL"))
+                {
+                    var nroEntidad = int.Parse(valor.Replace("ENTIDAD_CONN_LOCAL_", string.Empty));
+                    if (!Entidades.ContainsKey(nroEntidad))
+                        Entidades.Add(nroEntidad, ("", ""));
+
+                    Entidades[nroEntidad] = (Entidades[nroEntidad].nombre, Encoding.UTF8.GetString(Convert.FromBase64String(valor)));
+                }
+                else if (nombre.Equals("CONN_LOCAL"))
                     CONN_LOCAL = Encoding.UTF8.GetString(Convert.FromBase64String(valor));
                 else if (nombre.Equals("SIMBOLO_DECIMAL"))
                     SIMBOLO_DECIMAL = valor.Substring(0, 1);
@@ -179,7 +198,7 @@ namespace Prex.Utils
                 else if (nombre.Equals("CertificateCitiDocsPass"))
                     CertificateCitiDocsPass = Encoding.UTF8.GetString(Convert.FromBase64String(valor));
                 else
-                { 
+                {
                     var propertyInfo = this.GetType().GetProperty(nombre);
                     if (propertyInfo != null) propertyInfo.SetValue(this, Convert.ChangeType((propertyInfo.PropertyType.FullName == "System.Boolean" ? (valor.ToString() == "0" ? "false" : "true") : valor), propertyInfo.PropertyType));
                 }

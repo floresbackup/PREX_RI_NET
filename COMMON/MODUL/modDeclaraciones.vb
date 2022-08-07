@@ -50,8 +50,10 @@ Module modDeclaraciones
         ActualizacionDeArchivosAdjuntos = 56
     End Enum
 
-   'DATASET DE CONFIGURACIÓN (COMO EL VIEJO INI)
-   Public oConfig As New dsConfig
+    'DATASET DE CONFIGURACIÓN (COMO EL VIEJO INI)
+    Public oConfig As New dsConfig
+    Public Entidades As New Dictionary(Of Integer, (nombre As String, conn_local As String))
+
 #If DEBUG Then
     Public ARCHIVO_CONFIG As String = "C:\Prex\DebugLocal\Prex.config"
 #Else
