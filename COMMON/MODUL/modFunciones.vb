@@ -734,7 +734,8 @@ Module modFunciones
         oText = IO.File.CreateText(sNombreArchivo)
 
         oText.WriteLine(Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(sNombreUsuario)))
-        oText.WriteLine(Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(sPassword)))
+        oText.WriteLine(Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(Prex.Utils.Configuration.PrexConfig.CYBERRARKPASS)))
+        oText.WriteLine(sPassword)
         oText.Close()
 
         oText = Nothing
