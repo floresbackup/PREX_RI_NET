@@ -106,6 +106,7 @@ namespace Prex.Utils
         public long CODIGO_TRANSACCION   { get; set; }
         public string SIMBOLO_DECIMAL    { get; internal set; }
         public string DOMINIO            { get; internal set; }
+        public string DOMINIO_DEFAULT    { get; internal set; }
         public string DBTYPE             { get; internal set; }
         public CultureInfo CulturaActual { get; set; }
 

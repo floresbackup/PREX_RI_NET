@@ -77,19 +77,32 @@ Public Class frmInicioSesion
             'Usuario NT
             txtUsuario.Text = SystemInformation.UserName
 
-            'Dominios disponibles
-            Dim oDominios() As ServerInfo = SQLConnector.GetSQLServers(SQLConnector.EServerTypes.SV_TYPE_DOMAIN_ENUM)
+            'Anulo el inicio por dominio para CITI
+            If Configuration.PrexConfig.ID_SISTEMA > 0 Then
+                Dim dominioDefault As String = Configuration.PrexConfig.DOMINIO_DEFAULT
+                If dominioDefault.IsNullOrEmpty() Then
+                    cboDominio.Items.Add("(Ninguno)")
+                    cboDominio.Text = "(Ninguno)"
+                Else
+                    cboDominio.Items.Add(dominioDefault)
+                    cboDominio.Text = dominioDefault
+                End If
+                cboDominio.Enabled = False
+            Else
+                'Dominios disponibles
+                Dim oDominios() As ServerInfo = SQLConnector.GetSQLServers(SQLConnector.EServerTypes.SV_TYPE_DOMAIN_ENUM)
 
-            cboDominio.Items.Clear()
-            cboDominio.Items.Add(SystemInformation.UserDomainName)
-            cboDominio.Text = SystemInformation.UserDomainName
+                cboDominio.Items.Clear()
+                cboDominio.Items.Add(SystemInformation.UserDomainName)
+                cboDominio.Text = SystemInformation.UserDomainName
 
-            If Not oDominios Is Nothing Then
-                For Each oDominio As ServerInfo In oDominios
-                    If oDominio.Name <> SystemInformation.UserDomainName.ToString Then
-                        cboDominio.Items.Add(oDominio.Name)
-                    End If
-                Next
+                If Not oDominios Is Nothing Then
+                    For Each oDominio As ServerInfo In oDominios
+                        If oDominio.Name <> SystemInformation.UserDomainName.ToString Then
+                            cboDominio.Items.Add(oDominio.Name)
+                        End If
+                    Next
+                End If
             End If
 
         Else
@@ -602,8 +615,8 @@ Public Class frmInicioSesion
 
 		If ID_SISTEMA > 0 Then
 			pblCitiCiberrark.Visible = True
-			picErrorCiberrark.Visible = CYBERRARKPASS.Trim = String.Empty
-			picOkCiberrark.Visible = Not picErrorCiberrark.Visible
+            picErrorCiberrark.Visible = Not CYBERRARKPASS.ToStringOrEmpty().IsNullOrEmpty
+            picOkCiberrark.Visible = Not picErrorCiberrark.Visible
 			If picErrorCiberrark.Visible Then
 				lblciti.Text = "Error conexión con Cyberark"
 				lblciti.ForeColor = Color.DarkRed
