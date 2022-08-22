@@ -77,16 +77,11 @@ Public Class frmInicioSesion
             'Usuario NT
             txtUsuario.Text = SystemInformation.UserName
 
-            'Anulo el inicio por dominio para CITI
-            If Configuration.PrexConfig.ID_SISTEMA > 0 Then
-                Dim dominioDefault As String = Configuration.PrexConfig.DOMINIO_DEFAULT
-                If dominioDefault.IsNullOrEmpty() Then
-                    cboDominio.Items.Add("(Ninguno)")
-                    cboDominio.Text = "(Ninguno)"
-                Else
-                    cboDominio.Items.Add(dominioDefault)
-                    cboDominio.Text = dominioDefault
-                End If
+            'Anulo el inicio por dominio si tiene dominio default
+            Dim dominioDefault As String = Configuration.PrexConfig.DOMINIO_DEFAULT
+            If Not dominioDefault.IsNullOrEmpty() Then
+                cboDominio.Items.Add(dominioDefault)
+                cboDominio.Text = dominioDefault
                 cboDominio.Enabled = False
             Else
                 'Dominios disponibles
