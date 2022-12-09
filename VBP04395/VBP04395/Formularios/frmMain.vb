@@ -9,7 +9,6 @@ Public Class frmMain
 	Private oAdmlocal As New AdmTablas
 	Private oProcesando As frmProcesando
 	Private bCancelProcAsinc As Boolean
-	Private nSegundos As Integer
 
 	Public Sub AnalizarCommand()
 
@@ -821,41 +820,40 @@ Public Class frmMain
 			With ds.Tables(0)
 
 				If .Rows.Count = 0 Then
-					row = .NewRow()
-
-					row("PE_CODPRO") = oProcesos.CodPro
-					row("PE_ESTADO") = 0
-					row("PE_DESCRI") = " "
-					row("PE_FECPRO") = DateTime.Now
-					row("PE_CODUSU") = UsuarioActual.Codigo
-
-					ds.Tables(0).Rows.Add(row)
-					da.Update(ds)
-					ds.AcceptChanges()
-
+					oAdmlocal.EjecutarComandoSQL("Insert Into PROEXE (PE_ESTADO, PE_DESCRI, PE_FECPRO, PE_CODUSU, PE_CODPRO) " &
+												 $"Values (0, ' ', GetDate(), {UsuarioActual.Codigo}, {oProcesos.CodPro})")
 				Else
 
+					bTemp = (.Rows(0).Item("PE_ESTADO") <> 0)
 					If bFinProceso Then
-						.Rows(0).Item("PE_ESTADO") = 0
-						.Rows(0).Item("PE_DESCRI") = " "
-						.Rows(0).Item("PE_FECPRO") = DateTime.Now
-						.Rows(0).Item("PE_CODUSU") = UsuarioActual.Codigo
-						da.Update(ds)
-						ds.AcceptChanges()
-
+						oAdmlocal.EjecutarComandoSQL("Update PROEXE set " &
+														 " PE_ESTADO = 0, PE_DESCRI = ' ',  " &
+														 " PE_FECPRO = GetDate(), " &
+														 $" PE_CODUSU = {UsuarioActual.Codigo}" &
+														 $"WHERE        PE_CODPRO={ oProcesos.CodPro}")
+						bTemp = False
 					End If
 
-					bTemp = (.Rows(0).Item("PE_ESTADO") <> 0)
 
 					If bTemp Then
 						If Pregunta("El proceso se encuentra en ejecución por " & oAdmlocal.DevolverValor("USUARI", "US_DESCRI", "US_CODUSU=" & .Rows(0).Item("PE_CODUSU")) & " desde " & .Rows(0).Item("PE_FECPRO") & "." & vbCrLf & "Forzar el inicio puede generar inconsistencia en los datos." & vbCrLf & "¿Desea Forzar el inicio de proceso?") = vbYes Then
 							bTemp = False
+
+							oAdmlocal.EjecutarComandoSQL("Update PROEXE set " &
+														 " PE_ESTADO = 0, PE_DESCRI = ' ',  " &
+														 " PE_FECPRO = GetDate(), " &
+														 $" PE_CODUSU = {UsuarioActual.Codigo}" &
+														 $"WHERE        PE_CODPRO={ oProcesos.CodPro}")
+
 							.Rows(0).Item("PE_ESTADO") = 0
 							.Rows(0).Item("PE_DESCRI") = " "
 							.Rows(0).Item("PE_FECPRO") = DateTime.Now
 							.Rows(0).Item("PE_CODUSU") = UsuarioActual.Codigo
 							da.Update(ds)
 							ds.AcceptChanges()
+
+
+
 						End If
 					End If
 
@@ -923,8 +921,6 @@ Public Class frmMain
 
 		bCancelProcAsinc = False
 
-		nSegundos = 0
-
 		oConnection = New ADODB.Connection
 		oConnection.ConnectionString = CONN_LOCAL
 		oConnection.Open()
@@ -937,7 +933,7 @@ Public Class frmMain
 
 		On Error Resume Next
 
-		tmrProceso.Enabled = True
+		Dim inicio = DateTime.UtcNow
 
 		oCommand.Execute(, , ADODB.ExecuteOptionEnum.adAsyncExecute Or ADODB.ExecuteOptionEnum.adExecuteNoRecords)
 
@@ -948,7 +944,7 @@ Public Class frmMain
 			Application.DoEvents()
 		Loop
 
-		tmrProceso.Enabled = False
+		VerStatus(DateDiff(DateInterval.Second, inicio, DateTime.UtcNow))
 
 		If oConnection.Errors.Count > 0 Then
 			For Each oError In oConnection.Errors
@@ -979,12 +975,7 @@ Public Class frmMain
 
 	End Function
 
-	Private Sub tmrProceso_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrProceso.Tick
-		nSegundos += 1
-		VerStatus()
-	End Sub
-
-	Private Sub VerStatus()
+	Private Sub VerStatus(ByVal tiempoProceso As Integer)
 
 		Dim ds As DataSet
 		Dim sSQL As String
@@ -1017,7 +1008,7 @@ Public Class frmMain
 						'sbMain.SimpleText = sDescri
 					End If
 
-					lblUsuario.Text = "Tiempo transcurrido: " & Format(TimeSerial(0, 0, nSegundos), "HH:mm:ss") & " - " & sDescri
+					lblUsuario.Text = "Tiempo transcurrido: " & Format(TimeSerial(0, 0, tiempoProceso), "HH:mm:ss") & " - " & sDescri
 
 					Application.DoEvents()
 				Next
