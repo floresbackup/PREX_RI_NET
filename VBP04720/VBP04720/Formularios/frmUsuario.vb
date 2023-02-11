@@ -379,7 +379,7 @@ Public Class frmUsuario
 
                 For Each col As DataColumn In ds.Tables(0).Columns
                     If col.ColumnName.ToUpper = "US_READER" Then
-                        chkSoloLectura.Checked = IIf(row("US_READER").ValueOrDbNull() <> DBNull.Value AndAlso row("US_READER") <> 0, True, False)
+                        chkSoloLectura.Checked = IIf(NoNulo(row("US_READER"), False) <> 0, True, False)
                     End If
                 Next
 
