@@ -55,7 +55,7 @@ namespace Prex.Utils
 			Email             = reader["US_CORREO"].ToStringOrEmpty();
 			IdInterno         = reader["US_INTERN"].ToStringOrEmpty();
 			
-			if (reader.ContainsField("US_READER"))
+			if (reader.ContainsField("US_READER") && reader["US_READER"].ValueOrDbNull() != DBNull.Value)
 				SoloLectura   = ((int)reader["US_READER"]) == 0 ? false : true;
 		}
     }
