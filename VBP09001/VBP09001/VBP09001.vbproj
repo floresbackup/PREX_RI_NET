@@ -77,34 +77,44 @@
     <Reference Include="DevExpress.Office.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Printing.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
       <Private>False</Private>
+      <HintPath>Z:\LIB\DevExpress.Printing.v17.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
       <Private>False</Private>
+      <HintPath>Z:\LIB\DevExpress.Data.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Spreadsheet.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Utils.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
       <Private>False</Private>
+      <HintPath>Z:\LIB\DevExpress.Utils.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpo.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
       <Private>False</Private>
+      <HintPath>Z:\LIB\DevExpress.Xpo.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraBars.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
       <Private>False</Private>
+      <HintPath>Z:\LIB\DevExpress.XtraBars.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraCharts.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>False</Private>
+      <HintPath>Z:\LIB\DevExpress.XtraCharts.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
       <Private>False</Private>
+      <HintPath>Z:\LIB\DevExpress.XtraEditors.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraGrid.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
       <Private>False</Private>
+      <HintPath>Z:\LIB\DevExpress.XtraGrid.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.PivotGrid.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>False</Private>
+      <HintPath>Z:\LIB\DevExpress.PivotGrid.v17.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraReports.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>False</Private>
+      <HintPath>Z:\LIB\DevExpress.XtraReports.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -495,22 +505,6 @@
     <None Include="Resources\Design.ico" />
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="AxCodeMax">
-      <Guid>{ECEDB943-AC41-11D2-AB20-000000000000}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>aximp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
-    <COMReference Include="CodeMax">
-      <Guid>{ECEDB943-AC41-11D2-AB20-000000000000}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
     <COMReference Include="stdole">
       <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
       <VersionMajor>2</VersionMajor>
