@@ -719,12 +719,10 @@ Public Class frmMain
 
 		BarLocalizer.Active = New cBarsLocalizer()
 		GridLocalizer.Active = New cGridLocalizer()
-		PivotGridLocalizer.Active = New cPivotGridLocalizer()
 		ChartLocalizer.Active = New cChartLocalizer()
 		PreviewLocalizer.Active = New cPrintingLocalizer()
 		BarLocalizer.Active = New cBarsLocalizer()
 		Localizer.Active = New cEditorsLocalizer()
-		ReportLocalizer.Active = New cReportsLocalizer()
 
 	End Sub
 

@@ -274,7 +274,9 @@
     <Compile Include="Formularios\frmABMRegistro.Designer.vb">
       <DependentUpon>frmABMRegistro.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formularios\frmABMRegistro.vb" />
+    <Compile Include="Formularios\frmABMRegistro.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\frmAdjuntos.Designer.vb">
       <DependentUpon>frmAdjuntos.vb</DependentUpon>
     </Compile>
@@ -284,19 +286,27 @@
     <Compile Include="Formularios\frmCrearPeriodo.Designer.vb">
       <DependentUpon>frmCrearPeriodo.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formularios\frmCrearPeriodo.vb" />
+    <Compile Include="Formularios\frmCrearPeriodo.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\frmDrillDown.Designer.vb">
       <DependentUpon>frmDrillDown.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formularios\frmDrillDown.vb" />
+    <Compile Include="Formularios\frmDrillDown.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\frmGrafico.Designer.vb">
       <DependentUpon>frmGrafico.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formularios\frmGrafico.vb" />
+    <Compile Include="Formularios\frmGrafico.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\frmNotas.Designer.vb">
       <DependentUpon>frmNotas.vb</DependentUpon>
     </Compile>
-    <Compile Include="Formularios\frmNotas.vb" />
+    <Compile Include="Formularios\frmNotas.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Formularios\frmTablaGeneral.designer.vb">
       <DependentUpon>frmTablaGeneral.vb</DependentUpon>
     </Compile>
